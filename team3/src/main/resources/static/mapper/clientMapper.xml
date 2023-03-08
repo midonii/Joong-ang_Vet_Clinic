@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vet.clinic.dao.ClientDAO">
+
+	<select id="clientlist" resultType="ClientDTO">
+	SELECT *
+	FROM owner
+	</select>
+	
+	<select id="petlist" resultType="ClientDTO">
+	SELECT *
+	FROM clientview
+	<if test="tdArr != null">
+		WHERE owner_no=#{tdArr }
+	</if>
+	</select>
+	
+	<select id="profileMap" resultType="ClientDTO">
+	SELECT *
+	FROM clientview
+	<if test="clientNno != null">
+		WHERE owner_no=#{clientNno }
+	</if>
+	</select>
+	
+	<select id="clientDetailAjax" parameterType="ClientDTO" resultType="ClientDTO">
+	SELECT *
+	FROM clientview
+	WHERE owner_no=#{detailNo }
+	</select>
+	
+	<delete id="petDel" parameterType="ClientDTO">
+		DELETE FROM pet
+   		WHERE pet_no=#{petNo }
+	</delete>
+	
+	<delete id="clientDel" parameterType="ClientDTO">
+		DELETE FROM owner
+   		WHERE owner_no=#{clientNo }
+	</delete>
+	
+	<delete id="cilentPetDel" parameterType="ClientDTO">
+		DELETE FROM pet
+   		WHERE owner_no=#{clientNo }
+	</delete>
+	
+	<insert id="clientAdd" parameterType="ClientDTO">
+		INSERT INTO owner SET
+		owner_name = #{floatingClientName },
+		owner_email = #{floatingClientEmail },
+		owner_tel = #{floatingClientTel },
+		owner_addr = #{floatingClientAddr },
+		owner_sms = #{smsAgree },
+		owner_memo = #{floatingClientComments }
+	</insert>
+	
+	
+</mapper>
