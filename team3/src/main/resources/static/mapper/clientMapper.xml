@@ -55,5 +55,16 @@
 		owner_memo = #{floatingClientComments }
 	</insert>
 	
+	<update id="clientUpdate" parameterType="ClientDTO">
+		UPDATE owner SET
+   		owner_name = #{updateOwnerName },
+		owner_email = #{updateOwnerEmail },
+		owner_tel = #{updateOwnerTel },
+		owner_addr = #{updateOwnerAddr },
+		owner_sms = #{updateOwnerSms },
+		owner_memo = #{updateOwnerMemo }
+   		WHERE owner_no=#{clientNo }
+	</update>
+	
 	
 </mapper>

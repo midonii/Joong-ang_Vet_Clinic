@@ -64,6 +64,7 @@ $(function(){
 		
 		//보호자 행 한번 클릭시 동작
 		let clientNo = $(this).attr("value");
+		let detailNo = $(this).attr("value");
 			
 		//보호자 정보 삭제하기(그 아래의 반려견도 모두 삭제)
 		 $(".clientDelete").off().click(function(){
@@ -76,11 +77,105 @@ $(function(){
 		//보호자 정보 수정하기
 		$(".clientUpdate").off().click(function(){
 			//alert(clientNo);
-			$("#clientUpdateModal").modal("show");
+			
+			//$("#updateClientName").val($("#viewModalLabel").text()); // 제목란에 원래 가지고 있던 title을 가져온다.
+			
+			$.post({
+				url : "/clientDetailAjax",
+				cache : false,
+				data : {"detailNo" : detailNo},
+				dataType : "json"
+			}).done(function(data){
+				let result = data.result
+				alert(result[0].owner_name);
+				
+				var owner_name = result[0].owner_name
+				var owner_addr = result[0].owner_addr
+				var owner_tel = result[0].owner_tel
+				var owner_email = result[0].owner_email
+				var owner_sms= result[0].owner_sms
+				var owner_memo= result[0].owner_memo
+
+				
+				$("#updateClientName").val(owner_name);
+				$("#updateClientEmail").val(owner_email);
+				$("#updateClientTel").val(owner_tel);
+				$("#updateClientAddr").val(owner_addr);
+				/* $("#updateClientName").val(result[0].owner_name); */
+				if(owner_sms =='Y'){
+					$("#updateSmsAgree").prop('checked',true);
+				}
+				if(owner_sms == 'N'){
+					$("#updateSmsDisagree").prop('checked',true);
+				}
+				$("#updateClientComments").val(owner_memo);
+
+				$("#clientUpdateModal").modal("show");
+				
+			}).fail(function(xhr, status,errorThrown){
+				alert("문제가 발생했습니다.");
+			});
+			
+			//보호자 수정 정보 저장하기
+			$("#clientUpdateSave").off().click(function(){
+				//alert(clientNo);
+				let updateOwnerName = $("#updateClientName").val();
+				let updateOwnerEmail = $("#updateClientEmail").val();
+				let updateOwnerTel = $("#updateClientTel").val();
+				let updateOwnerAddr = $("#updateClientAddr").val();
+				if($("#updateSmsAgree").is(":checked") == true){
+				var updateOwnerSms = "Y";			
+				}
+				else if($("#updateSmsDisagree").is(":checked") == true){
+				var updateOwnerSms = "N";				
+				}
+				let updateOwnerMemo = $("#updateClientComments").val();
+				
+				//alert("SMS : " + owner_sms);
+				
+				//백으로 보내서 수정하게 하기,
+    			$.post({
+    				url : "/clientUpdate",
+    				data : {"clientNo" : clientNo,
+    						"updateOwnerName" : updateOwnerName,
+	    					"updateOwnerEmail" : updateOwnerEmail,
+	    					"updateOwnerTel" : updateOwnerTel,
+	    					"updateOwnerAddr" : updateOwnerAddr,
+	    					"updateOwnerSms" : updateOwnerSms,
+	    					"updateOwnerMemo" : updateOwnerMemo
+    						},
+    				dataType : "json"
+    			}).done(function(data){
+    				//alert("정상소통" + data.result);
+    				if(data.result == 1){
+    					alert("수정이 완료되었습니다.");
+    					location.href = "/profile";
+    						
+    				 } else {
+    					alert("문제가 발생했습니다. \n다시 시도해주세요.");
+    				}
+    			}).fail(function(){
+    				alert("문제가 발생했습니다.");
+    			});
+				
+			});
 			
 		});
 		
+		
 		 
+	});
+	
+	$('#clientUpdateModal').on('hidden.bs.modal', function(e) {
+
+	    // 텍스트 인풋 초기화
+	    if($(this).find('form').length >0){
+	    	$(this).find('form')[0].reset();
+	   		var inputValue = $(this).find('select:eq(0) option:eq(0)');
+	    }
+
+	    // 셀렉트 초기화
+	    //$('.select2').val(0).trigger('change.select2');
 	});
 	
 	
@@ -139,7 +234,7 @@ $(function(){
 			 			}
 					
 				});
-			})
+			});
 			
 			$(this).css("background-color", "#f4f4f4");
 		}).fail(function(xhr, status,errorThrown){
@@ -307,7 +402,6 @@ $(function(){
 			 clientAdd.submit();			
 			}
 	 });
-	
 	 
 	
 });
@@ -336,6 +430,18 @@ $(function(){
 				<div class="container-fluid">
 
 					<!-- 회원 검색 -->
+					<!-- <div class="dropdown input-group mb-3">
+						<button class="btn btn-outline-secondary dropdown-toggle" id="searchdropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">선택</button>
+						<ul class="dropdown-menu">
+							<li><a class="dropdown-item">전체선택</a></li>
+							<li><hr class="dropdown-divider"></li>
+							<li><a class="dropdown-item">보호자</a></li>
+							<li><a class="dropdown-item">반려견</a></li>
+						</ul>
+						 <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2">
+  						 <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+					</div> -->
+
 					<nav class="navbar navbar-expand-lg navbar-light bg-light">
 						<div class="container-fluid">
 							<div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: -35px; margin-bottom: -15px; margin-top: -30px">
@@ -357,8 +463,8 @@ $(function(){
 							</div>
 						</div>
 					</nav>
-					
-					
+
+
 					<!-- 보호자 테이블 -->
 					<div class="card shadow mb-4">
                         <div class="card-header py-3">
@@ -672,7 +778,7 @@ $(function(){
 
 					<!-- 보호자 정보 수정 Modal -->
 					<div class="modal fade" id="clientUpdateModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<!-- <form action="/clientAdd" name="clientAdd" method="post"> -->
+					<form>
 						<div class="modal-dialog modal-lg modal-dialog-centered" style="width: 600px;">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -724,7 +830,7 @@ $(function(){
 								</div>
 							</div>
 						</div>
-					<!-- </form> -->
+					</form>
 					</div>
 					<!-- 보호자 수정 Modal끝 -->
 

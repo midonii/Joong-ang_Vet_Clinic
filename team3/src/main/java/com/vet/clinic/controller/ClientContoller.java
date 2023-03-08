@@ -119,6 +119,7 @@ public class ClientContoller {
 		return "redirect:profile";
 	}
 	
+	//보호자 추가
 	@PostMapping("clientAdd")
 	public String clientAdd(HttpServletRequest request) {
 		System.out.println(request.getParameter("floatingClientName"));
@@ -142,6 +143,37 @@ public class ClientContoller {
 		
 		return "redirect:profile";
 	}
+	
+	
+	@ResponseBody
+	@PostMapping(value="clientUpdate", produces = "application/json;charset=UTF-8")
+	public String clientUpdate(HttpServletRequest request) {
+//		System.out.println(request.getParameter("updateOwnerName"));
+//		System.out.println(request.getParameter("updateOwnerEmail"));
+//		System.out.println(request.getParameter("updateOwnerTel"));
+//		System.out.println(request.getParameter("updateOwnerAddr"));
+//		System.out.println(request.getParameter("updateOwnerSms"));
+//		System.out.println(request.getParameter("updateOwnerMemo"));
+		
+		ClientDTO client = new ClientDTO();
+		client.setUpdateOwnerName(request.getParameter("updateOwnerName"));
+		client.setUpdateOwnerEmail(request.getParameter("updateOwnerEmail"));
+		client.setUpdateOwnerTel(request.getParameter("updateOwnerTel"));
+		client.setUpdateOwnerAddr(request.getParameter("updateOwnerAddr"));
+		client.setUpdateOwnerSms(request.getParameter("updateOwnerSms"));
+		client.setUpdateOwnerMemo(request.getParameter("updateOwnerMemo"));
+		client.setClientNo(request.getParameter("clientNo"));
+		
+		int result = clientService.clientUpdate(client);
+		
+		System.out.println(result);
+		
+		JSONObject json = new JSONObject();
+		json.put("result", result);
+		
+		return json.toString();
+	}
+	
 	
 	
 

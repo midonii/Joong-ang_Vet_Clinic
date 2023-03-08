@@ -11,4 +11,6 @@ public class ClientDTO {
 	
 	private String tdArr, petNo, clientNo, detailNo, clientNno, floatingClientName, floatingClientEmail, floatingClientTel, floatingClientAddr, smsAgree, floatingClientComments;
 	private int nno;
+	
+	private String clientUpdateNo, updateOwnerName, updateOwnerEmail, updateOwnerTel, updateOwnerAddr, updateOwnerSms, updateOwnerMemo;
 }

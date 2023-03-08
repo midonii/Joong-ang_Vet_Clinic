@@ -50,6 +50,11 @@ public class ClientService {
 	public int clientAdd(ClientDTO client) {
 		return clientDAO.clientAdd(client);
 	}
+
+	public int clientUpdate(ClientDTO client) {
+		return clientDAO.clientUpdate(client);
+	}
+
 	
 
 
