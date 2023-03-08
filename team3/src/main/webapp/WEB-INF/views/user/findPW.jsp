@@ -37,6 +37,18 @@
     padding: 0.75rem 1rem;
   }
   
+.imgdiv{
+	position: relative;
+	height: 520px;
+}
+
+.logoimg{
+	position: absolute;
+	height: 400px;
+	top: 12%;
+	left: 10%
+}
+  
 </style>
 
 <script type="text/javascript">
@@ -65,12 +77,11 @@ $(function(){
 			data : {"email" : email},
 			dataType : "json"
 			}).done(function(data) {
-				alert("통신성공" + data.result);
 				if(data.result == "1"){
 					$("#checkpwModal").modal("show");
 					$("#fixEmail").val(email);
 				} else {
-					alert("확인되지 않는 이메일입니다. 이메일을 다시 입력하세요.");
+					alert("확인되지 않는 이메일입니다. 다시 시도하여 주세요.");
 				}
 				
 			}).fail(function(xhr){
@@ -82,7 +93,6 @@ $(function(){
 	$(".checkbtn").click(function(){
 		let fixEmail = $("#fixEmail").val();
 		let userTempnum = $("#userTempnum").val();
-		alert("사용자가 입력한 이메일 : " + fixEmail + " || 사용자가 입력한 인증번호 : " + userTempnum);
 				
 		if(userTempnum == ""){
 			alert("인증번호를 입력하세요.");
@@ -96,7 +106,6 @@ $(function(){
 			data : {"userTempnum" : userTempnum, "fixEmail" : fixEmail},
 			dataType : "json"
 		}).done(function(data){
-			alert("성공" + data.result);
 			if(data.result == "1"){
 				$("#checkpwModal").modal("hide");
 				$("#newpwModal").modal("show");
@@ -116,7 +125,6 @@ $(function(){
 		let fixEmail = $("#fixEmail").val();
 		let newPw = $("#newPw").val();
 		let newPw2 = $("#newPw2").val();
-		alert("새 비밀번호 : " + newPw + " || " + newPw2);
 		
 		if(newPw == ""){
 			alert("비밀번호를 입력하여 주세요.");
@@ -134,7 +142,6 @@ $(function(){
 			data : {"newPw" : newPw, "fixEmail" : fixEmail },
 			dataType : "json"
 		}).done(function(data){
-			alert("성공" + data.result);
 			if(data.result == 1){
 				alert("비밀번호 변경 완료. 다시 로그인하여 주세요.");
 				$("#newpwModal").modal("hide");
@@ -164,8 +171,8 @@ $(function(){
 					<div class="card-body p-0">
 						<!-- Nested Row within Card Body -->
 						<div class="row">
-							<div class="col-lg-6 d-none d-lg-block">
-								<img src="img/loginlogo.jpg" width="500px;" height="550px;" style="margin-top: 10px;">
+							<div class="col-lg-6 d-none d-lg-block imgdiv">
+								<img src="img/logoda.png" class="logoimg">
 							</div>
 							<div class="col-lg-6">
 								<div class="p-5">
@@ -177,7 +184,7 @@ $(function(){
 											입력하신 이메일로 인증번호를 보냅니다.
 										</div>
 										<div class="user col-12 mb-5">
-											<input type="email" class="form-control form-control-user mb-3 " id="email" name="email" placeholder="Email" required="required">
+											<input type="email" class="form-control form-control-user mb-3 " id="email" name="email" placeholder="이메일" required="required">
 											<button type="button" class="btn-user btn btn-primary  btn-block" id="sendpw">인증번호 전송</button>
 										</div>
 									</div>

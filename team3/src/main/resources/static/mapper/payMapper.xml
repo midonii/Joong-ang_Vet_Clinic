@@ -4,12 +4,32 @@
 <mapper namespace="com.vet.clinic.dao.PayDAO">
 
 	<select id="payList" resultType="PayDTO">
-		SELECT p.pay_no,p.pay_date, p.pay_yn,p.totalprice, c.chart_no,
+		SELECT p.pay_no,p.pay_date,
+		p.pay_yn,p.totalprice, c.chart_no,
 		o.owner_name,pe.pet_name
 		FROM pay p
 		INNER JOIN chart c ON c.chart_no = p.chart_no
-		INNER JOIN owner o ON o.owner_no = p.owner_no
+		INNER JOIN owner o ON
+		o.owner_no = p.owner_no
 		INNER JOIN pet pe ON pe.pet_no = p.pet_no;
 
 	</select>
+
+	<select id="payDetail" parameterType="Integer"
+		resultType="PayDTO">
+		SELECT p.*
+		FROM paydetailview p
+		WHERE pay_no =#{payNo};
+	</select>
+
+	<update id="payBefore" parameterType="Integer">
+		UPDATE pay SET
+		pay_yn ='Y'
+		WHERE pay_no = #{payNo};
+	</update>
+	<update id="payCancel" parameterType="Integer">
+		UPDATE pay SET
+		pay_yn ='N'
+		WHERE pay_no = #{payNo};
+	</update>
 </mapper>

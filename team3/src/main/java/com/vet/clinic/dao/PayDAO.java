@@ -12,5 +12,11 @@ import com.vet.clinic.dto.PayDTO;
 public interface PayDAO {
 
 	List<PayDTO> payList();
+
+	PayDTO payDetail(int payNo);
+
+	int payBefore(int payNo);
+
+	int payCancel(int payNo);
 	
 }

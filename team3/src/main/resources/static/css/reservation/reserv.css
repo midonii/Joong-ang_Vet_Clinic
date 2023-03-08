@@ -1,0 +1,55 @@
+@charset "UTF-8";
+<style type="text/css">
+.right {
+	float: right;
+}
+
+.left {
+	float: left;
+}
+.t-right {
+	text-align:right;
+}
+
+.t-left {
+	text-align:left;
+}
+
+.inline {
+	display: inline-block;
+}
+
+.textcenter {
+	text-align: center;
+}
+
+.nav-item1 {
+	width: 15px;
+}
+
+#menu1 {
+	margin-bottom: 8px;
+}
+#menu2 {
+	background-color: rgb(135, 206, 235, 0.2);
+	margin-bottom: 10px;
+}
+#width100{
+	width: 100%;
+}
+
+.container-2 {
+	float: right;
+}
+.card-body{
+	
+	padding:1px;
+}
+a {
+  text-decoration: none;
+}
+.350px{
+	width: 50px;
+}
+
+</style>
