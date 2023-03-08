@@ -24,11 +24,23 @@ public interface StaffDAO {
 
 	public int newpwSet(StaffDTO newpwSet);
 
+	public int join(StaffDTO joinDTO);
+
+	public int idCheck(String id);
+
+	public int emailCheck(String email);
+
+	public Map<String, Object> profile(Map<String, Object> map);
+
+	public int pwCheck(Map<String, Object> map);
+
+	public int editProfile(Map<String, Object> edit);
+
+	public void logintry(StaffDTO staffDTO);
+
 	public Map<String, Object> staffDetail(int staff_no);
 
 	public int gradeUpdate(Map<String, Object> map);
 
 	public int staffDel(int staff_no);
-
-
 }

@@ -20,9 +20,24 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+<style>
+
+.imgdiv{
+	position: relative;
+	height: 520px;
+}
+
+.logoimg{
+	position: absolute;
+	height: 400px;
+	top: 12%;
+	left: 10%
+}
+
+</style> 
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
 <script type="text/javascript">
 
 // 엔터키 미완성......
@@ -124,36 +139,36 @@ $(function(){
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block" >
-                            	<img src="img/loginlogo.jpg" width="500px;" height="550px;" style="margin-top:10px;">
+							<div class="col-lg-6 d-none d-lg-block imgdiv">
+								<img src="img/logoda.png" class="logoimg">
                             </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center mb-4 mt-4">
-                                        <h1 class="h1 text-gray-900">LOGIN</h1>
+                                        <h1 class="h1 text-gray-900">로그인</h1>
                                     </div>
 									<div class="p-2 row">
 										<div class="form-check col-6">
 											<input class="form-control-input" type="radio" name="flexRadioDefault" id="idLogin" checked> 
-											<label class="custom-check-label" for="idLogin"> ID로 로그인 </label>
+											<label class="custom-check-label" for="idLogin"> 아이디로 로그인 </label>
 										</div>
 										<div class="form-check col-6">
 											<input class="form-control-input" type="radio" name="flexRadioDefault" id="emailLogin"> 
-											<label class="custom-check-label" for="emailLogin"> Email로 로그인 </label>
+											<label class="custom-check-label" for="emailLogin"> 이메일로 로그인 </label>
 										</div>
 									</div>
 									<form class="user">
                                         <div>
                                             <input type="text " class="form-control form-control-user"
-                                                id="id" name="id" placeholder="ID">
+                                                id="id" name="id" placeholder="아이디">
                                         </div>
                                         <div>
                                             <input type="email"  class="form-control form-control-user"
-                                                id="email" name="email" placeholder="Email">
+                                                id="email" name="email" placeholder="이메일">
                                         </div>
                                         <div class="form-group mt-3">
                                             <input type="password" class="form-control form-control-user"
-                                                id="pw" name="pw" placeholder="Password">
+                                                id="pw" name="pw" placeholder="비밀번호">
                                         </div>
 										<div class="form-group ">
 											<div class="custom-control custom-checkbox small ">
@@ -162,7 +177,7 @@ $(function(){
 											</div>
 										</div>
                                         <button type="button" class="btn btn-primary btn-user btn-block" id="login" name="login" onkeyup="enterkey()">
-                                            Login
+                                            로그인
 										</button>
                                     </form>
                                     <hr>
