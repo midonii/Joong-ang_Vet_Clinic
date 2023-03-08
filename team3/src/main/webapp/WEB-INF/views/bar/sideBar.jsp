@@ -44,7 +44,7 @@
 
 
 
-	<li class="nav-item active"><a class="nav-link" href="index.html">
+	<li class="nav-item active"><a class="nav-link" href="/pay">
 			<i class="fas fa-sharp fa-solid fa-comments-dollar"></i> <span>수납</span>
 	</a></li>
 	<li class="nav-item active"><a class="nav-link" href="index.html">
