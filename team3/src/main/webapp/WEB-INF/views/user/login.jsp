@@ -50,6 +50,16 @@ function enterkey(){
 $(function(){
 	
 	$("#email").hide();
+	
+	// 쿠키가져오기
+	let userID = getCookie("userID");
+	let setCookieYN = getCookie("setCookie");	
+	if(setCookieYN == 'Y'){
+		$("#customCheck").prop("checked", true);
+		$("#id").val(userID);
+	}
+	
+	
 	// email로그인 체크시
 	$("#emailLogin").click(function(){
 		$("#email").show();
@@ -98,6 +108,16 @@ $(function(){
 			return false;
 		}
 		
+		// 아이디저장 체크박스
+		if($("#customCheck").is(":checked")){
+			alert("아이디저장체크");
+			setCookie("userID", id, 7);
+			setCookie("setCookie","Y",7);
+		} else {
+			deleteCookie("userID");
+			deleteCookie("setCookie");
+		}
+		
 		$.post({
 			url : "/login",
 			data : {"id" : id, "email" : email, "pw" : pw},
@@ -118,6 +138,32 @@ $(function(){
 		
 	});
 });
+
+function setCookie(cookieName, value, exdays){
+	
+	let date = new Date();
+	date.setDate(date.getDate() + exdays);
+
+	let cookieValue = escape(value) + (exdays == null ? "" : "; expires=" + date.toGMTString());
+	document.cookie = cookieName + "=" + cookieValue;
+	
+}
+
+function getCookie(cookieName){
+	
+	//alert(document.cookie);
+	let val = document.cookie.split(";");
+	//alert(val);
+	for(let i = 0; i < val.length; i++){
+		let name = val[i].substr(0,val[i].indexOf("="));
+		let value = val[i].substr(val[i].indexOf("=") + 1);
+		name = name.replace(/^\s+|\s+$/g, '');
+		if(cookieName == name){
+			return value;
+		}
+	}
+}
+
 
 
 
