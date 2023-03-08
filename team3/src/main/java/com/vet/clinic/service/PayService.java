@@ -15,6 +15,18 @@ public class PayService {
 	public List<PayDTO> payList() {
 		return payDAO.payList() ;
 	}
+
+	public PayDTO payDetail(int payNo) {
+		return payDAO.payDetail(payNo);
+	}
+
+	public int payBefore(int payNo) {
+		return payDAO.payBefore(payNo);
+	}
+
+	public int payCancel(int payNo) {
+		return payDAO.payCancel(payNo);
+	}
 	
 	
 }
