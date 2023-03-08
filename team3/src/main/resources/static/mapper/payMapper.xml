@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vet.clinic.dao.PayDAO">
+
+	<select id="payList" resultType="PayDTO">
+		SELECT p.pay_no,p.pay_date, p.pay_yn,p.totalprice, c.chart_no,
+		o.owner_name,pe.pet_name
+		FROM pay p
+		INNER JOIN chart c ON c.chart_no = p.chart_no
+		INNER JOIN owner o ON o.owner_no = p.owner_no
+		INNER JOIN pet pe ON pe.pet_no = p.pet_no;
+
+	</select>
+</mapper>

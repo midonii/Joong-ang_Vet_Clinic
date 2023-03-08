@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vet.clinic.dao.StaffDAO">
+
+	<select id="login" parameterType="StaffDTO" resultType="StaffDTO">
+		SELECT COUNT(*) as count, staff_name, staff_grade
+		FROM staff
+		WHERE
+		(staff_id = #{staff_id } AND staff_pw = #{staff_pw })
+		OR
+		(staff_email = #{staff_email } AND staff_pw = #{staff_pw })
+	</select>
+	
+	<select id="findEmail" parameterType="String" resultType="Integer">
+		SELECT COUNT(*)
+		FROM staff
+		WHERE staff_email = #{email }
+	</select>
+	
+	<update id="saveTempnum" parameterType="StaffDTO">
+		UPDATE staff
+		SET staff_tempnum = #{staff_tempnum }
+		WHERE staff_email = #{staff_email }
+	</update>
+	
+	<select id="checkTempnum" parameterType="StaffDTO" resultType="Integer">
+		SELECT COUNT(*)
+		FROM staff
+		WHERE 
+		staff_email = #{staff_email } AND staff_tempnum = #{staff_tempnum }
+	</select>
+	
+	<update id="newpwSet" parameterType="StaffDTO">
+		UPDATE staff
+		SET 
+		staff_pw = #{staff_pw },
+		staff_tempnum = null	
+		WHERE staff_email = #{staff_email }
+	</update>
+		<!-- member_pw = HEX(AES_ENCRYPT((#{member_pw }), SHA2('apple', 256))), -->
+	
+</mapper>

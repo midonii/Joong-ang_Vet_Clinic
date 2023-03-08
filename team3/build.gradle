@@ -1,0 +1,52 @@
+plugins {
+	id 'java'
+	id 'war'
+	id 'org.springframework.boot' version '2.7.9'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.vet'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+ implementation 'org.springframework.boot:spring-boot-starter-web'
+   implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.0'
+   
+    // 이메일 보내기
+	//implementation 'org.apache.commons:commons-email:1.5'
+	
+   
+    // json - https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+	//implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+	
+	// json -  https://mvnrepository.com/artifact/org.json/json
+	implementation 'org.json:json:20220924'
+   
+ 	// https://mvnrepository.com/artifact/com.lowagie/itext //pdf변환
+	implementation 'com.lowagie:itext:2.1.7'
+	// https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox
+	implementation 'org.apache.pdfbox:pdfbox:2.0.24'
+	// https://mvnrepository.com/artifact/com.itextpdf/itextpdf
+	implementation 'com.itextpdf:itextpdf:5.5.13'
+	
+
+	
+   
+   implementation 'javax.servlet:jstl:1.2'//jsp
+   implementation "org.apache.tomcat.embed:tomcat-embed-jasper"//tomcat사용하기
+   implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.8'//DB
+   compileOnly 'org.projectlombok:lombok'
+   developmentOnly 'org.springframework.boot:spring-boot-devtools'
+   annotationProcessor 'org.projectlombok:lombok'
+   providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

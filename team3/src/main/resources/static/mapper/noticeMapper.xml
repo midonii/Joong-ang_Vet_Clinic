@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vet.clinic.dao.NoticeDAO">
+
+	<select id="noticeList" resultType="NoticeDTO">
+		SELECT ROW_NUMBER()
+		over(ORDER BY n.notice_no) AS nno, n.*
+		FROM
+		(
+		SELECT * from
+		noticeview
+		) n
+		ORDER BY nno DESC;
+
+	</select>
+
+	<insert id="noticeWrite" parameterType="HashMap">
+		INSERT INTO notice
+		SET
+		notice_title=#{notice_title},
+		notice_content=#{notice_content},
+		staff_no=(SELECT staff_no FROM staff WHERE staff_id=#{staff_id});
+
+	</insert>
+
+	<select id="noticeDetail" parameterType="Integer"
+		resultType="HashMap">
+		SELECT * FROM noticeview
+		WHERE notice_no=#{notice_no}
+
+	</select>
+</mapper>

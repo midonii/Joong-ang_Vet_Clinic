@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vet.clinic.dao.StaffDAO">
+
+	<select id="staffList" resultType="StaffDTO">
+		SELECT ROW_NUMBER() over(ORDER BY s.staff_no) AS sno, s.*
+		FROM
+		(
+		SELECT * from
+		staff
+		) s
+		ORDER BY sno DESC;
+
+	</select>
+
+	<select id="staffDetail" parameterType="Integer"
+		resultType="HashMap">
+		SELECT * FROM staff
+		WHERE
+		staff_no=#{staff_no}
+	</select>
+
+	<update id="gradeUpdate" parameterType="HashMap">
+		UPDATE staff SET
+		staff_grade=#{staff_grade}
+		WHERE
+		staff_no =#{staff_no};
+
+	</update>
+
+	<delete id="staffDel" parameterType="Integer">
+		DELETE FROM staff
+		WHERE
+		staff_no = #{staff_no};
+	</delete>
+</mapper>
