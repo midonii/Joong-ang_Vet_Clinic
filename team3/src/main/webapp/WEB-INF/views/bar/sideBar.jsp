@@ -44,7 +44,7 @@
 
 
 
-	<li class="nav-item active"><a class="nav-link" href="index.html">
+	<li class="nav-item active"><a class="nav-link" href="/pay">
 			<i class="fas fa-sharp fa-solid fa-comments-dollar"></i> <span>수납</span>
 	</a></li>
 	<li class="nav-item active"><a class="nav-link" href="index.html">
@@ -52,14 +52,14 @@
 	</a></li>
 
 	<!-- Nav Item - Pages Collapse Menu -->
-	<li class="nav-item active"><a class="nav-link collapsed" href="#"
+	<li class="nav-item active"><a class="nav-link collapsed" href="/profile"
 		data-toggle="collapse" data-target="#collapseClient"
 		aria-expanded="true" aria-controls="collapseClient"><i
 			class="fas fa-regular fa-users"></i> <span>회원관리</span> </a>
 		<div id="collapseClient" class="collapse" aria-labelledby="headingTwo"
 			data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="buttons.html">회원 정보</a> <a
+				<a class="collapse-item" href="/profile">회원 정보</a> <a
 					class="collapse-item" href="buttons.html">이전 진료 내역</a>
 			</div>
 		</div></li>
