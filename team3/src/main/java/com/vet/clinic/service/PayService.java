@@ -1,10 +1,12 @@
 package com.vet.clinic.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vet.clinic.controller.Criteria;
 import com.vet.clinic.dao.PayDAO;
 import com.vet.clinic.dto.PayDTO;
 
@@ -12,9 +14,7 @@ import com.vet.clinic.dto.PayDTO;
 public class PayService {
 	@Autowired PayDAO payDAO;
 
-	public List<PayDTO> payList() {
-		return payDAO.payList() ;
-	}
+	
 
 	public PayDTO payDetail(int payNo) {
 		return payDAO.payDetail(payNo);
@@ -26,6 +26,14 @@ public class PayService {
 
 	public int payCancel(int payNo) {
 		return payDAO.payCancel(payNo);
+	}
+
+	public int totalCount() {
+		return payDAO.totalCount();
+	}
+
+	public List<Map<String, Object>> payList(Criteria cri) {
+		return payDAO.payList(cri);
 	}
 	
 	

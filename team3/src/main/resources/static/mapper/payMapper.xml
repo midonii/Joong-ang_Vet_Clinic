@@ -3,17 +3,49 @@
 
 <mapper namespace="com.vet.clinic.dao.PayDAO">
 
-	<select id="payList" resultType="PayDTO">
-		SELECT p.pay_no,p.pay_date,
+	<select id="payList" resultType="hashmap" parameterType="hashmap">
+        SELECT  p.pay_no,p.pay_date,
 		p.pay_yn,p.totalprice, c.chart_no,
 		o.owner_name,pe.pet_name
 		FROM pay p
 		INNER JOIN chart c ON c.chart_no = p.chart_no
+		INNER JOIN owner o ON o.owner_no = p.owner_no
+		INNER JOIN pet pe ON pe.pet_no = p.pet_no
+		<if test="toDate !=null and fromDate !=null">
+		WHERE p.pay_date BETWEEN #{fromDate} AND #{toDate}
+		</if>
+		<if test="search_name != null">
+		WHERE 
+		<choose>
+				<when test="search_name == 'petname'">pe.pet_name </when>
+				<when test="search_name == 'ownername'">o.owner_name</when>
+				<when test="search_name == 'chartno'">c.chart_no </when>
+			</choose>
+			LIKE CONCAT('%',#{search_content},'%')
+		</if>
+		<if test="todayDate != null">
+		WHERE p.pay_date = #{todayDate}
+		</if>
+        LIMIT #{pageStart}, #{perPageNum}
+        
+		
+	</select>
+<!-- 	<select id="payList" resultType="hashmap" parameterType="hashmap">
+		  <![CDATA[
+            SELECT  p.pay_no,p.pay_date,
+		p.pay_yn,p.totalprice, c.chart_no,
+		o.owner_name,pe.pet_name
+		FROM pay p
+		<if test="">
+		
+		INNER JOIN chart c ON c.chart_no = p.chart_no
 		INNER JOIN owner o ON
 		o.owner_no = p.owner_no
-		INNER JOIN pet pe ON pe.pet_no = p.pet_no;
-
-	</select>
+		INNER JOIN pet pe ON pe.pet_no = p.pet_no
+            LIMIT #{pageStart}, #{perPageNum}
+        ]]>
+		
+	</select> -->
 
 	<select id="payDetail" parameterType="Integer"
 		resultType="PayDTO">
@@ -32,4 +64,10 @@
 		pay_yn ='N'
 		WHERE pay_no = #{payNo};
 	</update>
+	<!--페이징 - 전체글수  -->
+	
+	<select id="totalCount" resultType="Integer">
+		SELECT COUNT(*)
+		FROM pay;
+	</select>
 </mapper>
