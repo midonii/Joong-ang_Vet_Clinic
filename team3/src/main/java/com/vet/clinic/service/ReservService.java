@@ -23,4 +23,9 @@ public class ReservService {
 	public List<ReservDTO> searchlist(ReservDTO reservDTO) {
 		return reservDAO.searchlist(reservDTO);
 	}
+
+
+	public List<ReservDTO> reservAjax(ReservDTO reservDTO) {
+		return reservDAO.reservAjax(reservDTO);
+	}
 }

@@ -52,4 +52,9 @@ a {
 	width: 50px;
 }
 
+.cancel_color{
+	 background-color: $gray-300;
+	
+}
+
 </style>
