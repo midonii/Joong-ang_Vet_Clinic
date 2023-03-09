@@ -93,7 +93,7 @@
 				<h6 class="collapse-header">관리</h6>
 				<a class="collapse-item" href="/medicine">데이터 관리</a> <a
 					class="collapse-item" href="/staffList">직원 관리</a> <a
-					class="collapse-item" href="cards.html">매출 관리</a> <a
+					class="collapse-item" href="/sales">매출 관리</a> <a
 					class="collapse-item" href="cards.html">재고 관리</a>
 			</div>
 		</div></li>
