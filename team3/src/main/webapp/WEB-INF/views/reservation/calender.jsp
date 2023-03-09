@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%-- <% JSONArray thisMonthResData = (JSONArray)request.getAttribute("thisMonthResData");  --%>
-<%-- JSONArray nextMonthResData = (JSONArray)request.getAttribute("nextMonthResData"); %> --%>
 <html lang="ko">
 <%-- <% if(session.getAttribute("id") == null){
    response.sendRedirect("/login");
@@ -46,7 +44,6 @@
 <!-- <link rel="stylesheet" href="style.css"> -->
 <link rel="stylesheet" href="css/reservation/calender/calender.css">
 <script type="text/javascript">
-
 $(function(){
 	
 	$("#search_btn").click(function(){

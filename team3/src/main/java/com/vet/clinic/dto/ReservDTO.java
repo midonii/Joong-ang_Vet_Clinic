@@ -12,5 +12,5 @@ public class ReservDTO {
 				   owner_name, owner_addr, owner_email, owner_sms, owner_memo;
 	private int pet_no, pet_weight, pet_count, owner_no, type_no, owner_tel;
 	
-	private String search_value;
+	private String search_value, searchValue;
 }
