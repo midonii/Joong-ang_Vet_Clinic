@@ -55,6 +55,14 @@ public class ClientService {
 		return clientDAO.clientUpdate(client);
 	}
 
+	public List<ClientDTO> petTypeList() {
+		return clientDAO.petTypeList();
+	}
+
+	public int petAdd(Map<String, Object> map) {
+		return clientDAO.petAdd(map);
+	}
+
 	
 
 

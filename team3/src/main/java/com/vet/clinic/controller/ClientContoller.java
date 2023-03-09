@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,9 +33,11 @@ public class ClientContoller {
 		
 		List<ClientDTO> clientList = clientService.clientList();
 		List<ClientDTO> petList = clientService.petList();
+		List<ClientDTO> petTypeList = clientService.petTypeList();
 		
 		mv.addObject("clientList",clientList);
 		mv.addObject("petList",petList);
+		mv.addObject("petTypeList",petTypeList);
 		
 		return mv;
 	}
@@ -144,7 +147,7 @@ public class ClientContoller {
 		return "redirect:profile";
 	}
 	
-	
+	//보호자 수정
 	@ResponseBody
 	@PostMapping(value="clientUpdate", produces = "application/json;charset=UTF-8")
 	public String clientUpdate(HttpServletRequest request) {
@@ -174,6 +177,24 @@ public class ClientContoller {
 		return json.toString();
 	}
 	
+	//반려견 추가
+	@PostMapping("petAdd")
+	public String petAdd(@RequestParam Map<String, Object> map) {
+
+		//System.out.println(map);
+		
+		//생년월일 조합하기
+		String petBirthYear = (String) map.get("petBirthYear");
+		String petBirthMonth = (String) map.get("petBirthMonth");
+		String petBirthDay = (String) map.get("petBirthDay");
+		String petBirth = petBirthYear+"-"+petBirthMonth+"-"+petBirthDay;
+		map.put("petBirth", petBirth);
+		
+		//System.out.println(map);
+		int petAdd = clientService.petAdd(map);
+		
+		return "redirect:/profile";
+	}
 	
 	
 
