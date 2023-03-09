@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.vet.clinic.dto.MedicalDTO;
@@ -24,8 +25,7 @@ public interface DataDAO {
 
 	int vaccineAdd(Map<String, Object> map);
 
-//	List<MedicalDTO> petTypeList(Criteria cri);
-	List<MedicalDTO> petTypeList();
+	List<PetTypeDTO> petTypeList(@Param("pagenum") int pagenum, @Param("contentnum") int contentnum);
 
 	int petTypeAdd(Map<String, Object> map);
 
@@ -46,6 +46,8 @@ public interface DataDAO {
 	Map<String, Object> vaccineDetail(int vac_no);
 
 	int vaccineUpdate(Map<String, Object> map);
+
+	int TotalPetType();
 
 	
 }

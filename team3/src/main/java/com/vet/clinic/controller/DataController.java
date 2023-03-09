@@ -146,12 +146,12 @@ public class DataController {
 	}
 
 	@GetMapping("/petType")
-	public ModelAndView petTypeList() {
-		ModelAndView mv = new ModelAndView("/admin/petTypeList");
-//		List<MedicalDTO> petTypeList = dataService.petTypeList(cri);
-		List<MedicalDTO> petTypeList = dataService.petTypeList();
-		mv.addObject("petTypeList", petTypeList);
-//		mv.addObject("pageMaker", new PagingDTO(cri, 123));
+	public ModelAndView petTypeList(ModelAndView mv, @RequestParam(value = "pagenum", defaultValue = "1") String pagenum,
+			@RequestParam(value = "contentnum", defaultValue = "10") String contentnum) {
+		mv = new ModelAndView("/admin/petTypeList");
+//		List<MedicalDTO> petTypeList = dataService.petTypeList();
+//		mv.addObject("petTypeList", petTypeList);
+		dataService.paging(mv, pagenum, contentnum);
 		return mv;
 	}
 

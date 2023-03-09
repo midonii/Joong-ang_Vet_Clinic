@@ -139,27 +139,39 @@
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
+				
 					<!-- Page Heading -->
-					<h5 class="h5 mb-4 text-gray-900">
-						<b>데이터 관리</b>
-					</h5>
-
+					<div class="mb-1"
+						style="font-size: 13px; margin-top: -10px; padding-left: 8px;">
+						<a href="/index" style="text-decoration: none;"
+							class="text-gray-600"><i class="fa-solid fa-house-chimney"></i></a>&nbsp;&nbsp;<i
+							class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp; <a
+							href="/medicine" style="text-decoration: none;"
+							class="text-gray-700">데이터 관리</a>&nbsp;&nbsp;<i
+							class="fa-sharp fa-solid fa-chevron-right"></i> &nbsp;<a
+							href="/inspection" style="text-decoration: none;"
+							class="text-gray-700">검사</a>
+					</div>
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
-						<div class="card-header py-3">
-							<!-- <h6 class="m-0 font-weight-bold text-primary"> 리스트</h6> -->
-							<ul class="nav nav-tabs">
-								<li class="nav-item"><a class="nav-link"
-									aria-current="page" href="/medicine" tabindex="0">약</a></li>
-								<li class="nav-item"><a
-									class="nav-link font-weight-bolder active" href="/inspection">검사</a></li>
-								<li class="nav-item"><a class="nav-link" href="/vaccine">접종</a></li>
-								<li class="nav-item"><a class="nav-link" href="/petType">견종</a></li>
-							</ul>
+					<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">데이터관리</h6>
+
 						</div>
+
 						<div class="card-body">
-							<h4 class="m-0 font-weight-bold text-primary mb-3">Inspection</h4>
+							<div style="margin-top: -5px;">
+								<ul class="nav nav-tabs">
+									<li class="nav-item"><a
+										class="nav-link"
+										aria-current="page" href="/medicine" tabindex="0">약</a></li>
+									<li class="nav-item "><a class="nav-link  active font-weight-bolder text-primary"
+										href="/inspection">검사</a></li>
+									<li class="nav-item"><a class="nav-link" href="/vaccine">접종</a></li>
+									<li class="nav-item"><a class="nav-link" href="/petType">견종</a></li>
+								</ul>
+							</div>
 							<div class="row justify-content-center">
 
 								<!-- 데이터 추가 -->

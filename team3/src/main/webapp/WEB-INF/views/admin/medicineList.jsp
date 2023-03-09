@@ -55,7 +55,7 @@
 				return false;
 			}
 
-			mediAddFrm.submit();
+// 			mediAddFrm.submit();
 
 		});
 		
@@ -140,28 +140,40 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h5 class="h5 mb-4 text-gray-900">
-						<b>데이터 관리</b>
-					</h5>
+					<div class="mb-1"
+						style="font-size: 13px; margin-top: -10px; padding-left: 8px;">
+						<a href="/index" style="text-decoration: none;"
+							class="text-gray-600"><i class="fa-solid fa-house-chimney"></i></a>&nbsp;&nbsp;<i
+							class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp; <a
+							href="/medicine" style="text-decoration: none;"
+							class="text-gray-700">데이터 관리</a>&nbsp;&nbsp;<i
+							class="fa-sharp fa-solid fa-chevron-right"></i> &nbsp;<a
+							href="/medicine" style="text-decoration: none;"
+							class="text-gray-700">약</a>
+					</div>
 
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
-							<ul class="nav nav-tabs">
-								<li class="nav-item"><a
-									class="nav-link active font-weight-bolder" aria-current="page"
-									href="/medicine" tabindex="0">약</a></li>
-								<li class="nav-item "><a class="nav-link"
-									href="/inspection">검사</a></li>
-								<li class="nav-item"><a class="nav-link" href="/vaccine">접종</a></li>
-								<li class="nav-item"><a class="nav-link" href="/petType">견종</a></li>
-							</ul>
+							<h6 class="m-0 font-weight-bold text-primary">데이터관리</h6>
+
 						</div>
 
 						<div class="card-body">
-							<h4 class="m-0 font-weight-bold text-primary mb-3">Medicine</h4>
+							<div style="margin-top: -5px;">
+								<ul class="nav nav-tabs">
+									<li class="nav-item"><a
+										class="nav-link active font-weight-bolder text-primary"
+										aria-current="page" href="/medicine" tabindex="0">약</a></li>
+									<li class="nav-item "><a class="nav-link"
+										href="/inspection">검사</a></li>
+									<li class="nav-item"><a class="nav-link" href="/vaccine">접종</a></li>
+									<li class="nav-item"><a class="nav-link" href="/petType">견종</a></li>
+								</ul>
+							</div>
 							<div class="row justify-content-center">
+
 								<!-- 데이터 추가 -->
 								<div class="border-right col-6 col-md-6"
 									style="padding: 10px; height: 570px;">
@@ -172,7 +184,7 @@
 										<ul class="list-group list-group-flush">
 											<li class="list-group-item">
 												<div class="row">
-													<div class="col-md-3" style="line-height: 38px;">Name</div>
+													<div class="col-md-3" style="line-height: 38px;">이름</div>
 													<div class="col-md-9">
 														<input type="text" class="form-control" id="medical_name"
 															name="medical_name">
@@ -181,7 +193,7 @@
 											</li>
 											<li class="list-group-item mb-4">
 												<div class="row">
-													<div class="col-md-3 " style="line-height: 40px;">Price</div>
+													<div class="col-md-3 " style="line-height: 40px;">가격</div>
 													<div class="col-md-9">
 														<input type="text" class="form-control" id="medical_price"
 															name="medical_price">
@@ -195,7 +207,7 @@
 
 
 										<div class="text-center col-lg-12 col-12">
-											<button type="button" id="addBtn"
+											<button type="submit" id="addBtn"
 												class="btn btn-primary col-8 ">저장</button>
 										</div>
 									</form>
@@ -223,9 +235,9 @@
 											<thead>
 												<tr class="bg-gray-200">
 													<th class="col-1">번호</th>
-													<th class="col-2">이름</th>
+													<th class="col-3">이름</th>
 													<th class="col-2">가격</th>
-													<th class="col-2"></th>
+													<th class="col-1"></th>
 
 												</tr>
 											</thead>
