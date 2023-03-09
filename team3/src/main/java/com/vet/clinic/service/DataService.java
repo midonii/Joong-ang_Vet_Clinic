@@ -5,9 +5,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.vet.clinic.dao.DataDAO;
 import com.vet.clinic.dto.MedicalDTO;
+import com.vet.clinic.dto.NoticeDTO;
+import com.vet.clinic.dto.PageDTO;
 import com.vet.clinic.dto.PetTypeDTO;
 
 @Service
@@ -39,9 +42,9 @@ public class DataService {
 		return dataDAO.vaccineAdd(map);
 	}
 
-	public List<MedicalDTO> petTypeList() {
-		return dataDAO.petTypeList();
-	}
+	/*
+	 * public List<PetTypeList> petTypeList() { return dataDAO.petTypeList(); }
+	 */
 //	public List<MedicalDTO> petTypeList(Criteria cri) {
 //		return dataDAO.petTypeList(cri);
 //	}
@@ -86,5 +89,34 @@ public class DataService {
 		return dataDAO.vaccineUpdate(map);
 	}
 
+	
+	public ModelAndView paging(ModelAndView mv, String pagenum, String contentnum) {
+
+		PageDTO pageDTO = new PageDTO();
+
+		
+		
+		int cpagenum = Integer.parseInt(pagenum);
+		int ccontentnum = Integer.parseInt(contentnum);
+
+
+		pageDTO.setTotalcount(dataDAO.TotalPetType()); // mapper 전체 게시글 개수를 지정한다
+		pageDTO.setPagenum(cpagenum - 1); // 현재 페이지를 페이지 객체에 지정한다 -1 을 해야 쿼리에서 사용할수 있다
+		pageDTO.setContentnum(ccontentnum); // 한 페이지에 몇개씩 게시글을 보여줄지 지정한다.
+		pageDTO.setCurrentblock(cpagenum); // 현재 페이지 블록이 몇번인지 현재 페이지 번호를 통해서 지정한다.
+		pageDTO.setLastblock(pageDTO.getTotalcount()); // 마지막 블록 번호를 전체 게시글 수를 통해서 정한다.
+
+		pageDTO.prevnext(cpagenum);// 현재 페이지 번호로 화살표를 나타낼지 정한다.
+		pageDTO.setStartPage(pageDTO.getCurrentblock()); // 시작 페이지를 페이지 블록번호로 정한다.
+		pageDTO.setEndPage(pageDTO.getLastblock(), pageDTO.getCurrentblock());
+		// 마지막 페이지를 마지막 페이지 블록과 현재 페이지 블록 번호로 정한다.
+		
+		List<PetTypeDTO> petTypeList = dataDAO.petTypeList(pageDTO.getPagenum() * 10, pageDTO.getContentnum());
+
+		mv.addObject("petTypeList", petTypeList);
+		mv.addObject("page", pageDTO);
+
+		return mv;
+	}
 
 }
