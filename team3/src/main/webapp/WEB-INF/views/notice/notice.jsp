@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 <%
@@ -21,8 +22,7 @@ if (session.getAttribute("id") == null) {
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
 
-<link rel="stylesheet" href="https://kit.fontawesome.com/a31e2023c3.css"
-	crossorigin="anonymous">
+
 <script src="https://kit.fontawesome.com/a31e2023c3.js"
 	crossorigin="anonymous"></script>
 <link
@@ -37,21 +37,47 @@ if (session.getAttribute("id") == null) {
 <!-- JQUERY -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<!-- include summernote css/js >> jquery 링크 후 사용할것 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-</head>
+
+
 <script type="text/javascript">
+	function page(idx, search_name, search_value) {
+		var pagenum = idx;
+		let searchName = search_name;
+		let searchValue = search_value;
+		var contentnum = $("#contentnum").val();
+		location.href = "${pageContext.request.contextPath}/notice?pagenum="
+				+ pagenum + "&contentnum=" + contentnum + "&search_name="
+				+ searchName + "&search_value=" + searchValue;
+
+	}
+
 	$(function() {
 		$("#noticeWrite").click(function() {
 			$("#noticeWriteModal").modal("show");
 		});
 
+		let searchName2 = $("#searchName").val(); 
+		$("#search_name").val(searchName2);
+		
 		$(".refresh").click(function() {
 			location.href = "/notice";
+		});
+
+		$("#search_btn").click(function() {
+			let searchName = $("#search_name").val();
+			let searchValue = $("#search_value").val();
+			// 		alert(searchName + " ::" +searchValue);
+
+			if (searchName == 0) {
+				alert("검색하시려는 항목을 선택하세요");
+				return false;
+			}
+
+			if (searchValue == "" || searchValue.length < 2) {
+				alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
+				return false;
+			}
+			searchForm.submit();
 		});
 
 		$(".noticeWrite").click(function() {
@@ -91,31 +117,101 @@ if (session.getAttribute("id") == null) {
 				dataType : "json"
 			}).done(function(data) {
 				let result = data.result;
-				$("#D_no").val(result.notice_no);
-				$("#D_title").text(result.notice_title);
-				$("#D_content").text(result.notice_content);
-				$("#D_date").text(result.listdate);
-				$("#D_read").text(result.notice_read);
-				$("#D_name").text(result.staff_name);
-				
-				
-				if(result.staff_grade==<%=session.getAttribute("id")%>){
-					$(".detailDelete").show();
-					$(".detailUpdate").show();
-				}else{
-					
+				let read = data.read;
+				if (read == 1) {
+					$("#D_no").val(result.notice_no);
+					$("#D_title").text(result.notice_title);
+					$("#D_content").text(result.notice_content);
+					$("#D_date").text(result.listdate);
+					$("#D_read").text(result.notice_read);
+					$("#D_name").text(result.staff_name);
 				}
 			}).fail(function(xhr, status, errorThrown) {
 				alert("실패");
 			});
 		});
 
+		$(".noticeDelete").click(function() {
+			var notice_no = $("#D_no").val();
+
+			$.post({
+				url : "/noticeDelete",
+				cache : false,
+				data : {
+					"notice_no" : notice_no
+				},
+				dataType : "json"
+			}).done(function(data) {
+				if (data.result == 1) {
+					$("#noticeDetailModal").modal("hide");
+					location.href = "/notice";
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("실패");
+			});
+
+		});
+
+		$(".noticeUpdate").click(function() {
+			var notice_no = $("#D_no").val();
+			$.post({
+				url : "/noticeDetailU",
+				cache : false,
+				data : {
+					"notice_no" : notice_no
+				},
+				dataType : "json"
+			}).done(function(data) {
+				let result = data.result;
+				if (confirm("수정하시겠습니까?")) {
+					$("#noU").val(result.notice_no);
+					$("#titleU").val(result.notice_title);
+					$("#contentU").val(result.notice_content);
+					$("#noticeDetailModal").modal("hide");
+					$("#noticeUpdateModal").modal("show");
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("실패");
+			});
+
+		});
+
+		$("#noticeUpdate").click(function() {
+			var notice_no = $("#noU").val();
+			var notice_title = $("#titleU").val();
+			var notice_content = $("#contentU").val();
+
+			$.post({
+				url : "/noticeUpdate",
+				data : {
+					"notice_no" : notice_no,
+					"notice_title" : notice_title,
+					"notice_content" : notice_content
+				},
+				dataType : "json"
+			}).done(function(data) {
+				let result = data.result;
+				if (data.result2 == 1) {
+					alert("수정이 완료되었습니다.");
+					$("#noticeUpdateModal").modal("hide");
+					$("#D_no").val(result.notice_no);
+					$("#D_title").text(result.notice_title);
+					$("#D_content").text(result.notice_content);
+					$("#D_date").text(result.listdate);
+					$("#D_read").text(result.notice_read);
+					$("#D_name").text(result.staff_name);
+					$("#noticeDetailModal").modal("show");
+				} else {
+					alert("문제가 발생했습니다. \n다시 시도해주세요.");
+				}
+			}).fail(function() {
+				alert("문제발생");
+			});
+
+		});
+
 	});
 </script>
-
-
-
-
 <body id="page-top">
 
 	<!-- Page Wrapper -->
@@ -136,40 +232,66 @@ if (session.getAttribute("id") == null) {
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h5 class="h5 mb-4 text-gray-900">
-						<b>공지사항</b>
-					</h5>
+					<div class="mb-1"
+						style="font-size: 13px; margin-top: -10px; padding-left: 8px;">
+						<a href="/index" style="text-decoration: none;"
+							class="text-gray-600"><i class="fa-solid fa-house-chimney"></i></a>&nbsp;&nbsp;<i
+							class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp; <a
+							href="/notice" style="text-decoration: none;"
+							class="text-gray-700">공지사항</a>
+					</div>
+
+
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
-						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">직원 리스트</h6>
-						</div>
+
+
+
+
+						<!-- <div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">공지사항</h6>
+						</div>  -->
 						<div class="card-body">
-							<form class="mb-3 justify-content-end">
 
-
-
-
-
-								<div class="input-group">
-									<select class="form-control col-2">
-										<option>이름</option>
-										<option>ID</option>
-										<option>전화번호</option>
-										<option>이메일</option>
-										<option>직책</option>
-									</select> <input type="text" class="form-control border-gray"
-										placeholder="검색어를 입력하세요">
-									<div class="input-group-append">
-										<button class="btn btn-primary" type="button">
-											<i class="fas fa-search"></i>
-										</button>
+							<div class="d-flex justify-content-between"
+								style="margin-top: -10px;">
+								<form action="/notice" name="searchForm" onsubmit="return false"
+									method="get">
+									<div class="mb-2 mt-1">
+										<input type="hidden" name="contentnum" id="contentnum"
+											value="${page.getContentnum()}">
+										<div class="input-group">
+											<input type="hidden" value="${search.getSearch_name() }" id="searchName">
+											<select class="form-control form-control-sm col-md-3"
+												name="search_name" id="search_name" >
+												<option value="" selected disabled="disabled">선택</option>
+												<option value="title">제목</option>
+												<option value="content">내용</option>
+											</select> <input type="text" name="search_value" id="search_value"
+												value="${search.getSearch_value() }"
+												class="form-control form-control-sm border-gray col-md-9"
+												placeholder="검색어를 입력하세요">
+											<div class="input-group-append">
+												<button class="btn btn-primary btn-sm" type="button"
+													id="search_btn">
+													<i class="fas fa-search"></i>
+												</button>
+											</div>
+										</div>
 									</div>
-								</div>
+								</form>
+								<c:if test="${sessionScope.staff_grade eq 'admin'}">
+									<div class="mb-2 mt-1">
+										<button type="button" class="btn btn-primary btn-sm"
+											id="noticeWrite">글쓰기</button>
+									</div>
+								</c:if>
+							</div>
 
-							</form>
+
 							<div class="table-responsive">
+
 								<table class="table table-sm table-bordered text-center"
 									id="dataTable" width="100%" cellspacing="0">
 									<thead>
@@ -183,7 +305,6 @@ if (session.getAttribute("id") == null) {
 									</thead>
 
 									<tbody>
-
 										<c:forEach items="${noticeList }" var="nl">
 											<tr>
 												<td>${nl.nno }</td>
@@ -196,16 +317,53 @@ if (session.getAttribute("id") == null) {
 												<td>${nl.notice_read }</td>
 											</tr>
 										</c:forEach>
-
 									</tbody>
+									<c:if test="${page.getTotalcount() eq 0}">
+										<tr>
+											<td colspan="5">데이터가 없습니다.</td>
+										</tr>
+									</c:if>
 								</table>
 							</div>
-							<div>
-								<button type="button" class="btn btn-primary noticeDelete">삭제</button>
-								<button type="button" class="btn btn-primary noticeUpdate">수정</button>
-							</div>
 
+
+							<c:if test="${page.getTotalcount() ne 0}">
+								<div class="mt-3">
+									<nav aria-label="Page navigation example">
+										<ul class="pagination pagination-sm justify-content-center">
+
+											<c:if test="${page.prev}">
+												<li class="page-item"><a class="page-link"
+													href="javascript:page(${page.getStartPage()-1});"
+													aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+												</a></li>
+											</c:if>
+											<c:forEach begin="${page.getStartPage()}"
+												end="${page.getEndPage()}" var="idx">
+												<c:choose>
+													<c:when test="${idx ne page.pagenum+1 }">
+														<li class="page-item"><a class="page-link"
+															href="javascript:page('${idx}','${search.getSearch_name()}','${search.getSearch_value()}');">${idx }</a></li>
+													</c:when>
+													<c:otherwise>
+														<li class="page-item active"><a class="page-link"
+															href="javascript:page('${idx}','${search.getSearch_name()}','${search.getSearch_value()}');">${idx }</a></li>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+											<c:if test="${page.next}">
+												<li class="page-item"><a class="page-link"
+													href="javascript:page(${page.getEndPage()+1})"
+													aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+												</a></li>
+											</c:if>
+										</ul>
+									</nav>
+								</div>
+
+							</c:if>
 						</div>
+
 					</div>
 
 
@@ -223,8 +381,9 @@ if (session.getAttribute("id") == null) {
 
 
 			<!-- 공지사항 글쓰기 Modal-->
-			<div class="modal fade" id="noticeWriteModal" tabindex="-1"
-				role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal fade" id="noticeWriteModal" data-backdrop="static"
+				tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+				aria-hidden="true">
 				<div class="modal-dialog modal-lg modal-dialog-centered"
 					role="document">
 					<div class="modal-content">
@@ -259,8 +418,9 @@ if (session.getAttribute("id") == null) {
 			</div>
 
 			<!-- 공지사항 상세보기 Modal-->
-			<div class="modal fade" id="noticeDetailModal" tabindex="-1"
-				role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal fade" id="noticeDetailModal" data-backdrop="static"
+				tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+				aria-hidden="true">
 				<div class="modal-dialog modal-lg modal-dialog-centered"
 					role="document">
 					<div class="modal-content">
@@ -283,13 +443,13 @@ if (session.getAttribute("id") == null) {
 								</li>
 								<li class="list-group-item">
 									<div class="row">
-										<div class="col-md-8">
+										<div class="col-md-7">
 											<i class="fa-solid fa-user"></i>&nbsp;&nbsp;<span id="D_name"></span>
 										</div>
 										<div class="col-md-2">
 											<i class="fa-solid fa-eye"></i>&nbsp;<span id="D_read"></span>
 										</div>
-										<div class="col-md-2">
+										<div class="col-md-3">
 											<i class="fa-regular fa-calendar"></i>&nbsp;<span id="D_date"></span>
 										</div>
 									</div>
@@ -302,12 +462,56 @@ if (session.getAttribute("id") == null) {
 
 							</ul>
 						</div>
+						<c:if test="${sessionScope.staff_grade eq 'admin'}">
+							<div class="modal-footer">
+								<button type="button"
+									class="btn btn-outline-warning btn-sm noticeUpdate">수정</button>
+								<button type="button"
+									class="btn btn-outline-danger btn-sm noticeDelete">삭제</button>
+							</div>
+						</c:if>
+					</div>
+				</div>
+			</div>
+
+			<!-- 공지사항 수정 Modal-->
+			<div class="modal fade" id="noticeUpdateModal" data-backdrop="static"
+				tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog modal-lg modal-dialog-centered"
+					role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">공지사항 글쓰기</h5>
+							<button class="close refresh" type="button" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item">
+									<div class="row">
+										<input type="hidden" id="noU" name="noU"> <input
+											type="text" id="titleU" name="titleU" class="form-control"
+											placeholder="제목을 입력하세요">
+									</div>
+								</li>
+								<li class="list-group-item">
+									<div class="row">
+										<textarea class="form-control" rows="18" id="contentU"
+											name="contentU"></textarea>
+									</div>
+								</li>
+							</ul>
+						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-primary noticeWrite">글쓰기</button>
+							<button type="button" class="btn btn-warning" id="noticeUpdate">수정</button>
 						</div>
 					</div>
 				</div>
 			</div>
+
 
 			<!-- Bootstrap core JavaScript-->
 			<script src="vendor/jquery/jquery.min.js"></script>

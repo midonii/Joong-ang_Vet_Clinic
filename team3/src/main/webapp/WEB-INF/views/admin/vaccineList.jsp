@@ -151,26 +151,37 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h5 class="h5 mb-4 text-gray-900">
-						<b>데이터 관리</b>
-					</h5>
-
+					<div class="mb-1"
+						style="font-size: 13px; margin-top: -10px; padding-left: 8px;">
+						<a href="/index" style="text-decoration: none;"
+							class="text-gray-600"><i class="fa-solid fa-house-chimney"></i></a>&nbsp;&nbsp;<i
+							class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp; <a
+							href="/medicine" style="text-decoration: none;"
+							class="text-gray-700">데이터 관리</a>&nbsp;&nbsp;<i
+							class="fa-sharp fa-solid fa-chevron-right"></i> &nbsp;<a
+							href="/vaccine" style="text-decoration: none;"
+							class="text-gray-700">접종</a>
+					</div>
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
-						<div class="card-header py-3">
-							<ul class="nav nav-tabs">
-								<li class="nav-item"><a class="nav-link"
-									aria-current="page" href="/medicine" tabindex="0">약</a></li>
-								<li class="nav-item"><a class="nav-link" href="/inspection">검사</a></li>
-								<li class="nav-item"><a
-									class="nav-link active font-weight-bolder" href="/vaccine">접종</a></li>
-								<li class="nav-item"><a class="nav-link" href="/petType">견종</a></li>
-							</ul>
+							<div class="card-header py-3">
+							<h5 class="m-0 font-weight-bold text-primary">데이터관리</h5>
+
 						</div>
 
 						<div class="card-body">
-							<h4 class="m-0 font-weight-bold text-primary mb-3">Vaccine</h4>
+							<div style="margin-top: -5px;">
+								<ul class="nav nav-tabs">
+									<li class="nav-item"><a
+										class="nav-link"
+										aria-current="page" href="/medicine" tabindex="0">약</a></li>
+									<li class="nav-item "><a class="nav-link"
+										href="/inspection">검사</a></li>
+									<li class="nav-item"><a class="nav-link active font-weight-bolder text-primary" href="/vaccine">접종</a></li>
+									<li class="nav-item"><a class="nav-link" href="/petType">견종</a></li>
+								</ul>
+							</div>
 							<div class="row justify-content-center">
 								<!-- 데이터 추가 -->
 								<div class="border-right col-6 col-md-6"
@@ -180,7 +191,7 @@
 										<ul class="list-group list-group-flush">
 											<li class="list-group-item">
 												<div class="row">
-													<div class="col-md-3" style="line-height: 38px;">Name</div>
+													<div class="col-md-3" style="line-height: 38px;">이름</div>
 													<div class="col-md-9">
 														<input type="text" class="form-control" id="vac_name"
 															name="vac_name">
@@ -189,7 +200,7 @@
 											</li>
 											<li class="list-group-item">
 												<div class="row">
-													<div class="col-md-3 " style="line-height: 40px;">Price</div>
+													<div class="col-md-3 " style="line-height: 40px;">가격</div>
 													<div class="col-md-9">
 														<input type="text" class="form-control" id="vac_price"
 															name="vac_price">
@@ -199,11 +210,11 @@
 											</li>
 											<li class="list-group-item mb-4">
 												<div class="row">
-													<div class="col-md-3 " style="line-height: 40px;">Cycle</div>
+													<div class="col-md-3 " style="line-height: 40px;">주기</div>
 													<div class="col-md-3">
 														<select class="form-control" id="vac_cycleY"
 															name="vac_cycleY">
-															<option value="" selected disable hidden>Year</option>
+															<option value="" selected disable hidden>년</option>
 															<option value="1Y">1Y</option>
 															<option value="2Y">2Y</option>
 															<option value="3Y">3Y</option>
@@ -212,7 +223,7 @@
 													<div class="col-md-3">
 														<select class="form-control" id="vac_cycleM"
 															name="vac_cycleM">
-															<option value="" selected disable hidden>Month</option>
+															<option value="" selected disable hidden>개월</option>
 															<%
 															for (int i = 1; i <= 12; i++) {
 															%>
@@ -227,7 +238,7 @@
 													<div class="col-md-3">
 														<select class="form-control" id="vac_cycleW"
 															name="vac_cycleW">
-															<option value="" selected disable hidden>Week</option>
+															<option value="" selected disable hidden>주</option>
 															<%
 															for (int i = 1; i <= 5; i++) {
 															%>

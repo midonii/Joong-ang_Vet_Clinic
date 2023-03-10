@@ -36,6 +36,13 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
 <script type="text/javascript">
+	function page(idx) {
+		var pagenum = idx;
+		var contentnum = $("#contentnum").val();
+		location.href = "${pageContext.request.contextPath}/petType?pagenum="
+				+ pagenum + "&contentnum=" + contentnum
+	
+	}
 	$(function() {
 		$("#addBtn").click(function() {
 
@@ -144,27 +151,39 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h5 class="h5 mb-4 text-gray-900">
-						<b>데이터 관리</b>
-					</h5>
-
-
+					<!-- Page Heading -->
+					<div class="mb-1"
+						style="font-size: 13px; margin-top: -10px; padding-left: 8px;">
+						<a href="/index" style="text-decoration: none;"
+							class="text-gray-600"><i class="fa-solid fa-house-chimney"></i></a>&nbsp;&nbsp;<i
+							class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp; <a
+							href="/medicine" style="text-decoration: none;"
+							class="text-gray-700">데이터 관리</a>&nbsp;&nbsp;<i
+							class="fa-sharp fa-solid fa-chevron-right"></i> &nbsp;<a
+							href="/petType" style="text-decoration: none;"
+							class="text-gray-700">견종</a>
+					</div>
+					<input type="hidden" name="contentnum" id="contentnum"
+						value="${page.getContentnum()}">
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
-							<ul class="nav nav-tabs">
-								<li class="nav-item"><a class="nav-link"
-									aria-current="page" href="/medicine" tabindex="0">약</a></li>
-								<li class="nav-item "><a class="nav-link"
-									href="/inspection">검사</a></li>
-								<li class="nav-item"><a class="nav-link" href="/vaccine">접종</a></li>
-								<li class="nav-item"><a
-									class="nav-link font-weight-bolder active" href="/petType">견종</a></li>
-							</ul>
+							<h6 class="m-0 font-weight-bold text-primary">데이터관리</h6>
+
 						</div>
 
 						<div class="card-body">
-							<h4 class="m-0 font-weight-bold text-primary mb-3">PetType</h4>
+							<div style="margin-top: -5px;">
+								<ul class="nav nav-tabs">
+									<li class="nav-item"><a
+										class="nav-link"
+										aria-current="page" href="/medicine" tabindex="0">약</a></li>
+									<li class="nav-item "><a class="nav-link"
+										href="/inspection">검사</a></li>
+									<li class="nav-item"><a class="nav-link" href="/vaccine">접종</a></li>
+									<li class="nav-item"><a class="nav-link active font-weight-bolder text-primary" href="/petType">견종</a></li>
+								</ul>
+							</div>
 							<div class="row justify-content-center">
 								<!-- 데이터 추가 -->
 								<div class="border-right col-6 col-md-6"
@@ -196,7 +215,7 @@
 								<div class="col-6 col-md-6"
 									style="overflow: auto; height: 570px; padding: 10px;">
 
-									<div class="input-group mb-3">
+									<div class="input-group mt-2 mb-3">
 										<input type="text" class="form-control border-gray col-md-12"
 											placeholder="견종을 입력하세요">
 										<div class="input-group-append">
@@ -205,6 +224,7 @@
 											</button>
 										</div>
 									</div>
+
 									<div class="table-responsive" id="printme">
 										<table class="table table-sm table-bordered text-center"
 											id="dataTable" width="100%" cellspacing="0">
@@ -219,11 +239,12 @@
 											<tbody>
 												<c:forEach items="${petTypeList }" var="tl">
 													<tr style="line-height: 30px;">
-														<td >${tl.tno }</td>
+														<td>${tl.tno }</td>
 														<td>${tl.type_name }</td>
 														<td>
 															<button type="button"
-																class="btn btn-circle btn-sm btn-warning petTypeUpdate" value="${tl.type_no }">
+																class="btn btn-circle btn-sm btn-warning petTypeUpdate"
+																value="${tl.type_no }">
 																<i class="fa-solid fa-pen"></i>
 															</button>
 															<button type="button"
@@ -239,32 +260,36 @@
 										</table
 									</div>
 
+									<nav aria-label="Page navigation example">
+										<ul class="pagination pagination-sm justify-content-center">
 
-									<!-- 									페이징 -->
-									<!-- 									<form action="/petType" id="actionFrm" method="get"> -->
-									<%-- 										<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }"> --%>
-									<%-- 										<input type="hidden" name="amount" value="${pageMaker.cri.amount }"> --%>
-									<!-- 									</form> -->
-									<!-- 									<ul class="pagination"> -->
-
-									<%-- 										<c:if test="${pageMaker.prev}"> --%>
-									<!-- 											<li class="paginate_button previous"><a -->
-									<%-- 												href="${pageMaker.startPage -1 }">Previous</a></li> --%>
-									<%-- 										</c:if> --%>
-
-									<%-- 										<c:forEach var="num" begin="${pageMaker.startPage }" --%>
-									<%-- 											end="${pageMaker.endPage }"> --%>
-									<%-- 											<li class="paginate_button${pageMaker.cri.pageNum==num ? "active":"" }"> --%>
-									<%-- 												<a href="${num }">${num }</a> --%>
-									<!-- 											</li> -->
-									<%-- 										</c:forEach> --%>
-
-									<%-- 										<c:if test="${pageMaker.next}"> --%>
-									<!-- 											<li class="paginate_button next"><a -->
-									<%-- 												href="${pageMaker.endPage+1 }">Next</a></li> --%>
-									<%-- 										</c:if> --%>
-									<!-- 									</ul> -->
-									<!-- 									/페이징 -->
+											<c:if test="${page.prev}">
+												<li class="page-item"><a class="page-link"
+													href="javascript:page(${page.getStartPage()-1});"
+													aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+												</a></li>
+											</c:if>
+											<c:forEach begin="${page.getStartPage()}"
+												end="${page.getEndPage()}" var="idx">
+												<c:choose>
+													<c:when test="${idx ne page.pagenum+1 }">
+														<li class="page-item"><a class="page-link"
+															href="javascript:page(${idx});">${idx }</a></li>
+													</c:when>
+													<c:otherwise>
+														<li class="page-item active"><a class="page-link"
+															href="javascript:page(${idx});">${idx }</a></li>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+											<c:if test="${page.next}">
+												<li class="page-item"><a class="page-link"
+													href="javascript:page(${page.getEndPage()+1})"
+													aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+												</a></li>
+											</c:if>
+										</ul>
+									</nav>
 
 
 

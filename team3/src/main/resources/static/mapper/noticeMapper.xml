@@ -3,16 +3,41 @@
 
 <mapper namespace="com.vet.clinic.dao.NoticeDAO">
 
-	<select id="noticeList" resultType="NoticeDTO">
+	<select id="noticeList" resultType="NoticeDTO" parameterType="HashMap">
 		SELECT ROW_NUMBER()
 		over(ORDER BY n.notice_no) AS nno, n.*
 		FROM
 		(
 		SELECT * from
 		noticeview
+		<if test="search_name != null">
+			<choose>
+				<when test="search_name == 'title'">
+					WHERE notice_title LIKE CONCAT('%', #{search_value}, '%')
+				</when>
+				<when test="search_name =='content'">
+					WHERE notice_content LIKE CONCAT('%', #{search_value}, '%')
+				</when>
+			</choose>
+		</if>
 		) n
-		ORDER BY nno DESC;
+		ORDER BY nno DESC
+		LIMIT #{pagenum}, #{contentnum};
 
+	</select>
+	
+	<select id="contentTotal" resultType="Integer" parameterType="HashMap">
+		SELECT COUNT(*) FROM noticeview
+		<if test="search_name != null">
+			<choose>
+				<when test="search_name == 'title'">
+					WHERE notice_title LIKE CONCAT('%', #{search_value}, '%')
+				</when>
+				<when test="search_name =='content'">
+					WHERE notice_content LIKE CONCAT('%', #{search_value}, '%')
+				</when>
+			</choose>
+		</if>
 	</select>
 
 	<insert id="noticeWrite" parameterType="HashMap">
@@ -27,7 +52,29 @@
 	<select id="noticeDetail" parameterType="Integer"
 		resultType="HashMap">
 		SELECT * FROM noticeview
-		WHERE notice_no=#{notice_no}
+		WHERE notice_no=#{notice_no};
 
 	</select>
+
+	<update id="noticeRead" parameterType="Integer">
+		UPDATE notice
+		SET
+		notice_read = notice_read + 1
+		WHERE notice_no=#{notice_no};
+	</update>
+
+	<delete id="noticeDelete" parameterType="Integer">
+		DELETE FROM notice
+		WHERE
+		notice_no=#{notice_no};
+	</delete>
+
+	<update id="noticeUpdate" parameterType="HashMap">
+		UPDATE notice
+		SET
+		notice_title = #{notice_title},
+		notice_content=#{notice_content}
+		WHERE
+		notice_no=#{notice_no};
+	</update>
 </mapper>

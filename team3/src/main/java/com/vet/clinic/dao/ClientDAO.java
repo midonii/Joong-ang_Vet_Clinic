@@ -28,6 +28,12 @@ public interface ClientDAO {
 
 	public int clientAdd(ClientDTO client);
 
+	public int clientUpdate(ClientDTO client);
+
+	public List<ClientDTO> petTypeList();
+
+	public int petAdd(Map<String, Object> map);
+
 
 
 }

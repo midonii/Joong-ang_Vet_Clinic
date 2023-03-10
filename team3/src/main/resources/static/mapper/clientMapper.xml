@@ -55,5 +55,31 @@
 		owner_memo = #{floatingClientComments }
 	</insert>
 	
+	<update id="clientUpdate" parameterType="ClientDTO">
+		UPDATE owner SET
+   		owner_name = #{updateOwnerName },
+		owner_email = #{updateOwnerEmail },
+		owner_tel = #{updateOwnerTel },
+		owner_addr = #{updateOwnerAddr },
+		owner_sms = #{updateOwnerSms },
+		owner_memo = #{updateOwnerMemo }
+   		WHERE owner_no=#{clientNo }
+	</update>
+	
+	<select id="petTypeList" resultType="ClientDTO">
+		SELECT *
+		FROM petType
+	</select>
+	
+	<insert id="petAdd" parameterType="HashMap">
+		INSERT INTO pet SET
+		pet_name=#{petAddName},
+		pet_birth=#{petBirth},
+		pet_gender=#{petSex},
+		pet_weight=#{petAddWeight},
+		pet_memo=#{petAddComments},
+		type_no=#{petAddType},
+		owner_no=#{owner_noPAdd};
+	</insert>
 	
 </mapper>
