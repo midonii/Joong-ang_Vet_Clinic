@@ -20,7 +20,6 @@ import com.vet.clinic.dto.NoticeDTO;
 import com.vet.clinic.dto.PageDTO;
 import com.vet.clinic.dto.SearchDTO;
 import com.vet.clinic.service.NoticeService;
-import com.vet.clinic.util.Util;
 
 import lombok.Getter;
 
