@@ -16,7 +16,7 @@ public interface SMSDAO {
 
 	public Map<String, Object> smsform(int smsform_no);
 
-	public int smsform_set(Map<String, String> map);
+	public int smsform_setdel(Map<String, String> map);
 
 	public String[] smsformname();
 

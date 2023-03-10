@@ -55,13 +55,12 @@ public class SMSController {
 		return json.toString();
 	}
 	
-	@PostMapping("/smsform_set")
-	public String smsform_set(@RequestParam Map<String, String> map) {
+	@PostMapping("/smsform_setdel")
+	public String smsform_setdel(@RequestParam Map<String, String> map) {
 		
-		System.out.println(map);
+		//System.out.println(map);
 		
-		int result = smsService.smsform_set(map);
-		System.out.println(result);
+		int result = smsService.smsform_setdel(map);
 		
 		return "redirect:/smsIndex";
 	}

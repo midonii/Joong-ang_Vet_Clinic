@@ -121,6 +121,28 @@ textarea {
 	width: 100px;
 	margin: 5px;
 }
+thead {
+  display: table; /* to take the same width as tr */
+  width: calc(100% - 17px); /* - 17px because of the scrollbar width */
+}
+
+tbody {
+  display: block; /* to enable vertical scrolling */
+  max-height: 510px; /* e.g. */
+  overflow-y: scroll; /* keeps the scrollbar even if it doesn't need it; display purpose */
+}
+tr {
+  display: table; /* display purpose; th's border */
+  width: 100%;
+  box-sizing: border-box; /* because of the border (Chrome needs this line, but not FF) */
+}
+
+td {
+  text-align: center;
+  border-bottom: none;
+  border-left: none;
+}
+
 </style>
 </head>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
@@ -159,7 +181,7 @@ $(function() {
  	$("#sms_formset").click(function(){
  		
  		if($("#sms_hidden").val() == ''){
- 			alert("저장하려는 양식 번호를 누른 후 내용을 수정하고 다시 '양식저장'버튼을 클릭하세요.");
+ 			alert("저장하려는 양식 번호를 누른 후 내용을 수정하고 다시 '양식저장' 버튼을 클릭하세요.");
  		} else {
  			
  			let sms_hidden = $("#sms_hidden").val();
@@ -171,7 +193,7 @@ $(function() {
  			if(confirm("< 양식" + sms_hidden + " > 양식을 변경하시겠습니까?") == true){
  				
  				var form = $("<form></form>");
- 				form.attr("action", "/smsform_set");
+ 				form.attr("action", "/smsform_setdel");
  				form.attr("method", "post");
  				form.appendTo("body");
  				form.append($("<input>",{type: 'hidden', name: 'sms_hidden', value: sms_hidden}));
@@ -187,19 +209,21 @@ $(function() {
  	$("#sms_formdel").click(function(){
  		
  		if($("#sms_hidden").val() == ''){
- 			alert("삭제하려는 양식 번호를 누른 후 다시 '양식삭제'버튼을 클릭하세요.");
+ 			alert("삭제하려는 양식 번호를 누른 후 다시 '양식삭제' 버튼을 클릭하세요.");
  		} else {
  			
  			let sms_hidden = $("#sms_hidden").val();
- 			let sms_title = $("#sms_title").val("양식"+smshidden);
- 			let sms_content = $("#sms_content").val("");
+ 			$("#sms_title").val("양식"+sms_hidden);
+ 			let sms_title = $("#sms_title").val();
+ 			$("#sms_content").val("");
+ 			let sms_content = $("#sms_content").val();
  			
- 			//alert(sms_hidden + " / " + sms_title + " / " + sms_content);
+ 			alert(sms_hidden + " / " + sms_title + " / " + sms_content);
  			
- 			if(confirm("< 양식" + sms_hidden + " > 양식을 변경하시겠습니까?") == true){
+ 			if(confirm("< 양식" + sms_hidden + " > 양식을 삭제하시겠습니까?") == true){
  				
  				var form = $("<form></form>");
- 				form.attr("action", "/smsform_set");
+ 				form.attr("action", "/smsform_setdel");
  				form.attr("method", "post");
  				form.appendTo("body");
  				form.append($("<input>",{type: 'hidden', name: 'sms_hidden', value: sms_hidden}));
@@ -208,7 +232,17 @@ $(function() {
  				form.submit();
  				
  			} 
+ 			
  		}
+ 	});
+ 	
+ 	// 초기화버튼
+ 	$("#reset").click(function(){
+ 		
+ 		$("#sms_hidden").val("");
+ 		$("#sms_title").val("");
+ 		$("#sms_content").val("");
+ 		
  	});
 	
  	
@@ -221,12 +255,16 @@ $(function() {
 		//alert(pet_name + " / " + owner_name + " / " + owner_tel);
 		$(this).parents("#cl_tr").remove();
 		
-		var tr = "<tr id='towhom_tr'><td id='pet_name'>"+pet_name+"</td><td id='owner_name'>"+owner_name+"</td><td id='owner_tel'>"+owner_tel+"</td><td><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td></tr>" ;
+		var tr = "<tr id='towhom_tr'><td class='col-3' id='pet_name'>"+pet_name+"</td><td class='col-3' id='owner_name'>"+owner_name+"</td><td class='col-4' id='owner_tel'>"+owner_tel+"</td><td class='col-2'><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td></tr>" ;
 		
 		$(".towhom").append(tr);
 		
 	});
-	
+	/*
+	$("#plusAll").click(function(){
+		
+	});
+	*/
 	// 받는사람에서 고객리스트로
 	$(document).on("click", ".minusbtn", function(){
 		let pet_name = $(this).parent().siblings("#pet_name").text();
@@ -235,7 +273,7 @@ $(function() {
 		//alert(pet_name + " / " + owner_name + " / " + owner_tel);
 		$(this).parents("#towhom_tr").remove();
 		
-		var tr = "<tr id='cl_tr'><td id='pet_name'>"+pet_name+"</td><td id='owner_name'>"+owner_name+"</td><td id='owner_tel'>"+owner_tel+"</td><td></td><td><i class='replusbtn xi-plus-circle-o xi-x' style='color:#4e73df; cursor:pointer;'></i></td></tr>";
+		var tr = "<tr id='cl_tr'><td class='col-2' id='pet_name'>"+pet_name+"</td><td class='col-2' id='owner_name'>"+owner_name+"</td><td class='col-4' id='owner_tel'>"+owner_tel+"</td><td class='col-3'></td><td class='col-1'><i class='replusbtn xi-plus-circle-o xi-x' style='color:#4e73df; cursor:pointer;'></i></td></tr>";
 		
 		$(".clientList").append(tr);
 		
@@ -250,7 +288,7 @@ $(function() {
 		//alert(pet_name + " / " + owner_name + " / " + owner_tel);
 		$(this).parents("#cl_tr").remove();
 		
-		var tr = "<tr id='towhom_tr'><td id='pet_name'>"+pet_name+"</td><td id='owner_name'>"+owner_name+"</td><td id='owner_tel'>"+owner_tel+"</td><td><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td></tr>" ;
+		var tr = "<tr id='towhom_tr'><td class='col-3' id='pet_name'>"+pet_name+"</td><td class='col-3' id='owner_name'>"+owner_name+"</td><td class='col-4' id='owner_tel'>"+owner_tel+"</td><td class='col-2'><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td></tr>" ;
 		
 		$(".towhom").append(tr);
 		
@@ -305,7 +343,6 @@ $(function() {
 										placeholder="내용"></textarea>
 								</div>
 								<div class="padding" style="width: 100%">
-<%-- 									<c:forEach items="${smsformname }" var="smsform"> --%>
 									<button type="button" id="sms_form1" name="sms_form1"
 										class="btn btn-sm btn-outline-secondary btn-margin"
 										value="1">${smsformname[0] }</button>
@@ -330,26 +367,13 @@ $(function() {
 									<input type="button" id="sms_formdel" name="sms_formdel"
 										class="btn btn-sm btn-outline-secondary btn-margin"
 										value="양식삭제"> 
-									<!-- <input type="button" id="smsform5" name="smsform5"
-										class="btn btn-sm btn-outline-secondary btn-margin" style="width:94%;"
-										value="양식저장 및 삭제">  -->
-									<!-- <input type="button"
-										class="btn btn-sm btn-outline-secondary" value="수정"
-										style="width: 62px; margin: 5px;"> 
-									<input
-										type="button" class="btn btn-sm btn-outline-secondary"
-										value="저장" style="width: 62px; margin: 5px;"> 
-									<input
-										type="button" class="btn btn-sm btn-outline-secondary"
-										value="삭제" style="width: 62px; margin: 5px;"> -->
-<%-- 								</c:forEach> --%>
 								</div>
 								<div class="mb-2 justify-content-md-center" style="width:100%; padding: 0 20px 0 20px;">
 									<input type="button" class="btn btn-primary" value="전송"
 										style="width: 99%">
 								</div>
 								<div class="justify-content-md-center" style="width:100%; padding: 0 20px 0 20px;">
-									<input type="reset" class="btn btn-outline-primary" value="초기화"
+									<input type="button" id="reset" class="btn btn-outline-primary" value="초기화"
 										style="width: 99%">
 								</div>
 							</div>
@@ -365,12 +389,15 @@ $(function() {
 									<div>
 										<div class="row smsTo2" style="width: 370px;">
 											<table class="towhom border table-sm table-bordered" style="width: 100%; text-align: center;">
+												<thead>
 												<tr style="background-color:#f8f9fc;">
 													<th class="col-3">강아지</th>
 													<th class="col-3">견주</th>
 													<th class="col-4">전화번호</th>
 													<th class="col-2">삭제</th>
 												</tr>
+												</thead>
+												<tbody>
 												
 											</table>
 										</div>
@@ -385,30 +412,40 @@ $(function() {
 									style="width: 100%; height: 30px; text-align: center; line-height: 30px;">
 									고객리스트
 								</div>
-								<div>
-									<div class="row memberlist" style="margin:0 30px 0 30px; ">
-										<table class="clientList border table-sm table-bordered"
-											style="width: 100%; text-align: center; overflow: auto;">
-											<tr style="background-color:#f8f9fc;">
+								<div class="row memberlist mb-2" style="flex-grow:1; margin:0 30px 0 30px;  ">
+									<table class="clientList border table-sm table-bordered"
+										style="width: 100%; text-align: center;">
+										<thead>
+											<tr style="background-color: #f8f9fc;">
 												<th class="col-2">강아지</th>
 												<th class="col-2">견주</th>
 												<th class="col-4">전화번호</th>
 												<th class="col-3">진료예약일</th>
 												<th class="col-1">추가</th>
 											</tr>
-											<c:forEach items="${clientList }" var="cl" >
-											<tr id="cl_tr">
-												<td id="pet_name">${cl.pet_name }</td>
-												<td id="owner_name">${cl.owner_name }</td>
-												<td id="owner_tel">${cl.owner_tel }</td>
-												<td></td>
-												<td>
-													<i class="plusbtn xi-plus-circle-o xi-x" style="color:#4e73df; cursor:pointer;"></i>
-												</td>
-											</tr>
+										</thead>
+										<tbody>
+											<c:forEach items="${clientList }" var="cl">
+												<tr id="cl_tr">
+													<td class="col-2" id="pet_name">${cl.pet_name }</td>
+													<td class="col-2" id="owner_name">${cl.owner_name }</td>
+													<td class="col-4" id="owner_tel">${cl.owner_tel }</td>
+													<td class="col-3"></td>
+													<td class="col-1">
+														<i class="plusbtn xi-plus-circle-o xi-x" style="color: #4e73df; cursor: pointer;"></i>
+													</td>
+												</tr>
 											</c:forEach>
-										</table>
-									</div>
+										</tbody>
+									</table>
+								</div>
+								<div class="d-grid gap-2 d-md-flex justify-content-md-end"
+									style="width: 100%; height: 50px; padding: 0 30px 10px 30px; margin:5px 0 0 0; ">
+
+									<input type="button" id="plusAll" class="btn btn-sm btn-outline-primary"
+										value="전체선택" >
+
+
 								</div>
 							</div>
 							
