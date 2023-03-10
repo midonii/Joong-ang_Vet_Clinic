@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vet.clinic.dao.SMSDAO">
+	<select id="smsclientlist" resultType="SMSDTO">
+		SELECT *
+		FROM smsview
+	</select>
+	
+	<select id="smsformname" resultType="String">
+		SELECT smsForm_title
+		FROM smsForm
+	</select>
+	
+	<select id="smsform" parameterType="Integer" resultType="HashMap">
+		SELECT *
+		FROM smsForm
+		WHERE smsForm_no = #{smsform_no }
+	</select>
+	
+	<update id="smsform_setdel" parameterType="HashMap">
+		UPDATE smsForm
+		SET
+		smsForm_title = #{sms_title },
+		smsForm_content = #{sms_content }
+		WHERE smsForm_no = #{sms_hidden }
+	</update>
+	
+</mapper>

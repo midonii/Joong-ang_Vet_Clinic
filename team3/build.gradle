@@ -17,11 +17,14 @@ dependencies {
  implementation 'org.springframework.boot:spring-boot-starter-web'
    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.0'
    
-    // 이메일 보내기
+   implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+   
+   
+   // 이메일 보내기
    //implementation 'org.apache.commons:commons-email:1.5'
    
    
-    // json - https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+   // json - https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
    //implementation 'com.googlecode.json-simple:json-simple:1.1.1'
    
    // json -  https://mvnrepository.com/artifact/org.json/json

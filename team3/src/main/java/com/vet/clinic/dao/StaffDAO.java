@@ -24,12 +24,6 @@ public interface StaffDAO {
 
 	public void saveTempnum(StaffDTO temp);
 
-	public int checkTempnum(StaffDTO check);
-
-	public int newpwSet(StaffDTO newpwSet);
-
-	public int join(StaffDTO joinDTO);
-
 	public int idCheck(String id);
 
 	public int emailCheck(String email);
@@ -38,7 +32,7 @@ public interface StaffDAO {
 
 	public int pwCheck(Map<String, Object> map);
 
-	public int editProfile(Map<String, Object> edit);
+	public int editProfile(Map<String, String> map);
 
 	public void logintry(StaffDTO staffDTO);
 
@@ -47,5 +41,10 @@ public interface StaffDAO {
 	public int gradeUpdate(Map<String, Object> map);
 
 	public int staffDel(int staff_no);
+	
+	public int join(Map<String, String> map);
 
+	public int checkTempnum(Map<String, String> map);
+
+	public int newpwSet(Map<String, String> map);
 }

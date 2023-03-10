@@ -26,17 +26,6 @@ public class UserService {
 		staffDAO.saveTempnum(temp);
 	}
 
-	public int checkTempnum(StaffDTO check) {
-		return staffDAO.checkTempnum(check);
-	}
-
-	public int newpwSet(StaffDTO newpwSet) {
-		return staffDAO.newpwSet(newpwSet);
-	}
-
-	public int join(StaffDTO joinDTO) {
-		return staffDAO.join(joinDTO);
-	}
 
 	public int idCheck(String id) {
 		return staffDAO.idCheck(id);
@@ -54,12 +43,24 @@ public class UserService {
 		return staffDAO.pwCheck(map);
 	}
 
-	public int editProfile(Map<String, Object> edit) {
-		return staffDAO.editProfile(edit);
+	public int editProfile(Map<String, String> map) {
+		return staffDAO.editProfile(map);
 	}
 
 	public void logintry(StaffDTO staffDTO) {
 		staffDAO.logintry(staffDTO);
 	}
+
+	public int join(Map<String, String> map) {
+		return staffDAO.join(map);
+	}
+
+	public int checkTempnum(Map<String, String> map) {
+		return staffDAO.checkTempnum(map);
+	}
+	public int newpwSet(Map<String, String> map) {
+		return  staffDAO.newpwSet(map);
+	}
+
 
 }

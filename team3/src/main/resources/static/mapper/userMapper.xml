@@ -4,13 +4,27 @@
 <mapper namespace="com.vet.clinic.dao.StaffDAO">
 
 	<select id="login" parameterType="StaffDTO" resultType="StaffDTO">
-		SELECT COUNT(*) as count, staff_name, staff_grade
+		SELECT COUNT(*) as count, staff_name, staff_grade, staff_logintry
 		FROM staff
 		WHERE
 		(staff_id = #{staff_id } AND staff_pw = #{staff_pw })
 		OR
 		(staff_email = #{staff_email } AND staff_pw = #{staff_pw })
 	</select>
+	<!-- 
+	<update id="logintry" parameterType="StaffDTO">
+		UPDATE staff
+		SET
+		<choose>
+			<when test="staff_logintry == 0">
+				staff_logintry = 0
+			</when>
+			<otherwiese>
+				staff_logintry = #{member_logintry } + 1
+			</otherwiese>
+		</choose>
+	</update>
+	 -->
 	
 	<select id="findEmail" parameterType="String" resultType="Integer">
 		SELECT COUNT(*)
@@ -24,20 +38,70 @@
 		WHERE staff_email = #{staff_email }
 	</update>
 	
-	<select id="checkTempnum" parameterType="StaffDTO" resultType="Integer">
+	<select id="checkTempnum" parameterType="HashMap" resultType="Integer">
 		SELECT COUNT(*)
 		FROM staff
 		WHERE 
-		staff_email = #{staff_email } AND staff_tempnum = #{staff_tempnum }
+		staff_email = #{fixEmail } AND staff_tempnum = #{userTempnum }
 	</select>
 	
-	<update id="newpwSet" parameterType="StaffDTO">
+	<update id="newpwSet" parameterType="HashMap">
 		UPDATE staff
 		SET 
-		staff_pw = #{staff_pw },
-		staff_tempnum = null	
-		WHERE staff_email = #{staff_email }
+		staff_pw = #{newPw },
+		staff_tempnum = null
+		WHERE staff_email = #{fixEmail }
 	</update>
 		<!-- member_pw = HEX(AES_ENCRYPT((#{member_pw }), SHA2('apple', 256))), -->
+	
+	<insert id="join" parameterType="StaffDTO">
+		INSERT INTO staff
+		SET
+		staff_id = #{id },
+		staff_pw = #{pw },
+		staff_name = #{name },
+		staff_birth = #{birth },
+		staff_tel = #{tel },
+		staff_email = #{email },
+		staff_addr = #{addr },
+		staff_grade = #{grade }
+	</insert>
+	
+	<select id="idCheck" parameterType="String" resultType="Integer">
+		SELECT COUNT(*)
+		FROM staff
+		WHERE staff_id = #{id }
+	</select>
+	
+	<select id="emailCheck" parameterType="String" resultType="Integer">
+		SELECT COUNT(*)
+		FROM staff
+		WHERE staff_email = #{email }
+	</select>
+	
+	<select id="profile" parameterType="HashMap" resultType="HashMap">
+		SELECT *
+		FROM staff
+		WHERE staff_id = #{sessionID }	
+	</select>
+	
+	<select id="pwCheck" parameterType="HashMap" resultType="Integer">
+		SELECT COUNT(*)
+		FROM staff
+		WHERE staff_id = #{sessionID } AND staff_pw = #{pw }
+	
+	</select>
+	
+	<update id="editProfile" parameterType="HashMap">
+		UPDATE staff
+		SET
+		staff_pw = #{pw },
+		staff_name = #{name },
+		staff_tel = #{tel },
+		staff_addr = #{addr }
+		WHERE staff_id = #{sessionID }
+	</update>
+	
+
 	
 </mapper>

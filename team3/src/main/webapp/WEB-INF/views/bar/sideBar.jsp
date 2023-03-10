@@ -66,7 +66,7 @@
 
 
 
-	<li class="nav-item active"><a class="nav-link" href="index.html">
+	<li class="nav-item active"><a class="nav-link" href="/smsIndex">
 			<i class="fas fa-solid fa-comment-sms"></i> <span>SMS 발송</span>
 	</a></li>
 	<li class="nav-item active"><a class="nav-link" href="/notice">
