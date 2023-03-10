@@ -38,10 +38,12 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+<style type="text/css">
 
+</style>
 <script type="text/javascript">
 
-$(function() {
+$(function(){
 	
 	//검색
 	$("#search_btn").click(function() {
@@ -73,68 +75,142 @@ $(function() {
 				$("#reservation_date").text(data.reservationDate);
 			}).fail(function(jqXHR, textStatus, errorThrown) {
 			    console.log("POST request failed: " + errorThrown);
-			  });
+			});
 		}
 	});
 	
 	
-	//(검색통한)예약버튼
+	//예약버튼
 	$(".reserv_btn").click(function(){
-				
-				let reservNo = $(this).attr("value");
-// 				alert(reservNo);
-				//이제 이걸 post로 /reservAjax 컨트롤러로 전송
-				$.ajax({
-				    url: "/reservAjax",
-				    type: "POST",
-				    data: {"reservNo" : reservNo},
-				    dataType: "json",
-				    cache: false
-				    
-				  }). done (function(data){ //data: 서버가 전송한 데이터
-					//모달창에 값 출력
-$					$("#exampleModal #modal_owner_name").text(data.result[0].owner_name);
-					$("#exampleModal #modal_owner_tel").text(data.result[0].owner_tel);
-					$("#exampleModal #modal_pet_name").text(data.result[0].pet_name);
-					$("#exampleModal #modal_pet_gender").text(data.result[0].pet_gender);
-					$("#exampleModal #modal_pet_birth").text(data.result[0].pet_birth);
-					$("#exampleModal #reserv_memo").text(data.result[0].reserv_memo);
-					$("#exampleModal #reservation_date").text(data.result[0].reservation_date);
-					
-				    //모달 열기
-				    $("#exampleModal").modal("show");
-    			}).fail(function(jqXHR, textStatus, errorThrown) {
-    			    // 오류 처리
-    			    console.log("get request failed: " + errorThrown);
-    			  });
-				
-			//예약날짜 디폴트설정
-			var today = new Date();
-			var todayYear = today.getFullYear();
-			var todayMonth = ('0' + (today.getMonth() + 1)).slice(-2);
-			var todayDate = ('0' + today.getDate()).slice(-2);
-			$("#reservation_date").val(todayYear+"-"+todayMonth+"-"+todayDate);
-			//slice(-2):문자열 뒤 2번째부터 끝까지의 문자열을 반환하는 메서드. "12345"에 slice(-2)를 적용하면 "45"가 반환
-	 		   
-		 });
-			
-	//예약완료
- 	$("#ok-button").click(function(){
-		/* if(data.result == 1){
-			alert("예약이 완료되었습니다.");
-			location.href = "/reserv";
-				
-		 } else {
-			alert("문제가 발생했습니다. \n다시 시도해주세요.");
-		} */
+	//owner_no정보 (button의 value값)
+	let search_no = $(this).attr("value"); 
+    //alert(search_no + " : 버튼을 클릭했습니다.");
+
+    //이제 이걸 post로 /reservAjax 컨트롤러로 전송
+    $.ajax({
+        url: "/reservAjax",
+        type: "POST",
+        data: {"search_no": search_no}, //button클릭하면 받아오는 owner_no정보를 컨트롤러(서버)에 보냄
+        dataType: "json",
+        cache: false
+    }).done(function(data){ //data: 서버가 전송한 데이터(html의 태그안에 박혀있는 값들 넣기). {"search_no": search_no}가 아님!
+//      alert('성공');
+// 	    var ownerNo = $(this).data('owner-no'); //ok
+// 	    var petName = $(this).closest('div').find('b').data('pet-name'); //양우
+// 	    var ownerName = $(this).closest('div').find('a').text().trim();
+// 	    var petBirth = $(this).closest('div').next().find('span').data('pet-birth');
+// 	    var petGender = $(this).closest('div').next().find('span').data('pet-gender');
+// 	    var petMemo = $(this).closest('div').next().find('span').data('pet-memo');
+// 	    alert(($(this).closest('div').find('b').data('pet-name'))); //undefined
+	    let result = data.result; //result: html의 태그안에 박혀있는 값들 넣기
+	    //컨트롤러에 result 선언함. json.put("result", searchDetail);
+	    //data: 서버에서 반환되는 데이터(JSON 형식)
+	    //data.result: 서버에서 반환된 JSON 데이터 객체의 result 프로퍼티 값(0 or 1)
+	    
+        $('#modal_owner_name').val(result[0].owner_name);
+        $('#modal_owner_tel').val(result[0].owner_tel);
+//         $('#modal_pet_memo').val(result[0].pet_memo);
+        $('#modal_pet_name').val(result[0].pet_name);
+        $('#modal_pet_gender').val(result[0].pet_gender);
+        $('#modal_pet_birth').val(result[0].pet_birth);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.log("get request failed: " + errorThrown);
+    });
+
+    	//예약날짜 디폴트(today)
+		var today = new Date();
+		var todayYear = today.getFullYear();
+		var todayMonth = ('0' + (today.getMonth() + 1)).slice(-2);
+		var todayDate = ('0' + today.getDate()).slice(-2);
+		var reservation_date_day = todayYear + '-' + todayMonth + '-' + todayDate; //디폴트날짜
+		$('#reservation_date_day').val(reservation_date_day);
+    
 		
-	}); 
+			// (디폴트값에서)예약날짜 변경 시 final_date 변수에 저장
+			$('#reservation_date_day').change(function(){
+			  //변경된 날짜(yyyy-mm-dd)
+			  var reservation_date_day_input = $(this).val();
+			  //변경된 날짜를 '-'기준으로 자르기' (yyyy,mm,dd)
+			  var reservation_date_day_parts = reservation_date_day_input.split('-');
+			  //(yy-mm-dd) 형식으로 바꾸기
+			  var final_date = reservation_date_day_parts[0] + '-' + reservation_date_day_parts[1] + '-' + reservation_date_day_parts[2];
+			  alert("final_date : "+final_date); //변경날짜
+			  $('#reservation_date_day').val(final_date);
+			});
+	}); //예약버튼 끝
+	
+	
+	
+	var reservation_date_time = ''; //시간
+	var reservation_date = ''; //날짜+시간
+	
+    //예약시간
+	$('.cell').click(function(){
+	    $('.cell').removeClass('select');
+	    $(this).addClass('select');
+ 		reservation_date_time = $('.select').text();
+	    alert("reservation_date_time : "+reservation_date_time); //ok
+	});
+	
+	//예약완료 버튼 (controller필)
+ 	$("#ok-button").click(function(){
+ 		//예약날짜+시간
+		reservation_date = new Date(final_date + 'T' + reservation_date_time + ':00');
+	    alert("reservation_date : " + reservation_date); 		
+	    
+	    let modal_owner_name = $('#modal_owner_name').val();
+	    let modal_owner_tel = $('#modal_owner_tel').val();
+	    let modal_pet_name = $('#modal_pet_name').val();
+	    let modal_pet_gender = $('#modal_pet_gender').val();
+	    let modal_pet_birth = $('#modal_pet_birth').val();
+	    let modal_reservation_date = reservation_date_time.val(); //?
+	    let modal_reservation_memo = $('#reservation_memo').val();
+	    
+	    $.ajax({
+	        url: "/reservInfo,
+	        data: { "reservation_date" : reservation_date},
+	        type: "POST"
+		    }).done(function(data){
+		          if(data.result == 1){
+		            alert("예약이 완료되었습니다.");
+		            location.href = "/reserv";
+		          } else {
+		            alert("문제가 발생했습니다. \n다시 시도해주세요.");
+		          }
+		    }).fail(function() {
+		          alert("실패 ");
+		    });
+	    
+    	});
+	});
+			/* if(data.result == 1){
+				alert("예약이 완료되었습니다.");
+				location.href = "/reserv";
+					
+			 } else {
+				alert("문제가 발생했습니다. \n다시 시도해주세요.");
+			} */
+			
+	
+	//예약창 닫았을때 text값 초기화
+	$('#exampleModal').on('hidden.bs.modal', function(e) {
+	    if($(this).find('form').length >0){
+	    	$(this).find('form')[0].reset();
+	   		var inputValue = $(this).find('select:eq(0) option:eq(0)');
+	    }
+	 	//accordion창 접기
+	    $('.accordion-collapse').collapse('hide'); 
+	});
+	
+	
 	
 	
 	//예약수정
 	$("#xeicon").click(function() {
 		
 	});
+	
+	
 
 });
 
@@ -190,18 +266,18 @@ $					$("#exampleModal #modal_owner_name").text(data.result[0].owner_name);
 															<td style="font-size: 14px; width: 180px;">
 																<div style="">
 																	<a href="#" style="text-decoration: none;"><b
-																		style="font-size: 25px; color: black">${l.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${l.owner_name}
+																		style="font-size: 25px; color: black" data-pet-name="${l.pet_name}" data-owner-name="${l.owner_name}">${l.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${l.owner_name}
 																</div> <br> 
-																<span>${l.pet_birth} | 4살 |
+																<span data-pet-birth="${l.pet_birth}" data-pet-gender="${l.pet_gender}">${l.pet_birth} | 4살 |
 																	${l.pet_gender}</span> <br> 
-																<span>${l.pet_memo}</span>
+																<span data-pet-memo="${l.pet_memo}">${l.pet_memo}</span>
 															</td>
 															<td style="text-align: right;"><span></span> <br>
 																<br> <span>
-																	<button type="button" id=""
+																	<button type="button" id="owner_no"
 																	 	data-bs-toggle="modal"
 																		data-bs-target="#exampleModal" class="btn btn-sm reserv_btn"
-																		style="border: 1px solid #0d6efd; color: #0d6efd;" name="${l.owner_no}" value="${l.owner_no}">예약</button>
+																		style="border: 1px solid #0d6efd; color: #0d6efd;" data-pet-name="${l.pet_name}" data-owner-no="${l.owner_no}" name="${l.owner_no}" value="${l.owner_no}">예약</button>
 
 
 																	<button type="button" id="receipt_btn"
@@ -214,8 +290,6 @@ $					$("#exampleModal #modal_owner_name").text(data.result[0].owner_name);
 											</c:choose>
 											
 										</table>
-
-
 
 
 										<!-- Modal -->
@@ -233,46 +307,46 @@ $					$("#exampleModal #modal_owner_name").text(data.result[0].owner_name);
 															<div class="col-md-6">
 																<label for="modal_owner_name" class="col-form-label">보호자
 																	이름</label> <input type="text" class="form-control"
-																	id="modal_owner_name" readonly>
+																	id="modal_owner_name" value="없음" readonly>
 															</div>
 															<div class="col-md-6">
 																<label for="modal_owner_tel" class="col-form-label">전화번호</label>
 																<input type="text" class="form-control" id="modal_owner_tel"
-																	placeholder="01012345678" readonly>
+																	placeholder="01012345678" value="없음" readonly>
 															</div>
 															<div class="col-md-6">
 																<label for="modal_pet_name" class="col-form-label">반려견
 																	이름</label> <input type="text" class="form-control"
-																	id="modal_pet_name" readonly>
+																	id="modal_pet_name" value="없음" readonly>
 															</div>
 															<div class="col-md-6">
 																<label for="modal_pet_gender" class="col-form-label">반려견
 																	성별</label> <input type="text" class="form-control"
-																	id="modal_pet_gender" readonly>
+																	id="modal_pet_gender" value="없음" readonly>
 															</div>
 															<div class="col-md-6">
 																<label for="modal_pet_birth" class="col-form-label">반려견
 																	출생년도</label> <input type="text" class="form-control"
-																	id="modal_pet_birth" readonly>
+																	id="modal_pet_birth" value="없음" readonly>
 															</div>
 															<!-- 예약시간 -->
 															<p class="col-md-6">
 																<label for="reservation_date" class="col-form-label">예약날짜</label>
 																<input class="form-control" type="date"
-																	value="1000-01-10" id="reservation_date" tabindex="-1">
+																	value="1000-01-10" id="reservation_date_day" tabindex="-1">
 															</p>
 
 															<!-- 시간설정 -->
 															<div class="col-md-6" style="width: auto;">
-																<label for="inputAddress" class="col-form-label"
-																	for="owner_addr">예약시간</label>
+																<label class="col-form-label"
+																	for="reservation_date">예약시간</label>
 																<div class="accordion" id="accordionExample">
 																	<div class="accordion-item">
 																		<button class="accordion-button collapsed"
-																			style="width: 470px; height: 38px;" type="button"
+																			style="width: 470px; height: 38px;" type="button" id="accordion"
 																			data-bs-toggle="collapse"
 																			data-bs-target="#collapseOne" aria-expanded="false"
-																			aria-controls="collapseOne" value="11">시간선택</button>
+																			aria-controls="collapseOne">시간선택</button>
 																		<div id="collapseOne"
 																			class="accordion-collapse collapse"
 																			aria-labelledby="headingOne"
@@ -326,8 +400,8 @@ $					$("#exampleModal #modal_owner_name").text(data.result[0].owner_name);
 																</div>
 															</div>
 															<div class="mb-3">
-																<label for="reserv_memo" class="col-form-label">예약메모</label>
-																<textarea class="form-control" id="reserv_memo"></textarea>
+																<label for="reservation_memo" class="col-form-label">예약메모</label>
+																<textarea class="form-control" id="reservation_memo"></textarea>
 															</div>
 															<div class="modal-footer">
 																<button type="button" class="btn btn-secondary"

@@ -20,7 +20,7 @@
 	<select id="reservAjax" parameterType="ReservDTO" resultType="ReservDTO">
 	SELECT *
 	FROM clientview
-	WHERE pet_no=#{petNo }
+	WHERE owner_no=#{search_no }
 	</select>
 	
 	
