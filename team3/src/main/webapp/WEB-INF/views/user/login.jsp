@@ -110,7 +110,7 @@ $(function(){
 		
 		// 아이디저장 체크박스
 		if($("#customCheck").is(":checked")){
-			alert("아이디저장체크");
+			//alert("아이디저장체크");
 			setCookie("userID", id, 7);
 			setCookie("setCookie","Y",7);
 		} else {
