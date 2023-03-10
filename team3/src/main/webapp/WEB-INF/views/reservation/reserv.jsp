@@ -152,37 +152,37 @@ $(function(){
 	    alert("reservation_date_time : "+reservation_date_time); //ok
 	});
 	
-	//예약완료 버튼 (controller필)
- 	$("#ok-button").click(function(){
- 		//예약날짜+시간
-		reservation_date = new Date(final_date + 'T' + reservation_date_time + ':00');
-	    alert("reservation_date : " + reservation_date); 		
+// 	//예약완료 버튼 (controller필)
+//  	$("#ok-button").click(function(){
+//  		//예약날짜+시간
+// 		reservation_date = new Date(final_date + 'T' + reservation_date_time + ':00');
+// 	    alert("reservation_date : " + reservation_date); 		
 	    
-	    let modal_owner_name = $('#modal_owner_name').val();
-	    let modal_owner_tel = $('#modal_owner_tel').val();
-	    let modal_pet_name = $('#modal_pet_name').val();
-	    let modal_pet_gender = $('#modal_pet_gender').val();
-	    let modal_pet_birth = $('#modal_pet_birth').val();
-	    let modal_reservation_date = reservation_date_time.val(); //?
-	    let modal_reservation_memo = $('#reservation_memo').val();
+// 	    let modal_owner_name = $('#modal_owner_name').val();
+// 	    let modal_owner_tel = $('#modal_owner_tel').val();
+// 	    let modal_pet_name = $('#modal_pet_name').val();
+// 	    let modal_pet_gender = $('#modal_pet_gender').val();
+// 	    let modal_pet_birth = $('#modal_pet_birth').val();
+// 	    let modal_reservation_date = reservation_date_time.val(); //?
+// 	    let modal_reservation_memo = $('#reservation_memo').val();
 	    
-	    $.ajax({
-	        url: "/reservInfo,
-	        data: { "reservation_date" : reservation_date},
-	        type: "POST"
-		    }).done(function(data){
-		          if(data.result == 1){
-		            alert("예약이 완료되었습니다.");
-		            location.href = "/reserv";
-		          } else {
-		            alert("문제가 발생했습니다. \n다시 시도해주세요.");
-		          }
-		    }).fail(function() {
-		          alert("실패 ");
-		    });
+// 	    $.ajax({
+// 	        url: "/reservInfo,
+// 	        data: { "reservation_date" : reservation_date},
+// 	        type: "POST"
+// 		    }).done(function(data){
+// 		          if(data.result == 1){
+// 		            alert("예약이 완료되었습니다.");
+// 		            location.href = "/reserv";
+// 		          } else {
+// 		            alert("문제가 발생했습니다. \n다시 시도해주세요.");
+// 		          }
+// 		    }).fail(function() {
+// 		          alert("실패 ");
+// 		    });
 	    
-    	});
-	});
+//     	});
+// 	});
 			/* if(data.result == 1){
 				alert("예약이 완료되었습니다.");
 				location.href = "/reserv";
