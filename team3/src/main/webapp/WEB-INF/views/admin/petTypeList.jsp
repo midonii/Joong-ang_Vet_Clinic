@@ -52,16 +52,8 @@
 				$("#type_name").focus();
 				return false;
 			}
-			petTypeAddFrm.submit();
 		});
 		
-// 		var actionFrm = $("#actionFrm");
-// 		$(".paginate_button a").on("click", function(e){
-// 			e.preventDefault();
-// 			console.log("click");
-// 			actionFrm.find("input[name='pageNum']").val($(this).attr("href"));
-// 			actionFrm.submit();
-// 		});
 
 		$(".petTypeUpdate").click(function() {
 			var type_no = $(this).attr("value");
@@ -117,6 +109,15 @@
 			});
 		});
 		
+	 	$("#search_btn").click(function() {
+			let searchValue = $("#search_value").val();
+
+			if (searchValue == "" || searchValue.length < 2) {
+				alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
+				return false;
+			}
+			searchForm.submit();
+		});
 
 	});
 	function petTypeDel(type_no){
@@ -125,7 +126,14 @@
 		}
 	}
 	
+	function page(idx, search_value) {
+		var pagenum = idx;
+		let searchValue = search_value;
+		var contentnum = $("#contentnum").val();
+		location.href = "${pageContext.request.contextPath}/petType?pagenum="
+				+ pagenum + "&contentnum=" + contentnum +"&search_value=" + searchValue;
 
+	}
 	
 	
 </script>
@@ -151,7 +159,6 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<!-- Page Heading -->
 					<div class="mb-1"
 						style="font-size: 13px; margin-top: -10px; padding-left: 8px;">
 						<a href="/index" style="text-decoration: none;"
@@ -175,13 +182,14 @@
 						<div class="card-body">
 							<div style="margin-top: -5px;">
 								<ul class="nav nav-tabs">
-									<li class="nav-item"><a
-										class="nav-link"
+									<li class="nav-item"><a class="nav-link"
 										aria-current="page" href="/medicine" tabindex="0">약</a></li>
 									<li class="nav-item "><a class="nav-link"
 										href="/inspection">검사</a></li>
 									<li class="nav-item"><a class="nav-link" href="/vaccine">접종</a></li>
-									<li class="nav-item"><a class="nav-link active font-weight-bolder text-primary" href="/petType">견종</a></li>
+									<li class="nav-item"><a
+										class="nav-link active font-weight-bolder text-primary"
+										href="/petType">견종</a></li>
 								</ul>
 							</div>
 							<div class="row justify-content-center">
@@ -205,7 +213,7 @@
 										</ul>
 
 										<div class="text-center col-lg-12 col-12">
-											<button type="button" id="addBtn"
+											<button type="submit" id="addBtn"
 												class="btn btn-primary col-8 ">저장</button>
 										</div>
 									</form>
@@ -214,17 +222,20 @@
 								<!-- 리스트 출력 -->
 								<div class="col-6 col-md-6"
 									style="overflow: auto; height: 570px; padding: 10px;">
-
-									<div class="input-group mt-2 mb-3">
-										<input type="text" class="form-control border-gray col-md-12"
-											placeholder="견종을 입력하세요">
-										<div class="input-group-append">
-											<button class="btn btn-primary" type="button">
-												<i class="fas fa-search"></i>
-											</button>
+									<form action="/petType" name="searchForm"
+										onsubmit="return false" method="get">
+										<div class="input-group mt-2 mb-3">
+											<input type="text" class="form-control border-gray col-md-12"
+												placeholder="견종을 입력하세요" name="search_value"
+												id="search_value" value="${search.getSearch_value() }">
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button"
+													id="search_btn">
+													<i class="fas fa-search"></i>
+												</button>
+											</div>
 										</div>
-									</div>
-
+									</form>
 									<div class="table-responsive" id="printme">
 										<table class="table table-sm table-bordered text-center"
 											id="dataTable" width="100%" cellspacing="0">
@@ -255,44 +266,47 @@
 														</td>
 													</tr>
 												</c:forEach>
-
+												<c:if test="${page.getTotalcount() eq 0}">
+													<tr>
+														<td colspan="5">검색 결과가 없습니다.</td>
+													</tr>
+												</c:if>
 											</tbody>
-										</table
+										</table>
 									</div>
 
-									<nav aria-label="Page navigation example">
-										<ul class="pagination pagination-sm justify-content-center">
+									<c:if test="${page.getTotalcount() ne 0}">
+										<nav aria-label="Page navigation example">
+											<ul class="pagination pagination-sm justify-content-center">
 
-											<c:if test="${page.prev}">
-												<li class="page-item"><a class="page-link"
-													href="javascript:page(${page.getStartPage()-1});"
-													aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-												</a></li>
-											</c:if>
-											<c:forEach begin="${page.getStartPage()}"
-												end="${page.getEndPage()}" var="idx">
-												<c:choose>
-													<c:when test="${idx ne page.pagenum+1 }">
-														<li class="page-item"><a class="page-link"
-															href="javascript:page(${idx});">${idx }</a></li>
-													</c:when>
-													<c:otherwise>
-														<li class="page-item active"><a class="page-link"
-															href="javascript:page(${idx});">${idx }</a></li>
-													</c:otherwise>
-												</c:choose>
-											</c:forEach>
-											<c:if test="${page.next}">
-												<li class="page-item"><a class="page-link"
-													href="javascript:page(${page.getEndPage()+1})"
-													aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-												</a></li>
-											</c:if>
-										</ul>
-									</nav>
-
-
-
+												<c:if test="${page.prev}">
+													<li class="page-item"><a class="page-link"
+														href="javascript:page('${page.getStartPage()-1}','${search.getSearch_value()}');"
+														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+													</a></li>
+												</c:if>
+												<c:forEach begin="${page.getStartPage()}"
+													end="${page.getEndPage()}" var="idx">
+													<c:choose>
+														<c:when test="${idx ne page.pagenum+1 }">
+															<li class="page-item"><a class="page-link"
+																href="javascript:page('${idx}','${search.getSearch_value()}');">${idx }</a></li>
+														</c:when>
+														<c:otherwise>
+															<li class="page-item active"><a class="page-link"
+																href="javascript:page('${idx}','${search.getSearch_value()}');">${idx }</a></li>
+														</c:otherwise>
+													</c:choose>
+												</c:forEach>
+												<c:if test="${page.next}">
+													<li class="page-item"><a class="page-link"
+														href="javascript:page('${page.getEndPage()+1}','${search.getSearch_value()}');"
+														aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+													</a></li>
+												</c:if>
+											</ul>
+										</nav>
+									</c:if>
 								</div>
 							</div>
 

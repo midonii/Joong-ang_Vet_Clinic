@@ -37,6 +37,7 @@
 
 <script type="text/javascript">
 	$(function() {
+		
 		$("#addBtn").click(function() {
 
 			var medical_name = $("#medical_name").val();
@@ -109,6 +110,18 @@
 			});
 		});
 
+	
+	 	$("#search_btn").click(function() {
+			let searchValue = $("#search_value").val();
+
+			if (searchValue == "" || searchValue.length < 2) {
+				alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
+				return false;
+			}
+			searchForm.submit();
+		});
+
+		
 	});
 	
 	function medicineDel(medical_no){
@@ -116,6 +129,16 @@
 		location.href =  "/medicineDel?medical_no=" + medical_no;
 		}
 	}
+	
+	function page(idx, search_value) {
+		var pagenum = idx;
+		let searchValue = search_value;
+		var contentnum = $("#contentnum").val();
+		location.href = "${pageContext.request.contextPath}/medicine?pagenum="
+				+ pagenum + "&contentnum=" + contentnum +"&search_value=" + searchValue;
+
+	}
+
 	
 </script>
 </head>
@@ -215,20 +238,24 @@
 
 								<!-- 리스트 출력 -->
 								<div class="col-6 col-md-6"
-									style="overflow: auto; height: 570px; padding: 10px;">
-
-									<div class="input-group mb-3">
-										<select class="form-control col-md-3">
-											<option>이름</option>
-											<option>가격</option>
-										</select> <input type="text" class="form-control border-gray col-md-9"
-											placeholder="검색어를 입력하세요">
-										<div class="input-group-append">
-											<button class="btn btn-primary" type="button">
-												<i class="fas fa-search"></i>
-											</button>
+									style="height: 570px; padding: 10px;">
+									<form action="/medicine" name="searchForm"
+										onsubmit="return false" method="get">
+										<input type="hidden" name="contentnum" id="contentnum"
+											value="${page.getContentnum()}">
+										<div class="input-group mb-3">
+											<input type="text" class="form-control border-gray col-md-12"
+												name="search_value" id="search_value"
+												value="${search.getSearch_value() }"
+												placeholder="약 이름을 입력하세요">
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button"
+													id="search_btn">
+													<i class="fas fa-search"></i>
+												</button>
+											</div>
 										</div>
-									</div>
+									</form>
 									<div class="table-responsive">
 										<table class="table table-sm table-bordered text-center"
 											id="dataTable" width="100%" cellspacing="0">
@@ -243,7 +270,7 @@
 											</thead>
 
 											<tbody>
-												<c:forEach items="${medicineList }" var="ml">
+												<c:forEach items="${medicalList }" var="ml">
 													<tr style="line-height: 30px;">
 														<td>${ml.mno }</td>
 														<td>${ml.medical_name }</td>
@@ -264,92 +291,124 @@
 
 													</tr>
 												</c:forEach>
-
-											</tbody>
+												<c:if test="${page.getTotalcount() eq 0}">
+													<tr>
+														<td colspan="4">검색 결과가 없습니다.</td>
+													</tr>
+												</c:if>
+												</tbody>
 										</table>
 									</div>
 
+									<c:if test="${page.getTotalcount() ne 0}">
+										<nav aria-label="Page navigation example">
+											<ul class="pagination pagination-sm justify-content-center">
 
-
-
+												<c:if test="${page.prev}">
+													<li class="page-item"><a class="page-link"
+														href="javascript:page('${page.getStartPage()-1}','${search.getSearch_value()}');"
+														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+													</a></li>
+												</c:if>
+												<c:forEach begin="${page.getStartPage()}"
+													end="${page.getEndPage()}" var="idx">
+													<c:choose>
+														<c:when test="${idx ne page.pagenum+1 }">
+															<li class="page-item"><a class="page-link"
+																href="javascript:page('${idx}','${search.getSearch_value()}');">${idx }</a></li>
+														</c:when>
+														<c:otherwise>
+															<li class="page-item active"><a class="page-link"
+																href="javascript:page('${idx}','${search.getSearch_value()}');">${idx }</a></li>
+														</c:otherwise>
+													</c:choose>
+												</c:forEach>
+												<c:if test="${page.next}">
+													<li class="page-item"><a class="page-link"
+														href="javascript:page('${page.getEndPage()+1}','${search.getSearch_value()}');"
+														aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+													</a></li>
+												</c:if>
+											</ul>
+										</nav>
+									</c:if>
 								</div>
+
+
+
 							</div>
+						</div>
+					</div>
 
 
 
+					<!-- /.container-fluid -->
+
+				</div>
+				<!-- End of Main Content -->
+
+				<%@ include file="../bar/footer.jsp"%>
+
+				<%@ include file="../bar/logoutModal.jsp"%>
+
+
+				<!-- 약 데이터 수정 Modal-->
+				<div class="modal fade" id="updateModal" tabindex="-1" role="dialog"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Medicine 데이터
+									수정</h5>
+								<button class="close" type="button" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<input type="hidden" id="medicine_noU" name="medicine_noU">
+
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item">
+										<div class="row">
+											<div class="col-md-3" style="line-height: 38px;">Name</div>
+											<div class="col-md-9">
+												<input type="text" class="form-control" id="medicine_nameU"
+													name="medicine_nameU">
+											</div>
+										</div>
+									</li>
+									<li class="list-group-item mb-4">
+										<div class="row">
+											<div class="col-md-3 " style="line-height: 40px;">Price</div>
+											<div class="col-md-9">
+												<input type="text" class="form-control" id="medicine_priceU"
+													name="medicine_priceU">
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-primary updateFrm">수정</button>
+							</div>
 						</div>
 					</div>
 				</div>
 
 
 
-				<!-- /.container-fluid -->
-
-			</div>
-			<!-- End of Main Content -->
-
-			<%@ include file="../bar/footer.jsp"%>
-
-			<%@ include file="../bar/logoutModal.jsp"%>
 
 
-			<!-- 약 데이터 수정 Modal-->
-			<div class="modal fade" id="updateModal" tabindex="-1" role="dialog"
-				aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Medicine 데이터
-								수정</h5>
-							<button class="close" type="button" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">×</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<input type="hidden" id="medicine_noU" name="medicine_noU">
+				<!-- Bootstrap core JavaScript-->
+				<script src="vendor/jquery/jquery.min.js"></script>
+				<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-							<ul class="list-group list-group-flush">
-								<li class="list-group-item">
-									<div class="row">
-										<div class="col-md-3" style="line-height: 38px;">Name</div>
-										<div class="col-md-9">
-											<input type="text" class="form-control" id="medicine_nameU"
-												name="medicine_nameU">
-										</div>
-									</div>
-								</li>
-								<li class="list-group-item mb-4">
-									<div class="row">
-										<div class="col-md-3 " style="line-height: 40px;">Price</div>
-										<div class="col-md-9">
-											<input type="text" class="form-control" id="medicine_priceU"
-												name="medicine_priceU">
-										</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary updateFrm">수정</button>
-						</div>
-					</div>
-				</div>
-			</div>
+				<!-- Core plugin JavaScript-->
+				<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-
-
-
-
-			<!-- Bootstrap core JavaScript-->
-			<script src="vendor/jquery/jquery.min.js"></script>
-			<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-			<!-- Core plugin JavaScript-->
-			<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-			<!-- Custom scripts for all pages-->
-			<script src="js/sb-admin-2.min.js"></script>
+				<!-- Custom scripts for all pages-->
+				<script src="js/sb-admin-2.min.js"></script>
 </body>
 
 </html>

@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.vet.clinic.dto.NoticeDTO;
-import com.vet.clinic.dto.StaffDTO;
 
 @Repository
 @Mapper

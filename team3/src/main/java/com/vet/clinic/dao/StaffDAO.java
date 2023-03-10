@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.vet.clinic.dto.StaffDTO;
@@ -12,7 +13,10 @@ import com.vet.clinic.dto.StaffDTO;
 @Mapper
 public interface StaffDAO {
 
-	public List<StaffDTO> staffList();
+	public List<StaffDTO> staffList(@Param("pagenum") int pagenum, @Param("contentnum") int contentnum,
+			@Param("search_name") String search_name, @Param("search_value") String search_value);
+
+	public int contentTotal(@Param("search_name") String search_name, @Param("search_value") String search_value);
 
 	public StaffDTO login(StaffDTO staffDTO);
 
@@ -43,4 +47,5 @@ public interface StaffDAO {
 	public int gradeUpdate(Map<String, Object> map);
 
 	public int staffDel(int staff_no);
+
 }

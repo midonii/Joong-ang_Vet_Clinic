@@ -56,9 +56,9 @@ if (session.getAttribute("id") == null) {
 			$("#noticeWriteModal").modal("show");
 		});
 
-		let searchName2 = $("#searchName").val(); 
+		let searchName2 = $("#searchName").val();
 		$("#search_name").val(searchName2);
-		
+
 		$(".refresh").click(function() {
 			location.href = "/notice";
 		});
@@ -244,7 +244,7 @@ if (session.getAttribute("id") == null) {
 
 
 					<!-- DataTales Example -->
-					<div class="card shadow mb-4">
+					<div class="card shadow mb-1">
 
 
 
@@ -258,22 +258,23 @@ if (session.getAttribute("id") == null) {
 								style="margin-top: -10px;">
 								<form action="/notice" name="searchForm" onsubmit="return false"
 									method="get">
-									<div class="mb-2 mt-1">
+									<div class="mb-2 mt-3">
 										<input type="hidden" name="contentnum" id="contentnum"
 											value="${page.getContentnum()}">
 										<div class="input-group">
-											<input type="hidden" value="${search.getSearch_name() }" id="searchName">
-											<select class="form-control form-control-sm col-md-3"
-												name="search_name" id="search_name" >
+											<input type="hidden" value="${search.getSearch_name() }"
+												id="searchName"> <select
+												class="form-control col-md-3" name="search_name"
+												id="search_name" style="border-radius: 5px 0 0 5px">
 												<option value="" selected disabled="disabled">선택</option>
 												<option value="title">제목</option>
 												<option value="content">내용</option>
 											</select> <input type="text" name="search_value" id="search_value"
 												value="${search.getSearch_value() }"
-												class="form-control form-control-sm border-gray col-md-9"
+												class="form-control border-gray col-md-9"
 												placeholder="검색어를 입력하세요">
 											<div class="input-group-append">
-												<button class="btn btn-primary btn-sm" type="button"
+												<button class="btn btn-primary" type="button"
 													id="search_btn">
 													<i class="fas fa-search"></i>
 												</button>
@@ -282,9 +283,8 @@ if (session.getAttribute("id") == null) {
 									</div>
 								</form>
 								<c:if test="${sessionScope.staff_grade eq 'admin'}">
-									<div class="mb-2 mt-1">
-										<button type="button" class="btn btn-primary btn-sm"
-											id="noticeWrite">글쓰기</button>
+									<div class="mb-2 mt-3">
+										<button type="button" class="btn btn-primary" id="noticeWrite">글쓰기</button>
 									</div>
 								</c:if>
 							</div>
@@ -292,8 +292,8 @@ if (session.getAttribute("id") == null) {
 
 							<div class="table-responsive">
 
-								<table class="table table-sm table-bordered text-center"
-									id="dataTable" width="100%" cellspacing="0">
+								<table class="table table-bordered text-center" id="dataTable"
+									width="100%" cellspacing="0">
 									<thead>
 										<tr class="bg-gray-200">
 											<th class="col-1">글번호</th>
@@ -317,12 +317,12 @@ if (session.getAttribute("id") == null) {
 												<td>${nl.notice_read }</td>
 											</tr>
 										</c:forEach>
-									</tbody>
 									<c:if test="${page.getTotalcount() eq 0}">
 										<tr>
 											<td colspan="5">데이터가 없습니다.</td>
 										</tr>
 									</c:if>
+									</tbody>
 								</table>
 							</div>
 
@@ -330,11 +330,11 @@ if (session.getAttribute("id") == null) {
 							<c:if test="${page.getTotalcount() ne 0}">
 								<div class="mt-3">
 									<nav aria-label="Page navigation example">
-										<ul class="pagination pagination-sm justify-content-center">
+										<ul class="pagination justify-content-center">
 
 											<c:if test="${page.prev}">
 												<li class="page-item"><a class="page-link"
-													href="javascript:page(${page.getStartPage()-1});"
+													href="javascript:page('${page.getStartPage()-1}','${search.getSearch_name()}','${search.getSearch_value()}');"
 													aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 												</a></li>
 											</c:if>
@@ -353,7 +353,7 @@ if (session.getAttribute("id") == null) {
 											</c:forEach>
 											<c:if test="${page.next}">
 												<li class="page-item"><a class="page-link"
-													href="javascript:page(${page.getEndPage()+1})"
+													href="javascript:page('${page.getEndPage()+1}','${search.getSearch_name()}','${search.getSearch_value()}');"
 													aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 												</a></li>
 											</c:if>
