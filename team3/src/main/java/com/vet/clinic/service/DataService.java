@@ -9,9 +9,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.vet.clinic.dao.DataDAO;
 import com.vet.clinic.dto.MedicalDTO;
-import com.vet.clinic.dto.NoticeDTO;
 import com.vet.clinic.dto.PageDTO;
 import com.vet.clinic.dto.PetTypeDTO;
+import com.vet.clinic.dto.SearchDTO;
 
 @Service
 public class DataService {
@@ -19,35 +19,14 @@ public class DataService {
 	@Autowired
 	private DataDAO dataDAO;
 
-
-
-	public List<MedicalDTO> medicineList() {
-		return dataDAO.medicineList();
-	}
-
-	public List<MedicalDTO> inspectionList() {
-		return dataDAO.inspectionList();
-	}
-
 	public int mediAdd(Map<String, Object> map) {
 		return dataDAO.mediAdd(map);
 	}
 
-	public List<MedicalDTO> vaccineList() {
-		return dataDAO.vaccineList();
-	}
-
 	public int vaccineAdd(Map<String, Object> map) {
-		
+
 		return dataDAO.vaccineAdd(map);
 	}
-
-	/*
-	 * public List<PetTypeList> petTypeList() { return dataDAO.petTypeList(); }
-	 */
-//	public List<MedicalDTO> petTypeList(Criteria cri) {
-//		return dataDAO.petTypeList(cri);
-//	}
 
 	public int petTypeAdd(Map<String, Object> map) {
 		return dataDAO.petTypeAdd(map);
@@ -89,18 +68,15 @@ public class DataService {
 		return dataDAO.vaccineUpdate(map);
 	}
 
-	
-	public ModelAndView paging(ModelAndView mv, String pagenum, String contentnum) {
+	public ModelAndView paging(ModelAndView mv, String pagenum, String contentnum, SearchDTO searchDTO) {
 
 		PageDTO pageDTO = new PageDTO();
 
-		
-		
 		int cpagenum = Integer.parseInt(pagenum);
 		int ccontentnum = Integer.parseInt(contentnum);
 
-
-		pageDTO.setTotalcount(dataDAO.TotalPetType()); // mapper 전체 게시글 개수를 지정한다
+		pageDTO.setTotalcount(
+				dataDAO.TotalCount(searchDTO.getSearch_value(), searchDTO.getTable(), searchDTO.getCategory())); // 전체 게시글 개수
 		pageDTO.setPagenum(cpagenum - 1); // 현재 페이지를 페이지 객체에 지정한다 -1 을 해야 쿼리에서 사용할수 있다
 		pageDTO.setContentnum(ccontentnum); // 한 페이지에 몇개씩 게시글을 보여줄지 지정한다.
 		pageDTO.setCurrentblock(cpagenum); // 현재 페이지 블록이 몇번인지 현재 페이지 번호를 통해서 지정한다.
@@ -110,11 +86,19 @@ public class DataService {
 		pageDTO.setStartPage(pageDTO.getCurrentblock()); // 시작 페이지를 페이지 블록번호로 정한다.
 		pageDTO.setEndPage(pageDTO.getLastblock(), pageDTO.getCurrentblock());
 		// 마지막 페이지를 마지막 페이지 블록과 현재 페이지 블록 번호로 정한다.
-		
-		List<PetTypeDTO> petTypeList = dataDAO.petTypeList(pageDTO.getPagenum() * 10, pageDTO.getContentnum());
 
+		List<MedicalDTO> medicalList = dataDAO.medicalList(pageDTO.getPagenum() * 10, pageDTO.getContentnum(),
+				searchDTO.getSearch_value(), searchDTO.getTable(), searchDTO.getCategory());
+		List<MedicalDTO> vaccineList = dataDAO.vaccineList(pageDTO.getPagenum() * 10, pageDTO.getContentnum(),
+				searchDTO.getSearch_value(), searchDTO.getTable(), searchDTO.getCategory());
+		List<PetTypeDTO> petTypeList = dataDAO.petTypeList(pageDTO.getPagenum() * 10, pageDTO.getContentnum(),
+				searchDTO.getSearch_value(), searchDTO.getTable(), searchDTO.getCategory());
+
+		mv.addObject("medicalList", medicalList);
+		mv.addObject("vaccineList", vaccineList);
 		mv.addObject("petTypeList", petTypeList);
 		mv.addObject("page", pageDTO);
+		mv.addObject("search", searchDTO);
 
 		return mv;
 	}

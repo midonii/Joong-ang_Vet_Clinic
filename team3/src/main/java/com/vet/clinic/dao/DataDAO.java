@@ -14,18 +14,25 @@ import com.vet.clinic.dto.PetTypeDTO;
 @Mapper
 public interface DataDAO {
 
+	List<MedicalDTO> medicalList(@Param("pagenum") int pagenum, @Param("contentnum") int contentnum,
+			@Param("search_value") String search_value, @Param("table") String table,
+			@Param("category") String category);
 
-	List<MedicalDTO> medicineList();
-
-	List<MedicalDTO> inspectionList();
+	int TotalCount(@Param("search_value") String search_value, @Param("table") String table,
+			@Param("category") String category);
 
 	int mediAdd(Map<String, Object> map);
 
-	List<MedicalDTO> vaccineList();
+	List<MedicalDTO> vaccineList(@Param("pagenum") int pagenum, @Param("contentnum") int contentnum,
+			@Param("search_value") String search_value, @Param("table") String table,
+			@Param("category") String category);
+
+	List<PetTypeDTO> petTypeList(@Param("pagenum") int pagenum, @Param("contentnum") int contentnum,
+			@Param("search_value") String search_value, @Param("table") String table,
+			@Param("category") String category);
 
 	int vaccineAdd(Map<String, Object> map);
 
-	List<PetTypeDTO> petTypeList(@Param("pagenum") int pagenum, @Param("contentnum") int contentnum);
 
 	int petTypeAdd(Map<String, Object> map);
 
@@ -47,7 +54,6 @@ public interface DataDAO {
 
 	int vaccineUpdate(Map<String, Object> map);
 
-	int TotalPetType();
+	int TotalInspection(String search_value);
 
-	
 }
