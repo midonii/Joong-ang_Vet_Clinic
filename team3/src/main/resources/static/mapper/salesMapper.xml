@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vet.clinic.dao.SalesDAO">
+	<select id="salesList" resultType="Hashmap" parameterType="Hashmap">
+		SELECT ROW_NUMBER()
+		OVER(ORDER BY pay_date) AS rownum  , pay_date, totalprice
+		FROM salesview
+		<if test="toDate !=null and fromDate !=null">
+		WHERE pay_date BETWEEN #{fromDate} AND #{toDate}
+		</if>
+		ORDER BY rownum DESC
+		LIMIT 0,10;
+	</select>
+	
+
+
+</mapper>

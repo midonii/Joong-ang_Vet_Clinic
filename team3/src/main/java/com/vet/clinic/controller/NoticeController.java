@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.vet.clinic.dto.SearchDTO;
 import com.vet.clinic.service.NoticeService;
 
-import lombok.Getter;
 
 @Controller
 public class NoticeController {
