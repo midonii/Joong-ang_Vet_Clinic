@@ -1,6 +1,5 @@
 package com.vet.clinic.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,20 +8,15 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.vet.clinic.dto.NoticeDTO;
 import com.vet.clinic.dto.PageDTO;
 import com.vet.clinic.dto.SearchDTO;
 import com.vet.clinic.service.NoticeService;
-import com.vet.clinic.util.Util;
-
-import lombok.Getter;
 
 @Controller
 public class NoticeController {
