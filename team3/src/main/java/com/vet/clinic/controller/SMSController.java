@@ -1,24 +1,23 @@
 package com.vet.clinic.controller;
 
-import java.sql.Array;
-import java.util.HashMap;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sun.source.tree.DoWhileLoopTree;
+import com.vet.clinic.dto.MessageDTO;
 import com.vet.clinic.dto.SMSDTO;
+import com.vet.clinic.dto.SmsResponseDTO;
 import com.vet.clinic.service.SMSService;
 
 @Controller
@@ -60,8 +59,36 @@ public class SMSController {
 		
 		//System.out.println(map);
 		
-		int result = smsService.smsform_setdel(map);
+		smsService.smsform_setdel(map);
 		
 		return "redirect:/smsIndex";
+	}
+	
+	@GetMapping("/send")
+	public String getSmsPage() {
+		return "redirect:/smsIndex";
+	}
+	
+	@PostMapping("/sendSms")
+	public String sendSms(MessageDTO messageDTO, Model model) throws Exception {
+		String to = messageDTO.getTo();
+		String content = messageDTO.getContent();
+		System.out.println("받는사람 : " + to + " / 내용 : " + content);
+		/*
+		if( to.length() > 11 ) {
+			DecimalFormat comma = new DecimalFormat("###########,###########");
+			to = comma.format(to);
+			System.out.println(to);
+		}
+		*/
+		JSONObject json = new JSONObject();
+		SmsResponseDTO response = smsService.sendSms(messageDTO);
+		System.out.println(response);
+		/*
+		
+		model.addAttribute("response", response);
+		return "redirect:/smsIndex";
+		*/
+		return json.toString();
 	}
 }

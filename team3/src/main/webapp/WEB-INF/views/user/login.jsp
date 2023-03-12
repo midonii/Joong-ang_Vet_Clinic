@@ -164,7 +164,12 @@ function getCookie(cookieName){
 	}
 }
 
-
+function deleteCookie(cookieName){
+	// 쿠키삭제 : 쿠키유지시간을 과거로 바꾸면 됨.
+	var date = new Date();
+	date.setDate(date.getDate() - 1);
+	document.cookie = cookieName + "=" + "; expires=" + date.toGMTString();
+}
 
 
 

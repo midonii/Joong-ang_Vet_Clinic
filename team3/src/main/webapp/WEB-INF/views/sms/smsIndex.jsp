@@ -121,6 +121,10 @@ textarea {
 	width: 100px;
 	margin: 5px;
 }
+
+.sms_content{
+	position: relative;
+}
 thead {
   display: table; /* to take the same width as tr */
   width: calc(100% - 17px); /* - 17px because of the scrollbar width */
@@ -152,6 +156,8 @@ $(function() {
 	// 문자양식가져오기 -> 1,2,3,4,5,6 코드 줄이기 가능?
  	$("#sms_form1, #sms_form2, #sms_form3, #sms_form4, #sms_form5, #sms_form6").click(function(){
 		
+ 		
+ 		
 		let smsform_no = $(this).val();
 		$("#sms_hidden").val(smsform_no);	// 양식저장,삭제를 위해 hidden에 val값 지정
 		
@@ -170,6 +176,9 @@ $(function() {
 			
 			$("#sms_title").val(sms_title);
 	  		$("#sms_content").val(sms_content);
+	  		
+	  		var content = $("#sms_content").val();
+	 		$('#sms_count span').text(content.length);
 	  		
 		}).fail(function(xhr){
 			alert("실패");
@@ -294,6 +303,44 @@ $(function() {
 		
 	});
 	
+	$('#sms_content').keyup(function(){
+		  var content = $(this).val();
+		  $('#sms_count span').html(content.length);
+		  if (content.length > 40){
+		    alert("최대 40자까지 입력 가능합니다.");
+		    $(this).val(content.substring(0, 40));
+		    $('#sms_count span').text(40);
+		  }
+	});
+	
+	$("#sendSms").click(function(){
+		
+		var receiver = $(".smsTo2 #owner_tel").text();
+		var sms_content = $("#sms_content").val();
+		
+		/*
+		if(receiver.length > 11){
+// 			receiver = receiver.substring(10,22);
+//  			receiver += "," + receiver.substring(10,22);
+			receiver.replace(/(\d)(?=(?:\d{11})+(?!\d))/g, "$1,");
+			alert(receiver);
+		}
+		*/
+		
+		if(confirm("다음과 같이 문자를 발송합니다. \n 받는사람 : " + receiver +"\n 내용 : \n "+sms_content )){
+			//alert("!");
+			$.post({
+				url : "/sendSms",
+				data : {"to" : receiver , "content" : sms_content},
+				dataType : "json"
+			}).done(function(data){
+				alert("성공");
+			}).fail(function(xhr){
+				alert("실패");
+			});
+		}
+		
+	});
 
 
 });
@@ -338,9 +385,10 @@ $(function() {
 									<input type="hidden" id="sms_hidden" >
 									<input type="text" id="sms_title" name="sms_title" class="form-control"
 										style="width: 100%; height: 40px;" placeholder="제목">
-									<textarea class="form-control" id="sms_content" name="sms_content"
-										style="width: 100%; height: 250px; border: 1; margin-top: 2px;"
-										placeholder="내용"></textarea>
+									<textarea class="form-control sms_content" id="sms_content" name="sms_content"
+										style="width: 100%; height: 240px; border: 1; margin-top: 2px; position:relative;"
+										placeholder="내용" maxlength="40"></textarea>
+									<div id="sms_count" style="position:absolute; font-size:15px;"><span>0</span>/40자</div>
 								</div>
 								<div class="padding" style="width: 100%">
 									<button type="button" id="sms_form1" name="sms_form1"
@@ -369,8 +417,7 @@ $(function() {
 										value="양식삭제"> 
 								</div>
 								<div class="mb-2 justify-content-md-center" style="width:100%; padding: 0 20px 0 20px;">
-									<input type="button" class="btn btn-primary" value="전송"
-										style="width: 99%">
+									<input type="button" id="sendSms" class="btn btn-primary" value="전송" style="width: 99%">
 								</div>
 								<div class="justify-content-md-center" style="width:100%; padding: 0 20px 0 20px;">
 									<input type="button" id="reset" class="btn btn-outline-primary" value="초기화"
@@ -378,7 +425,7 @@ $(function() {
 								</div>
 							</div>
 
-							<!-- 문자발송form -->
+							<!-- 받는사람 -->
 							<div style="margin: 0 10px 0 15px;">
 								<div class="card smsform" style="width: 400px; ">
 									<div class="row smsTo" >
@@ -426,10 +473,10 @@ $(function() {
 										</thead>
 										<tbody>
 											<c:forEach items="${clientList }" var="cl">
-												<tr id="cl_tr">
+												<tr class="client" id="cl_tr">
 													<td class="col-2" id="pet_name">${cl.pet_name }</td>
 													<td class="col-2" id="owner_name">${cl.owner_name }</td>
-													<td class="col-4" id="owner_tel">${cl.owner_tel }</td>
+													<td class="col-4 owner_tel" id="owner_tel" value="1">${cl.owner_tel }</td>
 													<td class="col-3"></td>
 													<td class="col-1">
 														<i class="plusbtn xi-plus-circle-o xi-x" style="color: #4e73df; cursor: pointer;"></i>
