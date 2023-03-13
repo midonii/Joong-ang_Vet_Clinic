@@ -55,7 +55,7 @@
 				return false;
 			}
 
-			vacAddFrm.submit();
+// 			vacAddFrm.submit();
 
 		});
 
@@ -118,11 +118,26 @@
 			});
 		});
 
-		
+	 	$("#search_btn").click(function() {
+			let searchValue = $("#search_value").val();
+
+			if (searchValue == "" || searchValue.length < 2) {
+				alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
+				return false;
+			}
+			searchForm.submit();
+		});
 		
 	});
 	
-	
+	function page(idx, search_value) {
+		var pagenum = idx;
+		let searchValue = search_value;
+		var contentnum = $("#contentnum").val();
+		location.href = "${pageContext.request.contextPath}/vaccine?pagenum="
+				+ pagenum + "&contentnum=" + contentnum +"&search_value=" + searchValue;
+
+	}
 	function vaccineDel(vac_no){
 		if(confirm("정말 삭제하시겠습니까?")){
 		location.href =  "/vaccineDel?vac_no=" + vac_no;
@@ -165,7 +180,7 @@
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
-							<div class="card-header py-3">
+						<div class="card-header py-3">
 							<h5 class="m-0 font-weight-bold text-primary">데이터관리</h5>
 
 						</div>
@@ -173,12 +188,13 @@
 						<div class="card-body">
 							<div style="margin-top: -5px;">
 								<ul class="nav nav-tabs">
-									<li class="nav-item"><a
-										class="nav-link"
+									<li class="nav-item"><a class="nav-link"
 										aria-current="page" href="/medicine" tabindex="0">약</a></li>
 									<li class="nav-item "><a class="nav-link"
 										href="/inspection">검사</a></li>
-									<li class="nav-item"><a class="nav-link active font-weight-bolder text-primary" href="/vaccine">접종</a></li>
+									<li class="nav-item"><a
+										class="nav-link active font-weight-bolder text-primary"
+										href="/vaccine">접종</a></li>
 									<li class="nav-item"><a class="nav-link" href="/petType">견종</a></li>
 								</ul>
 							</div>
@@ -258,7 +274,7 @@
 
 
 										<div class="text-center col-lg-12 col-12">
-											<button type="button" id="addBtn"
+											<button type="submit" id="addBtn"
 												class="btn btn-primary col-8 ">저장</button>
 										</div>
 									</form>
@@ -267,19 +283,22 @@
 								<!-- 리스트 출력 -->
 								<div class="col-6 col-md-6"
 									style="overflow: auto; height: 570px; padding: 10px;">
-
-									<div class="input-group mb-3">
-										<select class="form-control col-md-3">
-											<option>이름</option>
-											<option>가격</option>
-										</select> <input type="text" class="form-control border-gray col-md-9"
-											placeholder="검색어를 입력하세요">
-										<div class="input-group-append">
-											<button class="btn btn-primary" type="button">
-												<i class="fas fa-search"></i>
-											</button>
+									<form action="/vaccine" name="searchForm"
+										onsubmit="return false" method="get">
+										<input type="hidden" name="contentnum" id="contentnum"
+											value="${page.getContentnum()}">
+										<div class="input-group mb-3">
+											<input type="text" class="form-control border-gray col-md-12"
+												placeholder="검색어를 입력하세요" name="search_value"
+												id="search_value" value="${search.getSearch_value() }">
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button"
+													id="search_btn">
+													<i class="fas fa-search"></i>
+												</button>
+											</div>
 										</div>
-									</div>
+									</form>
 									<div class="table-responsive">
 										<table class="table table-sm table-bordered text-center"
 											id="dataTable" width="100%" cellspacing="0">
@@ -307,21 +326,53 @@
 																value="${vl.vac_no }">
 																<i class="fa-solid fa-pen"></i>
 															</button>
-															<button type="button"
-																onclick="vaccineDel(${vl.vac_no })"
+															<button type="button" onclick="vaccineDel(${vl.vac_no })"
 																class="btn btn-circle btn-sm btn-danger">
 																<i class="fa-solid fa-trash"></i>
 															</button>
 														</td>
 													</tr>
 												</c:forEach>
-
+												<c:if test="${page.getTotalcount() eq 0}">
+													<tr>
+														<td colspan="5">검색 결과가 없습니다.</td>
+													</tr>
+												</c:if>
 											</tbody>
 										</table>
 									</div>
+									<c:if test="${page.getTotalcount() ne 0}">
+										<nav aria-label="Page navigation example">
+											<ul class="pagination pagination-sm justify-content-center">
 
-
-
+												<c:if test="${page.prev}">
+													<li class="page-item"><a class="page-link"
+														href="javascript:page('${page.getStartPage()-1}','${search.getSearch_value()}');"
+														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+													</a></li>
+												</c:if>
+												<c:forEach begin="${page.getStartPage()}"
+													end="${page.getEndPage()}" var="idx">
+													<c:choose>
+														<c:when test="${idx ne page.pagenum+1 }">
+															<li class="page-item"><a class="page-link"
+																href="javascript:page('${idx}','${search.getSearch_value()}');">${idx }</a></li>
+														</c:when>
+														<c:otherwise>
+															<li class="page-item active"><a class="page-link"
+																href="javascript:page('${idx}','${search.getSearch_value()}');">${idx }</a></li>
+														</c:otherwise>
+													</c:choose>
+												</c:forEach>
+												<c:if test="${page.next}">
+													<li class="page-item"><a class="page-link"
+														href="javascript:page('${page.getEndPage()+1}','${search.getSearch_value()}');"
+														aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+													</a></li>
+												</c:if>
+											</ul>
+										</nav>
+									</c:if>
 
 								</div>
 							</div>
@@ -340,8 +391,8 @@
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">Vaccine
-									데이터 수정</h5>
+								<h5 class="modal-title" id="exampleModalLabel">Vaccine 데이터
+									수정</h5>
 								<button class="close" type="button" data-dismiss="modal"
 									aria-label="Close">
 									<span aria-hidden="true">×</span>

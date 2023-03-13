@@ -92,7 +92,6 @@ public class UserController {
 		// step1) 입력한 email이 DB에 있는지 확인
 		System.out.println("사용자가 입력한 email : " + email);
 		int result = userService.findEmail(email);	// email DB에 있는지 확인하고 있다면 해당 email의 회원번호 반환.
-		//System.out.println("result : " + result);
 		
 		// email이 DB에 있다면
 		if(result == 1) {
@@ -137,18 +136,12 @@ public class UserController {
 	public String checkTempnum(@RequestParam Map<String, String> map) {
 		
 		// 사용자가 입력한 인증번호 확인
-		String email = map.get("fixEmail");
-		String userTempnum = map.get("userTempnum");
-		System.out.println("사용자가 입력한 이메일 : " + email + "\n || 사용자가 입력한 인증번호 : " + userTempnum);
+		System.out.println("사용자가 입력한 이메일 : " + map.get("email") + "\n || 사용자가 입력한 인증번호 : " + map.get("userTempnum"));
 		
-		// DB로 userTemppw 보내서 해당이메일 사용자의 temppw와 비교하여 result값 출력
-		StaffDTO check = new StaffDTO();
-		check.setStaff_email(email);
-		check.setStaff_tempnum(Integer.parseInt(userTempnum));
-
 		JSONObject json = new JSONObject();
 		
-		int result = userService.checkTempnum(check);
+		// DB로 userTemppw 보내서 해당이메일 사용자의 temppw와 비교하여 result값 출력
+		int result = userService.checkTempnum(map);
 		System.out.println("인증번호 확인 결과 : " + result); // 비교결과 : 1
 		
 		// ajax 보내기
@@ -168,16 +161,8 @@ public class UserController {
 	@PostMapping("/newpwSet")
 	public String newpwSet(@RequestParam Map<String, String> map) {
 		
-		String fixEmail = map.get("fixEmail");
-		String newPw = map.get("newPw");
-		System.out.println("사용자이메일 : "+ fixEmail + " || 받아온 새 비밀번호 : " + newPw);
-		
-		StaffDTO newpwSet = new StaffDTO();
-		newpwSet.setStaff_pw(newPw);
-		newpwSet.setStaff_email(fixEmail);
-		
 		// DB로 보내 비밀번호 새로 저장 & 저장된 tempnum 삭제(null)
-		int result = userService.newpwSet(newpwSet);
+		int result = userService.newpwSet(map);
 		System.out.println("새비밀번호 저장결과 : " + result);
 		
 		JSONObject json = new JSONObject();
@@ -221,25 +206,9 @@ public class UserController {
 	@PostMapping("/join")
 	public String join(@RequestParam Map<String, String> map) {
 		
-		String id = map.get("id");
-		String name = map.get("name");
-		String pw = map.get("pw");
-		String repw = map.get("repw");
-		String tel = map.get("tel");
-		String birth = map.get("birth");
-		String email = map.get("email");
-		String address = map.get("address");
-		String detailAddr = map.get("detailAddr");
-		String extraAddr = map.get("extraAddr");
-		String addr = address + detailAddr + extraAddr;
-		String grade = map.get("grade");
-		System.out.println(addr);
-		//System.out.println(address + detailAddr + extraAddr);
-		System.out.println(id+" / "+name+" / "+pw+" / "+tel+" / "+birth+" / "+email+" / "+addr+" / "+grade);
+		System.out.println(map);
 		
-		StaffDTO joinDTO = new StaffDTO(id, pw, name, birth, tel, email, addr, grade);
-		
-		int result = userService.join(joinDTO);
+		int result = userService.join(map);
 		
 		JSONObject joinresult = new JSONObject();
 		joinresult.put("joinresult", result );
@@ -314,14 +283,9 @@ public class UserController {
 	@PostMapping("/editProfile")
 	public String editProfile(@RequestParam Map<String, String> map, HttpSession session) {
 		
-		Map<String, Object> edit = new HashMap<String, Object>();
-		edit.put("sessionID", session.getAttribute("id"));
-		edit.put("pw", map.get("pw"));
-		edit.put("name", map.get("name"));
-		edit.put("tel", map.get("tel"));
-		edit.put("addr", map.get("addr"));
+		map.put("sessionID", (String) session.getAttribute("id"));
 		
-		int result = userService.editProfile(edit);
+		int result = userService.editProfile(map);
 		
 		JSONObject json = new JSONObject();
 		json.put("result", result);

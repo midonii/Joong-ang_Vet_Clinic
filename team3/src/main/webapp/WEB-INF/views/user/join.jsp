@@ -198,6 +198,7 @@ $(function(){
 		let detailAddr = $("#sample6_detailAddress").val();
 		let extraAddr = $("#sample6_extraAddress").val();
 		let grade = $("#grade option:selected").val();
+		let addr = address + detailAddr + extraAddr ;
 		//alert(id+" / "+pw+" / "+name+" / "+birth+" / "+tel+" / "+email+" / "+grade);
 		
 		if(pw == "" || name == "" || birth == "" || tel == "" || email == "" || address == ""){
@@ -208,7 +209,7 @@ $(function(){
 	   		 	url : "/join",
 		   	 	data : {"id" : id, "pw" : pw, "name" : name, 
 		   	 			"birth" : birth, "tel" : tel, "email" : email, "grade" : grade,
-		   	 			"address":address, "detailAddr":detailAddr, "extraAddr":extraAddr},
+		   	 			"addr" : addr},
 		   	 	dataType : "json"
 	   		}).done(function(data){
 	   			if(data.joinresult == "1"){

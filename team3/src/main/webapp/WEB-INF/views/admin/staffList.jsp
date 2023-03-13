@@ -62,11 +62,11 @@
 				alert("실패");
 			});
 		});
-		
-		$(".refresh").click(function(){
-			location.href="/staffList";
+
+		$(".refresh").click(function() {
+			location.href = "/staffList";
 		});
-		
+
 		$(".gradeUpdate").click(function() {
 
 			let staff_no = $("#staff_no").val();
@@ -103,12 +103,40 @@
 
 		$(".deleteStaff").click(function() {
 			let staff_no = $("#staff_no").val();
-			if(confirm("정말 삭제하시겠습니까?")){
+			if (confirm("정말 삭제하시겠습니까?")) {
 				location.href = "/staffDel?staff_no=" + staff_no;
 			}
 		});
 
+		let searchName2 = $("#searchName").val();
+		$("#search_name").val(searchName2);
+
+		$("#search_btn").click(function() {
+			let searchName = $("#search_name").val();
+			let searchValue = $("#search_value").val();
+
+			if (searchName == 0) {
+				alert("검색하시려는 항목을 선택하세요");
+				return false;
+			}
+
+			if (searchValue == "" || searchValue.length < 2) {
+				alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
+				return false;
+			}
+			searchForm.submit();
+		});
 	});
+	function page(idx, search_name, search_value) {
+		var pagenum = idx;
+		let searchName = search_name;
+		let searchValue = search_value;
+		var contentnum = $("#contentnum").val();
+		location.href = "${pageContext.request.contextPath}/staffList?pagenum="
+				+ pagenum + "&contentnum=" + contentnum + "&search_name="
+				+ searchName + "&search_value=" + searchValue;
+
+	}
 </script>
 </head>
 
@@ -132,40 +160,52 @@
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h5 class="h5 mb-4 text-gray-900">
-						<b>직원 관리</b>
-					</h5>
+					<div class="mb-1"
+						style="font-size: 13px; margin-top: -10px; padding-left: 8px;">
+						<a href="/index" style="text-decoration: none;"
+							class="text-gray-600"><i class="fa-solid fa-house-chimney"></i></a>&nbsp;&nbsp;<i
+							class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp; <a
+							href="/staffList" style="text-decoration: none;"
+							class="text-gray-700">직원관리</a>
+					</div>
 
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
-						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">직원 리스트</h6>
-						</div>
+					
 						<div class="card-body">
-							<form class="mb-3 justify-content-end">
-
-
-
-
-
-								<div class="input-group">
-									<select class="form-control col-2">
-										<option>이름</option>
-										<option>ID</option>
-										<option>전화번호</option>
-										<option>이메일</option>
-										<option>직책</option>
-									</select> <input type="text" class="form-control border-gray"
-										placeholder="검색어를 입력하세요">
-									<div class="input-group-append">
-										<button class="btn btn-primary" type="button">
-											<i class="fas fa-search"></i>
-										</button>
+							<div class="d-flex justify-content-end"
+								style="margin-top: -10px;">
+								<form action="/staffList" name="searchForm"
+									onsubmit="return false" method="get">
+									<div class="mb-2 mt-3">
+										<input type="hidden" name="contentnum" id="contentnum"
+											value="${page.getContentnum()}">
+										<div class="input-group">
+											<input type="hidden" value="${search.getSearch_name() }"
+												id="searchName"> <select
+												class="form-control col-md-3" name="search_name"
+												id="search_name" style="border-radius: 5px 0 0 5px">
+												<option value="" selected disabled="disabled">선택</option>
+												<option value="name">이름</option>
+												<option value="id">아이디</option>
+												<option value="tel">전화번호</option>
+												<option value="email">이메일</option>
+												<option value="grade">직책</option>
+											</select> <input type="text" name="search_value" id="search_value"
+												value="${search.getSearch_value() }"
+												class="form-control border-gray col-md-9"
+												placeholder="검색어를 입력하세요">
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button"
+													id="search_btn">
+													<i class="fas fa-search"></i>
+												</button>
+											</div>
+										</div>
 									</div>
-								</div>
-
-							</form>
+								</form>
+							</div>
 							<div class="table-responsive">
 								<table class="table table-sm table-bordered text-center"
 									id="dataTable" width="100%" cellspacing="0">
@@ -194,10 +234,50 @@
 												<td>${sl.staff_grade }</td>
 											</tr>
 										</c:forEach>
-
+										<c:if test="${page.getTotalcount() eq 0}">
+											<tr>
+												<td colspan="6">데이터가 없습니다.</td>
+											</tr>
+										</c:if>
 									</tbody>
 								</table>
 							</div>
+
+							<c:if test="${page.getTotalcount() ne 0}">
+								<div class="mt-3">
+									<nav aria-label="Page navigation example">
+										<ul class="pagination justify-content-center">
+
+											<c:if test="${page.prev}">
+												<li class="page-item"><a class="page-link"
+													href="javascript:page('${page.getStartPage()-1}','${search.getSearch_name()}','${search.getSearch_value()}');"
+													aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+												</a></li>
+											</c:if>
+											<c:forEach begin="${page.getStartPage()}"
+												end="${page.getEndPage()}" var="idx">
+												<c:choose>
+													<c:when test="${idx ne page.pagenum+1 }">
+														<li class="page-item"><a class="page-link"
+															href="javascript:page('${idx}','${search.getSearch_name()}','${search.getSearch_value()}');">${idx }</a></li>
+													</c:when>
+													<c:otherwise>
+														<li class="page-item active"><a class="page-link"
+															href="javascript:page('${idx}','${search.getSearch_name()}','${search.getSearch_value()}');">${idx }</a></li>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+											<c:if test="${page.next}">
+												<li class="page-item"><a class="page-link"
+													href="javascript:page('${page.getEndPage()+1}','${search.getSearch_name()}','${search.getSearch_value()}');"
+													aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+												</a></li>
+											</c:if>
+										</ul>
+									</nav>
+								</div>
+
+							</c:if>
 						</div>
 					</div>
 
@@ -214,7 +294,8 @@
 
 			<!-- staff 상세보기, 권한 수정 Modal-->
 			<div class="modal fade" id="staffDetailModal" tabindex="-1"
-				role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				data-backdrop="static" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">

@@ -3,38 +3,66 @@
 
 <mapper namespace="com.vet.clinic.dao.DataDAO">
 
-	<select id="medicineList" resultType="MedicalDTO">
+	<select id="medicalList" resultType="MedicalDTO"
+		parameterType="HashMap">
 		SELECT ROW_NUMBER()
 		over(order by m.medical_no desc) AS
 		mno,m.*
 		FROM
 		(
 		SELECT * FROM medicalList
-		WHERE medical_category='약'
+		WHERE medical_category=#{category}
+		<if test="search_value != null">
+			AND medical_name LIKE CONCAT('%', #{search_value},'%')
+		</if>
 		) m
 		ORDER BY mno
+		LIMIT #{pagenum},#{contentnum}
+	</select>
 
+	<select id="TotalCount" resultType="Integer"
+		parameterType="HashMap">
+		SELECT COUNT(*) FROM ${table}
+		<if test='table == "medicalList"'>
+			WHERE medical_category= #{category}
+			<choose>
+				<when test="search_value != null">
+					AND medical_name LIKE CONCAT('%',
+					#{search_value},'%')
+				</when>
+			</choose>
+		</if>
+		<if test='table == "vaccine"'>
+			<choose>
+				<when test="search_value != null">
+					WHERE vac_name LIKE CONCAT('%',#{search_value},'%')
+				</when>
+			</choose>
+		</if>
+		<if test='table == "petType"'>
+			<choose>
+				<when test="search_value != null">
+					WHERE type_name LIKE CONCAT('%',#{search_value},'%')
+				</when>
+			</choose>
+		</if>
 	</select>
-	<select id="inspectionList" resultType="MedicalDTO">
+
+	<select id="vaccineList" resultType="MedicalDTO" parameterType="HashMap">
 		SELECT ROW_NUMBER()
-		over(order by m.medical_no) AS
-		mno,m.*
-		FROM
-		(
-		SELECT * FROM medicalList
-		WHERE medical_category='검사'
-		) m
-		ORDER BY mno DESC
-	</select>
-	<select id="vaccineList" resultType="MedicalDTO">
-		SELECT ROW_NUMBER() over(ORDER BY v.vac_no) AS
+		over(ORDER BY v.vac_no) AS
 		vno,v.*
 		FROM
 		(
 		SELECT * FROM
 		vaccine
+		<if test="search_value != null">
+			WHERE vac_name LIKE CONCAT('%', #{search_value},'%')
+		</if>
 		) v
-		ORDER BY vno DESC
+		ORDER BY
+		vno DESC
+		LIMIT #{pagenum}, #{contentnum};
 	</select>
 	<select id="petTypeList" resultType="petTypeDTO">
 		SELECT ROW_NUMBER()
@@ -42,11 +70,15 @@
 		tno,t.*
 		FROM
 		(
-		SELECT * FROM petType 
+		SELECT * FROM petType
+			<if test="search_value != null">
+			WHERE type_name LIKE CONCAT('%', #{search_value},'%')
+		</if>
 		) t
-		ORDER BY tno 
+		ORDER
+		BY tno
 		LIMIT #{pagenum}, #{contentnum};
-		
+
 
 	</select>
 	<insert id="mediAdd" parameterType="HashMap">
@@ -130,8 +162,6 @@
 		WHERE type_no=#{type_no};
 
 	</update>
-	<select id="TotalPetType" resultType="Integer">
-		SELECT COUNT(*) FROM petType
-	</select>
+
 
 </mapper>

@@ -36,6 +36,16 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
 <script type="text/javascript">
+
+
+function page(idx, search_value) {
+	var pagenum = idx;
+	let searchValue = search_value;
+	var contentnum = $("#contentnum").val();
+	location.href = "${pageContext.request.contextPath}/inspection?pagenum="
+			+ pagenum + "&contentnum=" + contentnum +"&search_value=" + searchValue;
+
+}
 	$(function() {
 		$("#addBtn").click(function() {
 
@@ -109,6 +119,16 @@
 			});
 		});
 
+		
+	 	$("#search_btn").click(function() {
+			let searchValue = $("#search_value").val();
+
+			if (searchValue == "" || searchValue.length < 2) {
+				alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
+				return false;
+			}
+			searchForm.submit();
+		});
 
 	});
 	function inspectionDel(medical_no){
@@ -139,7 +159,7 @@
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
-				
+
 					<!-- Page Heading -->
 					<div class="mb-1"
 						style="font-size: 13px; margin-top: -10px; padding-left: 8px;">
@@ -155,7 +175,7 @@
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
-					<div class="card-header py-3">
+						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-primary">데이터관리</h6>
 
 						</div>
@@ -163,10 +183,10 @@
 						<div class="card-body">
 							<div style="margin-top: -5px;">
 								<ul class="nav nav-tabs">
-									<li class="nav-item"><a
-										class="nav-link"
+									<li class="nav-item"><a class="nav-link"
 										aria-current="page" href="/medicine" tabindex="0">약</a></li>
-									<li class="nav-item "><a class="nav-link  active font-weight-bolder text-primary"
+									<li class="nav-item "><a
+										class="nav-link  active font-weight-bolder text-primary"
 										href="/inspection">검사</a></li>
 									<li class="nav-item"><a class="nav-link" href="/vaccine">접종</a></li>
 									<li class="nav-item"><a class="nav-link" href="/petType">견종</a></li>
@@ -217,18 +237,23 @@
 								<div class="col-6 col-md-6"
 									style="overflow: auto; height: 570px; padding: 10px;">
 
-									<div class="input-group mb-3">
-										<select class="form-control col-md-3">
-											<option>이름</option>
-											<option>가격</option>
-										</select> <input type="text" class="form-control border-gray col-md-9"
-											placeholder="검색어를 입력하세요">
-										<div class="input-group-append">
-											<button class="btn btn-primary" type="button">
-												<i class="fas fa-search"></i>
-											</button>
+									<form action="/inspection" name="searchForm"
+										onsubmit="return false" method="get">
+										<input type="hidden" name="contentnum" id="contentnum"
+											value="${page.getContentnum()}">
+										<div class="input-group mb-3">
+											<input type="text" class="form-control border-gray col-md-12"
+												name="search_value" id="search_value"
+												value="${search.getSearch_value() }"
+												placeholder="검사 이름을 입력하세요">
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button"
+													id="search_btn">
+													<i class="fas fa-search"></i>
+												</button>
+											</div>
 										</div>
-									</div>
+									</form>
 									<div class="table-responsive">
 										<table class="table table-sm table-bordered text-center"
 											id="dataTable" width="100%" cellspacing="0">
@@ -243,19 +268,19 @@
 											</thead>
 
 											<tbody>
-												<c:forEach items="${inspectionList }" var="il">
+												<c:forEach items="${medicalList }" var="ml">
 													<tr>
-														<td>${il.mno }</td>
-														<td>${il.medical_name }</td>
-														<td>${il.medical_price }원</td>
+														<td>${ml.mno }</td>
+														<td>${ml.medical_name }</td>
+														<td>${ml.medical_price }원</td>
 														<td>
 															<button type="button"
 																class="btn btn-circle btn-sm btn-warning inspectionUpdate"
-																value="${il.medical_no }">
+																value="${ml.medical_no }">
 																<i class="fa-solid fa-pen"></i>
 															</button>
 															<button type="button"
-																onclick="inspectionDel(${il.medical_no })"
+																onclick="inspectionDel(${ml.medical_no })"
 																class="btn btn-circle btn-sm btn-danger">
 																<i class="fa-solid fa-trash"></i>
 															</button>
@@ -263,9 +288,49 @@
 													</tr>
 												</c:forEach>
 
+												<c:if test="${page.getTotalcount() eq 0}">
+													<tr>
+														<td colspan="4">검색 결과가 없습니다.</td>
+													</tr>
+												</c:if>
 											</tbody>
 										</table>
 									</div>
+
+									<c:if test="${page.getTotalcount() ne 0}">
+										<nav aria-label="Page navigation example">
+											<ul class="pagination pagination-sm justify-content-center">
+
+												<c:if test="${page.prev}">
+													<li class="page-item"><a class="page-link"
+														href="javascript:page('${page.getStartPage()-1}','${search.getSearch_value()}');"
+														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+													</a></li>
+												</c:if>
+												<c:forEach begin="${page.getStartPage()}"
+													end="${page.getEndPage()}" var="idx">
+													<c:choose>
+														<c:when test="${idx ne page.pagenum+1 }">
+															<li class="page-item"><a class="page-link"
+																href="javascript:page('${idx}','${search.getSearch_value()}');">${idx }</a></li>
+														</c:when>
+														<c:otherwise>
+															<li class="page-item active"><a class="page-link"
+																href="javascript:page('${idx}','${search.getSearch_value()}');">${idx }</a></li>
+														</c:otherwise>
+													</c:choose>
+												</c:forEach>
+												<c:if test="${page.next}">
+													<li class="page-item"><a class="page-link"
+														href="javascript:page('${page.getEndPage()+1}','${search.getSearch_value()}');"
+														aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+													</a></li>
+												</c:if>
+											</ul>
+										</nav>
+									</c:if>
+
+
 								</div>
 							</div>
 						</div>
@@ -290,8 +355,8 @@
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Inspection 데이터
-								수정</h5>
+							<h5 class="modal-title" id="exampleModalLabel">Inspection
+								데이터 수정</h5>
 							<button class="close" type="button" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">×</span>
@@ -314,8 +379,8 @@
 									<div class="row">
 										<div class="col-md-3 " style="line-height: 40px;">Price</div>
 										<div class="col-md-9">
-											<input type="text" class="form-control" id="inspection_priceU"
-												name="inspection_priceU">
+											<input type="text" class="form-control"
+												id="inspection_priceU" name="inspection_priceU">
 										</div>
 									</div>
 								</li>
