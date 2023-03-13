@@ -63,6 +63,14 @@ public class ClientService {
 		return clientDAO.petAdd(map);
 	}
 
+	public Map<String, Object> petUpdateAjax(Map<String, Object> map) {
+		return clientDAO.petUpdateAjax(map);
+	}
+
+	public int petUpdate(Map<String, Object> map) {
+		return clientDAO.petUpdate(map);
+	}
+
 	
 
 

@@ -141,10 +141,14 @@ public class ClientContoller {
 		client.setFloatingClientComments(request.getParameter("floatingClientComments"));
 		
 		int result = clientService.clientAdd(client);
+		
 		System.out.println("처리결과는 : " + result);
 		
+		JSONObject json = new JSONObject();
+		json.put("result", result);
 		
-		return "redirect:profile";
+		return json.toString();
+	
 	}
 	
 	//보호자 수정
@@ -190,12 +194,60 @@ public class ClientContoller {
 		String petBirth = petBirthYear+"-"+petBirthMonth+"-"+petBirthDay;
 		map.put("petBirth", petBirth);
 		
-		//System.out.println(map);
+		System.out.println(map);
 		int petAdd = clientService.petAdd(map);
 		
 		return "redirect:/profile";
 	}
 	
-	
+	//반려견 정보 수정 (정보 보내기)
+	@ResponseBody
+	@PostMapping(value = "petUpdateAjax" , produces = "application/json;charset=UTF-8")
+	public String petUpdateAjax(@RequestParam Map<String, Object> map) {
+		
+		System.out.println(map);
+		JSONObject json = new JSONObject();
 
+		
+		  if (map.containsKey("petNo")) {
+		  
+		  Map<String, Object> petUpdateShow = clientService.petUpdateAjax(map);
+		  
+		  json.put("result", petUpdateShow);
+		  System.out.println(json.toString());
+		 
+		  } else {
+			  
+		  json.put("result", 0);
+		  
+		  }
+		
+		
+		return json.toString();
+	}
+	
+	@ResponseBody
+	@PostMapping(value="petUpdate", produces = "application/json;charset=UTF-8")
+	public String petUpdate(@RequestParam Map<String, Object> map) {
+		
+		//System.out.println(map);
+		
+		//생년월일 조합하기
+		String petBirthYear = (String) map.get("petUpdateBirthYear");
+		String petBirthMonth = (String) map.get("petUpdateBirthMonth");
+		String petBirthDay = (String) map.get("petUpdateBirthDay");
+		String petBirth = petBirthYear+"-"+petBirthMonth+"-"+petBirthDay;
+		map.put("petBirth", petBirth);
+				
+		System.out.println(map);
+		int petUpdate = clientService.petUpdate(map);
+		
+		System.out.println(petUpdate);
+		
+		JSONObject json = new JSONObject();
+		json.put("result", petUpdate);
+		
+		return json.toString();
+
+	}
 }
