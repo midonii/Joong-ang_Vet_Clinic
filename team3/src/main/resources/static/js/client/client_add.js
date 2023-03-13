@@ -89,7 +89,7 @@ $(function(){
 					return false;
 				}
 				
-				if($("#updateClientTel").val() == "" || $("#updateClientTel").val().length < 9 || 
+				if($("#updateClientTel").val() == "" || $("#updateClientTel").val().length > 9 || 
 					RegExp.test($("#updateClientTel").val())	){
 					alert("전화번호는 숫자만 입력해 주세요.");
 					$("#updateClientTel").focus();
@@ -1032,7 +1032,7 @@ $(function(){
 					return false;
 				}
 				
-				if($("#updateClientTel").val() == "" || $("#updateClientTel").val().length < 9 || 
+				if($("#updateClientTel").val() == "" || $("#updateClientTel").val().length > 9 || 
 					RegExp.test($("#updateClientTel").val())	){
 					alert("전화번호는 숫자만 입력해 주세요.");
 					$("#updateClientTel").focus();
@@ -1229,14 +1229,14 @@ $(function(){
 				return false;
 			}
 			
-			if($("#floatingClientTel").val() == "" || $("#floatingClientTel").val().length < 9 || 
+			if($("#floatingClientTel").val() == "" || $("#floatingClientTel").val().length > 9 || 
 				RegExp.test($("#floatingClientTel").val())	){
 				alert("전화번호는 숫자만 입력해 주세요.");
 				$("#floatingClientTel").focus();
 				return false;
 			}
 			
-			if($("#floatingClientAddr").val() == "" || $("#floatingClientAddr").val().length < 1){
+			if($("#floatingClientAddr").val() == "" || $("#floatingClientAddr").val().length < 2){
 				alert("올바른 주소를 입력해 주세요.");
 				$("#floatingClientAddr").focus();
 				return false;

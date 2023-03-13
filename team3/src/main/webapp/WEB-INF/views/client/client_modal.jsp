@@ -162,7 +162,7 @@
 							<div class="form-floating">
 								<input type="text" class="form-control"
 									name="floatingClientName" id="floatingClientName"
-									placeholder="name"> <label for="floatingInput">이름</label>
+									placeholder="name" maxlength="6"> <label for="floatingInput">이름</label>
 							</div>
 						</div>
 						<div class="col-8">
@@ -176,7 +176,7 @@
 					</div>
 					<div class="form-floating mb-3">
 						<input type="text" class="form-control" name="floatingClientTel"
-							id="floatingClientTel" placeholder="01012345678"> <label
+							id="floatingClientTel" placeholder="01012345678" maxlength="12"> <label
 							for="floatingTel">전화번호</label>
 					</div>
 					<div class="form-floating mb-3">
@@ -232,7 +232,7 @@
 						<div class="col-4">
 							<div class="form-floating">
 								<input type="text" class="form-control" name="updateClientName"
-									id="updateClientName" placeholder="name"> <label
+									id="updateClientName" placeholder="name" maxlength="6"> <label
 									for="updateClientName">이름</label>
 							</div>
 						</div>
@@ -247,7 +247,7 @@
 					</div>
 					<div class="form-floating mb-3">
 						<input type="text" class="form-control" name="updateClientTel"
-							id="updateClientTel" placeholder="01012345678"> <label
+							id="updateClientTel" placeholder="01012345678" maxlength="12"> <label
 							for="updateClientTel">전화번호</label>
 					</div>
 					<div class="form-floating mb-3">
@@ -324,7 +324,7 @@
 								<div class="col-4">
 									<div class="form-floating">
 										<input type="text" class="form-control" name="petAddWeight"
-											id="petAddWeight" placeholder="kg"> <label
+											id="petAddWeight" placeholder="kg" maxlength="5"> <label
 											for="petAddWeight">몸무게(kg)</label>
 									</div>
 								</div>
@@ -421,7 +421,7 @@
 								<div class="col-4">
 									<div class="form-floating">
 										<input type="text" class="form-control" name="petUpdateWeight"
-											id="petUpdateWeight" placeholder="kg"> <label
+											id="petUpdateWeight" placeholder="kg" maxlength="5"> <label
 											for="petUpdateWeight">몸무게(kg)</label>
 									</div>
 								</div>
