@@ -6,13 +6,22 @@
 	<select id="clientlist" resultType="ClientDTO">
 	SELECT *
 	FROM owner
+	<if test="search_name != null">
+	<choose>
+	<when test="search_name == 'owner'">
+	WHERE (owner_name LIKE CONCAT('%',#{search_value },'%') or owner_tel LIKE CONCAT('%',#{search_value },'%'))
+	</when>
+	</choose>
+	</if>
 	</select>
 	
 	<select id="petlist" resultType="ClientDTO">
 	SELECT *
 	FROM clientview
-	<if test="tdArr != null">
-		WHERE owner_no=#{tdArr }
+	<if test="search_name != null">
+	<if test="search_name == 'pet'">
+	WHERE (pet_name  LIKE CONCAT('%',#{search_value },'%') or pet_birth LIKE CONCAT('%',#{search_value },'%'));
+	</if>
 	</if>
 	</select>
 	

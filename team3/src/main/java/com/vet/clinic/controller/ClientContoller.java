@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vet.clinic.dto.ClientDTO;
+import com.vet.clinic.dto.SearchDTO;
 import com.vet.clinic.service.ClientService;
 
 @Controller
@@ -24,16 +25,24 @@ public class ClientContoller {
 	@Resource(name = "clientService")
 	private ClientService clientService;
 	
-	//회원관리 페이지 보기
+	//회원관리 페이지 보기 + 검색
 	@GetMapping("profile")
-	public ModelAndView profile() {
+	public ModelAndView profile(HttpServletRequest request) {
 		
 		ModelAndView mv = new ModelAndView("client/profile");
+		
+		System.out.println(request.getParameter("search_name")); //select
+		System.out.println(request.getParameter("search_value")); //input
+		
+		SearchDTO search = new SearchDTO();
+		search.setSearch_name(request.getParameter("search_name"));
+		search.setSearch_value(request.getParameter("search_value"));
+		
 
 		
-		List<ClientDTO> clientList = clientService.clientList();
-		List<ClientDTO> petList = clientService.petList();
-		List<ClientDTO> petTypeList = clientService.petTypeList();
+		List<ClientDTO> clientList = clientService.clientList(search);
+		List<ClientDTO> petList = clientService.petList(search);
+		List<ClientDTO> petTypeList = clientService.petTypeList(search);
 		
 		mv.addObject("clientList",clientList);
 		mv.addObject("petList",petList);
@@ -250,4 +259,7 @@ public class ClientContoller {
 		return json.toString();
 
 	}
+	
+	
+	
 }

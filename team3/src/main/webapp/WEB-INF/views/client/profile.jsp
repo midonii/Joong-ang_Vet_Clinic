@@ -39,14 +39,39 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
 <script type="text/javascript">
+//검색 시 selec 선택 검사
 $(function(){
-	//selec 옵션 글자 전환
-	$('#searchdropdown a').click (function () {
-		$('#dropdownMenuButton').text($(this).text());
+	$("#search_btn").click(function(){
+		//alert("!");
+		let searchName = $("#search_name").val();
+		let searchValue = $("#search_value").val();
+		//alert(searchName + " :: " + searchValue);
+		if(searchName == null ){
+			alert("검색하시려는 항목을 선택하세요.");
+			return false;
+		}
+		searchForm.submit();
+
+		
 	});
 	
+	
+});
+
+// pet_no 값을 가지고 petdetail 화면으로 가기 
+$(function(){
+	$(".petdetail-btn").click(function(){
+		let petNo = $(this).attr("value");
+		//alert(petNo);
+		location.href="petinfo?petNo="+petNo;
+	});
 });
 </script>
+<style type="text/css">
+.table{
+	text-align: center;
+}
+</style>
 <script src="js/client/client_add.js"></script>
 </head>
 
@@ -69,114 +94,115 @@ $(function(){
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
-					<!-- 회원 검색 -->
-					<!-- <div class="dropdown input-group mb-3">
-						<button class="btn btn-outline-secondary dropdown-toggle" id="searchdropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">선택</button>
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item">전체선택</a></li>
-							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item">보호자</a></li>
-							<li><a class="dropdown-item">반려견</a></li>
-						</ul>
-						 <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2">
-  						 <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
-					</div> -->
-
-					<nav class="navbar navbar-expand-lg navbar-light bg-light">
-						<div class="container-fluid">
-							<div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: -35px; margin-bottom: -15px; margin-top: -30px">
-								<div class="dropdown mb-4 pt-4">
-										<!-- 드롭다운 -->
-                                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            옵션선택
-                                        </button>
-                                        <div class="dropdown-menu animated--fade-in" id="searchdropdown" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item">전체검색</a>
-                                            <a class="dropdown-item">보호자</a>
-                                            <a class="dropdown-item">반려견</a>
-                                        </div>
-                                    </div>
-								<form class="d-flex">
-									<input class="form-control me-2 ml-3" type="search" placeholder="Search" aria-label="Search">
-									<button class="btn btn-outline-primary ml-2" type="submit">Search</button>
-								</form>
+				<!-- 회원 검색 -->
+				 <div class="row">
+					<form action="/profile" method="get" name="searchForm">
+						<div class="mb-2 mt-1 float-right" style="width: 35%">
+							<div class="input-group">
+								<input type="hidden" value="${search.getSearch_name() }" id="hidden_search">
+								<select class="form-control form-control-sm col-md-3" name="search_name" id="search_name">
+									<option value="" selected disabled="disabled">선택</option>
+									<option value="owner">보호자명+전화번호</option>
+									<option value="pet">반려견명+생일</option>
+								</select> 
+								<input type="text" class="form-control form-control-sm border-gray col-md-9" placeholder="검색어를 입력하세요" value="${search.getSearch_value()}" name="search_value" id="search_value">
+								<div class="input-group-append">
+									<button class="btn btn-primary btn-sm" id="search_btn" type="submit">
+										<i class="fas fa-search"></i>
+									</button>
+								</div>
 							</div>
 						</div>
-					</nav>
-
+					</form>
+				</div>
 
 					<!-- 보호자 테이블 -->
 					<div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">보호자</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                            <div id="clientScroll" style="height: 250px; overflow: auto">
-                            <!--  <form name="clientInfo" action="profile" method="get"> -->
-                                <table class="table-sm table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-md-1">번호</th>
-                                            <th class="col-md-2">이름</th>
-                                            <th class="col-md-3">전화번호</th>
-                                            <th class="col-md-4">주소</th>
-                                            <th class="col-md-2">상세보기</th>
-                                        </tr>
-                                    </thead>
-                                 
-                                    <tbody id="client-table" data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example" style="height: 300px;">
-                                    <c:forEach items="${clientList }" var="cl">
-                                        <tr id="client-info" class="owner-tr" value="${cl.owner_no }">
-                                            <td>${cl.owner_no }</td>
-                                            <td id="client-name" value="${cl.owner_name }">${cl.owner_name }</td>
-                                            <td>${cl.owner_tel }</td>
-                                            <td>${cl.owner_addr }</td>
-                                            <td>
-                                            	<button type="submit" class="btn btn-outline-primary btn-sm detail-btn" name="${cl.owner_no }" value="${cl.owner_no }">상세보기</button>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                    
-                                    
-                                    
-                                    </tbody>
-                                </table>
-                               <!-- </form> -->
-                                </div>
-                                
-                                <!-- 버튼 -->
-                                <div class="mt-4">
-                                <a class="btn btn-danger btn-icon-split float-right ml-2"> <span
-									class="icon text-white-50"> <i class="fas fa-trash"></i>
-								</span> <span class="text clientDelete">삭제</span>
-								</a>
-								<a class="btn btn-info btn-icon-split float-right ml-2 clientUpdate"> <span
-									class="icon text-white-50"> <i
-										class="fas fa-info-circle"></i>
-								</span>
-								<span class="text">수정</span>
-								</a>
-                                <a class="btn btn-primary btn-icon-split float-right ml-2 client-add"> <span
-									class="icon text-white-50"> <i class="fas fa-flag"></i>
-								</span> <span class="text">추가</span></a> <a class="btn btn-success btn-icon-split  float-right" id="plus-btn"> <span
-									class="icon text-white-50"> <i class="fas fa-check"></i>
-								</span> <span class="text">반려견 추가</span>
-								</a>
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">보호자</h6>
+						</div>
+						<c:choose>
+							<c:when test="${fn:length(clientList) gt 0}">
+								<div class="card-body">
+									<div class="table-responsive">
+										<div id="clientScroll" style="height: 250px; overflow: auto">
+											<!--  <form name="clientInfo" action="profile" method="get"> -->
+											<table class="table table-sm table-bordered table-hover"
+												id="dataTable" width="100%" cellspacing="0">
+												<thead>
+													<tr>
+														<th class="col-md-1">번호</th>
+														<th class="col-md-2">이름</th>
+														<th class="col-md-3">전화번호</th>
+														<th class="col-md-5">주소</th>
+														<th class="col-md-1">상세보기</th>
+													</tr>
+												</thead>
+
+												<tbody id="client-table" data-spy="scroll"
+													data-target="#list-example" data-offset="0"
+													class="scrollspy-example">
+													<c:forEach items="${clientList }" var="cl">
+														<tr id="client-info" class="owner-tr"
+															value="${cl.owner_no }">
+															<td>${cl.owner_no }</td>
+															<td id="client-name" value="${cl.owner_name }">${cl.owner_name }</td>
+															<td>${cl.owner_tel }</td>
+															<td>${cl.owner_addr }</td>
+															<td>
+																<button type="submit"
+																	class="btn btn-outline-primary btn-sm detail-btn"
+																	name="${cl.owner_no }" value="${cl.owner_no }">상세보기</button>
+															</td>
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
+											<!-- </form> -->
+										</div>
+
+										<!-- 버튼 -->
+										<div class="mt-4">
+											<a class="btn btn-danger btn-icon-split float-right ml-2">
+												<span class="icon text-white-50"> <i
+													class="fas fa-trash"></i>
+											</span> <span class="text clientDelete">삭제</span>
+											</a> <a
+												class="btn btn-info btn-icon-split float-right ml-2 clientUpdate">
+												<span class="icon text-white-50"> <i
+													class="fas fa-info-circle"></i>
+											</span> <span class="text">수정</span>
+											</a> <a
+												class="btn btn-primary btn-icon-split float-right ml-2 client-add">
+												<span class="icon text-white-50"> <i
+													class="fas fa-flag"></i>
+											</span> <span class="text">추가</span>
+											</a> <a class="btn btn-success btn-icon-split  float-right"
+												id="plus-btn"> <span class="icon text-white-50">
+													<i class="fas fa-check"></i>
+											</span> <span class="text">반려견 추가</span>
+											</a>
+										</div>
+									</div>
 								</div>
-							</div>
-                        </div>
-                    </div>
-                    
-                    <!-- 반려견 테이블 -->
+							</c:when>
+							<c:otherwise>
+								<h5 class="m-0 font-weight-bold text-gray-600 mt-1 mb-1 ml-1">데이터가 없습니다.</h5>
+							</c:otherwise>
+						</c:choose>
+					</div>
+
+					<!-- 반려견 테이블 -->
 					<div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">반려견</h6>
                         </div>
+                        <c:choose>
+						<c:when test="${fn:length(petList) gt 0}">
                         <div class="card-body">
                             <div class="table-responsive">
 										<div style="height: 250px; overflow: auto;">
-											<table class="table-sm table-bordered table-hover"
+											<table class="table table-sm table-bordered table-hover"
 												id="dataTable" width="100%" cellspacing="0">
 												<thead>
 													<tr>
@@ -185,7 +211,8 @@ $(function(){
 														<th class="col-md-2">견종</th>
 														<th class="col-md-1">성별</th>
 														<th class="col-md-2">생년월일</th>
-														<th class="col-md-5">특이사항</th>
+														<th class="col-md-4">특이사항</th>
+														<th class="col-md-1">상세보기</th>
 													</tr>
 												</thead>
 												
@@ -198,7 +225,11 @@ $(function(){
 															<td class="typeName">${pl.type_name }</td>
 															<td class="petGender">${pl.pet_gender }</td>
 															<td class="petBirth">${pl.pet_birth }</td>
-															<td class="petMemo">${pl.pet_memo }</td>
+															<td class="petMemo" style="text-align: left;">${pl.pet_memo }</td>
+															<td>
+																<button type="submit" id="petdetail-btn" class="btn btn-outline-primary btn-sm petdetail-btn"
+																name="${pl.pet_no }" value="${pl.pet_no }">상세보기</button>
+															</td>
 														</tr>
 													</c:forEach>
 												</tbody>
@@ -219,6 +250,11 @@ $(function(){
 								</div>
                             </div>
                         </div>
+                        </c:when>
+                        <c:otherwise>
+								<h5 class="m-0 font-weight-bold text-gray-600 mt-1 mb-1 ml-1">데이터가 없습니다.</h5>
+						</c:otherwise>
+                        </c:choose>
                     </div>
 
 
@@ -233,8 +269,7 @@ $(function(){
 			</div>
 			<!-- End of Main Content -->
 			
-         </div>
-        </div>
+       
 			      <%@ include file="../bar/footer.jsp" %>
          		  <%@ include file="../bar/logoutModal.jsp" %>
 			
