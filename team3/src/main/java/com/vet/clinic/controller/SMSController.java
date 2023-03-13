@@ -1,6 +1,7 @@
 package com.vet.clinic.controller;
 
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,6 @@ public class SMSController {
 	@GetMapping("/smsform")
 	public String smsform(@RequestParam(value="smsform_no") int smsform_no) {
 		
-		//Map<String, Object> smsform = new HashMap<String, Object>();
 		Map<String, Object> smsform = smsService.smsform(smsform_no);
 		
 		JSONObject json = new JSONObject();
@@ -70,22 +70,21 @@ public class SMSController {
 	}
 	
 	@PostMapping("/sendSms")
-	public String sendSms(MessageDTO messageDTO, Model model) throws Exception {
-		String to = messageDTO.getTo();
-		String content = messageDTO.getContent();
-		System.out.println("받는사람 : " + to + " / 내용 : " + content);
-		/*
-		if( to.length() > 11 ) {
-			DecimalFormat comma = new DecimalFormat("###########,###########");
-			to = comma.format(to);
-			System.out.println(to);
-		}
-		*/
-		JSONObject json = new JSONObject();
-		SmsResponseDTO response = smsService.sendSms(messageDTO);
-		System.out.println(response);
-		/*
+	public String sendSms(@RequestParam(value="receiver") String receiver, MessageDTO messageDTO, Model model) throws Exception {
 		
+		String[] toList = receiver.split(" ");
+		//System.out.println(Arrays.toString(toList));
+		
+		for(int i = 0; i < toList.length; i++) {
+			messageDTO.setTo(toList[i]);
+			//System.out.println("받는사람 : " + messageDTO.getTo() + " / 내용 : " + messageDTO.getContent());
+			SmsResponseDTO response = smsService.sendSms(messageDTO);
+			//System.out.println(response);
+		}
+		
+		JSONObject json = new JSONObject();
+		
+		/*
 		model.addAttribute("response", response);
 		return "redirect:/smsIndex";
 		*/

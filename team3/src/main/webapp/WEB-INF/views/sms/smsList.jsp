@@ -50,7 +50,7 @@ textarea {
 
 .smsTo {
 	margin: 0 auto;
-	width: 370px;
+	width: 380px;
 }
 
 .smsTo2 {
@@ -134,9 +134,6 @@ tbody {
   display: block; /* to enable vertical scrolling */
   max-height: 510px; /* e.g. */
   overflow-y: scroll; /* keeps the scrollbar even if it doesn't need it; display purpose */
-}
-.tbody1 {
-	max-height: 400px;
 }
 tr {
   display: table; /* display purpose; th's border */
@@ -267,13 +264,16 @@ $(function() {
 		//alert(pet_name + " / " + owner_name + " / " + owner_tel);
 		$(this).parents("#cl_tr").remove();
 		
-		var tr = "<tr id='towhom_tr'><td class='col-3' id='pet_name'>"+pet_name+"</td><td class='col-3' id='owner_name'>"+owner_name+"</td><td class='col-4' id='owner_tel'>"+owner_tel+" </td><td class='col-2'><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td></tr>" ;
+		var tr = "<tr id='towhom_tr'><td class='col-3' id='pet_name'>"+pet_name+"</td><td class='col-3' id='owner_name'>"+owner_name+"</td><td class='col-4' id='owner_tel'>"+owner_tel+"</td><td class='col-2'><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td></tr>" ;
 		
 		$(".towhom").append(tr);
 		
 	});
-	
-
+	/*
+	$("#plusAll").click(function(){
+		
+	});
+	*/
 	// 받는사람에서 고객리스트로
 	$(document).on("click", ".minusbtn", function(){
 		let pet_name = $(this).parent().siblings("#pet_name").text();
@@ -282,7 +282,7 @@ $(function() {
 		//alert(pet_name + " / " + owner_name + " / " + owner_tel);
 		$(this).parents("#towhom_tr").remove();
 		
-		var tr = "<tr id='cl_tr'><td class='col-3' id='pet_name'>"+pet_name+"</td><td class='col-3' id='owner_name'>"+owner_name+"</td><td class='col-4' id='owner_tel'>"+owner_tel+"</td><td class='col-2'><i class='replusbtn xi-plus-circle-o xi-x' style='color:#4e73df; cursor:pointer;'></i></td></tr>";
+		var tr = "<tr id='cl_tr'><td class='col-2' id='pet_name'>"+pet_name+"</td><td class='col-2' id='owner_name'>"+owner_name+"</td><td class='col-4' id='owner_tel'>"+owner_tel+"</td><td class='col-3'></td><td class='col-1'><i class='replusbtn xi-plus-circle-o xi-x' style='color:#4e73df; cursor:pointer;'></i></td></tr>";
 		
 		$(".clientList").append(tr);
 		
@@ -318,28 +318,26 @@ $(function() {
 		var receiver = $(".smsTo2 #owner_tel").text();
 		var sms_content = $("#sms_content").val();
 		
-		if(receiver == ""){
-			alert("받는사람을 추가하세요.");
-		} else if(sms_content == ""){
-			alert("전송할 문자 내용을 입력하세요.");
-		} else {
+		/*
+		if(receiver.length > 11){
+// 			receiver = receiver.substring(10,22);
+//  			receiver += "," + receiver.substring(10,22);
+			receiver.replace(/(\d)(?=(?:\d{11})+(?!\d))/g, "$1,");
 			alert(receiver);
-			
-			if(confirm("다음과 같이 문자를 발송합니다. \n 받는사람 : " + receiver +"\n 내용 : \n "+sms_content )){
-				//alert("!");
-				$.post({
-					url : "/sendSms",
-					data : {"receiver" : receiver , "content" : sms_content},
-					dataType : "json"
-				}).done(function(data){
-					alert("성공");
-					
-				}).fail(function(xhr){
-					alert("실패");
-				});
-			}
-			
-			
+		}
+		*/
+		
+		if(confirm("다음과 같이 문자를 발송합니다. \n 받는사람 : " + receiver +"\n 내용 : \n "+sms_content )){
+			//alert("!");
+			$.post({
+				url : "/sendSms",
+				data : {"to" : receiver , "content" : sms_content},
+				dataType : "json"
+			}).done(function(data){
+				alert("성공");
+			}).fail(function(xhr){
+				alert("실패");
+			});
 		}
 		
 	});
@@ -379,7 +377,7 @@ $(function() {
 						<div class="card-body row">
 
 							<!-- 메세지 발송 폼  -->
-							<div class="row smsform" style="width: 260px; margin: 0 10px 0 15px;">
+							<div class="row smsform" style="width: 260px; margin: 0 12px 0 20px;">
 								<div class="mt-2 mb-2 font-weight-bold text-primary"
 									style="width: 260px; height: 30px; text-align: center; line-height: 30px;">
 									문자보내기</div>
@@ -428,95 +426,79 @@ $(function() {
 							</div>
 
 							<!-- 받는사람 -->
-							<div style="margin: 0 10px 0 10px;">
-								<div class="card smsform" style="width: 400px;">
-									<div class="row smsTo mb-2">
-										<div class="mt-2 mb-2 font-weight-bold text-primary"
-										style="width: 100%; height: 30px; text-align: center; line-height: 30px;">
-										번호추가</div>
-										<div class="row smsTo" style="">
-											<input
-												type="text" id="sms_title" name="sms_title"
-												class="col-3 form-control-sm form-control" style=" height: 40px; margin-right:5px;"
-												placeholder="강아지">
-											<input
-												type="text" id="sms_title" name="sms_title"
-												class="col-3 form-control-sm form-control" style=" height: 40px; margin-right:5px;"
-												placeholder="견주">
-											<input
-												type="text" id="sms_title" name="sms_title"
-												class="col-4 form-control-sm form-control" style=" height: 40px; margin-right:5px;"
-												placeholder="전화번호">
-											<input type="button" class="btn btn-sm btn-outline-primary" value="추가">
-										</div>
-									</div>
+							<div style="margin: 0 10px 0 15px;">
+								<div class="card smsform" style="width: 400px; ">
+									<div class="row smsTo" >
 									<div class="mt-2 mb-2 font-weight-bold text-primary"
-										style="width: 100%; height: 30px; text-align: center; line-height: 30px;">
-										받는사람</div>
+									style="width: 100%; height: 30px; text-align: center; line-height: 30px;">
+									받는사람</div>
+									</div>
 									<div>
 										<div class="row smsTo2" style="width: 370px;">
-											<table class="towhom border table-sm table-bordered"
-												style="width: 100%; text-align: center;">
+											<table class="towhom border table-sm table-bordered" style="width: 100%; text-align: center;">
 												<thead>
-													<tr style="background-color: #f8f9fc;">
-														<th class="col-3">강아지</th>
-														<th class="col-3">견주</th>
-														<th class="col-4">전화번호</th>
-														<th class="col-2">삭제</th>
-													</tr>
+												<tr style="background-color:#f8f9fc;">
+													<th class="col-3">강아지</th>
+													<th class="col-3">견주</th>
+													<th class="col-4">전화번호</th>
+													<th class="col-2">삭제</th>
+												</tr>
 												</thead>
-												<tbody class="tbody1">
+												<tbody>
+												
 											</table>
 										</div>
 									</div>
 								</div>
 							</div>
-
+							
+							
 							<!-- 회원정보 -->
-								<div class="card smsform"
-									style="width: 413px; margin: 0 10px 0 10px;">
-									<div class="mt-2 mb-2 font-weight-bold text-primary"
-										style="width: 100%; height: 30px; text-align: center; line-height: 30px;">
-										병원고객목록</div>
-									<div class="row memberlist mb-2"
-										style="width: 370px; margin: 0 20px 0 20px;">
-										<table class="clientList border table-sm table-bordered"
-											style="width: 100%; text-align: center;">
-											<thead>
-												<tr style="background-color: #f8f9fc;">
-													<th class="col-3">강아지</th>
-													<th class="col-3">견주</th>
-													<th class="col-4">전화번호</th>
-													<th class="col-2">추가</th>
-												</tr>
-											</thead>
-											<tbody>
-												<c:forEach items="${clientList }" var="cl">
-													<tr class="client" id="cl_tr">
-														<td class="col-3" id="pet_name">${cl.pet_name }</td>
-														<td class="col-3" id="owner_name">${cl.owner_name }</td>
-														<td class="col-4 owner_tel" id="owner_tel" value="1">${cl.owner_tel }</td>
-														<td class="col-2"><i
-															class="plusbtn xi-plus-circle-o xi-x"
-															style="color: #4e73df; cursor: pointer;"></i></td>
-													</tr>
-												</c:forEach>
-											</tbody>
-										</table>
-									</div>
-									<div class="d-grid gap-2 d-md-flex justify-content-md-end"
-										style="width: 100%; height: 50px; padding: 0 30px 10px 30px; margin: 5px 0 0 0;">
-
-										<input type="button" id="plusAll"
-											class="btn btn-sm btn-outline-primary" value="전체선택">
-
-
-									</div>
+							<div class="card smsform" style="flex-grow:1; margin:0 20px 0 15px; ">
+								<div class="mt-2 mb-2 font-weight-bold text-primary"
+									style="width: 100%; height: 30px; text-align: center; line-height: 30px;">
+									고객리스트
 								</div>
+								<div class="row memberlist mb-2" style="flex-grow:1; margin:0 30px 0 30px;  ">
+									<table class="clientList border table-sm table-bordered"
+										style="width: 100%; text-align: center;">
+										<thead>
+											<tr style="background-color: #f8f9fc;">
+												<th class="col-2">강아지</th>
+												<th class="col-2">견주</th>
+												<th class="col-4">전화번호</th>
+												<th class="col-3">진료예약일</th>
+												<th class="col-1">추가</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach items="${clientList }" var="cl">
+												<tr class="client" id="cl_tr">
+													<td class="col-2" id="pet_name">${cl.pet_name }</td>
+													<td class="col-2" id="owner_name">${cl.owner_name }</td>
+													<td class="col-4 owner_tel" id="owner_tel" value="1">${cl.owner_tel }</td>
+													<td class="col-3"></td>
+													<td class="col-1">
+														<i class="plusbtn xi-plus-circle-o xi-x" style="color: #4e73df; cursor: pointer;"></i>
+													</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+								</div>
+								<div class="d-grid gap-2 d-md-flex justify-content-md-end"
+									style="width: 100%; height: 50px; padding: 0 30px 10px 30px; margin:5px 0 0 0; ">
+
+									<input type="button" id="plusAll" class="btn btn-sm btn-outline-primary"
+										value="전체선택" >
 
 
+								</div>
 							</div>
+							
+							
 						</div>
+					</div>
 				</div>
 			</div>
 			
