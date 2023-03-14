@@ -6,7 +6,9 @@
 	<select id="boardlist" parameterType="ReservDTO" resultType="ReservDTO">
 	SELECT * FROM clientview	
 	</select>
+	
 
+	<!-- #() : dto변수명 -->
 	<select id="searchlist" parameterType="ReservDTO" resultType="ReservDTO">
 	SELECT * FROM clientview
 	WHERE owner_name 
@@ -20,7 +22,22 @@
 	<select id="reservAjax" parameterType="ReservDTO" resultType="ReservDTO">
 	SELECT *
 	FROM clientview
-	WHERE owner_no=#{search_no }
+	WHERE owner_no=#{detail_no }
+	</select>
+	
+	<insert id="reservAdd" parameterType="ReservDTO">
+		INSERT INTO reservation SET
+ 		reservation_date = #{reservation_date},
+		reservation_memo = #{reservation_memo },
+		reservation_yn = 'y',
+		reservation_time=NOW(),
+		staff_no = (SELECT staff_no FROM staff WHERE staff_id = #{staff_id} ),
+   		pet_no = #{petNo};
+   		
+	</insert>
+	
+	<select id="reservlist" parameterType="ReservDTO" resultType="ReservDTO">
+	SELECT * FROM reservationview	
 	</select>
 	
 	

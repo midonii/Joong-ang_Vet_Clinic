@@ -28,4 +28,14 @@ public class ReservService {
 	public List<ReservDTO> reservAjax(ReservDTO reservDTO) {
 		return reservDAO.reservAjax(reservDTO);
 	}
+
+
+	public int reservAdd(ReservDTO reservDTO) {
+		return reservDAO.reservAdd(reservDTO);
+	}
+
+
+	public List<ReservDTO> reservlist(ReservDTO reservDTO) {
+		return reservDAO.reservlist(reservDTO);
+	}
 }
