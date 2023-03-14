@@ -37,8 +37,8 @@
 		<div id="collapseReserv" class="collapse" aria-labelledby="headingTwo"
 			data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="#.html">예약/접수 현황</a> <a
-					class="collapse-item" href="#.html">Calendar</a>
+				<a class="collapse-item" href="/reserv">예약/접수 현황</a> <a
+					class="collapse-item" href="/calender">Calendar</a>
 			</div>
 		</div></li>
 
