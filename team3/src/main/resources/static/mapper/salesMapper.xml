@@ -2,15 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.vet.clinic.dao.SalesDAO">
-	<select id="salesList" resultType="Hashmap" parameterType="Hashmap">
+	<select id="salesList" resultType="PayDTO" parameterType="PageDTO">
 		SELECT ROW_NUMBER()
-		OVER(ORDER BY pay_date) AS rownum  , pay_date, totalprice
+		OVER(ORDER BY pay_date) AS rownum, pay_date, totalprice
 		FROM salesview
-		<if test="toDate !=null and fromDate !=null">
+		<if test="toDate !=null and !toDate.equals('') and fromDate !=null and !fromDate.equals('')">
 		WHERE pay_date BETWEEN #{fromDate} AND #{toDate}
 		</if>
 		ORDER BY rownum DESC
-		LIMIT 0,10;
+		LIMIT  #{pagenum}, #{contentnum};
+	</select>
+	
+	<select id="contentTotal" resultType="Integer" parameterType="PageDTO">
+		SELECT COUNT(*) from salesview
+		<if test="toDate !=null and !toDate.equals('') and fromDate !=null and !fromDate.equals('')">
+		WHERE pay_date BETWEEN #{fromDate} AND #{toDate}
+		</if>
+	</select>
+	
+	<select id="salesList2" resultType="Hashmap" parameterType="Hashmap">
+		SELECT totalprice ,
+		DATE_FORMAT(salesview.pay_date, '%m-%d') AS pay_date
+		FROM salesview
+		<if test="toDate !=null and !toDate.equals('') and fromDate !=null and !fromDate.equals('')">
+		WHERE pay_date BETWEEN #{fromDate} AND #{toDate}
+		</if>
+		ORDER BY pay_date
 	</select>
 	
 

@@ -11,9 +11,57 @@ public class PageDTO {
 	private boolean next; // 다음 페이지로 가는 화살표
 	private int currentblock; // 현재 페이지 블록
 	private int lastblock; // 마지막 페이지 블록
-
+	private String search_name, search_value, toDate, fromDate, todayDate, pay_yn; // 검색
 //	private String search_name, search_value; // 검색
 
+	public String getPay_yn() {
+		return pay_yn;
+	}
+
+	public void setPay_yn(String pay_yn) {
+		this.pay_yn = pay_yn;
+	}
+
+	public String getSearch_name() {
+		return search_name;
+	}
+
+	public void setSearch_name(String search_name) {
+		this.search_name = search_name;
+	}
+
+	public String getSearch_value() {
+		return search_value;
+	}
+
+	public void setSearch_value(String search_value) {
+		this.search_value = search_value;
+	}
+
+	public String getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+
+	public String getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public String getTodayDate() {
+		return todayDate;
+	}
+
+	public void setTodayDate(String todayDate) {
+		this.todayDate = todayDate;
+	}
+	
 	public void prevnext(int pagenum) {
 		// 이전 , 다음 페이지 블록
 		if (calcpage(totalcount, contentnum) < 6) {
@@ -58,7 +106,8 @@ public class PageDTO {
 	}
 
 	public int getContentnum() {
-		return contentnum;
+		
+		return contentnum ;
 	}
 
 	public void setContentnum(int contentnum) {
