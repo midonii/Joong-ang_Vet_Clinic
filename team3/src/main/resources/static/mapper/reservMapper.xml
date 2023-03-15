@@ -3,67 +3,112 @@
 
 <mapper namespace="com.vet.clinic.dao.ReservDAO">
 
-	<select id="boardlist" parameterType="ReservDTO" resultType="ReservDTO">
-	SELECT * FROM clientview	
+	<select id="boardlist" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT * FROM clientview
 	</select>
-	
+
 
 	<!-- #() : dto변수명 -->
-	<select id="searchlist" parameterType="ReservDTO" resultType="ReservDTO">
-	SELECT * FROM clientview
-	WHERE owner_name 
-	LIKE CONCAT('%', #{search_value}, '%')		
-	OR pet_name 
-	LIKE CONCAT('%', #{search_value}, '%')		
-	OR owner_tel 
-	LIKE CONCAT('%', #{search_value}, '%')		
+	<select id="searchlist" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT * FROM clientview
+		WHERE owner_name
+		LIKE CONCAT('%', #{search_value}, '%')
+		OR pet_name
+		LIKE CONCAT('%', #{search_value}, '%')
+		OR owner_tel
+		LIKE CONCAT('%', #{search_value}, '%')
 	</select>
-	
-	<select id="reservAjax" parameterType="ReservDTO" resultType="ReservDTO">
-	SELECT *
-	FROM clientview
-	WHERE owner_no=#{detail_no }
+	<select id="searchlist" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT * FROM clientview
+		WHERE owner_name
+		LIKE CONCAT('%',
+		#{search_value}, '%')
+		OR pet_name
+		LIKE CONCAT('%', #{search_value}, '%')
+		OR owner_tel
+		LIKE CONCAT('%', #{search_value}, '%')
 	</select>
-	
+
+
+	<select id="reservAjax" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT *
+		FROM clientview
+		WHERE owner_no=#{detail_no }
+	</select>
+
 	<insert id="reservAdd" parameterType="ReservDTO">
 		INSERT INTO reservation SET
- 		reservation_date = #{reservation_date},
-		reservation_memo = #{reservation_memo },
+		reservation_date = #{reservation_date},
+		reservation_memo =
+		#{reservation_memo },
 		reservation_yn = 'y',
 		reservation_time=NOW(),
 		staff_no = (SELECT staff_no FROM staff WHERE staff_id = #{staff_id} ),
-   		pet_no = #{petNo};
-   		
+		pet_no = #{petNo};
+
 	</insert>
-	
-	<select id="reservlist" parameterType="ReservDTO" resultType="ReservDTO">
-	SELECT * FROM reservationview	
+
+	<select id="reservlist" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT * FROM reservationview
 	</select>
-	
-	
-<!-- 	<select id="boardList" parameterType="SearchDTO" resultType="BoardDTO"> -->
-<!-- 		SELECT b_no, b_title, member_name, listdate, b_like, b_read, comment -->
-<!-- 		FROM boardview -->
-<!-- 		<if test="search_name != null"> -->
-<!-- 			WHERE -->
-<!-- 			<choose> -->
-<!-- 				<when test="search_name == 'title'">b_title</when> -->
-<!-- 				<when test="search_name == 'content'">b_content</when> -->
-<!-- 				<when test="search_name == 'writer'">member_name</when> -->
-<!-- 			</choose> -->
-<!-- 			LIKE CONCAT('%', #{search_value }, '%') -->
-<!-- 		</if> -->
-<!-- 		LIMIT #{startPage }, #{lastPage } -->
-<!-- 	</select> -->
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	<select id="reservAjax" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT *
+		FROM clientview
+		WHERE pet_no=#{petNo }
+
+	</select>
+
+
+	<!-- <select id="boardList" parameterType="SearchDTO" resultType="BoardDTO"> -->
+	<!-- SELECT b_no, b_title, member_name, listdate, b_like, b_read, comment -->
+	<!-- FROM boardview -->
+	<!-- <if test="search_name != null"> -->
+	<!-- WHERE -->
+	<!-- <choose> -->
+	<!-- <when test="search_name == 'title'">b_title</when> -->
+	<!-- <when test="search_name == 'content'">b_content</when> -->
+	<!-- <when test="search_name == 'writer'">member_name</when> -->
+	<!-- </choose> -->
+	<!-- LIKE CONCAT('%', #{search_value }, '%') -->
+	<!-- </if> -->
+	<!-- LIMIT #{startPage }, #{lastPage } -->
+	<!-- </select> -->
+
+	<select id="indexReserv" resultType="HashMap">
+		SELECT ROW_NUMBER()
+		over(ORDER BY r.reserv_date) AS
+		rno,r.pet_name,r.owner_name,r.reserv_date
+		FROM
+		(SELECT *
+		FROM
+		reservationview WHERE DATE_FORMAT(reservation_date, "%Y-%m-%d") =
+		CURDATE()) r
+		ORDER BY rno
+	</select>
+
+	<select id="receivepay" resultType="HashMap">
+		SELECT ROW_NUMBER()
+		over(ORDER BY i.receive_time) AS
+		ino,i.pet_name,i.owner_name,i.receive_state,i.pay_yn
+		FROM
+		(SELECT *
+		FROM
+		indexreceivepay WHERE DATE_FORMAT(receive_time, "%Y-%m-%d") =
+		CURDATE()) i
+		ORDER BY ino
+	</select>
+
+
+
+
+
+
 </mapper>
-<!--  -->
+<!-- -->

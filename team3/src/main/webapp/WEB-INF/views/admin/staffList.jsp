@@ -66,6 +66,7 @@
 		$(".refresh").click(function() {
 			location.href = "/staffList";
 		});
+	
 
 		$(".gradeUpdate").click(function() {
 
@@ -83,6 +84,7 @@
 				if (data.result2 == 1) {
 					alert("권한 수정이 완료되었습니다.");
 					let result = data.result;
+					
 					$("#staff_no").val(result.staff_no);
 					$("#staff_name").text(result.staff_name);
 					$("#staff_id").text(result.staff_id);
@@ -126,7 +128,10 @@
 			}
 			searchForm.submit();
 		});
+	
 	});
+
+
 	function page(idx, search_name, search_value) {
 		var pagenum = idx;
 		let searchName = search_name;
@@ -172,7 +177,7 @@
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
-					
+
 						<div class="card-body">
 							<div class="d-flex justify-content-end"
 								style="margin-top: -10px;">
@@ -184,7 +189,7 @@
 										<div class="input-group">
 											<input type="hidden" value="${search.getSearch_name() }"
 												id="searchName"> <select
-												class="form-control col-md-3" name="search_name"
+												class="form-control col-md-4" name="search_name"
 												id="search_name" style="border-radius: 5px 0 0 5px">
 												<option value="" selected disabled="disabled">선택</option>
 												<option value="name">이름</option>
@@ -194,7 +199,7 @@
 												<option value="grade">직책</option>
 											</select> <input type="text" name="search_value" id="search_value"
 												value="${search.getSearch_value() }"
-												class="form-control border-gray col-md-9"
+												class="form-control border-gray col-md-8"
 												placeholder="검색어를 입력하세요">
 											<div class="input-group-append">
 												<button class="btn btn-primary" type="button"
@@ -229,7 +234,7 @@
 													class="staffDetailModal" data-toggle="modal"
 													data-value="${sl.staff_no }"> ${sl.staff_name }</a></td>
 												<td>${sl.staff_id }</td>
-												<td>${sl.staff_tel }</td>
+												<td> ${sl.staff_tel}</td>
 												<td>${sl.staff_email }</td>
 												<td>${sl.staff_grade }</td>
 											</tr>

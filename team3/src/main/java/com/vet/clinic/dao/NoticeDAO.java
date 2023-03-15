@@ -18,6 +18,8 @@ public interface NoticeDAO {
 
 	public int contentTotal(@Param("search_name") String search_name, @Param("search_value") String search_value);
 
+	public List<Map<String, Object>> indexNotice(Map<String, Object> map); //index
+
 	public int noticeWrite(Map<String, Object> map);
 
 	public Map<String, Object> noticeDetail(int notice_no);
@@ -27,5 +29,7 @@ public interface NoticeDAO {
 	public int noticeDelete(int notice_no);
 
 	public int noticeUpdate(Map<String, Object> map);
+
+
 
 }

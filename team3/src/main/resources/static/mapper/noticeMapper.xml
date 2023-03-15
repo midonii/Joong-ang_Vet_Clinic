@@ -3,20 +3,24 @@
 
 <mapper namespace="com.vet.clinic.dao.NoticeDAO">
 
-	<select id="noticeList" resultType="NoticeDTO" parameterType="HashMap">
+	<select id="noticeList" resultType="NoticeDTO"
+		parameterType="HashMap">
 		SELECT ROW_NUMBER()
 		over(ORDER BY n.notice_no) AS nno, n.*
 		FROM
 		(
-		SELECT * from
+		SELECT *
+		from
 		noticeview
 		<if test="search_name != null">
 			<choose>
 				<when test="search_name == 'title'">
-					WHERE notice_title LIKE CONCAT('%', #{search_value}, '%')
+					WHERE notice_title LIKE CONCAT('%', #{search_value},
+					'%')
 				</when>
 				<when test="search_name =='content'">
-					WHERE notice_content LIKE CONCAT('%', #{search_value}, '%')
+					WHERE notice_content LIKE CONCAT('%',
+					#{search_value}, '%')
 				</when>
 			</choose>
 		</if>
@@ -25,16 +29,33 @@
 		LIMIT #{pagenum}, #{contentnum};
 
 	</select>
+
+	<select id="indexNotice" resultType="HashMap">
+
+		SELECT ROW_NUMBER()
+		over(ORDER BY n.notice_no) AS nno, n.*
+		FROM
+		(
+		SELECT * from
+		noticeview
+
+		) n
+		ORDER BY nno DESC
+		LIMIT 0, 6;
+	</select>
 	
-	<select id="contentTotal" resultType="Integer" parameterType="HashMap">
+	<select id="contentTotal" resultType="Integer"
+		parameterType="HashMap">
 		SELECT COUNT(*) FROM noticeview
 		<if test="search_name != null">
 			<choose>
 				<when test="search_name == 'title'">
-					WHERE notice_title LIKE CONCAT('%', #{search_value}, '%')
+					WHERE notice_title LIKE CONCAT('%', #{search_value},
+					'%')
 				</when>
 				<when test="search_name =='content'">
-					WHERE notice_content LIKE CONCAT('%', #{search_value}, '%')
+					WHERE notice_content LIKE CONCAT('%',
+					#{search_value}, '%')
 				</when>
 			</choose>
 		</if>

@@ -36,6 +36,10 @@ public class PayService {
 	public List<Map<String, Object>> payList(Criteria cri) {
 		return payDAO.payList(cri);
 	}
+
+	public List<Map<String, Object>> indexPay(Map<String, Object> map) {
+		return payDAO.indexPay(map);
+	}
 	
 	
 }

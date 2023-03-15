@@ -12,9 +12,15 @@ public class ReservDTO {
 				   owner_name, owner_addr, owner_email, owner_sms, owner_memo,owner_tel;
 	private int pet_no, pet_weight, pet_count, owner_no, type_no;
 	
+
 	private String search_value, detail_no, petNo;
 	
 	private String reservation_time, reservation_memo, reservation_date, reservation_yn, staff_id; 
 	private int staff_no;
 	
+
+	private String searchValue;
+	private String reserv_date;
+	private int rno,ino;
+
 }
