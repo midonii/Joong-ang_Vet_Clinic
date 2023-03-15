@@ -1,15 +1,20 @@
 package com.vet.clinic.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class SMSDTO {
+public class SmsRequestDTO {
 	
-	private String reservation_date, pet_name, owner_name, owner_tel;
+	String type, contentType, countryCode, from, content;
+	List<MessageDTO> messages;
 	
+
 }

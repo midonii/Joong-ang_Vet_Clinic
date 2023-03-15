@@ -1,24 +1,24 @@
 package com.vet.clinic.controller;
 
-import java.sql.Array;
-import java.util.HashMap;
+import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sun.source.tree.DoWhileLoopTree;
+import com.vet.clinic.dto.MessageDTO;
 import com.vet.clinic.dto.SMSDTO;
+import com.vet.clinic.dto.SmsResponseDTO;
 import com.vet.clinic.service.SMSService;
 
 @Controller
@@ -44,7 +44,6 @@ public class SMSController {
 	@GetMapping("/smsform")
 	public String smsform(@RequestParam(value="smsform_no") int smsform_no) {
 		
-		//Map<String, Object> smsform = new HashMap<String, Object>();
 		Map<String, Object> smsform = smsService.smsform(smsform_no);
 		
 		JSONObject json = new JSONObject();
@@ -60,8 +59,35 @@ public class SMSController {
 		
 		//System.out.println(map);
 		
-		int result = smsService.smsform_setdel(map);
+		smsService.smsform_setdel(map);
 		
 		return "redirect:/smsIndex";
+	}
+	
+	@GetMapping("/send")
+	public String getSmsPage() {
+		return "redirect:/smsIndex";
+	}
+	
+	@PostMapping("/sendSms")
+	public String sendSms(@RequestParam(value="receiver") String receiver, MessageDTO messageDTO, Model model) throws Exception {
+		
+		String[] toList = receiver.split(" ");
+		//System.out.println(Arrays.toString(toList));
+		
+		for(int i = 0; i < toList.length; i++) {
+			messageDTO.setTo(toList[i]);
+			//System.out.println("받는사람 : " + messageDTO.getTo() + " / 내용 : " + messageDTO.getContent());
+			SmsResponseDTO response = smsService.sendSms(messageDTO);
+			//System.out.println(response);
+		}
+		
+		JSONObject json = new JSONObject();
+		
+		/*
+		model.addAttribute("response", response);
+		return "redirect:/smsIndex";
+		*/
+		return json.toString();
 	}
 }

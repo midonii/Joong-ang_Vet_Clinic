@@ -1,5 +1,4 @@
 @charset "UTF-8";
-<style type="text/css">
 .right {
 	float: right;
 }
@@ -51,10 +50,22 @@ a {
 .350px{
 	width: 50px;
 }
-
-.cancel_color{
-	 background-color: $gray-300;
-	
+.cell {
+  border: 1px solid #BDBDBD;
+  margin: 2px;
+  cursor: pointer;
 }
 
-</style>
+.cell:hover {
+  border: 1px solid #3D5AFE;
+}
+
+.cell.select {
+  background-color: #3D5AFE;
+  color: #fff;
+}
+/* .cancel_color{ */
+/* 	 background-color: $gray-300; */
+	
+/* } */
+

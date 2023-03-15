@@ -12,7 +12,8 @@ import com.vet.clinic.dto.PayDTO;
 
 @Service
 public class PayService {
-	@Autowired PayDAO payDAO;
+	@Autowired
+	private PayDAO payDAO;
 
 	
 

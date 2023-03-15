@@ -15,7 +15,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Team 3</title>
+<title>중앙동물병원</title>
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -34,10 +34,69 @@
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
+$(function(){
+	$("#dateSearch").click(function () {
+		var toDate = $("#toDate").val();
+		var fromDate = $("#fromDate").val();
+		
+		location.href="/sales?toDate="+toDate+"&fromDate="+fromDate;
+		
+	});/* click */
 	
+	//날짜 선택시 오늘까지만 제한
+	var now_utc = Date.now()
+	var timeOff = new Date().getTimezoneOffset() * 60000;
+	var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
+	$("#fromDate").attr("max", today);
+	$("#toDate").attr("max", today);
+	
+	//기간 설정시 종료일 제한 
+	$("#fromDate").change(function(){
+		var fromdate = $("#fromDate").val();
+		$("#toDate").attr("min", fromdate);
+	});
+	
+
+
+});/* func */
+
+/* 구글 차트 */
+google.charts.load('current', {
+  packages: ['corechart', 'bar']
+});
+google.charts.setOnLoadCallback(drawBasic);
+
+function drawBasic() {
+
+  var data = new google.visualization.DataTable();
+  data.addColumn('string', '날짜');
+  data.addColumn('number', '매출액');
+
+  data.addRows([
+	  <c:forEach items="${salesList}" var="s">['${s.pay_date}', ${s.totalprice}],
+      </c:forEach>
+  ]);
+
+  var options = {
+    title: '중앙동물병원 매출액',
+    'width':900,
+    'height':500
+  };
+
+  var chart = new google.visualization.ColumnChart(
+    document.getElementById('chart_div'));
+
+  chart.draw(data, options);
+}
+
 </script>
+<style type="text/css">
+/* #chart_div{
+	margin-left: -10px;
+} */
+</style>
 </head>
 
 <body id="page-top">
@@ -59,46 +118,69 @@
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
-					<!-- Page Heading -->
-					<h5 class="h5 mb-4 text-gray-900">
-						<b>매출 관리</b>
-					</h5>
 
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 						<!-- 헤더  -->
 						<div class="card-header py-3">
-							<ul class="nav nav-tabs">
-								<li class="nav-item"><a
-									class="nav-link font-weight-bolder active" aria-current="page"
-									href="/weeksales" tabindex="0">주간매출</a></li>
-								<li class="nav-item"><a class="nav-link " href="/monthsales">월간매출</a></li>
-								<li class="nav-item"><a class="nav-link" href="/yearsales">연간매출</a></li>
-							</ul>
+							<h6 class="m-0 font-weight-bold text-primary">매출관리</h6>
 						</div>
 
+
+							<!-- 본문 -->
 						<div class="card-body">
-							<h4 class="m-0 font-weight-bold text-primary mb-3">Sales</h4>
+								<!-- 좌우 전체 -->
 							<div class="row justify-content-center">
-								<div class="card-body">
-									<div class="table-responsive" id="printme">
+								<!-- 왼쪽 리스트+검색 시작  -->
+								<div class="border-right col-5 col-md-5" style="padding: 10px; height: 570px;">
+									<!-- 날짜검색 시작  -->
+									<div class="input-group mb-3">
+										<input type="date"
+											class="form-control form-control-sm col-md-6" id="fromDate"
+											name="fromDate" value="${para.get('fromDate') }">
+										 <input type="date" class="form-control form-control-sm col-md-6"
+											id="toDate" name="toDate" value="${para.get('toDate') }">
+										<div class="input-group-append">
+											<button class="btn btn-primary btn-sm" type="submit"
+												id="dateSearch" onclick="location.href='/sales'">조회</button>
+										</div>
+									</div>
+									<!--리스트테이블 시작  -->
+									<div class="table-responsive">
 										<table class="table table-bordered" id="dataTable"
-											width="100%" cellspacing="0">
+											width="100%" cellspacing="0" style="text-align:center">
 											<thead>
 												<tr>
-													<th>번호</th>
-													<th>날짜</th>
-													<th>수납액</th>
-													<th>방문인원?</th>
+													<th class="col-2">번호</th>
+													<th class="col-4">날짜</th>
+													<th class="col-6">매출액</th>
 												</tr>
 											</thead>
 											<tbody>
-
+											<c:forEach items="${salesList }" var="s">
+												<tr>
+												<td>${s.rownum }</td>
+												<td>${s.pay_date }</td>
+												<td><fmt:formatNumber value="${s.totalprice }"
+												pattern="#,###" />원</td>
+												</tr>
+											</c:forEach>
 											</tbody>
 										</table>
 									</div>
+
+
 								</div>
+								<!-- 매출리스트끝  -->
+								<!-- 우측 차트 시작 -->
+								<div class="col-7 col-md-7"
+									style="overflow: auto; height: 570px; padding: 10px;">
+								 <div id="chart_div"></div>
+								
+								</div><!-- 구글차트끝 -->
+
+
 							</div>
 						</div>
 

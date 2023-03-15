@@ -88,13 +88,19 @@ if (session.getAttribute("id") == null) {
 
 		});//click
 
-		//날짜선택시 오늘까지만 제한주기
+		//날짜 선택시 오늘까지만 제한주기
 		var now_utc = Date.now()
 		var timeOff = new Date().getTimezoneOffset() * 60000;
 		var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
-		$("#Date").attr("max", today);
-		$("#Date1").attr("max", today);
-
+		$("#fromDate").attr("max", today);
+		$("#toDate").attr("max", today);
+		
+		//기간 설정시 종료일 제한 
+		$("#fromDate").change(function(){
+			var fromdate = $("#fromDate").val();
+			$("#toDate").attr("min", fromdate);
+		});
+		
 		//검색후 입력한 값 잡고있기
 		if ($("#hidden_search").val() != null) {
 			var searchname = $("#hidden_search").val();
@@ -104,7 +110,6 @@ if (session.getAttribute("id") == null) {
 		//당일 버튼 클릭시 오늘날짜 잡기
 		$("#filterDate").click(function() {
 			$("#todayDate").val(today);
-			
 		});
 
 	}); //func
@@ -135,11 +140,7 @@ if (session.getAttribute("id") == null) {
 	right: 15px;
 }
 
-#Date1 {
-	width: 250px;
-}
-
-#Date {
+#fromDate,#toDate {
 	width: 250px;
 }
 
@@ -180,10 +181,10 @@ if (session.getAttribute("id") == null) {
 								<div class="mb-3">
 									<div class="input-group">
 										<input type="date"
-											class="form-control form-control-sm col-md-6 " id="Date"
-											name="fromDate" value="${cri.getFromDate() }"> <input
-											type="date" class="form-control form-control-sm col-md-6"
-											id="Date1" name="toDate" value="${cri.getToDate() }">
+											class="form-control form-control-sm col-md-6 " id="fromDate"
+											name="fromDate" value="${cri.getFromDate() }">
+										 <input type="date" class="form-control form-control-sm col-md-6"
+											id="toDate" name="toDate" value="${cri.getToDate() }">
 										<div class="input-group-append">
 											<button class="btn btn-primary btn-sm" type="submit"
 												id="btn_ra">조회</button>

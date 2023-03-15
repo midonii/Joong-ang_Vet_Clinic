@@ -1,20 +1,35 @@
 package com.vet.clinic.service;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vet.clinic.dao.SMSDAO;
+import com.vet.clinic.dto.MessageDTO;
 import com.vet.clinic.dto.SMSDTO;
+import com.vet.clinic.dto.SmsRequestDTO;
+import com.vet.clinic.dto.SmsResponseDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,8 +51,8 @@ public class SMSService {
  
 	@Value("${naver-cloud-sms.senderPhone}")
 	private String phone;
-	/*
-	public String makeSignature(Long time) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
+	
+	public String makeSignature(Long time) throws Exception {
 		String space = " ";
         String newLine = "\n";
         String method = "POST";
@@ -65,7 +80,39 @@ public class SMSService {
  
         return encodeBase64String;
 	}
-	*/
+	
+	public SmsResponseDTO sendSms(MessageDTO messageDTO) throws Exception {
+		Long time = System.currentTimeMillis();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("x-ncp-apigw-timestamp", time.toString());
+		headers.set("x-ncp-iam-access-key", accessKey);
+		headers.set("x-ncp-apigw-signature-v2", makeSignature(time));
+		
+		List<MessageDTO> messages = new ArrayList<>();
+		messages.add(messageDTO);
+		
+		SmsRequestDTO request = SmsRequestDTO.builder()
+				.type("SMS")
+				.contentType("COMM")
+				.countryCode("82")
+				.from(phone)
+				.content(messageDTO.getContent())
+				.messages(messages)
+				.build();
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		String body = objectMapper.writeValueAsString(request);
+		HttpEntity<String> httpBody = new HttpEntity<>(body, headers);
+		
+		RestTemplate restTemplate = new RestTemplate();
+	    restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+	    SmsResponseDTO response = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/"+ serviceId +"/messages"), httpBody, SmsResponseDTO.class);
+ 
+	    return response;	
+	}
+	
 	public List<SMSDTO> smsclientlist() {
 		return smsDAO.smsclientlist();
 	}

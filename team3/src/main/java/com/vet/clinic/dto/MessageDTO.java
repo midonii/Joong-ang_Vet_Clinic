@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class SMSDTO {
-	
-	private String reservation_date, pet_name, owner_name, owner_tel;
-	
+public class MessageDTO {
+	String to;
+	String content;
 }

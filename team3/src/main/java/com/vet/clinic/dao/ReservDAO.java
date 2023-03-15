@@ -17,4 +17,8 @@ public interface ReservDAO {
 
 	public List<ReservDTO> reservAjax(ReservDTO reservDTO);
 
+	public int reservAdd(ReservDTO reservDTO);
+
+	public List<ReservDTO> reservlist(ReservDTO reservDTO);
+
 }
