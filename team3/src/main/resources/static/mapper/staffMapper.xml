@@ -40,7 +40,8 @@
 		</if>
 
 		) s
-		ORDER BY sno DESC;
+		ORDER BY sno DESC
+		LIMIT #{pagenum}, #{contentnum};
 
 	</select>
 

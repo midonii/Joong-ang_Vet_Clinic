@@ -4,73 +4,81 @@
 <mapper namespace="com.vet.clinic.dao.ClientDAO">
 
 	<select id="clientlist" resultType="ClientDTO">
-	SELECT *
-	FROM owner
+		SELECT *
+		FROM owner
 	</select>
-	
+
 	<select id="petlist" resultType="ClientDTO">
-	SELECT *
-	FROM clientview
-	<if test="tdArr != null">
-		WHERE owner_no=#{tdArr }
-	</if>
+		SELECT *
+		FROM clientview
+		<if test="tdArr != null">
+			WHERE owner_no=#{tdArr }
+		</if>
 	</select>
-	
+
 	<select id="profileMap" resultType="ClientDTO">
-	SELECT *
-	FROM clientview
-	<if test="clientNno != null">
-		WHERE owner_no=#{clientNno }
-	</if>
+		SELECT *
+		FROM clientview
+		<if test="clientNno != null">
+			WHERE owner_no=#{clientNno }
+		</if>
 	</select>
-	
-	<select id="clientDetailAjax" parameterType="ClientDTO" resultType="ClientDTO">
-	SELECT *
-	FROM clientview
-	WHERE owner_no=#{detailNo }
+
+	<select id="clientDetailAjax" parameterType="ClientDTO"
+		resultType="ClientDTO">
+		SELECT *
+		FROM clientview
+		WHERE owner_no=#{detailNo }
 	</select>
-	
+
 	<delete id="petDel" parameterType="ClientDTO">
 		DELETE FROM pet
-   		WHERE pet_no=#{petNo }
+		WHERE
+		pet_no=#{petNo }
 	</delete>
-	
+
 	<delete id="clientDel" parameterType="ClientDTO">
 		DELETE FROM owner
-   		WHERE owner_no=#{clientNo }
+		WHERE
+		owner_no=#{clientNo }
 	</delete>
-	
+
 	<delete id="cilentPetDel" parameterType="ClientDTO">
 		DELETE FROM pet
-   		WHERE owner_no=#{clientNo }
+		WHERE
+		owner_no=#{clientNo }
 	</delete>
-	
+
 	<insert id="clientAdd" parameterType="ClientDTO">
 		INSERT INTO owner SET
 		owner_name = #{floatingClientName },
-		owner_email = #{floatingClientEmail },
+		owner_email =
+		#{floatingClientEmail },
 		owner_tel = #{floatingClientTel },
-		owner_addr = #{floatingClientAddr },
+		owner_addr =
+		#{floatingClientAddr },
 		owner_sms = #{smsAgree },
-		owner_memo = #{floatingClientComments }
+		owner_memo =
+		#{floatingClientComments }
 	</insert>
-	
+
 	<update id="clientUpdate" parameterType="ClientDTO">
 		UPDATE owner SET
-   		owner_name = #{updateOwnerName },
+		owner_name = #{updateOwnerName },
 		owner_email = #{updateOwnerEmail },
 		owner_tel = #{updateOwnerTel },
 		owner_addr = #{updateOwnerAddr },
 		owner_sms = #{updateOwnerSms },
 		owner_memo = #{updateOwnerMemo }
-   		WHERE owner_no=#{clientNo }
+		WHERE
+		owner_no=#{clientNo }
 	</update>
-	
+
 	<select id="petTypeList" resultType="ClientDTO">
 		SELECT *
 		FROM petType
 	</select>
-	
+
 	<insert id="petAdd" parameterType="HashMap">
 		INSERT INTO pet SET
 		pet_name=#{petAddName},
@@ -81,5 +89,21 @@
 		type_no=#{petAddType},
 		owner_no=#{owner_noPAdd};
 	</insert>
-	
+
+	<select id="indexPet" resultType="HashMap"
+		parameterType="HashMap">
+		SELECT ROW_NUMBER()
+		over(ORDER BY p.pet_no) AS pno, p.*
+		FROM
+		(
+		SELECT *
+		FROM petview
+		<if test="search_value != null">
+			WHERE
+			pet_name LIKE CONCAT('%',#{search_value}, '%') OR
+			owner_name LIKE CONCAT('%',#{search_value}, '%') OR
+			owner_tel LIKE CONCAT('%',#{search_value}, '%')
+		</if>
+		) p
+	</select>
 </mapper>

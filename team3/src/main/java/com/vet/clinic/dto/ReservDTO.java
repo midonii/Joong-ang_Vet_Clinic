@@ -13,4 +13,6 @@ public class ReservDTO {
 	private int pet_no, pet_weight, pet_count, owner_no, type_no, owner_tel;
 	
 	private String search_value, searchValue;
+	private String reserv_date;
+	private int rno,ino;
 }

@@ -63,6 +63,10 @@ public class ClientService {
 		return clientDAO.petAdd(map);
 	}
 
+	public List<Map<String, Object>> indexPet(Map<String, Object> map) {
+		return clientDAO.indexPet(map);
+	}
+
 	
 
 

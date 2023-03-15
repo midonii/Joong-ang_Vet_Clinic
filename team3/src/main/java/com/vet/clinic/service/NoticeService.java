@@ -66,4 +66,8 @@ public class NoticeService {
 		return mv;
 	}
 
+	public List<Map<String, Object>> noticeList(Map<String, Object> map) {
+		return noticeDAO.indexNotice(map);
+	}
+
 }

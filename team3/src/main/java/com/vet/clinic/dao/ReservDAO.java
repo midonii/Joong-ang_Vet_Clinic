@@ -1,6 +1,7 @@
 package com.vet.clinic.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -16,5 +17,9 @@ public interface ReservDAO {
 	public List<ReservDTO> searchlist(ReservDTO reservDTO);
 
 	public List<ReservDTO> reservAjax(ReservDTO reservDTO);
+
+	public List<Map<String, Object>> indexReserv(Map<String, Object> map);
+
+	public List<Map<String, Object>> receivepay(Map<String, Object> map);
 
 }

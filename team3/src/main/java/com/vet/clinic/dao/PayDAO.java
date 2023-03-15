@@ -22,5 +22,7 @@ public interface PayDAO {
 	public int totalCount();
 
     public List<Map<String, Object>> payList(Criteria cri);
+
+	public List<Map<String, Object>> indexPay(Map<String, Object> map);
 	
 }
