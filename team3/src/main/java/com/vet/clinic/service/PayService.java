@@ -51,11 +51,5 @@ public class PayService {
 
 		return mv;
 	}
-
-
-	public List<Map<String, Object>> indexPay(Map<String, Object> map) {
-		return payDAO.indexPay(map);
-	}
-	
 	
 }

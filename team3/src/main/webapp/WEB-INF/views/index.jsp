@@ -116,65 +116,31 @@ if (session.getAttribute("id") == null) {
 							let reserv = data.reserv;
 							var table = "<table class='table table-sm' id='dataTable' width='100%' cellspacing='0'><thead>"
 									+ "<tr class='text-center'>"
-									+ "<th class='col-3'>번호</th>"
+									+ "<th class='col-2'>번호</th>"
 									+ "<th class='col-3'>동물명</th>"
 									+ "<th class='col-3'>보호자명</th>"
-									+ "<th class='col-3'>예약시간</th>"
+									+ "<th class='col-4'>예약시간</th>"
 									+ "</tr></thead>";
 
 							for (let i = 0; reserv.length > i; i++) {
 								var rno = reserv[i].rno;
 								var pet_name = reserv[i].pet_name;
 								var owner_name = reserv[i].owner_name;
-								var reserv_date = reserv[i].reserv_date;
+								var reserv_time = reserv[i].reserv_time;
 
 								table += "<tbody>";
 								table += "<tr class='text-center'>";
 								table += "<td>" + rno + "</td>";
 								table += "<td>" + pet_name + "</td>";
 								table += "<td>" + owner_name + "</td>";
-								table += "<td>" + reserv_date + "</td>";
+								table += "<td>" + reserv_time + "</td>";
 								table += "</tr>";
 							}
 							$("#reserv").append(table);
 						}).fail(function() {
 					alert("문제가 발생했습니다.");
 				});
-		$
-				.post({
-					url : "/payAjax",
-					dataType : "json"
 
-				})
-				.done(
-						function(data) {
-							let pay = data.pay;
-							var table = "<table class='table table-sm' id='dataTable' width='100%' cellspacing='0'><thead>"
-									+ "<tr class='text-center'>"
-									+ "<th class='col-3'>차트번호</th>"
-									+ "<th class='col-3'>동물명</th>"
-									+ "<th class='col-3'>보호자명</th>"
-									+ "<th class='col-3'>수납금액</th>"
-									+ "</tr></thead>";
-
-							for (let i = 0; pay.length > i; i++) {
-								var chart_no = pay[i].chart_no;
-								var pet_name = pay[i].pet_name;
-								var owner_name = pay[i].owner_name;
-								var totalprice = pay[i].totalprice;
-
-								table += "<tbody>";
-								table += "<tr class='text-center'>";
-								table += "<td>" + chart_no + "</td>";
-								table += "<td>" + pet_name + "</td>";
-								table += "<td>" + owner_name + "</td>";
-								table += "<td>" + totalprice + "</td>";
-								table += "</tr>";
-							}
-							$("#pay").append(table);
-						}).fail(function() {
-					alert("문제가 발생했습니다.");
-				});
 		$
 				.post({
 					url : "/receivepay",

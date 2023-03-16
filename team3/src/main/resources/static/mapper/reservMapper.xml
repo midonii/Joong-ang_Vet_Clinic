@@ -68,7 +68,7 @@
 	<select id="indexReserv" resultType="HashMap">
 		SELECT ROW_NUMBER()
 		over(ORDER BY r.reserv_date) AS
-		rno,r.pet_name,r.owner_name,r.reserv_date
+		rno,r.pet_name,r.owner_name,r.reserv_time
 		FROM
 		(SELECT *
 		FROM
