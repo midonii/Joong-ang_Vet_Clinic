@@ -37,6 +37,13 @@
 		</if>
 	</select>
 	
+	<select id="clientDetailAjax" parameterType="ClientDTO" resultType="ClientDTO">
+	SELECT *
+	FROM clientview
+	WHERE owner_no=#{detailNo }
+	
+	</select>
+	
 	<select id="clientPetDetailAjax" parameterType="ClientDTO" resultType="ClientDTO">
 	SELECT *
 	FROM clientview
