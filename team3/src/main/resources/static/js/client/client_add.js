@@ -135,7 +135,7 @@ $(function(){
     				//alert("정상소통" + data.result);
     				if(data.result == 1){
     					alert("수정이 완료되었습니다.");
-    					location.href = "/profile";
+    					location.href = "/client";
     						
     				 } else {
     					alert("문제가 발생했습니다. \n다시 시도해주세요.");
@@ -471,7 +471,7 @@ $(function(){
 								//alert("정상소통" + data.result);
 								if (data.result == 1) {
 									alert("수정이 완료되었습니다.");
-									location.href = "/profile";
+									location.href = "/client";
 
 								} else {
 									alert("문제가 발생했습니다. \n다시 시도해주세요.");
@@ -670,7 +670,7 @@ $(function(){
     				//alert("정상소통" + data.result);
     				if(data.result == 1){
     					alert("수정이 완료되었습니다.");
-    					location.href = "/profile";
+    					location.href = "/client";
     						
     				 } else {
     					alert("문제가 발생했습니다. \n다시 시도해주세요.");
@@ -693,8 +693,10 @@ $(function(){
 	
 	//보호자 상세보기 모달
 	 $(".detail-btn").off().click(function(){
+		
+		
 		 let detailNo = $(this).attr("value");
-		 //lert(detailNo + " : 버튼을 클릭했습니다.");
+		//alert(detailNo + " : 버튼을 클릭했습니다.");
 		 let clientNo = $(this).attr("value");
 		
 		$.post({
@@ -705,6 +707,11 @@ $(function(){
 			}).done(function(data){
 				let result = data.result
 				//alert(result[0].owner_name);
+				let result2 = data.result2
+				if(result2.length == 0){
+					alert("반려견을 추가해 주세요.");
+					return false;
+				}
 				
 				$("#viewModalLabel").text(result[0].owner_name);
 				$("#client_tel").text(result[0].owner_tel);
@@ -713,18 +720,17 @@ $(function(){
 				$("#client_sms").text(result[0].owner_sms);
 				$("#client_memo").text(result[0].owner_memo);
 				
-				
 				var table = "";
 				$('.petListModal').hide();
 				//상세보기 클릭 시 이전 기록 reset
 				$("#ajaxModalTable").empty();
-				for(let i = 0; result.length > i; i++){
-					var pet_no = result[i].pet_no;
-					var pet_name = result[i].pet_name;
-					var type_name = result[i].type_name
-					var pet_gender = result[i].pet_gender;
-					var pet_birth = result[i].pet_birth;
-					var pet_memo = result[i].pet_memo;
+				for(let i = 0; result2.length > i; i++){
+					var pet_no = result2[i].pet_no;
+					var pet_name = result2[i].pet_name;
+					var type_name = result2[i].type_name
+					var pet_gender = result2[i].pet_gender;
+					var pet_birth = result2[i].pet_birth;
+					var pet_memo = result2[i].pet_memo;
 					table += "<tr class='petList' value="+pet_no+">";
 					table += "<td>"+pet_no+"</td>";
 					table += "<td>"+pet_name+"</td>";
@@ -1229,7 +1235,7 @@ $(function(){
 				return false;
 			}
 			
-			if($("#floatingClientTel").val() == "" || $("#floatingClientTel").val().length > 9 || 
+			if($("#floatingClientTel").val() == "" || $("#floatingClientTel").val().length > 11 || 
 				RegExp.test($("#floatingClientTel").val())	){
 				alert("전화번호는 숫자만 입력해 주세요.");
 				$("#floatingClientTel").focus();

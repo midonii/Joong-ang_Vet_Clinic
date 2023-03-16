@@ -77,6 +77,10 @@ public class ClientService {
 
 	}
 
+	public List<ClientDTO> clientPetDetailAjax(ClientDTO client) {
+		return clientDAO.clientPetDetailAjax(client);
+	}
+
 	
 
 

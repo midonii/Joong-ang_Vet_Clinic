@@ -40,7 +40,11 @@ public interface ClientDAO {
 
 	public int petUpdate(Map<String, Object> map);
 
+
 	public List<Map<String, Object>> indexPet(Map<String, Object> map);
+
+
+	public List<ClientDTO> clientPetDetailAjax(ClientDTO client);
 
 
 

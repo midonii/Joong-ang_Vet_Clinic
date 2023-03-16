@@ -4,35 +4,29 @@
 <mapper namespace="com.vet.clinic.dao.ClientDAO">
 
 	<select id="clientlist" resultType="ClientDTO">
-
 	SELECT *
 	FROM owner
+	WHERE owner_del = 1
 	<if test="search_name != null">
 	<choose>
 	<when test="search_name == 'owner'">
-	WHERE (owner_name LIKE CONCAT('%',#{search_value },'%') or owner_tel LIKE CONCAT('%',#{search_value },'%'))
+	AND (owner_name LIKE CONCAT('%',#{search_value },'%') or owner_tel LIKE CONCAT('%',#{search_value },'%'))
 	</when>
 	</choose>
 	</if>
-
+	order by owner_no desc
 	</select>
 
 	<select id="petlist" resultType="ClientDTO">
-
 	SELECT *
-	FROM clientview
+	FROM clientview 
+	WHERE pet_del = 1
 	<if test="search_name != null">
 	<if test="search_name == 'pet'">
-	WHERE (pet_name  LIKE CONCAT('%',#{search_value },'%') or pet_birth LIKE CONCAT('%',#{search_value },'%'));
+	AND (pet_name  LIKE CONCAT('%',#{search_value },'%') or pet_birth LIKE CONCAT('%',#{search_value },'%'));
 	</if>
 	</if>
-
-		SELECT *
-		FROM clientview
-		<if test="tdArr != null">
-			WHERE owner_no=#{tdArr }
-		</if>
-
+	order by pet_no desc
 	</select>
 
 	<select id="profileMap" resultType="ClientDTO">
@@ -42,32 +36,35 @@
 			WHERE owner_no=#{clientNno }
 		</if>
 	</select>
-
-	<select id="clientDetailAjax" parameterType="ClientDTO"
-		resultType="ClientDTO">
-		SELECT *
-		FROM clientview
-		WHERE owner_no=#{detailNo }
+	
+	<select id="clientPetDetailAjax" parameterType="ClientDTO" resultType="ClientDTO">
+	SELECT *
+	FROM clientview
+	WHERE owner_no=#{detailNo }
+	AND pet_del = 1
 	</select>
-
-	<delete id="petDel" parameterType="ClientDTO">
-		DELETE FROM pet
-		WHERE
-		pet_no=#{petNo }
-	</delete>
-
-	<delete id="clientDel" parameterType="ClientDTO">
-		DELETE FROM owner
-		WHERE
-		owner_no=#{clientNo }
-	</delete>
-
-	<delete id="cilentPetDel" parameterType="ClientDTO">
-		DELETE FROM pet
-		WHERE
-		owner_no=#{clientNo }
-	</delete>
-
+	
+	
+	<update id="petDel" parameterType="ClientDTO">
+		UPDATE pet SET
+		pet_del = 0
+		WHERE pet_no=#{petNo }
+	</update>
+	
+	
+	<update id="clientDel" parameterType="ClientDTO">
+		UPDATE owner SET
+		owner_del = 0
+		WHERE owner_no=#{clientNo }
+	</update>
+	
+	
+	<update id="cilentPetDel" parameterType="ClientDTO">
+		UPDATE pet SET
+		pet_del = 0
+		WHERE owner_no=#{clientNo }
+	</update>
+	
 	<insert id="clientAdd" parameterType="ClientDTO">
 		INSERT INTO owner SET
 		owner_name = #{floatingClientName },

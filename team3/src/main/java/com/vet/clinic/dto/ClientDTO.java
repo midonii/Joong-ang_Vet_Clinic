@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ClientDTO {
 
-	private int owner_no, pet_no, pet_weight, pet_count, type_no;
+	private int owner_no, pet_no, pet_weight, pet_count, type_no, pet_del, owner_del;
 	private String owner_name, owner_tel, owner_addr, owner_email, owner_sms, owner_memo, pet_name, pet_birth, pet_death, pet_gender, pet_regdate,pet_memo,type_name ;
 
 	

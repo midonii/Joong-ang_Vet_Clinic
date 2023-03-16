@@ -17,7 +17,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>pet data</title>
+<title>반려견 상세정보</title>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
@@ -40,9 +40,30 @@
 
 <script type="text/javascript">
 $(function(){
-	
+	$("#excel-down").click(function(){
+		/* alert("!"); */
+		const urlParams = new URL(location.href).searchParams;
+		const petNo = urlParams.get('petNo');
+		alert(petNo);
+		
+		location.href="/petVaccine.xls?petNo="+petNo;
+		
+	});
 });
 </script>
+<style type="text/css">
+.s20{
+	font-size: 20px;
+	cursor:pointer;
+}
+
+.vac{
+	margin : 0;
+	padding : 0;
+	line-height: 430px;
+	text-align: center;
+}
+</style>
 <script src="js/client/client_add.js"></script>
 </head>
 
@@ -50,11 +71,14 @@ $(function(){
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
-		<%@ include file="../bar/sideBar.jsp"%>
 
+		<!-- 사이드 바 메뉴 -->
+		<%@ include file="../bar/sideBar.jsp"%>
 
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
+
+
 
 			<!-- Main Content -->
 			<div id="content">
@@ -73,49 +97,69 @@ $(function(){
 							<h6 class="m-0 font-weight-bold text-primary">반려견 Info</h6>
 						</div>
 						<div class="card-body">
-							<div style="height: 300px;">
+							<div style="height: 430px;">
+							<c:forEach items="${petInfo }" var="pi">
 								<div class="list-group list-group-flush">
   								 <div class="list-group-item row">
   									<div class="col-4 font-weight-bold float-left">이름</div>
-  									<div class="col-8 float-left">이름정보</div>
+  									<div class="col-8 float-left">${pi.pet_name }</div>
   								 </div>	
   								 <div class="list-group-item row">
   									<div class="col-4 font-weight-bold float-left">견종</div>
-  									<div class="col-8 float-left">견종정보</div>
+  									<div class="col-8 float-left">${pi.type_name }</div>
   								 </div>	
   								 <div class="list-group-item row">
   									<div class="col-4 font-weight-bold float-left">생일</div>
-  									<div class="col-8 float-left">생일정보</div>
+  									<div class="col-8 float-left">${pi.pet_birth }</div>
   								 </div>	
   								 <div class="list-group-item row">
   									<div class="col-4 font-weight-bold float-left">성별</div>
-  									<div class="col-8 float-left">성별정보</div>
+  									<div class="col-8 float-left">${pi.pet_gender }</div>
   								 </div>	
   								 <div class="list-group-item row">
   									<div class="col-4 font-weight-bold float-left">몸무게</div>
-  									<div class="col-8 float-left">몸무게정보</div>
+  									<div class="col-8 float-left">${pi.pet_weight }kg</div>
   								 </div>	
   								 <div class="list-group-item row">
   									<div class="col-4 font-weight-bold float-left">특이사항</div>
-  									<div class="col-8 float-left">특이사항정보</div>
+  									<div class="col-8 float-left">${pi.pet_memo }</div>
   								 </div>	
 								</div>
+								</c:forEach>
 							</div>
 						</div>
 					</div>
 				  </div>
 
-					<!-- 접종 내역 -->
-					<div class="col-7">	
+					<!-- 접종 내역 / vac_name=신종플루, vacdata_date=2023-03-02 -->
+					<div class="col-7">
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">접종</h6>
+							<h6 class="m-0 font-weight-bold text-primary">
+							접종
+							<i class="fa-regular fa-file-excel float-right s20" id="excel-down" title="excel 다운로드"></i>
+							</h6>
 						</div>
 						<div class="card-body">
-							<div style="height: 300px;">
-								내용
+							<div style="height: 430px;">
+						<c:choose>
+						<c:when test="${fn:length(petVaccine) gt 0}">
+								<div class="list-group list-group-flush">
+								<c:forEach items="${petVaccine }" var="v">	
+  								 <div class="list-group-item row">
+  									<div class="col-5 font-weight-bold float-left">${v.vac_name }</div>
+  									<div class="col-7 float-left">${v.vacdata_date }</div>
+  								 </div>	
+								</c:forEach>
+								</div>
+						</c:when>
+						<c:otherwise>
+							<div class="vac">접종 내역이 없습니다.</div>
+						</c:otherwise>
+						</c:choose>
 							</div>
 						</div>
+						
 					</div>
 					</div>
 				</div>
@@ -137,8 +181,10 @@ $(function(){
 											<button class="accordion-button" type="button"
 												data-toggle="collapse" data-target="#collapseOne"
 												aria-expanded="false" aria-controls="collapseOne">
-												<div class="font-weight-bold">담당의 :</div>
-												<div class="ml-2 font-weith">(담당의)정보가 없습니다.</div>
+												<div class="font-weight-bold">차트번호 :</div>
+												<div class="ml-2 font-weith">(차트번호)정보가 없습니다.</div>
+												<div class="ml-4 font-weight-bold">담당의 :</div>
+												<div class="ml-2">(담당의)정보가 없습니다.</div>
 												<div class="ml-4 font-weight-bold">진료날짜 :</div>
 												<div class="ml-2">(진료날짜)정보가 없습니다.</div>
 												</button>
@@ -147,7 +193,24 @@ $(function(){
 											aria-labelledby="headingOne"
 											data-bs-parent="#accordionExample">
 											<div class="accordion-body">
-												내용
+												<!-- 의사 소견 -->
+												<div class="mb-4">
+													<div class="card border-left-info h-100 py-2">
+														<div class="card-body">
+															<div class="row no-gutters align-items-center">
+																<div class="col mr-2">
+																	<div
+																		class="text-sm font-weight-bold text-info text-uppercase mb-1">의사소견
+																	</div>
+																<div class="row no-gutters align-items-center">
+																(의사소견) 정보가 없습니다.
+																</div>
+																</div>
+																
+															</div>
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
