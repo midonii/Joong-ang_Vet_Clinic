@@ -59,8 +59,8 @@
 		<div id="collapseClient" class="collapse" aria-labelledby="headingTwo"
 			data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="/petinfo">회원 정보</a> <a
-					class="collapse-item" href="buttons.html">이전 진료 내역</a>
+				<a class="collapse-item" href="/client">회원 정보</a> <a
+					class="collapse-item" href="/petinfo">이전 진료 내역</a>
 			</div>
 		</div></li>
 

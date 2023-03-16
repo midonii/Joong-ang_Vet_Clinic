@@ -31,8 +31,8 @@ public class ClientContoller {
 		
 		ModelAndView mv = new ModelAndView("client/client");
 		
-		System.out.println(request.getParameter("search_name")); //select
-		System.out.println(request.getParameter("search_value")); //input
+		//System.out.println(request.getParameter("search_name")); //select
+		//System.out.println(request.getParameter("search_value")); //input
 		
 		SearchDTO search = new SearchDTO();
 		search.setSearch_name(request.getParameter("search_name"));
@@ -57,7 +57,7 @@ public class ClientContoller {
 	@PostMapping(value = "profileMap", produces = "application/json;charset=UTF-8")
 	public String profileMap(HttpServletRequest request) {
 	
-		System.out.println(request.getParameter("clientNno"));
+		//System.out.println(request.getParameter("clientNno"));
 		
 		ClientDTO client = new ClientDTO();
 		client.setClientNno(request.getParameter("clientNno"));
@@ -71,7 +71,7 @@ public class ClientContoller {
 			JSONArray jsonA = new JSONArray(profile);
 			
 			result.put("result",profile);
-			System.out.println(result.toString());
+			//System.out.println(result.toString());
 		} else {
 			result.put("result", 0);
 		}
@@ -87,7 +87,7 @@ public class ClientContoller {
 		ClientDTO client = new ClientDTO();
 		client.setDetailNo(request.getParameter("detailNo"));		
 		JSONObject json = new JSONObject();
-		System.err.println(client.getDetailNo());
+		//System.err.println(client.getDetailNo());
 		if ((String)request.getParameter("detailNo") != null) {
 			
 			List<ClientDTO> detail = clientService.clientDetailAjax(client);
@@ -110,14 +110,14 @@ public class ClientContoller {
 	//보호자 삭제(삭제 시 반려견 정보도 함께 삭제됨)
 	@GetMapping("clientDelete")
 	public String clientDelete(HttpServletRequest request) {
-		System.out.println(request.getParameter("clientNo"));
+		//System.out.println(request.getParameter("clientNo"));
 		
 		ClientDTO client = new ClientDTO();
 		client.setClientNo(request.getParameter("clientNo"));
 		
 		int result = clientService.cilentPetDel(client);
 		result = clientService.clientDel(client);
-		System.out.println("처리결과는 : " + result);
+		System.out.println("보호자 삭제 결과는 : " + result);
 		
 		return "redirect:client";
 	}
@@ -125,13 +125,13 @@ public class ClientContoller {
 	//반려견 정보 삭제
 	@GetMapping("petDelete")
 	public String petDelete(HttpServletRequest request) {
-		System.out.println(request.getParameter("petNo"));
+		//System.out.println(request.getParameter("petNo"));
 		
 		ClientDTO client = new ClientDTO();
 		client.setPetNo(request.getParameter("petNo"));
 		
 		int result = clientService.petDel(client);
-		System.out.println("처리결과는 : " + result);
+		System.out.println("반려견 삭제 결과는 : " + result);
 		
 		return "redirect:client";
 	}
@@ -139,12 +139,12 @@ public class ClientContoller {
 	//보호자 추가
 	@PostMapping("clientAdd")
 	public String clientAdd(HttpServletRequest request) {
-		System.out.println(request.getParameter("floatingClientName"));
-		System.out.println(request.getParameter("floatingClientEmail"));
-		System.out.println(request.getParameter("floatingClientTel"));
-		System.out.println(request.getParameter("floatingClientAddr"));
-		System.out.println(request.getParameter("smsAgree"));
-		System.out.println(request.getParameter("floatingClientComments"));
+//		System.out.println(request.getParameter("floatingClientName"));
+//		System.out.println(request.getParameter("floatingClientEmail"));
+//		System.out.println(request.getParameter("floatingClientTel"));
+//		System.out.println(request.getParameter("floatingClientAddr"));
+//		System.out.println(request.getParameter("smsAgree"));
+//		System.out.println(request.getParameter("floatingClientComments"));
 		
 		ClientDTO client = new ClientDTO();
 		client.setFloatingClientName(request.getParameter("floatingClientName"));
@@ -156,7 +156,7 @@ public class ClientContoller {
 		
 		int result = clientService.clientAdd(client);
 		
-		System.out.println("처리결과는 : " + result);
+		System.out.println("보호자 추가 결과는 : " + result);
 		
 		JSONObject json = new JSONObject();
 		json.put("result", result);
@@ -187,7 +187,7 @@ public class ClientContoller {
 		
 		int result = clientService.clientUpdate(client);
 		
-		System.out.println(result);
+		System.out.println("보호자 수정 결과는 : " + result);
 		
 		JSONObject json = new JSONObject();
 		json.put("result", result);
@@ -208,7 +208,7 @@ public class ClientContoller {
 		String petBirth = petBirthYear+"-"+petBirthMonth+"-"+petBirthDay;
 		map.put("petBirth", petBirth);
 		
-		System.out.println(map);
+		//System.out.println(map);
 		int petAdd = clientService.petAdd(map);
 		
 		return "redirect:client";
@@ -219,7 +219,7 @@ public class ClientContoller {
 	@PostMapping(value = "petUpdateAjax" , produces = "application/json;charset=UTF-8")
 	public String petUpdateAjax(@RequestParam Map<String, Object> map) {
 		
-		System.out.println(map);
+		//System.out.println(map);
 		JSONObject json = new JSONObject();
 
 		
@@ -228,7 +228,7 @@ public class ClientContoller {
 		  Map<String, Object> petUpdateShow = clientService.petUpdateAjax(map);
 		  
 		  json.put("result", petUpdateShow);
-		  System.out.println(json.toString());
+		  //System.out.println(json.toString());
 		 
 		  } else {
 			  
@@ -253,10 +253,10 @@ public class ClientContoller {
 		String petBirth = petBirthYear+"-"+petBirthMonth+"-"+petBirthDay;
 		map.put("petBirth", petBirth);
 				
-		System.out.println(map);
+		//System.out.println(map);
 		int petUpdate = clientService.petUpdate(map);
 		
-		System.out.println(petUpdate);
+		//System.out.println(petUpdate);
 		
 		JSONObject json = new JSONObject();
 		json.put("result", petUpdate);

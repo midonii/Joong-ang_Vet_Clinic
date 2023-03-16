@@ -65,10 +65,10 @@ public class PetController {
 		
 		List<PetDTO> list = petService.excelList(petDTO);
 		
-		System.err.println(list);
-		System.out.println(list.size());
-		System.out.println(list.get(0).getVac_name()); //심장사상충 , 1은 코로나 장염 순서
-		System.out.println(list.get(0).getVacdata_date());
+		//System.err.println(list);
+		//System.out.println(list.size());
+		//System.out.println(list.get(0).getVac_name()); //심장사상충 , 1은 코로나 장염 순서
+		//System.out.println(list.get(0).getVacdata_date());
 		
 		Workbook wb = new HSSFWorkbook();
 		
