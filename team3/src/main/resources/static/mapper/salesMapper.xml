@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.vet.clinic.dao.SalesDAO">
+	<!-- 매출 리스트용  -->
 	<select id="salesList" resultType="PayDTO" parameterType="PageDTO">
 		SELECT ROW_NUMBER()
 		OVER(ORDER BY pay_date) AS rownum, pay_date, totalprice
@@ -13,6 +14,7 @@
 		LIMIT  #{pagenum}, #{contentnum};
 	</select>
 	
+	<!-- 페이징 전체 글 갯수 -->
 	<select id="contentTotal" resultType="Integer" parameterType="PageDTO">
 		SELECT COUNT(*) from salesview
 		<if test="toDate !=null and !toDate.equals('') and fromDate !=null and !fromDate.equals('')">
@@ -20,6 +22,7 @@
 		</if>
 	</select>
 	
+	<!-- 구글차트용  -->
 	<select id="salesList2" resultType="Hashmap" parameterType="Hashmap">
 		SELECT totalprice ,
 		DATE_FORMAT(salesview.pay_date, '%m-%d') AS pay_date

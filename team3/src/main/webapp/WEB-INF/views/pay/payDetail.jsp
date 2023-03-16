@@ -10,7 +10,6 @@ if (session.getAttribute("id") == null) {
 	response.sendRedirect("/login");
 }
 %>
-
 <head>
 
 <meta charset="utf-8">
@@ -86,21 +85,21 @@ $(document).ready(
 							<hr class="hr1">
 							<table>
 								<tr>
-									<td align="right" valign="middle">차트번호 :&nbsp</td>
+									<td align="right" valign="middle">차트번호 :&nbsp;</td>
 									<td align="left" valign="middle">${detail.chart_no}</td>
 
 								</tr>
 								<tr>
-									<td align="right" valign="middle">보호자명 :&nbsp</td>
+									<td align="right" valign="middle">보호자명 :&nbsp;</td>
 									<td align="left" valign="middle">${detail.owner_name}</td>
 								</tr>
 								<tr>
-									<td align="right" valign="middle">동물명 :&nbsp</td>
+									<td align="right" valign="middle">동물명 :&nbsp;</td>
 									<td align="left" valign="middle">${detail.pet_name }</td>
 
 								</tr>
 								<tr>
-									<td align="right" valign="middle">전화번호 :&nbsp</td>
+									<td align="right" valign="middle">전화번호 :&nbsp;</td>
 									<td align="left" valign="middle" id="telnum" class="ml-3"></td>
 
 								</tr>

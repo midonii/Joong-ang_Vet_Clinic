@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.vet.clinic.dto.PageDTO;
@@ -22,11 +21,8 @@ public interface PayDAO {
 	
 	public int contentTotal(PageDTO pageDTO);
 
-	public int totalCount();
-
+	public List<PayDTO> payList(PageDTO pageDTO);
 
 	public List<Map<String, Object>> indexPay(Map<String, Object> map);
-
-	public List<PayDTO> payList(PageDTO pageDTO);
 	
 }

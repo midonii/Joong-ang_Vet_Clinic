@@ -5,6 +5,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="ko">
+<%
+if (session.getAttribute("id") == null) {
+	response.sendRedirect("/login");
+}
+%>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -42,7 +47,6 @@ $(function(){
 		location.href="/sales?fromDate="+fromDate+"&toDate="+toDate+"&contentnum="+contentnum;
 		
 	});/* click */
-	
 
 	//날짜 선택시 오늘까지만 제한
 	var now_utc = Date.now()
@@ -231,34 +235,20 @@ function page(idx, fromDate, toDate) {
 								<div class="col-7 col-md-7"
 									style="overflow: auto; width: auto; padding: 10px;">
 									<c:if test="${not empty param.toDate }">
-														
-															<fmt:formatNumber value="${payTotalPrice2}"
-																pattern="#,###" />원
-												
+										<fmt:formatNumber value="${payTotalPrice2}" pattern="#,###" />원
 													</c:if>
-								<div id="chart_div"></div> 
+									<div id="chart_div"></div>
 								</div>
 								<!-- 구글차트끝 -->
-
-
 							</div>
 						</div>
-
-
-
 						<!-- /.container-fluid -->
-
 					</div>
 					<!-- End of Main Content -->
 
 					<%@ include file="../bar/footer.jsp"%>
 
 					<%@ include file="../bar/logoutModal.jsp"%>
-
-
-
-
-
 
 					<!-- Bootstrap core JavaScript-->
 					<script src="vendor/jquery/jquery.min.js"></script>
