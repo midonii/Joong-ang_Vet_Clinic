@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.vet.clinic.dto.SearchDTO;
 import com.vet.clinic.service.NoticeService;
@@ -32,6 +33,7 @@ public class NoticeController {
 		searchDTO.setSearch_name(request.getParameter("search_name"));
 		searchDTO.setSearch_value(request.getParameter("search_value"));
 		noticeService.paging(mv, pagenum, contentnum,searchDTO);
+		
 		return mv;
 	}
 

@@ -89,9 +89,7 @@ public class IndexController {
 		JSONObject json = new JSONObject();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("search_value", request.getParameter("search_value"));
-		System.out.println(map);
 		List<Map<String, Object>> pet = clientService.indexPet(map);
-		System.err.println(pet);
 		JSONArray petJ = new JSONArray(pet);
 		json.put("pet", petJ);
 		return json.toString();

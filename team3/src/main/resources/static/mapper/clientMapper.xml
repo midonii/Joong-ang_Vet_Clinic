@@ -15,9 +15,6 @@
 	</choose>
 	</if>
 
-		SELECT *
-		FROM owner
-
 	</select>
 
 	<select id="petlist" resultType="ClientDTO">
