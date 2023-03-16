@@ -171,7 +171,7 @@ $(function(){
 							<h6 class="m-0 font-weight-bold text-primary">이전진료</h6>
 						</div>
 						<div class="card-body">
-							<div style="height: 250px; overflow: auto;">
+							<div style="height: 400px; overflow: auto;">
 							
 							
 								<!-- 진료 내역 -->
@@ -195,7 +195,7 @@ $(function(){
 											<div class="accordion-body">
 												<!-- 의사 소견 -->
 												<div class="mb-4">
-													<div class="card border-left-info h-100 py-2">
+													<div class="card h-100 py-2">
 														<div class="card-body">
 															<div class="row no-gutters align-items-center">
 																<div class="col mr-2">
@@ -211,6 +211,47 @@ $(function(){
 														</div>
 													</div>
 												</div>
+												
+												<!-- 처방내역 테이블 -->
+												<div class="card mb-4">
+													<div class="card-body">
+													<div class="text-sm font-weight-bold text-info text-uppercase mb-3 ">
+														의사소견
+													</div>
+														<div class="table-responsive">
+															<div id="clientScroll"
+																style="height: 250px; overflow: auto">
+																<table class="table table-sm table-bordered table-hover"
+																	id="dataTable" width="100%" cellspacing="0">
+																	<thead>
+																		<tr>
+																			<th class="col-md-1">구분</th>
+																			<th class="col-md-2">처방명</th>
+																			<th class="col-md-3">수량</th>
+																			<th class="col-md-5">담당자</th>
+																			<th class="col-md-1">단가</th>
+																		</tr>
+																	</thead>
+
+																	<tbody id="client-table" data-spy="scroll"
+																		data-target="#list-example" data-offset="0"
+																		class="scrollspy-example">
+
+																		<tr>
+																			<td>(구분)</td>
+																			<td>(처방내역)</td>
+																			<td>(수량)</td>
+																			<td>(담당자)</td>
+																			<td>(단가)</td>
+																		</tr>
+
+																	</tbody>
+																</table>
+															</div>
+														</div>
+													</div>
+												</div>
+
 											</div>
 										</div>
 									</div>

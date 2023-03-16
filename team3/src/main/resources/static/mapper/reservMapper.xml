@@ -14,11 +14,13 @@
 		resultType="ReservDTO">
 		SELECT * FROM clientview
 		WHERE owner_name
-		LIKE CONCAT('%', #{search_value}, '%')
+		LIKE CONCAT('%',
+		#{search_value}, '%')
 		OR pet_name
 		LIKE CONCAT('%', #{search_value}, '%')
 		OR owner_tel
 		LIKE CONCAT('%', #{search_value}, '%')
+
 	</select>
 
 
@@ -36,34 +38,25 @@
 		reservation_memo =
 		#{reservation_memo },
 		reservation_yn = 'y',
+		reservation_date = #{reservation_date},
+		reservation_memo = #{reservation_memo },
 		reservation_time=NOW(),
 		staff_no = (SELECT staff_no FROM staff WHERE staff_id = #{staff_id} ),
 		pet_no = #{petNo};
 
 	</insert>
 
+
+	<!-- 예약리스트 -->
 	<select id="reservlist" parameterType="ReservDTO"
 		resultType="ReservDTO">
-		SELECT * FROM reservationview
+		SELECT *
+		FROM reservationview
+		WHERE reserv_date = CURDATE() AND (reservation_yn = 'n' OR reservation_yn
+		= '')
+		ORDER BY reservation_date DESC
 	</select>
 
-
-
-
-	<!-- <select id="boardList" parameterType="SearchDTO" resultType="BoardDTO"> -->
-	<!-- SELECT b_no, b_title, member_name, listdate, b_like, b_read, comment -->
-	<!-- FROM boardview -->
-	<!-- <if test="search_name != null"> -->
-	<!-- WHERE -->
-	<!-- <choose> -->
-	<!-- <when test="search_name == 'title'">b_title</when> -->
-	<!-- <when test="search_name == 'content'">b_content</when> -->
-	<!-- <when test="search_name == 'writer'">member_name</when> -->
-	<!-- </choose> -->
-	<!-- LIKE CONCAT('%', #{search_value }, '%') -->
-	<!-- </if> -->
-	<!-- LIMIT #{startPage }, #{lastPage } -->
-	<!-- </select> -->
 
 	<select id="indexReserv" resultType="HashMap">
 		SELECT ROW_NUMBER()
@@ -93,5 +86,38 @@
 
 
 
+
+
+	<!-- 접수리스트 -->
+	<select id="receplist" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT *
+		FROM receptionview
+		WHERE reserv_date = CURDATE() AND (reservation_yn = 'n' OR reservation_yn
+		= '')
+		ORDER BY reservation_date DESC
+	</select>
+
+	<select id="reservUpdate" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT *
+		FROM reservationview
+		WHERE reservation_no = #{reservation_no}
+		ORDER BY reservation_date DESC
+	</select>
+
+	<update id="reservUpdateSaved" parameterType="ReservDTO">
+		UPDATE reservation SET
+		reservation_date = #{update_reservation_date },
+		reservation_memo = #{update_reservation_memo }
+		WHERE reservation_no=#{update_reservation_no}
+
+	</update>
+
+	<delete id="delete_reservation_no" parameterType="ReservDTO">
+		DELETE FROM reservation
+		WHERE
+		reservation_no=#{delete_reservation_no }
+	</delete>
 
 </mapper>
