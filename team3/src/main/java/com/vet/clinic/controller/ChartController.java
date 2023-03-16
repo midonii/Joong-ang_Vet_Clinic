@@ -12,18 +12,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.vet.clinic.service.ReceptionService;
+import com.vet.clinic.service.ChartService;
 
 @Controller
-public class ReceptionController {
+public class ChartController {
 
 	@Autowired
-	private ReceptionService receptionService;
+	private ChartService chartService;
 
-	@GetMapping("/reception")
+	@GetMapping("/chart")
 	public String reception() {
-		return "reception/reception";
+		return "chart/chart";
 	}
 
 	@ResponseBody
@@ -32,10 +33,20 @@ public class ReceptionController {
 		JSONObject json = new JSONObject();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pet_search", pet_search);
-		List<Map<String, Object>> pet = receptionService.petSearch(map);
+		List<Map<String, Object>> pet = chartService.petSearch(map);
 		JSONArray petJ = new JSONArray(pet);
 		json.put("pet", petJ);
 		return json.toString();
+	}
+
+	@GetMapping("/chartUpdate")
+	public ModelAndView chartUpdate(@RequestParam("pet_no") int pet_no) {
+		ModelAndView mv = new ModelAndView("chart/chartUpdate");
+
+		Map<String, Object> profile = chartService.profile(pet_no);
+
+		mv.addObject("profile", profile);
+		return mv;
 	}
 
 }

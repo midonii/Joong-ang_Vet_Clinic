@@ -6,16 +6,20 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.vet.clinic.dao.ReceptionDAO;
+import com.vet.clinic.dao.ChartDAO;
 
 @Service
-public class ReceptionService {
+public class ChartService {
 
 	@Autowired
-	private ReceptionDAO receptionDAO;
+	private ChartDAO chartDAO;
 
 	public List<Map<String, Object>> petSearch(Map<String, Object> map) {
-		return receptionDAO.petSearch(map);
+		return chartDAO.petSearch(map);
+	}
+
+	public Map<String, Object> profile(int pet_no) {
+		return chartDAO.profile(pet_no);
 	}
 
 }

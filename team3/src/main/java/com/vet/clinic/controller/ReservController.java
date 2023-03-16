@@ -31,7 +31,7 @@ public class ReservController {
 	public ModelAndView reserv(HttpServletRequest request) {
 		
 		ReservDTO reservDTO = new ReservDTO();
-		ModelAndView mv = new ModelAndView("reservation/reserv");
+		ModelAndView mv = new ModelAndView("reservation/reserv2");
 		
 		//전체리스트
 		List<ReservDTO> boardlist = reservService.boardlist(reservDTO);

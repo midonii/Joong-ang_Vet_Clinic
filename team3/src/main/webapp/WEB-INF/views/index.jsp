@@ -27,14 +27,21 @@ if (session.getAttribute("id") == null) {
 	rel="stylesheet">
 <!-- Custom styles for this template-->
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+	crossorigin="anonymous">
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 <script type="text/javascript"
 	src="cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- JQUERY -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<link rel="stylesheet" href="css/reservation/calender/calender2.css">
+<link rel="stylesheet" href="css/index.css">
+
+<script type="text/javascript" src="js/datetime.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
 </head>
 <script type="text/javascript">
 	$(function() {
@@ -170,17 +177,17 @@ if (session.getAttribute("id") == null) {
 								table += "<td>" + ino + "</td>";
 								table += "<td>" + pet_name + "</td>";
 								table += "<td>" + owner_name + "</td>";
-								if(state == 3){
-									if(pay_yn=="Y"){
-									table += "<td><span class='badge text-bg-primary'>수납대기</span></td>";
-									}else{
+								if (state == 3) {
+									if (pay_yn == "Y") {
+										table += "<td><span class='badge text-bg-primary'>수납대기</span></td>";
+									} else {
 										table += "<td><span class='badge text-bg-secondary'>수납완료</span></td>";
 									}
-								}else if(state == 2){
-								table += "<td><span class='badge text-bg-danger' >진료 중</span></td>";
-								}else if(state == 1){
-								table += "<td><span class='badge text-bg-success' >대기 중</span></td>";
-									
+								} else if (state == 2) {
+									table += "<td><span class='badge text-bg-danger' >진료 중</span></td>";
+								} else if (state == 1) {
+									table += "<td><span class='badge text-bg-success' >대기 중</span></td>";
+
 								}
 								table += "</tr>";
 							}
@@ -285,9 +292,6 @@ if (session.getAttribute("id") == null) {
 	});
 </script>
 
-
-
-
 <body id="page-top">
 
 	<!-- Page Wrapper -->
@@ -319,49 +323,26 @@ if (session.getAttribute("id") == null) {
 
 
 								<!-- Card Body -->
-								<div class="card-body">
-									<!-- <div class="calendar-container d-flex justify-content-center"
-										style="width: 100%">
-										<div class="calendar">
-
-											<table class="months-table"
-												style="width: 100%; padding-left: 5px; padding-right: 5px;">
-												<tbody style="border-width: 10px;">
-													<tr class="months-row">
-														<td class="month">Jan</td>
-														<td class="month">Feb</td>
-														<td class="month">Mar</td>
-														<td class="month">Apr</td>
-														<td class="month">May</td>
-														<td class="month">Jun</td>
-														<td class="month">Jul</td>
-														<td class="month">Aug</td>
-														<td class="month">Sep</td>
-														<td class="month">Oct</td>
-														<td class="month">Nov</td>
-														<td class="month">Dec</td>
-													</tr>
-												</tbody>
-											</table>
-
-											<table class="days-table">
-												<td class="day">Sun</td>
-												<td class="day">Mon</td>
-												<td class="day">Tue</td>
-												<td class="day">Wed</td>
-												<td class="day">Thu</td>
-												<td class="day">Fri</td>
-												<td class="day">Sat</td>
-											</table>
-											<div class="frame">
-												<table class="dates-table" style="width: 100%;">
-													<tbody class="tbody">
-													</tbody>
-												</table>
-											</div>
-
+								<div class="card-body p-1" style="padding-left:3px; padding-bottom:0; height: 352px;">
+									<div class="sec_cal col-12" >
+										<div class="cal_nav">
+											<a href="javascript:;" class="nav-btn go-prev">prev</a>
+											<div class="year-month"></div>
+											<a href="javascript:;" class="nav-btn go-next">next</a>
 										</div>
-									</div> -->
+										<div class="cal_wrap" style="margin-top: -20px;">
+											<div class="days">
+												<div class="day">MON</div>
+												<div class="day">TUE</div>
+												<div class="day">WED</div>
+												<div class="day">THU</div>
+												<div class="day">FRI</div>
+												<div class="day">SAT</div>
+												<div class="day">SUN</div>
+											</div>
+											<div class="dates"></div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -381,7 +362,8 @@ if (session.getAttribute("id") == null) {
 								<!-- Card Body -->
 								<div class="card-body" style="margin-top: -10px;">
 
-									<div class="table-responsive" id="notice" style="height: 270px;">
+									<div class="table-responsive" id="notice"
+										style="height: 270px;">
 										</tbody>
 										</table>
 									</div>
@@ -447,7 +429,8 @@ if (session.getAttribute("id") == null) {
 
 								<!-- Card Body -->
 								<div class="card-body" style="margin-top: -10px;">
-									<div class="table-responsive" id="reserv" style="height: 280px;">
+									<div class="table-responsive" id="reserv"
+										style="height: 280px;">
 										</tbody>
 										</table>
 									</div>
@@ -457,7 +440,7 @@ if (session.getAttribute("id") == null) {
 						</div>
 
 						<!-- 접수수납 -->
-						
+
 						<div class="col-xl-8 col-lg-5">
 							<div class="card shadow mb-4">
 								<!-- Card Header -->
@@ -473,7 +456,8 @@ if (session.getAttribute("id") == null) {
 								<!-- Card Body -->
 								<div class="card-body" style="margin-top: -10px;">
 
-									<div class="table-responsive" id="receivepay" style="height: 280px;">
+									<div class="table-responsive" id="receivepay"
+										style="height: 280px;">
 										</tbody>
 										</table>
 									</div>
@@ -559,4 +543,5 @@ if (session.getAttribute("id") == null) {
 			<script src="js/sb-admin-2.min.js"></script>
 </body>
 
-</html>>
+</html>
+>

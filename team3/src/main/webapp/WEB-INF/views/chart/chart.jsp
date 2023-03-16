@@ -64,11 +64,11 @@ if (session.getAttribute("id") == null) {
 												$(".petTable").empty();
 												var table = "";
 												if (pet == "") {
-													table += "<tr class='text-center'> <td colspan='4'>존재하지 않습니다.<br><br>";
-													table += "<button class='btn btn-sm btn-primary' id='reg_btn'>신규등록</button></td></tr>";
+													table += "<tr class='text-center'> <td colspan='6'>존재하지 않습니다.<br><br>";
 												} else {
 													for (let i = 0; pet.length > i; i++) {
-														var pet_no = pet[i].pno;
+														var pno = pet[i].pno;
+														var pet_no = pet[i].pet_no;
 														var pet_name = pet[i].pet_name;
 														var owner_name = pet[i].owner_name;
 														var owner_tel = pet[i].owner_tel;
@@ -76,12 +76,11 @@ if (session.getAttribute("id") == null) {
 
 														table += "<tr class='text-center' >";
 														table += "<td class='col-1'>"
-																+ pet_no
-																+ "</td>";
-														table += "<td class='col-3'>"
+																+ pno + "</td>";
+														table += "<td class='col-2'>"
 																+ pet_name
 																+ "</td>";
-														table += "<td class='col-3'>"
+														table += "<td class='col-2'>"
 																+ owner_name
 																+ "</td>";
 														table += "<td class='col-1'>"
@@ -90,6 +89,7 @@ if (session.getAttribute("id") == null) {
 														table += "<td class='col-4'>"
 																+ owner_tel
 																+ "</td>";
+														table += "<td class='col-2'><button type='button' class='btn btn-primary btn-sm chartUpdate' value='"+pet_no+"'>열기</button></td>";
 														table += "</tr>";
 
 													}
@@ -104,11 +104,14 @@ if (session.getAttribute("id") == null) {
 							}
 
 						});
-		$("#search_btn2")
-				.click(
+		$(document)
+				.on(
+						"click",
+						"#search_btn2",
 						function() {
+
 							console.log("search_btn2 클릭");
-							var pet_search = $("#pet_search").val();
+							var pet_search = $("#pet_search2").val();
 
 							if (pet_search == "") {
 								alert("검색어를 입력하세요");
@@ -127,11 +130,11 @@ if (session.getAttribute("id") == null) {
 												$(".petTable").empty();
 												var table = "";
 												if (pet == "") {
-													table += "<tr class='text-center'> <td colspan='4'>존재하지 않습니다.<br><br>";
-													table += "<button class='btn btn-sm btn-primary' id='reg_btn'>신규등록</button></td></tr>";
+													table += "<tr class='text-center'> <td colspan='6' >존재하지 않습니다.<br><br>";
 												} else {
 													for (let i = 0; pet.length > i; i++) {
-														var pet_no = pet[i].pno;
+														var pno = pet[i].pno;
+														var pet_no = pet[i].pet_no;
 														var pet_name = pet[i].pet_name;
 														var owner_name = pet[i].owner_name;
 														var owner_tel = pet[i].owner_tel;
@@ -139,12 +142,11 @@ if (session.getAttribute("id") == null) {
 
 														table += "<tr class='text-center' >";
 														table += "<td class='col-1'>"
-																+ pet_no
-																+ "</td>";
-														table += "<td class='col-3'>"
+																+ pno + "</td>";
+														table += "<td class='col-2'>"
 																+ pet_name
 																+ "</td>";
-														table += "<td class='col-3'>"
+														table += "<td class='col-2'>"
 																+ owner_name
 																+ "</td>";
 														table += "<td class='col-1'>"
@@ -153,6 +155,7 @@ if (session.getAttribute("id") == null) {
 														table += "<td class='col-4'>"
 																+ owner_tel
 																+ "</td>";
+														table += "<td class='col-2'><button type='button' class='btn btn-primary btn-sm chartUpdate' value='"+pet_no+"'>열기</button></td>";
 														table += "</tr>";
 
 													}
@@ -167,6 +170,12 @@ if (session.getAttribute("id") == null) {
 							}
 
 						});
+
+		$(document).on("click", ".chartUpdate", function() {
+			$("#petSearchModal").modal("hide");
+			var pet_no = $(this).attr("value");
+			location.href = "/chartUpdate?pet_no=" + pet_no;
+		});
 	});
 </script>
 
@@ -198,27 +207,27 @@ if (session.getAttribute("id") == null) {
 								<!-- Card Header - Dropdown -->
 								<div class="card-header py-2 d-flex flex-row align-items-center">
 
-									<div class="col-8">
+									<div class="col-9">
 
 										<table border="0" cellspacing="0"
 											style="font-size: 14px; margin-left: -10px;">
 
 											<tr>
-												<td>보호자명 : 윤지혜&nbsp;</td>
-												<td>동물명 : 까미&nbsp;</td>
-												<td>견종 : 포메라니안&nbsp;</td>
-												<td>성별 : IF/NF&nbsp;</td>
-												<td>생년월일 : 2022-01-03&nbsp;</td>
-												<td>체중 : 12.0kg&nbsp;</td>
-												<td>담당의 : doctor&nbsp;</td>
-
+												<td>보호자명 : <b class="text-gray-800">윤지혜</b>&nbsp;&nbsp;</td>
+												<td>동물명</b> : <b class="text-gray-800">까미</b>&nbsp;&nbsp;</td>
+												<td>견종 : 포메라니안&nbsp;&nbsp;</td>
+												<td>성별 : IF/NF&nbsp;&nbsp;</td>
+												<td>생년월일 : 2022-01-03&nbsp;&nbsp;</td>
+												<td>체중 : 12.0kg&nbsp;&nbsp;</td>
+												<td>담당의 : doctor&nbsp;&nbsp;</td>
+												
 											</tr>
 
 
 										</table>
 
 									</div>
-									<div class="col-4 d-flex justify-content-end">
+									<div class="col-3 d-flex justify-content-end">
 										<button type="button" class=" btn btn-primary btn-sm">저장</button>
 									</div>
 								</div>
@@ -345,10 +354,11 @@ if (session.getAttribute("id") == null) {
 									<thead>
 										<tr class="bg-gray-200" style="line-height: 30px;">
 											<th class="col-1">번호</th>
-											<th class="col-3">보호자명</th>
-											<th class="col-3">동물명</th>
+											<th class="col-2">보호자명</th>
+											<th class="col-2">동물명</th>
 											<th class="col-1">성별</th>
 											<th class="col-4">전화번호</th>
+											<th class="col-2"></th>
 										</tr>
 									</thead>
 
@@ -385,6 +395,7 @@ if (session.getAttribute("id") == null) {
 
 			<!-- Custom scripts for all pages-->
 			<script src="js/sb-admin-2.min.js"></script>
+			
 </body>
 
 </html>

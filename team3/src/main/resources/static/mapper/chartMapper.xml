@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.vet.clinic.dao.ReceptionDAO">
+<mapper namespace="com.vet.clinic.dao.ChartDAO">
 
 	<select id="petSearch" parameterType="HashMap"
 		resultType="HashMap">
@@ -15,12 +15,17 @@
 			WHERE
 			pet_name LIKE CONCAT('%',#{pet_search}, '%') OR
 			owner_name LIKE CONCAT('%',#{pet_search}, '%') OR
-			owner_tel LIKE CONCAT('%',#{pet_search}, '%') OR
-			pet_birth LIKE CONCAT('%',#{pet_search}, '%') 
+			owner_tel LIKE
+			CONCAT('%',#{pet_search}, '%') OR
+			pet_birth LIKE
+			CONCAT('%',#{pet_search}, '%')
 		</if>
 		) p
+	</select>
 
-
+	<select id="profile" parameterType="Integer"
+		resultType="HashMap">
+		SELECT * FROM petview WHERE pet_no=#{pet_no}
 
 	</select>
 </mapper>
