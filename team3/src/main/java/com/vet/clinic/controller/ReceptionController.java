@@ -38,4 +38,14 @@ public class ReceptionController {
 		return json.toString();
 	}
 
+	
+	//접수현황
+	@ResponseBody
+	@PostMapping(value = "/receiveboard", produces = "application/json;charset=UTF-8")
+	public String receiveboard() {
+		JSONObject json = new JSONObject();
+		
+	
+		return"";
+	}
 }
