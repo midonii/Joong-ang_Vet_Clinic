@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class SmsRequestDTO {
 	
 	String type, contentType, countryCode, from, content;
-	List<MessageDTO> messages;
+	List<SmsDTO> messages;
 	
 
 }

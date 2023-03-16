@@ -3,13 +3,13 @@
 
 <mapper namespace="com.vet.clinic.dao.StaffDAO">
 
-	<select id="login" parameterType="StaffDTO" resultType="StaffDTO">
-		SELECT COUNT(*) as count, staff_name, staff_grade, staff_logintry
+	<select id="login" parameterType="HashMap" resultType="StaffDTO">
+		SELECT COUNT(*) as count, staff_id, staff_email, staff_name, staff_grade, staff_logintry
 		FROM staff
 		WHERE
-		(staff_id = #{staff_id } AND staff_pw = #{staff_pw })
+		(staff_id = #{id } AND staff_pw = #{pw })
 		OR
-		(staff_email = #{staff_email } AND staff_pw = #{staff_pw })
+		(staff_email = #{email } AND staff_pw = #{pw })
 	</select>
 	<!-- 
 	<update id="logintry" parameterType="StaffDTO">

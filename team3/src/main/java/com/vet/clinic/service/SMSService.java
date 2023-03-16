@@ -1,10 +1,6 @@
 package com.vet.clinic.service;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,14 +16,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vet.clinic.dao.SMSDAO;
-import com.vet.clinic.dto.MessageDTO;
-import com.vet.clinic.dto.SMSDTO;
+import com.vet.clinic.dto.SmsDTO;
 import com.vet.clinic.dto.SmsRequestDTO;
 import com.vet.clinic.dto.SmsResponseDTO;
 
@@ -81,7 +74,7 @@ public class SMSService {
         return encodeBase64String;
 	}
 	
-	public SmsResponseDTO sendSms(MessageDTO messageDTO) throws Exception {
+	public SmsResponseDTO sendSms(SmsDTO smsDTO) throws Exception {
 		Long time = System.currentTimeMillis();
 		
 		HttpHeaders headers = new HttpHeaders();
@@ -90,15 +83,15 @@ public class SMSService {
 		headers.set("x-ncp-iam-access-key", accessKey);
 		headers.set("x-ncp-apigw-signature-v2", makeSignature(time));
 		
-		List<MessageDTO> messages = new ArrayList<>();
-		messages.add(messageDTO);
+		List<SmsDTO> messages = new ArrayList<>();
+		messages.add(smsDTO);
 		
 		SmsRequestDTO request = SmsRequestDTO.builder()
 				.type("SMS")
 				.contentType("COMM")
 				.countryCode("82")
 				.from(phone)
-				.content(messageDTO.getContent())
+				.content(smsDTO.getContent())
 				.messages(messages)
 				.build();
 		
@@ -113,7 +106,7 @@ public class SMSService {
 	    return response;	
 	}
 	
-	public List<SMSDTO> smsclientlist() {
+	public List<SmsDTO> smsclientlist() {
 		return smsDAO.smsclientlist();
 	}
 
@@ -125,8 +118,16 @@ public class SMSService {
 		return smsDAO.smsform_setdel(map);
 	}
 
-	public String[] smsformname() {
-		return smsDAO.smsformname();
+	public String[] smsFormName() {
+		return smsDAO.smsFormName();
+	}
+
+	public void smsDataSave(Map<String, Object> responseList) {
+		smsDAO.smsDataSave(responseList);
+	}
+
+	public List<Map<String, Object>> smsDetail() {
+		return smsDAO.smsDetail();
 	}
 
 }

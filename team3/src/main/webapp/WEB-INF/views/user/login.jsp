@@ -60,14 +60,14 @@ $(function(){
 	}
 	
 	
-	// email로그인 체크시
+// email로그인 체크시
 	$("#emailLogin").click(function(){
 		$("#email").show();
 		$("#id").val("");
 		$("#pw").val("");
 		$("#id").hide();
 	});
-	// id로그인 체크시
+// id로그인 체크시
 	$("#idLogin").click(function(){
 		$("#id").show();
 		$("#email").val("");
@@ -75,7 +75,7 @@ $(function(){
 		$("#email").hide();
 	});
 
-	// Login버튼 클릭시
+// Login버튼 클릭시
 	$("#login").click(function(){
 		
 		let id = $("#id").val();
@@ -128,8 +128,8 @@ $(function(){
 				$("#id").val("");
 				$("#email").val("");
 				$("#pw").val("");
-				return false;
 			} else {
+				alert(data.staff_name+"님 반갑습니다.");
  				location.href = "/index";
 			}
 		}).fail(function(xhr){
@@ -208,7 +208,7 @@ function deleteCookie(cookieName){
 											<label class="custom-check-label" for="emailLogin"> 이메일로 로그인 </label>
 										</div>
 									</div>
-									<form class="user">
+									<form class="user" method="post">
                                         <div>
                                             <input type="text " class="form-control form-control-user"
                                                 id="id" name="id" placeholder="아이디">
@@ -227,7 +227,7 @@ function deleteCookie(cookieName){
 												<label class="custom-control-label" for="customCheck">아이디 저장</label>
 											</div>
 										</div>
-                                        <button type="button" class="btn btn-primary btn-user btn-block" id="login" name="login" onkeyup="enterkey()">
+                                        <button type="button" class="btn btn-primary btn-user btn-block" id="login" name="login" >
                                             로그인
 										</button>
                                     </form>
