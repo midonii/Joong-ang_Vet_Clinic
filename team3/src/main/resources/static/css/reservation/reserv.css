@@ -46,14 +46,10 @@
 }
 a {
   text-decoration: none;
+  text-decoration-line : none;
 }
 .350px{
 	width: 50px;
-}
-.cell {
-  border: 1px solid #BDBDBD;
-  margin: 2px;
-  cursor: pointer;
 }
 
 .cell:hover {
@@ -64,8 +60,23 @@ a {
   background-color: #3D5AFE;
   color: #fff;
 }
-/* .cancel_color{ */
-/* 	 background-color: $gray-300; */
+.update_cell {
+  border: 1px solid #BDBDBD;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.update_cell:hover {
+  border: 1px solid #3D5AFE;
+}
+
+.update_cell.select {
+  background-color: #3D5AFE;
+  color: #fff;
+}
+
+.cancel_color{
+	 background-color: $gray-300;
 	
-/* } */
+}
 
