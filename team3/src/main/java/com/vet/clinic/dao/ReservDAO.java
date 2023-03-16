@@ -35,5 +35,7 @@ public interface ReservDAO {
 	public int delete_reservation_no(ReservDTO reservDTO);
 
 	public List<ReservDTO> receplist(ReservDTO reservDTO);
+	
+	
 
 }

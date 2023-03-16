@@ -57,4 +57,9 @@ public class ReservService {
 	public List<ReservDTO> receplist(ReservDTO reservDTO) {
 		return reservDAO.receplist(reservDTO);
 	}
+
+	public List<Map<String, Object>> receivepay(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return reservDAO.receivepay(map);
+	}
 }
