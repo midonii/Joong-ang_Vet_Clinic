@@ -23,6 +23,7 @@ import com.vet.clinic.dao.SMSDAO;
 import com.vet.clinic.dto.SmsDTO;
 import com.vet.clinic.dto.SmsRequestDTO;
 import com.vet.clinic.dto.SmsResponseDTO;
+import com.vet.clinic.dto.SmsSearchDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -128,6 +129,10 @@ public class SMSService {
 
 	public List<Map<String, Object>> smsDetail() {
 		return smsDAO.smsDetail();
+	}
+
+	public List<SmsSearchDTO> searchClient(Map<String, Object> search_param) {
+		return smsDAO.searchClient(search_param);
 	}
 
 }
