@@ -8,6 +8,22 @@
 	FROM petview
 	WHERE pet_no = #{petNo }
 </select>
+
+<select id="petVaccine" resultType="PetDTO">
+	SELECT pet_no , pet_name , vacdata_no ,MAX(vacdata_date) as vacdata_date , chart_no , vac_no , vac_name 
+	FROM vaccineview v
+	WHERE pet_no = #{petNo }
+	GROUP BY v.vac_no
+	ORDER BY vacdata_date DESC
+</select>
+
+<select id="excelList" resultType="PetDTO">
+	SELECT pet_no , pet_name , vacdata_no ,MAX(vacdata_date) as vacdata_date , chart_no , vac_no , vac_name 
+	FROM vaccineview v
+	WHERE pet_no = #{petNo }
+	GROUP BY v.vac_no
+	ORDER BY vacdata_date DESC
+</select>
 	
 	
 </mapper>

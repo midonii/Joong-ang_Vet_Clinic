@@ -26,10 +26,10 @@ public class ClientContoller {
 	private ClientService clientService;
 	
 	//회원관리 페이지 보기 + 검색
-	@GetMapping("profile")
-	public ModelAndView profile(HttpServletRequest request) {
+	@GetMapping("client")
+	public ModelAndView client(HttpServletRequest request) {
 		
-		ModelAndView mv = new ModelAndView("client/profile");
+		ModelAndView mv = new ModelAndView("client/client");
 		
 		System.out.println(request.getParameter("search_name")); //select
 		System.out.println(request.getParameter("search_value")); //input
@@ -38,7 +38,7 @@ public class ClientContoller {
 		search.setSearch_name(request.getParameter("search_name"));
 		search.setSearch_value(request.getParameter("search_value"));
 		
-
+		
 		
 		List<ClientDTO> clientList = clientService.clientList(search);
 		List<ClientDTO> petList = clientService.petList(search);
@@ -47,6 +47,7 @@ public class ClientContoller {
 		mv.addObject("clientList",clientList);
 		mv.addObject("petList",petList);
 		mv.addObject("petTypeList",petTypeList);
+		mv.addObject("search",search);
 		
 		return mv;
 	}
@@ -86,18 +87,22 @@ public class ClientContoller {
 		ClientDTO client = new ClientDTO();
 		client.setDetailNo(request.getParameter("detailNo"));		
 		JSONObject json = new JSONObject();
-
+		System.err.println(client.getDetailNo());
 		if ((String)request.getParameter("detailNo") != null) {
 			
-			List<ClientDTO> detail = clientService.clientDetailAjax(client); 
+			List<ClientDTO> detail = clientService.clientDetailAjax(client);
+			List<ClientDTO> detail2 = clientService.clientPetDetailAjax(client);
 			
 			//array json
 			JSONArray jsonA = new JSONArray(detail);
+			JSONArray jsonB = new JSONArray(detail2);
 																						
 			json.put("result", detail);
+			json.put("result2", detail2);
 			System.out.println(json.toString());
 		} else {
 			json.put("result", 0);
+			json.put("result2", 0);
 		}
 			return json.toString();
 	}
@@ -114,7 +119,7 @@ public class ClientContoller {
 		result = clientService.clientDel(client);
 		System.out.println("처리결과는 : " + result);
 		
-		return "redirect:profile";
+		return "redirect:client";
 	}
 	
 	//반려견 정보 삭제
@@ -128,7 +133,7 @@ public class ClientContoller {
 		int result = clientService.petDel(client);
 		System.out.println("처리결과는 : " + result);
 		
-		return "redirect:profile";
+		return "redirect:client";
 	}
 	
 	//보호자 추가
@@ -206,7 +211,7 @@ public class ClientContoller {
 		System.out.println(map);
 		int petAdd = clientService.petAdd(map);
 		
-		return "redirect:/profile";
+		return "redirect:client";
 	}
 	
 	//반려견 정보 수정 (정보 보내기)

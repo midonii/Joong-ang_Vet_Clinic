@@ -31,6 +31,13 @@ dependencies {
    
    // json -  https://mvnrepository.com/artifact/org.json/json
    implementation 'org.json:json:20220924'
+   
+   	//exell
+	implementation 'org.apache.poi:poi:4.1.2'
+	implementation 'org.apache.poi:poi-ooxml:4.1.2'
+	// https://mvnrepository.com/artifact/org.apache.tika/tika-core
+	implementation group: 'org.apache.tika', name: 'tika-core', version: '2.3.0'
+
 
    
    implementation 'javax.servlet:jstl:1.2'//jsp

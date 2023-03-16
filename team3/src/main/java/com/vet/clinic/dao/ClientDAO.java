@@ -39,6 +39,8 @@ public interface ClientDAO {
 
 	public int petUpdate(Map<String, Object> map);
 
+	public List<ClientDTO> clientPetDetailAjax(ClientDTO client);
+
 
 
 }

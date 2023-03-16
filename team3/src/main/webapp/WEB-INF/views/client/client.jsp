@@ -17,7 +17,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Team 3</title>
+<title>회원정보</title>
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
@@ -54,7 +54,8 @@ $(function(){
 
 		
 	});
-	
+	var hidden_search = $("#hidden_search").val();
+	$("#search_name").val(hidden_search);
 	
 });
 
@@ -96,7 +97,7 @@ $(function(){
 
 				<!-- 회원 검색 -->
 				 <div class="row">
-					<form action="/profile" method="get" name="searchForm">
+					<form action="/client" method="get" name="searchForm">
 						<div class="mb-2 mt-1 float-right" style="width: 35%">
 							<div class="input-group">
 								<input type="hidden" value="${search.getSearch_name() }" id="hidden_search">
@@ -105,7 +106,8 @@ $(function(){
 									<option value="owner">보호자명+전화번호</option>
 									<option value="pet">반려견명+생일</option>
 								</select> 
-								<input type="text" class="form-control form-control-sm border-gray col-md-9" placeholder="검색어를 입력하세요" value="${search.getSearch_value()}" name="search_value" id="search_value">
+								<input type="text" class="form-control form-control-sm border-gray col-md-9" 
+								placeholder="검색어를 입력하세요" value="${search.getSearch_value()}" name="search_value" id="search_value">
 								<div class="input-group-append">
 									<button class="btn btn-primary btn-sm" id="search_btn" type="submit">
 										<i class="fas fa-search"></i>
@@ -256,10 +258,10 @@ $(function(){
 						</c:otherwise>
                         </c:choose>
                     </div>
-
-
-
+     
+				
 			<%@ include file="./client_modal.jsp"%>
+
 					
 
 
