@@ -14,8 +14,8 @@ public class UserService {
 	@Autowired
 	private StaffDAO staffDAO;
 
-	public StaffDTO login(StaffDTO staffDTO) {
-		return staffDAO.login(staffDTO);
+	public StaffDTO login(Map<String, Object> map) {
+		return staffDAO.login(map);
 	}
 
 	public int findEmail(String email) {

@@ -18,7 +18,7 @@ public interface StaffDAO {
 
 	public int contentTotal(@Param("search_name") String search_name, @Param("search_value") String search_value);
 
-	public StaffDTO login(StaffDTO staffDTO);
+	public StaffDTO login(Map<String, Object> map);
 
 	public int findEmail(String email);
 

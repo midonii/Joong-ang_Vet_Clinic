@@ -23,7 +23,7 @@ dependencies {
    
    
    // 이메일 보내기
-   //implementation 'org.apache.commons:commons-email:1.5'
+   implementation 'org.apache.commons:commons-email:1.5'
    
    
    // json - https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple

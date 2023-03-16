@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
+import org.apache.commons.mail.EmailException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.vet.clinic.dto.StaffDTO;
 import com.vet.clinic.service.UserService;
+import com.vet.clinic.util.Email;
 
 @Controller
 public class UserController {
@@ -28,24 +30,16 @@ public class UserController {
 	
 // 로그인
 	@GetMapping("/login")
-	public String login(HttpSession session) {
-		//System.out.println(session.getAttribute("id"));
-		if (session.getAttribute("id") != null) {
-			return "index";
-		}
+	public String login() {
+		
 		return "/user/login";
 	}
 
 	@ResponseBody
 	@PostMapping("/login")
 	public String login(@RequestParam Map<String, Object> map, HttpServletRequest request) {
-		StaffDTO staffDTO = new StaffDTO();
-		staffDTO.setStaff_id((String) map.get("id"));
-		staffDTO.setStaff_email((String) map.get("email"));
-		staffDTO.setStaff_pw((String) map.get("pw"));
 		
-		StaffDTO result = userService.login(staffDTO);	
-		
+		StaffDTO result = userService.login(map);	
 		JSONObject json = new JSONObject();
 		
 		if(result.getCount() == 1) {
@@ -56,11 +50,12 @@ public class UserController {
 			*/
 			
 			json.put("result", 1);
+			json.put("staff_name", result.getStaff_name());
 			
 			// 세션만들기
 			HttpSession session = request.getSession();
-			session.setAttribute("id", staffDTO.getStaff_id());
-			session.setAttribute("email", staffDTO.getStaff_email());
+			session.setAttribute("id", result.getStaff_id());
+			session.setAttribute("email", result.getStaff_email());
 			session.setAttribute("username", result.getStaff_name());
 			session.setAttribute("staff_grade", result.getStaff_grade());
 			
@@ -85,7 +80,7 @@ public class UserController {
 	
 	@ResponseBody
 	@PostMapping("/findPW")
-	public String findPW(@RequestParam ("email") String email) {
+	public String findPW(@RequestParam ("email") String email) throws EmailException {
 		
 		JSONObject json = new JSONObject();
 
@@ -108,9 +103,9 @@ public class UserController {
 			temp.setStaff_email(email);
 			userService.saveTempnum(temp);
 			
-			/*
+			
 			// step4) 입력한 email로 발송
-			String title = "[midong's web] 인증번호 발송";
+			String title = "[중앙동물병원] 인증번호 발송";
 			
 			
 			String msg = "인증번호를 발송합니다. 인증번호는 [ " + tempnum + " ]입니다.";
@@ -231,7 +226,7 @@ public class UserController {
 		//System.out.println(select);
 		
 		mv.addObject("profile", select);
-		mv.setViewName("user/profile");
+		mv.setViewName("user/userProfile");
 		return mv;
 	}
 	

@@ -107,6 +107,7 @@ $(function(){
 			dataType : "json"
 		}).done(function(data){
 			if(data.result == "1"){
+				alert("인증번호 확인 완료");
 				$("#checkpwModal").modal("hide");
 				$("#newpwModal").modal("show");
 				

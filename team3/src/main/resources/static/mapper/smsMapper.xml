@@ -7,7 +7,7 @@
 		FROM smsview
 	</select>
 	
-	<select id="smsformname" resultType="String">
+	<select id="smsFormName" resultType="String">
 		SELECT smsForm_title
 		FROM smsForm
 	</select>
@@ -25,5 +25,20 @@
 		smsForm_content = #{sms_content }
 		WHERE smsForm_no = #{sms_hidden }
 	</update>
+	
+	<insert id="smsDataSave" parameterType="HashMap">
+		INSERT INTO smsData
+		SET
+		smsData_date = #{requestTime },	
+		smsData_receiver = #{to },
+		smsData_status = #{status },	
+		smsData_title = #{title },
+		smsData_content = #{content }	
+	</insert>
+	
+	<select id="smsDetail" resultType="HashMap">
+		SELECT *
+		FROM smsData
+	</select>
 	
 </mapper>
