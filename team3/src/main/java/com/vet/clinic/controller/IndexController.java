@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.vet.clinic.dto.SearchDTO;
 import com.vet.clinic.service.ClientService;
 import com.vet.clinic.service.NoticeService;
 import com.vet.clinic.service.PayService;
@@ -26,9 +25,7 @@ public class IndexController {
 
 	@Autowired
 	private NoticeService noticeService;
-	
-	@Autowired
-	private PayService payService;
+
 	@Autowired
 	private ClientService clientService;
 	@Autowired
@@ -53,16 +50,7 @@ public class IndexController {
 		json.put("notice", noticeJ);
 		return json.toString();
 	}
-	@ResponseBody
-	@PostMapping(value = "/payAjax", produces = "application/json;charset=UTF-8")
-	public String payAjax() {
-		JSONObject json = new JSONObject();
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<Map<String, Object>> pay = payService.indexPay(map);
-		JSONArray payJ = new JSONArray(pay);
-		json.put("pay", payJ);
-		return json.toString();
-	}
+
 	@ResponseBody
 	@PostMapping(value = "/reservindexAjax", produces = "application/json;charset=UTF-8")
 	public String reservAjax() {
@@ -73,6 +61,7 @@ public class IndexController {
 		json.put("reserv", reservJ);
 		return json.toString();
 	}
+
 	@ResponseBody
 	@PostMapping(value = "/receivepay", produces = "application/json;charset=UTF-8")
 	public String receivepay() {
@@ -83,6 +72,7 @@ public class IndexController {
 		json.put("receivepay", receivepayJ);
 		return json.toString();
 	}
+
 	@ResponseBody
 	@PostMapping(value = "/petAjax", produces = "application/json;charset=UTF-8")
 	public String petAjax(HttpServletRequest request) {

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vet.clinic.dao.ReceptionDAO">
+
+	<select id="petSearch" parameterType="HashMap"
+		resultType="HashMap">
+		SELECT ROW_NUMBER()
+		over(ORDER BY p.pet_no) AS pno, p.*
+		FROM
+		(
+		SELECT *
+		FROM petview
+		<if test="pet_search != null">
+			WHERE
+			pet_name LIKE CONCAT('%',#{pet_search}, '%') OR
+			owner_name LIKE CONCAT('%',#{pet_search}, '%') OR
+			owner_tel LIKE CONCAT('%',#{pet_search}, '%') OR
+			pet_birth LIKE CONCAT('%',#{pet_search}, '%') 
+		</if>
+		) p
+
+
+
+	</select>
+</mapper>

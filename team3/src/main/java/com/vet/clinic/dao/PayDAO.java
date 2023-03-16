@@ -18,11 +18,15 @@ public interface PayDAO {
 	public int payBefore(int payNo);
 
 	public int payCancel(int payNo);
-	
+
 	public int contentTotal(PageDTO pageDTO);
+
 
 	public List<PayDTO> payList(PageDTO pageDTO);
 
 	public List<Map<String, Object>> indexPay(Map<String, Object> map);
 	
+	public int totalCount();
+
+
 }

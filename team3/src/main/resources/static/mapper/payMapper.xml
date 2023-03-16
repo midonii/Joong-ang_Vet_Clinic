@@ -4,34 +4,65 @@
 <mapper namespace="com.vet.clinic.dao.PayDAO">
 
 	<select id="payList" resultType="PayDTO" parameterType="PageDTO">
-        SELECT ROW_NUMBER()
-		OVER(ORDER BY pay_date) AS rownum ,  pay_no, pay_date,
+		SELECT ROW_NUMBER()
+		OVER(ORDER BY pay_date) AS rownum , pay_no,
+		pay_date,
 		pay_yn, totalprice, chart_no, owner_name, pet_name
-		FROM paydetailview
-		<if test="toDate !=null and !toDate.equals('') and fromDate !=null and !fromDate.equals('')">
-		 WHERE pay_date BETWEEN #{fromDate} AND #{toDate}
+		FROM
+		paydetailview
+		<if
+			test="toDate !=null and !toDate.equals('') and fromDate !=null and !fromDate.equals('')">
+			WHERE pay_date BETWEEN #{fromDate} AND #{toDate}
 		</if>
 		<if test="search_name !=null  and !search_name.equals('')">
-		<choose>
-				<when test="search_name == 'petname'">WHERE pet_name LIKE CONCAT('%',#{search_value},'%') </when>
-				<when test="search_name == 'ownername'">WHERE owner_name LIKE CONCAT('%',#{search_value},'%')</when>
-				<when test="search_name == 'chartno'">WHERE chart_no LIKE CONCAT('%',#{search_value},'%') </when>
+			<choose>
+				<when test="search_name == 'petname'">WHERE pet_name LIKE CONCAT('%',#{search_value},'%')
+				</when>
+				<when test="search_name == 'ownername'">WHERE owner_name LIKE
+					CONCAT('%',#{search_value},'%')</when>
+				<when test="search_name == 'chartno'">WHERE chart_no LIKE CONCAT('%',#{search_value},'%')
+				</when>
 			</choose>
 		</if>
 		<if test="todayDate !=null  and !todayDate.equals('')">
-		WHERE pay_date = #{todayDate}
+			WHERE pay_date = #{todayDate}
 		</if>
 		<if test="pay_yn !=null  and !pay_yn.equals('')">
-		WHERE pay_yn = #{pay_yn}
+			WHERE pay_yn = #{pay_yn}
 		</if>
 		ORDER BY rownum DESC
-        LIMIT #{pagenum}, #{contentnum}; 
+		LIMIT #{pagenum}, #{contentnum};
 	</select>
-	<select id="indexPay" resultType="HashMap">
-		SELECT * FROM paydetailview
-		WHERE pay_yn='N'
-		LIMIT 0, 6
+
+
+	<!-- <select id="payList" resultType="hashmap" parameterType="hashmap"> 
+		<![CDATA[ SELECT p.pay_no,p.pay_date, p.pay_yn,p.totalprice, c.chart_no, 
+		o.owner_name,pe.pet_name FROM pay p <if test=""> INNER JOIN chart c ON c.chart_no 
+		= p.chart_no INNER JOIN owner o ON o.owner_no = p.owner_no INNER JOIN pet 
+		pe ON pe.pet_no = p.pet_no LIMIT #{pageStart}, #{perPageNum} ]]> </select> -->
+
+	<select id="contentTotal" resultType="Integer"
+		parameterType="PageDTO">
+		SELECT COUNT(*) FROM paydetailview
+		<if
+			test="toDate !=null and !toDate.equals('') and fromDate !=null and !fromDate.equals('')">
+			WHERE pay_date BETWEEN #{fromDate} AND #{toDate}
+		</if>
+		<if test="search_name !=null  and !search_name.equals('')">
+			<choose>
+				<when test="search_name == 'petname'">WHERE pet_name LIKE CONCAT('%',#{search_value},'%')
+				</when>
+				<when test="search_name == 'ownername'">WHERE owner_name LIKE
+					CONCAT('%',#{search_value},'%')</when>
+				<when test="search_name == 'chartno'">WHERE chart_no LIKE CONCAT('%',#{search_value},'%')
+				</when>
+			</choose>
+		</if>
+		<if test="todayDate !=null  and !todayDate.equals('')">
+			WHERE pay_date = #{todayDate}
+		</if>
 	</select>
+
 
 	<select id="contentTotal" resultType="Integer" parameterType="PageDTO">
         SELECT COUNT(*) FROM paydetailview
@@ -50,6 +81,14 @@
 		</if>
 	</select>
 	
+
+	<!-- <select id="payList" resultType="hashmap" parameterType="hashmap"> 
+		<![CDATA[ SELECT p.pay_no,p.pay_date, p.pay_yn,p.totalprice, c.chart_no, 
+		o.owner_name,pe.pet_name FROM pay p <if test=""> INNER JOIN chart c ON c.chart_no 
+		= p.chart_no INNER JOIN owner o ON o.owner_no = p.owner_no INNER JOIN pet 
+		pe ON pe.pet_no = p.pet_no LIMIT #{pageStart}, #{perPageNum} ]]> </select> -->
+
+
 	<select id="payDetail" parameterType="Integer"
 		resultType="PayDTO">
 		SELECT p.*

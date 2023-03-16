@@ -38,7 +38,138 @@ if (session.getAttribute("id") == null) {
 <!-- JQUERY -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<link rel="stylesheet" href="css/reservation/calender/calender2.css">
+
+<script type="text/javascript">
+	$(function() {
+		$("#search_btn")
+				.click(
+						function() {
+							var pet_search = $("#pet_search").val();
+
+							if (pet_search == "") {
+								alert("검색어를 입력하세요");
+								$("#pet_search").focus();
+								return false;
+							} else {
+								$("#petSearchModal").modal("show");
+								$
+										.ajax({
+											url : '/petSearchAjax',
+											type : 'POST',
+											data : {
+												"pet_search" : pet_search
+											},
+											success : function(data) {
+												let pet = data.pet;
+												$(".petTable").empty();
+												var table = "";
+												if (pet == "") {
+													table += "<tr class='text-center'> <td colspan='4'>존재하지 않습니다.<br><br>";
+													table += "<button class='btn btn-sm btn-primary' id='reg_btn'>신규등록</button></td></tr>";
+												} else {
+													for (let i = 0; pet.length > i; i++) {
+														var pet_no = pet[i].pno;
+														var pet_name = pet[i].pet_name;
+														var owner_name = pet[i].owner_name;
+														var owner_tel = pet[i].owner_tel;
+														var pet_gender = pet[i].pet_gender;
+
+														table += "<tr class='text-center' >";
+														table += "<td class='col-1'>"
+																+ pet_no
+																+ "</td>";
+														table += "<td class='col-3'>"
+																+ pet_name
+																+ "</td>";
+														table += "<td class='col-3'>"
+																+ owner_name
+																+ "</td>";
+														table += "<td class='col-1'>"
+																+ pet_gender
+																+ "</td>";
+														table += "<td class='col-4'>"
+																+ owner_tel
+																+ "</td>";
+														table += "</tr>";
+
+													}
+
+												}
+												$(".petTable").append(table);
+											},
+											error : function(e) {
+												alert("실패");
+											}
+										});
+							}
+
+						});
+		$("#search_btn2")
+				.click(
+						function() {
+							console.log("search_btn2 클릭");
+							var pet_search = $("#pet_search").val();
+
+							if (pet_search == "") {
+								alert("검색어를 입력하세요");
+								$("#pet_search").focus();
+								return false;
+							} else {
+								$
+										.ajax({
+											url : '/petSearchAjax',
+											type : 'POST',
+											data : {
+												"pet_search" : pet_search
+											},
+											success : function(data) {
+												let pet = data.pet;
+												$(".petTable").empty();
+												var table = "";
+												if (pet == "") {
+													table += "<tr class='text-center'> <td colspan='4'>존재하지 않습니다.<br><br>";
+													table += "<button class='btn btn-sm btn-primary' id='reg_btn'>신규등록</button></td></tr>";
+												} else {
+													for (let i = 0; pet.length > i; i++) {
+														var pet_no = pet[i].pno;
+														var pet_name = pet[i].pet_name;
+														var owner_name = pet[i].owner_name;
+														var owner_tel = pet[i].owner_tel;
+														var pet_gender = pet[i].pet_gender;
+
+														table += "<tr class='text-center' >";
+														table += "<td class='col-1'>"
+																+ pet_no
+																+ "</td>";
+														table += "<td class='col-3'>"
+																+ pet_name
+																+ "</td>";
+														table += "<td class='col-3'>"
+																+ owner_name
+																+ "</td>";
+														table += "<td class='col-1'>"
+																+ pet_gender
+																+ "</td>";
+														table += "<td class='col-4'>"
+																+ owner_tel
+																+ "</td>";
+														table += "</tr>";
+
+													}
+
+												}
+												$(".petTable").append(table);
+											},
+											error : function(e) {
+												alert("실패");
+											}
+										});
+							}
+
+						});
+	});
+</script>
+
 </head>
 <body id="page-top">
 
@@ -53,7 +184,7 @@ if (session.getAttribute("id") == null) {
 			<!-- Main Content -->
 			<div id="content">
 
-				<%@ include file="../bar/topBar2.jsp"%>
+				<%@ include file="../bar/chartTop.jsp"%>
 				<%-- 				<%@ include file="../bar/chartTopBar.jsp"%> --%>
 
 
@@ -65,38 +196,37 @@ if (session.getAttribute("id") == null) {
 						<div class="col-xl-12 col-lg-5 px-1 mt-2" style="border: 0;">
 							<div class="card mb-1 ">
 								<!-- Card Header - Dropdown -->
-								<div
-									class="card-header py-2 d-flex flex-row align-items-center">
-								
-										<div class="col-8">
-											
-												<table border="0" cellspacing="0"
-													style="font-size: 14px; margin-left: -10px;">
+								<div class="card-header py-2 d-flex flex-row align-items-center">
 
-													<tr>
-														<td>보호자명 : 윤지혜&nbsp;</td>
-														<td>동물명 : 까미&nbsp;</td>
-														<td>견종 : 포메라니안&nbsp;</td>
-														<td>성별 : IF/NF&nbsp;</td>
-														<td>생년월일 : 2022-01-03&nbsp;</td>
-														<td>체중 : 12.0kg&nbsp;</td>
-														<td>담당의 : doctor&nbsp;</td>
+									<div class="col-8">
 
-													</tr>
+										<table border="0" cellspacing="0"
+											style="font-size: 14px; margin-left: -10px;">
+
+											<tr>
+												<td>보호자명 : 윤지혜&nbsp;</td>
+												<td>동물명 : 까미&nbsp;</td>
+												<td>견종 : 포메라니안&nbsp;</td>
+												<td>성별 : IF/NF&nbsp;</td>
+												<td>생년월일 : 2022-01-03&nbsp;</td>
+												<td>체중 : 12.0kg&nbsp;</td>
+												<td>담당의 : doctor&nbsp;</td>
+
+											</tr>
 
 
-												</table>
-									
-										</div>
-										<div class="col-4 d-flex justify-content-end">
-											<button type="button" class=" btn btn-primary btn-sm">저장</button>
-										</div>
+										</table>
+
+									</div>
+									<div class="col-4 d-flex justify-content-end">
+										<button type="button" class=" btn btn-primary btn-sm">저장</button>
 									</div>
 								</div>
 							</div>
 						</div>
+					</div>
 
-			
+
 
 					<div class="row">
 
@@ -178,6 +308,67 @@ if (session.getAttribute("id") == null) {
 
 			</div>
 			<!-- End of Main Content -->
+
+			<!-- 검색모달  -->
+			<div class="modal fade" id="petSearchModal" tabindex="-1"
+				role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">
+								<b>전체 검색</b>
+							</h5>
+							<button class="close" type="button" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+						</div>
+						<div class="modal-body">
+
+							<form action="/petType" name="searchForm" onsubmit="return false"
+								method="get">
+								<div class="input-group mt-2 mb-3">
+									<input type="text"
+										class="form-control border-gray col-md-12 pet_search2"
+										placeholder="검색어을 입력하세요" name="pet_search2" id="pet_search2">
+									<div class="input-group-append">
+										<button class="btn btn-primary" type="button" id="search_btn2">
+											<i class="fas fa-search"></i>
+										</button>
+									</div>
+								</div>
+							</form>
+							<div class="table-responsive">
+								<table class="table table-sm table-bordered text-center"
+									id="dataTable" width="100%" cellspacing="0"
+									style="overflow: auto;">
+									<thead>
+										<tr class="bg-gray-200" style="line-height: 30px;">
+											<th class="col-1">번호</th>
+											<th class="col-3">보호자명</th>
+											<th class="col-3">동물명</th>
+											<th class="col-1">성별</th>
+											<th class="col-4">전화번호</th>
+										</tr>
+									</thead>
+
+									<tbody class="petTable">
+
+
+									</tbody>
+								</table>
+							</div>
+
+
+
+
+
+						</div>
+						<!-- <div class="modal-footer"></div> -->
+					</div>
+				</div>
+			</div>
+
 
 			<%@ include file="../bar/footer.jsp"%>
 			<%@ include file="../bar/logoutModal.jsp"%>
