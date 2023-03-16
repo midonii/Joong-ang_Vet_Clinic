@@ -35,7 +35,6 @@ if (session.getAttribute("id") == null) {
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 
-
 <script>
 	/* 수납대기 버튼 */
 	$(function() {
@@ -104,6 +103,7 @@ if (session.getAttribute("id") == null) {
 	
 		
 	}); //func
+	/* 페이징 번호 버튼 누를시 보낼 값 */
 	function page(idx, search_name, search_value, fromDate, toDate, todayDate, pay_yn) {
 		var pagenum = idx;
 		var contentnum = $("#contentnum").val();
@@ -144,6 +144,13 @@ if (session.getAttribute("id") == null) {
 .table {
 	text-align: center;
 }
+
+/* #sortbtn:hover{
+	background-color: #ccc;
+} 
+.test{
+	width:74px;
+} */ 
 </style>
 
 </head>
@@ -195,8 +202,8 @@ if (session.getAttribute("id") == null) {
 									<button type="submit" id="todaybtn"
 										class="btn btn-primary btn-sm ml-2">당일</button>
 								</form>
-								
 								<!--input group -->
+								
 								<!-- 검색  -->
 								<form action="/pay" method="get" id="searchform">
 									<input type="hidden" name="contentnum" id="contentnum"
@@ -241,18 +248,17 @@ if (session.getAttribute("id") == null) {
 													<button class="btn btn-sm dropdown-toggle" 	type="button" data-bs-toggle="dropdown"
 														aria-expanded="false" style="font-size: 16px; font-weight: bold;">
 														수납현황</button>
-													<ol class="dropdown-menu">
+													<ul class="dropdown-menu">
 														<li>
-														<button type="submit" class="btn btn-outline-danger btn-sm " name="pay_yn"
-																value="N">수납대기</button></li>
-														<li >
-														<button type="submit" class="btn btn-outline-primary btn-sm " name="pay_yn"
-																value="Y" >수납완료</button></li>
-													</ol>
+														<button type="submit"  class="dropdown-item btn btn-sm " name="pay_yn"
+																value="N" id="sortbtn">수납대기</button></li>
+														<li>
+														<button type="submit" class="dropdown-item btn btn-sm " name="pay_yn"
+																value="Y" id="sortbtn">수납완료</button></li>
+													</ul>
 												</div>
 											</form>
 											</th>
-
 											<th>상세보기</th>
 										</tr>
 									</thead>
@@ -302,6 +308,7 @@ if (session.getAttribute("id") == null) {
 														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 													</a></li>
 												</c:if>
+												
 												<c:forEach begin="${page.getStartPage()}"
 													end="${page.getEndPage()}" var="idx">
 													<c:choose>
@@ -332,9 +339,7 @@ if (session.getAttribute("id") == null) {
 							</div>
 						</div>
 					</div>
-
 					<!-- /.container-fluid -->
-
 				</div>
 			</div>
 			<!-- End of Main Content -->

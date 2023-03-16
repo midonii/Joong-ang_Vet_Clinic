@@ -1,8 +1,5 @@
 package com.vet.clinic.controller;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONObject;
@@ -16,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.vet.clinic.dto.PageDTO;
 import com.vet.clinic.dto.PayDTO;
-import com.vet.clinic.dto.SearchDTO;
 import com.vet.clinic.service.PayService;
 
 @Controller

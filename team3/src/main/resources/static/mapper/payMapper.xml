@@ -33,12 +33,6 @@
 		LIMIT 0, 6
 	</select>
 
-	<!-- <select id="payList" resultType="hashmap" parameterType="hashmap"> 
-		<![CDATA[ SELECT p.pay_no,p.pay_date, p.pay_yn,p.totalprice, c.chart_no, 
-		o.owner_name,pe.pet_name FROM pay p <if test=""> INNER JOIN chart c ON c.chart_no 
-		= p.chart_no INNER JOIN owner o ON o.owner_no = p.owner_no INNER JOIN pet 
-		pe ON pe.pet_no = p.pet_no LIMIT #{pageStart}, #{perPageNum} ]]> </select> -->
-	
 	<select id="contentTotal" resultType="Integer" parameterType="PageDTO">
         SELECT COUNT(*) FROM paydetailview
         <if test="toDate !=null and !toDate.equals('') and fromDate !=null and !fromDate.equals('')">
@@ -56,23 +50,6 @@
 		</if>
 	</select>
 	
-<!-- 	<select id="payList" resultType="hashmap" parameterType="hashmap">
-		  <![CDATA[
-            SELECT  p.pay_no,p.pay_date,
-		p.pay_yn,p.totalprice, c.chart_no,
-		o.owner_name,pe.pet_name
-		FROM pay p
-		<if test="">
-		
-		INNER JOIN chart c ON c.chart_no = p.chart_no
-		INNER JOIN owner o ON
-		o.owner_no = p.owner_no
-		INNER JOIN pet pe ON pe.pet_no = p.pet_no
-            LIMIT #{pageStart}, #{perPageNum}
-        ]]>
-		
-	</select> -->
-
 	<select id="payDetail" parameterType="Integer"
 		resultType="PayDTO">
 		SELECT p.*
@@ -90,10 +67,4 @@
 		pay_yn ='N'
 		WHERE pay_no = #{payNo};
 	</update>
-	<!--페이징 - 전체글수 -->
-
-	<select id="totalCount" resultType="Integer">
-		SELECT COUNT(*)
-		FROM pay;
-	</select>
 </mapper>

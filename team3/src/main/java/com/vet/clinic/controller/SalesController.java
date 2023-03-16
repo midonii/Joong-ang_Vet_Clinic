@@ -3,8 +3,6 @@ package com.vet.clinic.controller;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vet.clinic.dto.PageDTO;
-import com.vet.clinic.dto.SalesDTO;
 import com.vet.clinic.service.SalesService;
 
 @Controller
@@ -32,20 +29,12 @@ public class SalesController {
 		salesService.salesList(mv,pagenum,contentnum,pageDTO);
 		List<Map<String, Object>> list2 = salesService.salesList2(paramap); //구글차트용
 		
-		System.err.println(list2);
-	
-		 
-		
-		
-		  int payTotalPrice2 = 0; // 합계 구하기 
-		  for (int i = 0; i < list2.size(); i++) {
-		  payTotalPrice2 +=
-		  Integer.parseInt((String.valueOf(list2.get(i).get("totalprice")))); }
+		int payTotalPrice2 = 0; // 합계 구하기 
+		for (int i = 0; i < list2.size(); i++) {
+		payTotalPrice2 +=
+		Integer.parseInt((String.valueOf(list2.get(i).get("totalprice")))); }
 		  
-		  System.err.println(payTotalPrice2);
-		  
-		  mv.addObject("payTotalPrice2", payTotalPrice2);
-		 
+		mv.addObject("payTotalPrice2", payTotalPrice2);
 		mv.addObject("salesList2", list2);
 		return mv;
 	}
