@@ -38,4 +38,24 @@ public class ReservService {
 	public List<ReservDTO> reservlist(ReservDTO reservDTO) {
 		return reservDAO.reservlist(reservDTO);
 	}
+
+
+	public List<ReservDTO> reservUpdate(ReservDTO reservDTO) {
+		return reservDAO.reservUpdate(reservDTO);
+	}
+
+
+	public int reservUpdateSaved(ReservDTO reservDTO) {
+		return reservDAO.reservUpdateSaved(reservDTO);
+	}
+
+
+	public int delete_reservation_no(ReservDTO reservDTO) {
+		return reservDAO.delete_reservation_no(reservDTO);
+	}
+
+
+	public List<ReservDTO> receplist(ReservDTO reservDTO) {
+		return reservDAO.receplist(reservDTO);
+	}
 }

@@ -21,4 +21,12 @@ public interface ReservDAO {
 
 	public List<ReservDTO> reservlist(ReservDTO reservDTO);
 
+	public List<ReservDTO> reservUpdate(ReservDTO reservDTO);
+
+	public int reservUpdateSaved(ReservDTO reservDTO);
+
+	public int delete_reservation_no(ReservDTO reservDTO);
+
+	public List<ReservDTO> receplist(ReservDTO reservDTO);
+
 }
