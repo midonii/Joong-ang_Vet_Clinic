@@ -40,6 +40,16 @@ if (session.getAttribute("id") == null) {
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <link rel="stylesheet" href="css/reservation/calender/calender2.css">
 </head>
+<script type="text/javascript">
+$(function() {
+	$.post({
+		url : "/receiveboard",
+		dataType : "json"
+	})
+	
+});//func
+
+</script>
 <body id="page-top">
 
 	<!-- Page Wrapper -->
@@ -147,7 +157,11 @@ if (session.getAttribute("id") == null) {
 								</div>
 
 								<!-- Card Body -->
-								<div class="card-body" style="height: 328px;"></div>
+								<div class="card-body" style="height: 328px;">
+									<div class="table-responsive" id="receiveboard">
+									
+									</div>
+								</div>
 							</div>
 
 							<div class="card  mb-2">
