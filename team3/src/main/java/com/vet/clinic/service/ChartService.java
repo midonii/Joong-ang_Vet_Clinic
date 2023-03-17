@@ -22,4 +22,11 @@ public class ChartService {
 		return chartDAO.profile(pet_no);
 	}
 
-}
+	public List<Map<String, Object>> rereceiveboard() {
+		return chartDAO.receiveboard();
+	}
+
+
+	
+	
+}	

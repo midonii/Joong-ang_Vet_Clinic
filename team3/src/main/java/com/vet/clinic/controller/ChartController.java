@@ -48,5 +48,16 @@ public class ChartController {
 		mv.addObject("profile", profile);
 		return mv;
 	}
+	//접수현황
+		@ResponseBody
+		@PostMapping(value = "/receiveboard", produces = "application/json;charset=UTF-8")
+		public String receiveboard() {
+			JSONObject json = new JSONObject();
+			List<Map<String, Object>> receiveboard = chartService.rereceiveboard(); 
+			JSONArray receiveboardJ = new JSONArray(receiveboard);
+			json.put("receiveboard", receiveboardJ);
+			
+			return json.toString();
+		}
 
 }

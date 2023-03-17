@@ -26,6 +26,21 @@
 	<select id="profile" parameterType="Integer"
 		resultType="HashMap">
 		SELECT * FROM petview WHERE pet_no=#{pet_no}
-
+	</select>
+	
+	<select id="receiveboard" resultType="Hashmap">
+		SELECT ROW_NUMBER()
+		over(ORDER BY r.receive_time) AS
+		bno, pet_name, owner_name, type_name, pet_no,receive_state,
+		DATE_FORMAT(r.receive_time,'%H:%i') as receive_time,
+		DATE_FORMAT(r.reservation_date,'%H:%i') as reservation_date
+		FROM 
+		(SELECT *
+		FROM
+		receptionview 
+		WHERE DATE_FORMAT(receive_time, "%Y-%m-%d") = CURDATE()
+		AND reservation_yn != 'n'
+		) r
+		ORDER BY receive_state DESC, receive_time;
 	</select>
 </mapper>
