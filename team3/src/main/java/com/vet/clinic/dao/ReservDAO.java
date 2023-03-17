@@ -23,11 +23,6 @@ public interface ReservDAO {
 
 	public List<ReservDTO> reservlist(ReservDTO reservDTO);
 
-
-	public List<Map<String, Object>> indexReserv(Map<String, Object> map);
-
-	public List<Map<String, Object>> receivepay(Map<String, Object> map);
-
 	public List<ReservDTO> reservUpdate(ReservDTO reservDTO);
 
 	public int reservUpdateSaved(ReservDTO reservDTO);
@@ -37,5 +32,9 @@ public interface ReservDAO {
 	public List<ReservDTO> receplist(ReservDTO reservDTO);
 
 	public int receiveAdd(ReservDTO reservDTO);
+
+	public int search_receiveAdd(ReservDTO reservDTO);
+
+	public int receiveAdd_reservYn(ReservDTO reservDTO);
 
 }

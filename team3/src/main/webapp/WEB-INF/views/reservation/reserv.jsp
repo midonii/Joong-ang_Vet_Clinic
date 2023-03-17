@@ -135,17 +135,19 @@ if (session.getAttribute("id") == null) {
 
 													</div> <br>
 													<div>
-														<span>${l.type_name} | ${l.pet_gender}</span>
-													</div> <span> ${l.pet_birth} </span>
+														<span>${l.type_name} | ${l.pet_birth} | ${l.pet_gender}</span>
+													</div> <span> ${l.reservation_memo} </span>
 												<td style="text-align: right;"><span><b><h5>${l.reserv_time}</h5></b></span><br>
 													<input type="hidden" id="petNo" value="${l.pet_no}">
+													<input type="hidden" id="ownerNo" value="${l.owner_no}">
+													<input type="hidden" id="reservation_Yn" value="${l.reservation_yn}">
 													<span>
 														<button type="button" class="btn btn-secondary btn-sm"
 															id="reserv_cancel" value="${l.reservation_no}"
 															style="background-color: #7f8c8d; border: none;">취소</button>
-														<button type="button" class="btn btn-primary btn-sm"
-															value="${l.reservation_no}" id="receipt_btn"
-															style="border: none;">접수</button>
+														<button type="button"
+															class="btn btn-primary btn-sm receipt_btn"
+															value="${l.reservation_no}" style="border: none;">접수</button>
 												</span></td>
 
 
@@ -175,21 +177,24 @@ if (session.getAttribute("id") == null) {
 													<div style="">
 														<a href="#" style="text-decoration: none;"><b
 															style="font-size: 25px; color: black">${l.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${l.owner_name}&nbsp;
-														<span class="badge bg-secondary"
-															style="vertical-align: 3px;">대기중</span>
+														<input type="hidden" id="receive_petNo"
+															value="${l.pet_no}"> <span
+															class="badge bg-secondary" style="vertical-align: 3px;">대기중</span>&nbsp;<span class="badge"
+													style="background-color: white; color: #0d6efd; border: 1px solid #0d6efd;">예약</span>
+															
 													</div> <br>
 
 													<div>
-														<span>${l.type_name} | ${l.pet_gender}</span>
-													</div> <span> ${l.pet_birth} </span> <span class="badge"
-													style="background-color: white; color: #0d6efd; border: 1px solid #0d6efd;">예약</span>
+														<span>${l.type_name} | ${l.pet_birth} | ${l.pet_gender}</span>
+														
+													</div> <span> ${l.reservation_memo} </span> 
 
 
 
 
 
 												</td>
-												<td style="text-align: right;"><span><b><h5>${l.reservation_date}</h5></b></span><br>
+												<td style="text-align: right;"><span><b><h5>${l.receive_time}</h5></b></span><br>
 													<input type="hidden" id="reservNo"
 													value="${l.reservation_no}"> <br> <span>
 														<button type="button" class="btn btn-secondary btn-sm"
@@ -292,85 +297,104 @@ if (session.getAttribute("id") == null) {
 												data-bs-parent="#accordionExample">
 												<div class="accordion-body">
 													<div class="row text-center mx-0">
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="btn-check" type='radio'
-																id="btn-check-outlined" name='update_reserv_time'
-																value='09:00'>09:00
-														</div>
-
-
-
-
-
+														
 
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='09:30'>09:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined1" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined1">9:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='10:00'>10:00
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined2" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined2">9:30</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='10:30'>10:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined3" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined3">10:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='11:00'>11:00
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined4" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined4">10:30</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='11:30'>11:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined5" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined5">11:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='13:00'>13:00
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined6" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined6">11:30</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='13:30'>13:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined7" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined7">13:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='14:00'>14:00
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined8" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined8">13:30</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='14:30'>14:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined9" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined9">14:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='15:00'>15:00
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined10" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined10">14:30</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='15:30'>15:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined11" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined11">15:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='15:30'>15:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined12" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined12">15:30</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='15:30'>15:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined13" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined13">16:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='16:00'>16:00
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined14" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined14">16:30</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='16:30'>16:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined15" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined15">17:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='17:00'>17:00
-														</div>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio'
-																name='update_reserv_time' value='17:30'>17:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time2"
+																id="btn-check-1-outlined16" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-1-outlined16">17:30</label>
+														</div><br>
 														<input type="hidden" id="update_reservation_date"
 															name="update_reservation_date">
 													</div>
@@ -460,98 +484,102 @@ if (session.getAttribute("id") == null) {
 													<div class="row text-center mx-0">
 
 
-<div class="col-md-3 col-4 my-1 px-2">
-														<input type="radio" class="btn-check" name="reserv_time" 
-															id="btn-check-2-outlined1" checked autocomplete="off">
-														<label class="btn btn-outline-primary"
-															for="btn-check-2-outlined1">Checked</label>
-															</div><br>
-														<input type="radio" class="btn-check" name="reserv_time"
-															id="btn-check-2-outlined2" checked autocomplete="off">
-														<label class="btn btn-outline-primary" 
-															for="btn-check-2-outlined2">Checked</label><br>
-														<input type="radio" class="btn-check" name="reserv_time"
-															id="btn-check-2-outlined3" checked autocomplete="off">
-														<label class="btn btn-outline-primary" 
-															for="btn-check-2-outlined3">Checked</label><br>
-														
-
-
-
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='09:00'>09:00
-														</div>
-
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined1" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined1">9:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='09:30'>09:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined2" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined2">9:30</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='10:00'>10:00
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined3" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined3">10:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='10:30'>10:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined4" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined4">10:30</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='11:00'>11:00
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined5" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined5">11:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='11:30'>11:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined6" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined6">11:30</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='13:00'>13:00
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined7" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined7">13:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='13:30'>13:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined8" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined8">13:30</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='14:00'>14:00
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined9" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined9">14:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='14:30'>14:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined10" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined10">14:30</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='15:00'>15:00
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined11" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined11">15:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='15:30'>15:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined12" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined12">15:30</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='15:30'>15:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined13" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined13">16:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='15:30'>15:30
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined14" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined14">16:30</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='16:00'>16:00
-														</div>
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined15" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined15">17:00</label>
+														</div><br>
 														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='16:30'>16:30
-														</div>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='17:00'>17:00
-														</div>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input class="cell py-1" type='radio' name='reserv_time'
-																value='17:30'>17:30
-														</div>
-
+															<input type="radio" class="btn-check" name="reserv_time"
+																id="btn-check-2-outlined16" checked autocomplete="off">
+															<label class="btn btn-outline-primary"
+																for="btn-check-2-outlined16">17:30</label>
+														</div><br>
 													</div>
 												</div>
 											</div>

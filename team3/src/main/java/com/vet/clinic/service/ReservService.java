@@ -35,9 +35,6 @@ public class ReservService {
 		return reservDAO.reservlist(reservDTO);
 	}
 
-	public List<Map<String, Object>> indexReserv(Map<String, Object> map) {
-		return reservDAO.indexReserv(map);
-	}
 
 	public List<ReservDTO> reservUpdate(ReservDTO reservDTO) {
 		return reservDAO.reservUpdate(reservDTO);
@@ -58,12 +55,16 @@ public class ReservService {
 		return reservDAO.receplist(reservDTO);
 	}
 
-	public List<Map<String, Object>> receivepay(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return reservDAO.receivepay(map);
-	}
 
 	public int receiveAdd(ReservDTO reservDTO) {
 		return reservDAO.receiveAdd(reservDTO);
+	}
+
+	public int search_receiveAdd(ReservDTO reservDTO) {
+		return reservDAO.search_receiveAdd(reservDTO);
+	}
+
+	public int receiveAdd_reservYn(ReservDTO reservDTO) {
+		return reservDAO.receiveAdd_reservYn(reservDTO);
 	}
 }

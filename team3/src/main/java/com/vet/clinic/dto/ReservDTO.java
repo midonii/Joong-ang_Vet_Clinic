@@ -12,7 +12,7 @@ public class ReservDTO {
 			owner_email, owner_sms, owner_memo, owner_tel;
 	private String type_name;
 				  
-	private int pet_no, pet_weight, pet_count, owner_no, type_no;
+	private int pet_weight, pet_count, owner_no, type_no, pet_no ;
 
 	private String search_value, detail_no, petNo;
 
@@ -28,5 +28,7 @@ public class ReservDTO {
 	
 	private String delete_reservation_no;
 	
-	private String receive_time, receive_state,receive_no, reservNo, receive_petNo;
+	private String receive_time, receive_state,receive_no, reservNo, receive_petNo, receive_ownerNo;
+//	reservation_Yn;
+	private String search_ownerNo, search_petNo;
 }
