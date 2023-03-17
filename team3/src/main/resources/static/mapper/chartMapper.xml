@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.vet.clinic.dao.ReceptionDAO">
+<mapper namespace="com.vet.clinic.dao.ChartDAO">
 
 	<select id="petSearch" parameterType="HashMap"
 		resultType="HashMap">
@@ -19,8 +19,21 @@
 			pet_birth LIKE CONCAT('%',#{pet_search}, '%') 
 		</if>
 		) p
-
-
-
+	</select>
+	
+	<select id="receiveboard" resultType="Hashmap">
+		SELECT ROW_NUMBER()
+		over(ORDER BY r.receive_time) AS
+		bno, pet_name, owner_name, type_name, pet_no,receive_state,
+		DATE_FORMAT(r.receive_time,'%H:%i') as receive_time,
+		DATE_FORMAT(r.reservation_date,'%H:%i') as reservation_date
+		FROM 
+		(SELECT *
+		FROM
+		receptionview 
+		WHERE DATE_FORMAT(receive_time, "%Y-%m-%d") = CURDATE()
+		AND reservation_yn != 'n'
+		) r
+		ORDER BY receive_state DESC, receive_time;
 	</select>
 </mapper>

@@ -16,7 +16,7 @@ if (session.getAttribute("id") == null) {
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Team 3</title>
+<title>중앙동물병원</title>
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -168,19 +168,70 @@ if (session.getAttribute("id") == null) {
 
 						});
 	});
-</script>
-
-</head>
-<script type="text/javascript">
-$(function() {
-	$.post({
-		url : "/receiveboard",
-		dataType : "json"
-	})
 	
-});//func
+	/* 접수현황 */
+	$(function() {
+		$.post({
+			url : "/receiveboard",
+			dataType : "json"
+		}).done( function(data) {
+			let receiveboard = data.receiveboard;
+			var table = "<table class='table table-sm text-center' style='margin-top:-8px;'>";
+						
+			for (let i = 0; i < receiveboard.length; i++) {
+				var bno = receiveboard[i].bno;
+				var pet_name = receiveboard[i].pet_name;
+				var type_name = receiveboard[i].type_name;
+				var pet_no = receiveboard[i].pet_no;
+				var owner_name = receiveboard[i].owner_name;
+				var receive_time = receiveboard[i].receive_time;
+				var receive_state = receiveboard[i].receive_state;
+				var reservation_date = receiveboard[i].reservation_date;
+				var type_name = receiveboard[i].type_name;
+				
+				table += "<tr>";
+				table += "<td class='col-1' style='vertical-align: middle' >"+ bno +"</td>";
+				table += "<td class='col-2'><span class=' badge  rounded-pill bgtime1 '>접</span>&nbsp;"+ receive_time +"<br>";
+				table += "<span class=' badge  rounded-pill bgtime2 '>예</span>&nbsp;"+reservation_date+"</td>";
+				table += "<td class='col-5'>"+"<a href='#' style='text-decoration: none;'><b>"+ pet_name +"&nbsp;("+type_name+")"+"</b></a><br>"+owner_name+"</td>";
+				if(receive_state == 1){
+					table += "<td style='vertical-align: middle'><span class='badge text-bg-primary'>진료대기</span></td>";
+				}else {
+					table += "<td style='vertical-align: middle'><span class='badge text-bg-danger'>진료중</span></td>";
+					
+				}
+				table += "<td class='col-3'><button class='btn btn-sm btn-primary recbtn'>호출</button></td>";
+				
+				table += "</tr>";
+				
+			}
+			$("#receiveboard").append(table);
 
+		});
+		
+	});//func
 </script>
+<style type="text/css">
+.bgtime1{
+background-color: white; 
+color: gray; 
+border: 1px solid gray;
+font-size: 7px;
+vertical-align: 3px;
+}
+.bgtime2{
+background-color: white; 
+color: #0d6efd;
+border: 1px solid #0d6efd;
+font-size: 7px;
+vertical-align: 3px;
+}
+.recbtn{
+margin-top: 6px;
+}
+
+</style>
+</head>
 <body id="page-top">
 
 	<!-- Page Wrapper -->
@@ -288,8 +339,9 @@ $(function() {
 
 								<!-- Card Body -->
 								<div class="card-body" style="height: 328px;">
-									<div class="table-responsive" id="receiveboard">
-									
+									<div class="table-responsive" id="receiveboard" style="overflow: auto; max-height: 280px;">
+										
+										</table>
 									</div>
 								</div>
 							</div>
@@ -302,7 +354,7 @@ $(function() {
 								</div>
 
 								<!-- Card Body -->
-								<div class="card-body" style="height: 329px;"></div>
+								<div class="card-body " style="height: 329px;"></div>
 							</div>
 						</div>
 

@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.vet.clinic.service.ReceptionService;
+import com.vet.clinic.service.ChartService;
 
 @Controller
-public class ReceptionController {
+public class ChartController {
 
 	@Autowired
-	private ReceptionService receptionService;
+	private ChartService chartService;
 
-	@GetMapping("/reception")
+	@GetMapping("/chart")
 	public String reception() {
-		return "reception/reception";
+		return "chart/chart";
 	}
 
 	@ResponseBody
@@ -32,7 +32,7 @@ public class ReceptionController {
 		JSONObject json = new JSONObject();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("pet_search", pet_search);
-		List<Map<String, Object>> pet = receptionService.petSearch(map);
+		List<Map<String, Object>> pet = chartService.petSearch(map);
 		JSONArray petJ = new JSONArray(pet);
 		json.put("pet", petJ);
 		return json.toString();
@@ -44,8 +44,10 @@ public class ReceptionController {
 	@PostMapping(value = "/receiveboard", produces = "application/json;charset=UTF-8")
 	public String receiveboard() {
 		JSONObject json = new JSONObject();
+		List<Map<String, Object>> receiveboard = chartService.rereceiveboard(); 
+		JSONArray receiveboardJ = new JSONArray(receiveboard);
+		json.put("receiveboard", receiveboardJ);
 		
-	
-		return"";
+		return json.toString();
 	}
 }

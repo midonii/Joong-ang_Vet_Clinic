@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @Mapper
-public interface ReceptionDAO {
+public interface ChartDAO {
 
-	List<Map<String, Object>> petSearch(Map<String, Object> map);
+	public List<Map<String, Object>> petSearch(Map<String, Object> map);
+
+	public List<Map<String, Object>> receiveboard();
 
 }
