@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vet.clinic.dao.ReservDAO">
+
+	<select id="boardlist" parameterType="ReservDTO" resultType="ReservDTO">
+	SELECT * FROM clientview	
+	</select>
+	
+
+	<!-- #() : dto변수명 -->
+	<select id="searchlist" parameterType="ReservDTO" resultType="ReservDTO">
+	SELECT * FROM clientview
+	<if test="search_value != null">
+		WHERE owner_name 
+		
+		LIKE CONCAT('%', #{search_value}, '%')		
+		OR pet_name 
+		LIKE CONCAT('%', #{search_value}, '%')		
+		OR owner_tel 
+		LIKE CONCAT('%', #{search_value}, '%')	
+	</if>	
+	</select>
+	
+	<select id="reservAjax" parameterType="ReservDTO" resultType="ReservDTO">
+	SELECT *
+	FROM searchview
+	WHERE pet_no=#{detail_no }
+	</select>
+	
+	<insert id="reservAdd" parameterType="ReservDTO">
+		INSERT INTO reservation SET
+ 		reservation_date = #{reservation_date},
+		reservation_memo = #{reservation_memo },
+		reservation_time=NOW(),
+		staff_no = (SELECT staff_no FROM staff WHERE staff_id = #{staff_id} ),
+   		pet_no = #{petNo};
+   		
+	</insert>
+	
+	<!-- 예약리스트 -->
+	<select id="reservlist" parameterType="ReservDTO" resultType="ReservDTO">
+	SELECT *
+	FROM reservationview 
+	WHERE reserv_date = CURDATE() AND (reservation_yn = 'n' OR reservation_yn = '')
+	ORDER BY reservation_date DESC		
+	</select>
+
+
+	<select id="indexReserv" resultType="HashMap">
+		SELECT ROW_NUMBER()
+		over(ORDER BY r.reserv_date) AS
+		rno,r.pet_name,r.owner_name,r.reserv_time
+		FROM
+		(SELECT *
+		FROM
+		reservationview WHERE DATE_FORMAT(reservation_date, "%Y-%m-%d") =
+		CURDATE()) r
+		ORDER BY rno
+	</select>
+
+	<select id="receivepay" resultType="HashMap">
+		SELECT ROW_NUMBER()
+		over(ORDER BY i.receive_time) AS
+		ino,i.pet_name,i.owner_name,i.receive_state,i.pay_yn
+		FROM
+		(SELECT *
+		FROM
+		indexreceivepay WHERE DATE_FORMAT(receive_time, "%Y-%m-%d") =
+		CURDATE()) i
+		ORDER BY ino
+	</select>
+
+	<insert id="receiveAdd" parameterType="ReservDTO">
+		INSERT INTO reception SET
+ 		receive_time = NOW(),
+		receive_state = '1'
+		pet_no = #{receive_petNo};
+	</insert>	
+
+
+
+
+
+<!-- 접수리스트 -->
+	<select id="receplist" parameterType="ReservDTO" resultType="ReservDTO">
+	SELECT *
+	FROM receptionview 
+	WHERE reserv_date = CURDATE() AND (reservation_yn = 'y' OR reservation_yn = '')
+	ORDER BY receive_time DESC	
+	</select>
+	
+	<select id="reservUpdate" parameterType="ReservDTO" resultType="ReservDTO">
+	SELECT *
+	FROM reservationview 
+	WHERE reservation_no = #{reservation_no}
+	ORDER BY reservation_date DESC	
+	</select>
+	
+	<update id="reservUpdateSaved" parameterType="ReservDTO">
+		UPDATE reservation SET
+   		reservation_date = #{update_reservation_date },
+		reservation_memo = #{update_reservation_memo }
+   		WHERE reservation_no=#{update_reservation_no}
+   		
+	</update>
+	
+	<delete id="delete_reservation_no" parameterType="ReservDTO">
+		DELETE FROM reservation
+		WHERE
+		reservation_no=#{delete_reservation_no }
+	</delete>
+	
+</mapper>
