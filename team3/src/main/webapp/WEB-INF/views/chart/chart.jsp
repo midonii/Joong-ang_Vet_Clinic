@@ -33,212 +33,19 @@ if (session.getAttribute("id") == null) {
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
+<link href="css/chart/chart1.css" rel="stylesheet">
+<!-- 시라 css  -->
 <script type="text/javascript"
 	src="cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- JQUERY -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-
-<script type="text/javascript">
-	$(function() {
-		$("#search_btn")
-				.click(
-						function() {
-							var pet_search = $("#pet_search").val();
-
-							if (pet_search == "") {
-								alert("검색어를 입력하세요");
-								$("#pet_search").focus();
-								return false;
-							} else {
-								$("#petSearchModal").modal("show");
-								$
-										.ajax({
-											url : '/petSearchAjax',
-											type : 'POST',
-											data : {
-												"pet_search" : pet_search
-											},
-											success : function(data) {
-												let pet = data.pet;
-												$(".petTable").empty();
-												var table = "";
-												if (pet == "") {
-													table += "<tr class='text-center'> <td colspan='6'>존재하지 않습니다.<br><br>";
-												} else {
-													for (let i = 0; pet.length > i; i++) {
-														var pno = pet[i].pno;
-														var pet_no = pet[i].pet_no;
-														var pet_name = pet[i].pet_name;
-														var owner_name = pet[i].owner_name;
-														var owner_tel = pet[i].owner_tel;
-														var pet_gender = pet[i].pet_gender;
-
-														table += "<tr class='text-center' >";
-														table += "<td class='col-1'>"
-																+ pno + "</td>";
-														table += "<td class='col-2'>"
-																+ pet_name
-																+ "</td>";
-														table += "<td class='col-2'>"
-																+ owner_name
-																+ "</td>";
-														table += "<td class='col-1'>"
-																+ pet_gender
-																+ "</td>";
-														table += "<td class='col-4'>"
-																+ owner_tel
-																+ "</td>";
-														table += "<td class='col-2'><button type='button' class='btn btn-primary btn-sm chartUpdate' value='"+pet_no+"'>열기</button></td>";
-														table += "</tr>";
-
-													}
-
-												}
-												$(".petTable").append(table);
-											},
-											error : function(e) {
-												alert("실패");
-											}
-										});
-							}
-
-						});
-		$(document)
-				.on(
-						"click",
-						"#search_btn2",
-						function() {
-
-							console.log("search_btn2 클릭");
-							var pet_search = $("#pet_search2").val();
-
-							if (pet_search == "") {
-								alert("검색어를 입력하세요");
-								$("#pet_search").focus();
-								return false;
-							} else {
-								$
-										.ajax({
-											url : '/petSearchAjax',
-											type : 'POST',
-											data : {
-												"pet_search" : pet_search
-											},
-											success : function(data) {
-												let pet = data.pet;
-												$(".petTable").empty();
-												var table = "";
-												if (pet == "") {
-													table += "<tr class='text-center'> <td colspan='6' >존재하지 않습니다.<br><br>";
-												} else {
-													for (let i = 0; pet.length > i; i++) {
-														var pno = pet[i].pno;
-														var pet_no = pet[i].pet_no;
-														var pet_name = pet[i].pet_name;
-														var owner_name = pet[i].owner_name;
-														var owner_tel = pet[i].owner_tel;
-														var pet_gender = pet[i].pet_gender;
-
-														table += "<tr class='text-center' >";
-														table += "<td class='col-1'>"
-																+ pno + "</td>";
-														table += "<td class='col-2'>"
-																+ pet_name
-																+ "</td>";
-														table += "<td class='col-2'>"
-																+ owner_name
-																+ "</td>";
-														table += "<td class='col-1'>"
-																+ pet_gender
-																+ "</td>";
-														table += "<td class='col-4'>"
-																+ owner_tel
-																+ "</td>";
-														table += "<td class='col-2'><button type='button' class='btn btn-primary btn-sm chartUpdate' value='"+pet_no+"'>열기</button></td>";
-														table += "</tr>";
-
-													}
-
-												}
-												$(".petTable").append(table);
-											},
-											error : function(e) {
-												alert("실패");
-											}
-										});
-							}
-
-						});
-
-		$(document).on("click", ".chartUpdate", function() {
-			$("#petSearchModal").modal("hide");
-			var pet_no = $(this).attr("value");
-			location.href = "/chartUpdate?pet_no=" + pet_no;
-		});
-		
-	});
-		/* 접수현황 */
-		$(function() {
-			$.post({
-				url : "/receiveboard",
-				dataType : "json"
-			}).done( function(data) {
-				let receiveboard = data.receiveboard;
-				var table = "<table class='table table-sm text-center' style='margin-top:-8px;'>";
-							
-				for (let i = 0; i < receiveboard.length; i++) {
-					var bno = receiveboard[i].bno;
-					var pet_name = receiveboard[i].pet_name;
-					var type_name = receiveboard[i].type_name;
-					var pet_no = receiveboard[i].pet_no;
-					var owner_name = receiveboard[i].owner_name;
-					var receive_time = receiveboard[i].receive_time;
-					var receive_state = receiveboard[i].receive_state;
-					var reservation_date = receiveboard[i].reservation_date;
-					var type_name = receiveboard[i].type_name;
-					
-					table += "<tr>";
-					table += "<td class='col-1' style='vertical-align: middle' >"+ bno +"</td>";
-					table += "<td class='col-2'><span class=' badge  rounded-pill bgtime1 '>접</span>&nbsp;"+ receive_time +"<br>";
-					table += "<span class=' badge  rounded-pill bgtime2 '>예</span>&nbsp;"+reservation_date+"</td>";
-					table += "<td class='col-5'>"+"<a href='#' style='text-decoration: none;'><b>"+ pet_name +"&nbsp;("+type_name+")"+"</b></a><br>"+owner_name+"</td>";
-					if(receive_state == 1){
-						table += "<td style='vertical-align: middle'><span class='badge text-bg-primary'>진료대기</span></td>";
-					}else {
-						table += "<td style='vertical-align: middle'><span class='badge text-bg-danger'>진료중</span></td>";
-						
-					}
-					table += "<td class='col-3'><button class='btn btn-sm btn-primary recbtn'>호출</button></td>";
-					
-					table += "</tr>";
-					
-				}
-				$("#receiveboard").append(table);
-
-			});
-</script>
-<style type="text/css">
-.bgtime1 {
-	background-color: white;
-	color: gray;
-	border: 1px solid gray;
-	font-size: 7px;
-	vertical-align: 3px;
-}
-
-.bgtime2 {
-	background-color: white;
-	color: #0d6efd;
-	border: 1px solid #0d6efd;
-	font-size: 7px;
-	vertical-align: 3px;
-}
-
-.recbtn {
-	margin-top: 6px;
-}
-</style>
+<script type="text/javascript" src="../js/chart/chart1.js"></script>
+<!-- 시라 js  -->
+<script type="text/javascript" src="../js/chart/chart2.js"></script>
+<!-- 미선 js -->
+<script type="text/javascript" src="../js/chart/chart3.js"></script>
+<!-- 예지 js -->
 
 </head>
 <body id="page-top">
@@ -265,35 +72,7 @@ if (session.getAttribute("id") == null) {
 					<div class="row">
 						<div class="col-xl-12 col-lg-5 px-1 mt-2" style="border: 0;">
 							<div class="card mb-1 ">
-								<!-- Card Header - Dropdown -->
-								<div class="card-header py-2 d-flex flex-row align-items-center">
-
-									<div class="col-9">
-
-										<table border="0" cellspacing="0"
-											style="font-size: 14px; margin-left: -10px;">
-
-											<tr>
-												<td>보호자명 : <b class="text-gray-800">윤지혜</b>&nbsp;&nbsp;
-												</td>
-												<td>동물명</b> : <b class="text-gray-800">까미</b>&nbsp;&nbsp;
-												</td>
-												<td>견종 : 포메라니안&nbsp;&nbsp;</td>
-												<td>성별 : IF/NF&nbsp;&nbsp;</td>
-												<td>생년월일 : 2022-01-03&nbsp;&nbsp;</td>
-												<td>체중 : 12.0kg&nbsp;&nbsp;</td>
-												<td>담당의 : doctor&nbsp;&nbsp;</td>
-
-											</tr>
-
-
-										</table>
-
-									</div>
-									<div class="col-3 d-flex justify-content-end">
-										<button type="button" class=" btn btn-primary btn-sm">저장</button>
-									</div>
-								</div>
+								<%@ include file="./chart_head.jsp"%>
 							</div>
 						</div>
 					</div>
@@ -310,9 +89,8 @@ if (session.getAttribute("id") == null) {
 									<h6 class="m-0 font-weight-bold text-primary">이전차트내역</h6>
 
 								</div>
+								<%@ include file="./chart_before.jsp"%>
 
-								<!-- Card Body -->
-								<div class="card-body" style="height: 705px;"></div>
 							</div>
 						</div>
 
@@ -323,9 +101,7 @@ if (session.getAttribute("id") == null) {
 									<h6 class="m-0 font-weight-bold text-primary">의사소견</h6>
 
 								</div>
-
-								<!-- Card Body -->
-								<div class="card-body" style="height: 328px;"></div>
+								<%@ include file="./chart_memo.jsp"%>
 							</div>
 
 							<div class="card  mb-2">
@@ -334,28 +110,20 @@ if (session.getAttribute("id") == null) {
 									<h6 class="m-0 font-weight-bold text-primary">처방내역</h6>
 
 								</div>
-
-								<!-- Card Body -->
-								<div class="card-body" style="height: 329px;"></div>
+								<%@ include file="./chart_cheobang.jsp"%>
 							</div>
 						</div>
 
 						<div class="col-xl-4 col-lg-5 px-1">
-							<div class="card  mb-2">
+							<div class="card mb-2">
 								<div
 									class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
 									<h6 class="m-0 font-weight-bold text-primary">접수현황</h6>
 
 								</div>
 
-								<!-- Card Body -->
-								<div class="card-body" style="height: 328px;">
-									<div class="table-responsive" id="receiveboard"
-										style="overflow: auto; max-height: 280px;">
+								<%@ include file="./chart_reception.jsp"%>
 
-										</table>
-									</div>
-								</div>
 							</div>
 
 							<div class="card  mb-2">
@@ -365,21 +133,11 @@ if (session.getAttribute("id") == null) {
 
 								</div>
 
-								<!-- Card Body -->
-								<div class="card-body" style="height: 329px;"></div>
+								<%@ include file="./chart_vac.jsp"%>
 							</div>
 						</div>
 
-
-
-
 					</div>
-
-
-
-
-
-
 
 				</div>
 				<!-- /.container-fluid -->
@@ -387,68 +145,10 @@ if (session.getAttribute("id") == null) {
 			</div>
 			<!-- End of Main Content -->
 
-			<!-- 검색모달  -->
-			<div class="modal fade" id="petSearchModal" tabindex="-1"
-				role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">
-								<b>전체 검색</b>
-							</h5>
-							<button class="close" type="button" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">×</span>
-							</button>
-						</div>
-						<div class="modal-body">
-
-							<form action="/petType" name="searchForm" onsubmit="return false"
-								method="get">
-								<div class="input-group mt-2 mb-3">
-									<input type="text"
-										class="form-control border-gray col-md-12 pet_search2"
-										placeholder="검색어을 입력하세요" name="pet_search2" id="pet_search2">
-									<div class="input-group-append">
-										<button class="btn btn-primary" type="button" id="search_btn2">
-											<i class="fas fa-search"></i>
-										</button>
-									</div>
-								</div>
-							</form>
-							<div class="table-responsive">
-								<table class="table table-sm table-bordered text-center"
-									id="dataTable" width="100%" cellspacing="0"
-									style="overflow: auto;">
-									<thead>
-										<tr class="bg-gray-200" style="line-height: 30px;">
-											<th class="col-1">번호</th>
-											<th class="col-2">보호자명</th>
-											<th class="col-2">동물명</th>
-											<th class="col-1">성별</th>
-											<th class="col-4">전화번호</th>
-											<th class="col-2"></th>
-										</tr>
-									</thead>
-
-									<tbody class="petTable">
-
-
-									</tbody>
-								</table>
-							</div>
 
 
 
-
-
-						</div>
-						<!-- <div class="modal-footer"></div> -->
-					</div>
-				</div>
-			</div>
-
-
+			<%@ include file="./chart_searchM.jsp"%>
 			<%@ include file="../bar/footer.jsp"%>
 			<%@ include file="../bar/logoutModal.jsp"%>
 
@@ -464,6 +164,5 @@ if (session.getAttribute("id") == null) {
 
 			<!-- Custom scripts for all pages-->
 			<script src="js/sb-admin-2.min.js"></script>
-
-			</body>
+</body>
 </html>
