@@ -148,13 +148,6 @@ $(function() {
 		}).done(function(data) {
 
 			alert("통신성공?");
-			//let result = data.result;
-			//if (data.result == 1) {
-			//    alert("저장성공");
-			//    console.log("저장성공");
-			//} else {
-			//    alert("저장실패");
-			//}
 		}).fail(function() {
 			alert("통신실패 : " + data.result);
 		});
@@ -268,36 +261,25 @@ $(function() {
 		if (confirm("예약을 취소 하시겠습니까?")) {
 			location.href = "reservDelete?delete_reservation_no=" + delete_reservation_no;
 		}
-
 	});
 
 
 	//접수 버튼
 	$("#receipt_btn").click(function(){
 		
-		$("#receipt_btn").val($("#petNo").val()); //ok
-		let reservNo = $(this).attr("value"); //button안의 pet_no값 //ok
-		alert("ok-button value값 : " + $("#ok-button").val()); //ok
+		let reservNo = $(this).attr("value"); //reservation_no
+		alert("reservNo값 : " + reservNo); //
 
-		if ($('input:radio[name="reserv_time"]:checked').length < 1) {
-			alert('예약 시간을 선택해주세요');
-			return false;
-		}
-		var reservation_memo = $('#reservation_memo').val();
-		var reservation_date = $('#reservation_date').val();
-		alert(reservation_date);
 		//백으로 보내서 삽입
 		$.post({
-			url: "/reservAdd",
+			url: "/receiveAdd",
 			data: {
-				"petNo": petNo,
-				"reservation_memo": reservation_memo,
-				"reservation_date": reservation_date
+				"reservNo": reservNo
 			},
 			dataType: "json"
 		}).done(function(data) {
 
-			alert("통신성공?");
+			alert("통신성공");
 			//let result = data.result;
 			//if (data.result == 1) {
 			//    alert("저장성공");
@@ -309,7 +291,7 @@ $(function() {
 			alert("통신실패 : " + data.result);
 		});
 		//alert(petNo); //ok
-		alert("예약이 등록 되었습니다.");
+		alert("접수 등록이 되었습니다.");
 		location.reload(); //모달창 hide + 부모창새로고침
 	});
 

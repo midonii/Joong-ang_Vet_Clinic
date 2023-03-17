@@ -62,4 +62,8 @@ public class ReservService {
 		// TODO Auto-generated method stub
 		return reservDAO.receivepay(map);
 	}
+
+	public int receiveAdd(ReservDTO reservDTO) {
+		return reservDAO.receiveAdd(reservDTO);
+	}
 }

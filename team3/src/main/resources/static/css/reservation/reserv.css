@@ -1,5 +1,4 @@
 @charset "UTF-8";
-
 .right {
 	float: right;
 }
@@ -7,13 +6,12 @@
 .left {
 	float: left;
 }
-
 .t-right {
-	text-align: right;
+	text-align:right;
 }
 
 .t-left {
-	text-align: left;
+	text-align:left;
 }
 
 .inline {
@@ -31,46 +29,68 @@
 #menu1 {
 	margin-bottom: 8px;
 }
-
 #menu2 {
 	background-color: rgb(135, 206, 235, 0.2);
 	margin-bottom: 10px;
 }
-
-#width100 {
+#width100{
 	width: 100%;
 }
 
 .container-2 {
 	float: right;
 }
-
-.card-body {
-	padding: 1px;
+.card-body{
+	
+	padding:1px;
 }
-
 a {
-	text-decoration: none;
-	text-decoration-line: none;
+  text-decoration: none;
+  text-decoration-line : none;
 }
-/* .350px{ */
-/* 	width: 50px; */
+.350px{
+	width: 50px;
+}
+
+/* [type="radio"] { */
+/*   vertical-align: middle; */
+/*   appearance: none; */
 /* } */
+
+
+/* input[type=radio]:checked + label { */
+/* 	  background-color: #3D5AFE; */
+/*   color: #fff; */
+/* } */
+/* .cell>div{ */
+/* 	border: 1px solid #3D5AFE; */
+/* } */
+
+.cell:hover {
+  border: 1px solid #3D5AFE;
+}
+
+.cell.select {
+  background-color: #3D5AFE;
+  color: #fff;
+}
 .update_cell {
-	border: 1px solid #BDBDBD;
-	margin: 2px;
-	cursor: pointer;
+  border: 1px solid #BDBDBD;
+  margin: 2px;
+  cursor: pointer;
 }
 
 .update_cell:hover {
-	border: 1px solid #3D5AFE;
+  border: 1px solid #3D5AFE;
 }
 
 .update_cell.select {
-	background-color: #3D5AFE;
-	color: #fff;
+  background-color: #3D5AFE;
+  color: #fff;
 }
 
-.cancel_color {
-	background-color: gray-300;
+.cancel_color{
+	 background-color: $gray-300;
+	
 }
+

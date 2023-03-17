@@ -28,5 +28,5 @@ public class ReservDTO {
 	
 	private String delete_reservation_no;
 	
-	private String receive_time, receive_state,receive_no;
+	private String receive_time, receive_state,receive_no, reservNo, receive_petNo;
 }

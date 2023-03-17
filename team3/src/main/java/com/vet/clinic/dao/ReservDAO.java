@@ -36,4 +36,6 @@ public interface ReservDAO {
 
 	public List<ReservDTO> receplist(ReservDTO reservDTO);
 
+	public int receiveAdd(ReservDTO reservDTO);
+
 }

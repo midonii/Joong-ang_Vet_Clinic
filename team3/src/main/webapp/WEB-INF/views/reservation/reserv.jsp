@@ -7,7 +7,7 @@
 <html lang="en">
 <%
 if (session.getAttribute("id") == null) {
-   response.sendRedirect("/login");
+	response.sendRedirect("/login");
 }
 %>
 <head>
@@ -139,12 +139,14 @@ if (session.getAttribute("id") == null) {
 													</div> <span> ${l.pet_birth} </span>
 												<td style="text-align: right;"><span><b><h5>${l.reserv_time}</h5></b></span><br>
 													<input type="hidden" id="petNo" value="${l.pet_no}">
-													<span><button type="button"
-															class="btn btn-secondary btn-sm" id="reserv_cancel"
-															value="${l.reservation_no}"
+													<span>
+														<button type="button" class="btn btn-secondary btn-sm"
+															id="reserv_cancel" value="${l.reservation_no}"
 															style="background-color: #7f8c8d; border: none;">취소</button>
 														<button type="button" class="btn btn-primary btn-sm"
-															id="receipt_btn" style="border: none;">접수</button> </span></td>
+															value="${l.reservation_no}" id="receipt_btn"
+															style="border: none;">접수</button>
+												</span></td>
 
 
 
@@ -175,29 +177,26 @@ if (session.getAttribute("id") == null) {
 															style="font-size: 25px; color: black">${l.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${l.owner_name}&nbsp;
 														<span class="badge bg-secondary"
 															style="vertical-align: 3px;">대기중</span>
-													</div> <br> 
-													
+													</div> <br>
+
 													<div>
 														<span>${l.type_name} | ${l.pet_gender}</span>
-													</div> <span> ${l.pet_birth} </span>
-													<span class="badge"
+													</div> <span> ${l.pet_birth} </span> <span class="badge"
 													style="background-color: white; color: #0d6efd; border: 1px solid #0d6efd;">예약</span>
 
 
-									
+
 
 
 												</td>
 												<td style="text-align: right;"><span><b><h5>${l.reservation_date}</h5></b></span><br>
-												<input type="hidden" id="reservNo"
-														value="${l.reservation_no}"> 
-													<br> 
-													
-													<span>
-														<button type="button" class="btn btn-secondary btn-sm" id="reserv_cancel" value="${l.receive_no}"
+													<input type="hidden" id="reservNo"
+													value="${l.reservation_no}"> <br> <span>
+														<button type="button" class="btn btn-secondary btn-sm"
+															id="reserv_cancel" value="${l.receive_no}"
 															style="background-color: #7f8c8d; border: none;">접수취소</button>
-														<button type="button" class="btn btn-success btn-sm" id="check_btn"
-															style="border: none;">수납</button>
+														<button type="button" class="btn btn-success btn-sm"
+															id="check_btn" style="border: none;">수납</button>
 												</span></td>
 											</tr>
 										</c:forEach>
@@ -232,337 +231,363 @@ if (session.getAttribute("id") == null) {
 
 
 
-			
-					<!-- 수정Modal -->
-					<div class="modal fade" id="updateModal" tabindex="-1"
-						aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h1 class="modal-title fs-5" id="exampleModalLabel">예약하기</h1>
-									<button type="button" class="btn-close" data-bs-dismiss="modal"
-										aria-label="Close"></button>
-								</div>
-								<div class="modal-body">
-									<form class="row g-4 form">
-										<div class="col-md-6">
-											<label for="update_owner_name" class="col-form-label">보호자
-												이름</label> <input type="text" class="form-control"
-												id="update_owner_name" value="없음" readonly>
-										</div>
-										<div class="col-md-6">
-											<label for="update_owner_tel" class="col-form-label">전화번호</label>
-											<input type="text" class="form-control" id="update_owner_tel"
-												placeholder="01012345678" value="없음" readonly>
-										</div>
-										<div class="col-md-6">
-											<label for="update_pet_name" class="col-form-label">반려견
-												이름</label> <input type="text" class="form-control"
-												id="update_pet_name" value="없음" readonly>
-										</div>
-										<div class="col-md-6">
-											<label for="update_pet_gender" class="col-form-label">반려견
-												성별</label> <input type="text" class="form-control"
-												id="update_pet_gender" value="없음" readonly>
-										</div>
-										<div class="col-md-6">
-											<label for="update_pet_birth" class="col-form-label">반려견
-												출생년도</label> <input type="text" class="form-control"
-												id="update_pet_birth" value="없음" readonly>
-										</div>
-										<!-- 예약시간 -->
-										<p class="col-md-6">
-											<label for="update_reservation_date_day"
-												class="col-form-label">예약날짜</label> <input
-												class="form-control" type="date" value="1000-01-10"
-												id="update_reservation_date_day" tabindex="-1">
-										</p>
 
-										<!-- 시간설정 -->
-										<div class="col-md-6" style="width: auto;">
-											<label class="col-form-label"
-												for="update_reservation_date_time">예약시간</label>
-											<div class="accordion" id="accordionExample">
-												<div class="accordion-item">
-													<button class="accordion-button collapsed"
-														style="width: 470px; height: 38px;" type="button"
-														id="accordion" data-bs-toggle="collapse"
-														data-bs-target="#collapseOne" aria-expanded="false"
-														aria-controls="collapseOne">시간선택</button>
-													<div id="collapseOne" class="accordion-collapse collapse"
-														aria-labelledby="headingOne"
-														data-bs-parent="#accordionExample">
-														<div class="accordion-body">
-															<div class="row text-center mx-0">
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='09:00'>09:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='09:30'>09:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='10:00'>10:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='10:30'>10:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='11:00'>11:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='11:30'>11:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='13:00'>13:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='13:30'>13:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='14:00'>14:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='14:30'>14:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='15:00'>15:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='15:30'>15:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='15:30'>15:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='15:30'>15:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='16:00'>16:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='16:30'>16:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='17:00'>17:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='update_reserv_time' value='17:30'>17:30
-																</div>
-																<input type="hidden" id="update_reservation_date"
-																	name="update_reservation_date">
-															</div>
+			<!-- 수정Modal -->
+			<div class="modal fade" id="updateModal" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalLabel">예약하기</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form class="row g-4 form">
+								<div class="col-md-6">
+									<label for="update_owner_name" class="col-form-label">보호자
+										이름</label> <input type="text" class="form-control"
+										id="update_owner_name" value="없음" readonly>
+								</div>
+								<div class="col-md-6">
+									<label for="update_owner_tel" class="col-form-label">전화번호</label>
+									<input type="text" class="form-control" id="update_owner_tel"
+										placeholder="01012345678" value="없음" readonly>
+								</div>
+								<div class="col-md-6">
+									<label for="update_pet_name" class="col-form-label">반려견
+										이름</label> <input type="text" class="form-control"
+										id="update_pet_name" value="없음" readonly>
+								</div>
+								<div class="col-md-6">
+									<label for="update_pet_gender" class="col-form-label">반려견
+										성별</label> <input type="text" class="form-control"
+										id="update_pet_gender" value="없음" readonly>
+								</div>
+								<div class="col-md-6">
+									<label for="update_pet_birth" class="col-form-label">반려견
+										출생년도</label> <input type="text" class="form-control"
+										id="update_pet_birth" value="없음" readonly>
+								</div>
+								<!-- 예약시간 -->
+								<p class="col-md-6">
+									<label for="update_reservation_date_day" class="col-form-label">예약날짜</label>
+									<input class="form-control" type="date" value="1000-01-10"
+										id="update_reservation_date_day" tabindex="-1">
+								</p>
+
+								<!-- 시간설정 -->
+								<div class="col-md-6" style="width: auto;">
+									<label class="col-form-label"
+										for="update_reservation_date_time">예약시간</label>
+									<div class="accordion" id="accordionExample">
+										<div class="accordion-item">
+											<button class="accordion-button collapsed"
+												style="width: 470px; height: 38px;" type="button"
+												id="accordion" data-bs-toggle="collapse"
+												data-bs-target="#collapseOne" aria-expanded="false"
+												aria-controls="collapseOne">시간선택</button>
+											<div id="collapseOne" class="accordion-collapse collapse"
+												aria-labelledby="headingOne"
+												data-bs-parent="#accordionExample">
+												<div class="accordion-body">
+													<div class="row text-center mx-0">
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="btn-check" type='radio'
+																id="btn-check-outlined" name='update_reserv_time'
+																value='09:00'>09:00
 														</div>
+
+
+
+
+
+
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='09:30'>09:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='10:00'>10:00
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='10:30'>10:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='11:00'>11:00
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='11:30'>11:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='13:00'>13:00
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='13:30'>13:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='14:00'>14:00
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='14:30'>14:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='15:00'>15:00
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='15:30'>15:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='15:30'>15:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='15:30'>15:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='16:00'>16:00
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='16:30'>16:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='17:00'>17:00
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio'
+																name='update_reserv_time' value='17:30'>17:30
+														</div>
+														<input type="hidden" id="update_reservation_date"
+															name="update_reservation_date">
 													</div>
 												</div>
 											</div>
 										</div>
-										<input type="hidden" id="reservation_date"
-											name="reservation_date">
-										<div class="mb-3">
-											<label for="update_reservation_memo" class="col-form-label">예약메모</label>
-											<textarea class="form-control" id="update_reservation_memo"></textarea>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
-												data-bs-dismiss="modal" id="update_cancel-button">취소</button>
-											<button type="button" class="btn btn-primary"
-												id="update_ok-button" value="">수정하기</button>
-										</div>
-									</form>
+									</div>
 								</div>
-							</div>
+								<input type="hidden" id="reservation_date"
+									name="reservation_date">
+								<div class="mb-3">
+									<label for="update_reservation_memo" class="col-form-label">예약메모</label>
+									<textarea class="form-control" id="update_reservation_memo"></textarea>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal" id="update_cancel-button">취소</button>
+									<button type="button" class="btn btn-primary"
+										id="update_ok-button" value="">수정하기</button>
+								</div>
+							</form>
 						</div>
 					</div>
+				</div>
+			</div>
 
 
-<!-- 예약하기 modal -->
-					<div class="modal fade" id="exampleModal" tabindex="-1"
-						aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h1 class="modal-title fs-5" id="exampleModalLabel">예약하기</h1>
-									<button type="button" class="btn-close" data-bs-dismiss="modal"
-										aria-label="Close"></button>
+			<!-- 예약하기 modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalLabel">예약하기</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form class="row g-4 form">
+								<div class="col-md-6">
+									<label for="owner_name" class="col-form-label">보호자 이름</label> <input
+										type="text" class="form-control" id="owner_name" value="없음"
+										readonly>
 								</div>
-								<div class="modal-body">
-									<form class="row g-4 form">
-										<div class="col-md-6">
-											<label for="owner_name" class="col-form-label">보호자 이름</label>
-											<input type="text" class="form-control" id="owner_name"
-												value="없음" readonly>
-										</div>
-										<div class="col-md-6">
-											<label for="owne_tel" class="col-form-label">전화번호</label> <input
-												type="text" class="form-control" id="owner_tel"
-												placeholder="01012345678" value="없음" readonly>
-										</div>
-										<div class="col-md-6">
-											<label for="pet_name" class="col-form-label">반려견 이름</label> <input
-												type="text" class="form-control" id="pet_name" value="없음"
-												readonly>
-										</div>
-										<div class="col-md-6">
-											<label for="pet_gender" class="col-form-label">반려견 성별</label>
-											<input type="text" class="form-control" id="pet_gender"
-												value="없음" readonly>
-										</div>
-										<div class="col-md-6">
-											<label for="pet_birth" class="col-form-label">반려견
-												출생년도</label> <input type="text" class="form-control" id="pet_birth"
-												value="없음" readonly>
-										</div>
-										<!-- 예약시간 -->
-										<p class="col-md-6">
-											<label for="reservation_date_day" class="col-form-label">예약날짜</label>
-											<input class="form-control" type="date" value="1000-01-10"
-												id="reservation_date_day" tabindex="-1">
-										</p>
+								<div class="col-md-6">
+									<label for="owne_tel" class="col-form-label">전화번호</label> <input
+										type="text" class="form-control" id="owner_tel"
+										placeholder="01012345678" value="없음" readonly>
+								</div>
+								<div class="col-md-6">
+									<label for="pet_name" class="col-form-label">반려견 이름</label> <input
+										type="text" class="form-control" id="pet_name" value="없음"
+										readonly>
+								</div>
+								<div class="col-md-6">
+									<label for="pet_gender" class="col-form-label">반려견 성별</label> <input
+										type="text" class="form-control" id="pet_gender" value="없음"
+										readonly>
+								</div>
+								<div class="col-md-6">
+									<label for="pet_birth" class="col-form-label">반려견 출생년도</label>
+									<input type="text" class="form-control" id="pet_birth"
+										value="없음" readonly>
+								</div>
+								<!-- 예약시간 -->
+								<p class="col-md-6">
+									<label for="reservation_date_day" class="col-form-label">예약날짜</label>
+									<input class="form-control" type="date" value="1000-01-10"
+										id="reservation_date_day" tabindex="-1">
+								</p>
 
-										<!-- 시간설정 -->
-										<div class="col-md-6" style="width: auto;">
-											<label class="col-form-label"
-												for="update_reservation_date_time">예약시간</label>
-											<div class="accordion" id="accordionExample">
-												<div class="accordion-item">
-													<button class="accordion-button collapsed"
-														style="width: 470px; height: 38px;" type="button"
-														id="accordion" data-bs-toggle="collapse"
-														data-bs-target="#collapseOne" aria-expanded="false"
-														aria-controls="collapseOne">시간선택</button>
-													<div id="collapseOne" class="accordion-collapse collapse"
-														aria-labelledby="headingOne"
-														data-bs-parent="#accordionExample">
-														<div class="accordion-body">
-															<div class="row text-center mx-0">
+								<!-- 시간설정 -->
+								<div class="" style="width: auto;">
+									<label class="col-form-label"
+										for="update_reservation_date_time">예약시간</label>
+									<div class="accordion" id="accordionExample">
+										<div class="accordion-item">
+											<button class="accordion-button collapsed"
+												style="width: 464px; height: 38px;" type="button"
+												id="accordion" data-bs-toggle="collapse"
+												data-bs-target="#collapseOne" aria-expanded="false"
+												aria-controls="collapseOne">시간선택</button>
+											<div id="collapseOne" class="accordion-collapse collapse"
+												aria-labelledby="headingOne"
+												data-bs-parent="#accordionExample">
+												<div class="accordion-body">
+													<div class="row text-center mx-0">
 
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='09:00'>09:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='09:30'>09:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='10:00'>10:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='10:30'>10:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='11:00'>11:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='11:30'>11:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='13:00'>13:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='13:30'>13:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='14:00'>14:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='14:30'>14:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='15:00'>15:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='15:30'>15:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='15:30'>15:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='15:30'>15:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='16:00'>16:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='16:30'>16:30
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='17:00'>17:00
-																</div>
-																<div class="col-md-3 col-4 my-1 px-2">
-																	<input class="cell py-1" type='radio'
-																		name='reserv_time' value='17:30'>17:30
-																</div>
 
-															</div>
+<div class="col-md-3 col-4 my-1 px-2">
+														<input type="radio" class="btn-check" name="reserv_time" 
+															id="btn-check-2-outlined1" checked autocomplete="off">
+														<label class="btn btn-outline-primary"
+															for="btn-check-2-outlined1">Checked</label>
+															</div><br>
+														<input type="radio" class="btn-check" name="reserv_time"
+															id="btn-check-2-outlined2" checked autocomplete="off">
+														<label class="btn btn-outline-primary" 
+															for="btn-check-2-outlined2">Checked</label><br>
+														<input type="radio" class="btn-check" name="reserv_time"
+															id="btn-check-2-outlined3" checked autocomplete="off">
+														<label class="btn btn-outline-primary" 
+															for="btn-check-2-outlined3">Checked</label><br>
+														
+
+
+
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='09:00'>09:00
 														</div>
+
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='09:30'>09:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='10:00'>10:00
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='10:30'>10:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='11:00'>11:00
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='11:30'>11:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='13:00'>13:00
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='13:30'>13:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='14:00'>14:00
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='14:30'>14:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='15:00'>15:00
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='15:30'>15:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='15:30'>15:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='15:30'>15:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='16:00'>16:00
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='16:30'>16:30
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='17:00'>17:00
+														</div>
+														<div class="col-md-3 col-4 my-1 px-2">
+															<input class="cell py-1" type='radio' name='reserv_time'
+																value='17:30'>17:30
+														</div>
+
 													</div>
 												</div>
 											</div>
 										</div>
-										<input type="hidden" id="reservation_date"
-											name="reservation_date">
-										<div class="mb-3">
-											<label for="reservation_memo" class="col-form-label">예약메모</label>
-											<textarea class="form-control" id="reservation_memo"></textarea>
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
-												data-bs-dismiss="modal" id="cancel-button">취소</button>
-											<button type="button" class="btn btn-primary" id="ok-button"
-												name="" value="">예약하기</button>
-										</div>
-									</form>
+									</div>
 								</div>
-							</div>
+								<input type="hidden" id="reservation_date"
+									name="reservation_date">
+								<div class="mb-3">
+									<label for="reservation_memo" class="col-form-label">예약메모</label>
+									<textarea class="form-control" id="reservation_memo"></textarea>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal" id="cancel-button">취소</button>
+									<button type="button" class="btn btn-primary" id="ok-button"
+										name="" value="">예약하기</button>
+								</div>
+							</form>
 						</div>
 					</div>
-				<!-- Bootstrap core JavaScript-->
-				<script src="vendor/jquery/jquery.min.js"></script>
-				<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+				</div>
+			</div>
+			<!-- Bootstrap core JavaScript-->
+			<script src="vendor/jquery/jquery.min.js"></script>
+			<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-				<!-- Core plugin JavaScript-->
-				<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+			<!-- Core plugin JavaScript-->
+			<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-				<!-- Custom scripts for all pages-->
-				<script src="js/sb-admin-2.min.js"></script>
+			<!-- Custom scripts for all pages-->
+			<script src="js/sb-admin-2.min.js"></script>
 
-				<!-- bootstrap -->
-				<script
-					src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+			<!-- bootstrap -->
+			<script
+				src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 

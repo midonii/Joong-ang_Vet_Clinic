@@ -30,7 +30,7 @@ public class ReservController {
 	public ModelAndView reserv(HttpServletRequest request) {
 		
 		ReservDTO reservDTO = new ReservDTO();
-		ModelAndView mv = new ModelAndView("reservation/reserv2");
+		ModelAndView mv = new ModelAndView("reservation/reserv");
 		
 		//전체리스트
 		List<ReservDTO> boardlist = reservService.boardlist(reservDTO);
@@ -47,14 +47,12 @@ public class ReservController {
 		//System.err.println(reservlist);
 		
 		
-		
-		
 		return mv;
 	}
 	
 	//검색결과(검색리스트)
-	@GetMapping("/reservsearch") //url을 "/reservsearch"로 띄워주겠다
 	@ResponseBody
+	@GetMapping("/reservsearch") //url을 "/reservsearch"로 띄워주겠다
 	public String resersearch(HttpServletRequest request) {
 		ReservDTO reservDTO = new ReservDTO();
 		reservDTO.setSearch_value(request.getParameter("searchValue")); //searchValue: script의 data의 key 명!,data: { "searchValue"}
@@ -89,7 +87,8 @@ public class ReservController {
 		return json.toString();
 	}
 
-	//예약완료 (리스트 생성)
+	//예약완료 (예약테이블에 저장)
+	@ResponseBody
 	@PostMapping("reservAdd")
 	public String reservAdd(HttpServletRequest request) {
 		ReservDTO reservDTO = new ReservDTO();
@@ -171,7 +170,23 @@ public class ReservController {
 		return "redirect:reserv";
 	}
 	
-	
+	//접수버튼 (접수테이블에 저장)
+	@ResponseBody
+	@PostMapping("receiveAdd")
+	public String receiveAdd(HttpServletRequest request) {
+		ReservDTO reservDTO = new ReservDTO();
+		String reservNo = request.getParameter("reservNo"); // reservation_date 변수에 매개변수 값 할당
+		
+		reservDTO.setReservNo(reservNo); // dto의 속성 값 설정
+		
+		JSONObject json = new JSONObject();
+		int result = reservService.receiveAdd(reservDTO);
+		json.put("result", result);
+		//System.out.println(json);
+		//System.out.println("result:"+result); //1
+		
+		return json.toString();
+	}
 	
 	
 	@GetMapping("/calender")
