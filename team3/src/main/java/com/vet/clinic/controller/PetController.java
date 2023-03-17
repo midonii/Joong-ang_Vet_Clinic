@@ -8,7 +8,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -22,9 +21,12 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vet.clinic.dto.PetDTO;
@@ -46,12 +48,51 @@ public class PetController {
 		
 		List<PetDTO> petInfo = petService.petInfo(petDTO);
 		List<PetDTO> petVaccine = petService.petVaccine(petDTO);
+		List<PetDTO> petChart = petService.petChart(petDTO); //이전차트내역
+		
 		
 		mv.addObject("petInfo",petInfo);
 		mv.addObject("petVaccine", petVaccine);
+		mv.addObject("petChart", petChart);
 		
 		return mv;
 	}
+	
+	@ResponseBody
+	@PostMapping(value="pastChartAjax", produces = "application/json;charset=UTF-8")
+	public String pastChartAjax(HttpServletRequest request) {
+		
+		System.err.println(request.getParameter("petNo"));
+		System.err.println(request.getParameter("chartNo"));
+		JSONObject json = new JSONObject();
+		
+		PetDTO petDTO = new PetDTO();
+		petDTO.setPetNo(request.getParameter("petNo"));
+		petDTO.setChartNo(request.getParameter("chartNo"));
+		
+		if((String)request.getParameter("petNo") != null) {
+			
+			List<PetDTO> petExam = petService.petExam(petDTO);
+			List<PetDTO> petDrug = petService.petDrug(petDTO);
+			
+			//array json
+			JSONArray jsonA = new JSONArray(petExam);
+			JSONArray jsonB = new JSONArray(petDrug);
+			
+			json.put("petExam", petExam);
+			json.put("petDrug", petDrug);
+			//System.out.println(json.toString());
+
+		
+		} else {
+			json.put("petExam", 0);
+			json.put("petDrug", 0);
+			
+		}
+		
+		return json.toString();
+		
+	};
 	
 	@GetMapping("petVaccine.xls")
 	public void petVaccine (HttpServletRequest request, HttpServletResponse response) throws IOException {

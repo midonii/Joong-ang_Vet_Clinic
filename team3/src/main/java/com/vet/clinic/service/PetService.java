@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Service;
 
 import com.vet.clinic.dao.PetDAO;
@@ -28,6 +26,18 @@ public class PetService {
 
 	public List<PetDTO> excelList(PetDTO petDTO) {
 		return petDAO.excelList(petDTO);
+	}
+
+	public List<PetDTO> petChart(PetDTO petDTO) {
+		return petDAO.petChart(petDTO);
+	}
+
+	public List<PetDTO> petExam(PetDTO petDTO) {
+		return petDAO.petExam(petDTO);
+	}
+
+	public List<PetDTO> petDrug(PetDTO petDTO) {
+		return petDAO.petDrug(petDTO);
 	}
 
 

@@ -50,6 +50,63 @@ $(function(){
 		
 	});
 });
+
+$(function(){
+	
+	
+	 $(".pastChart").click(function(){
+		//alert($(this).attr("value"));
+		var chartNo = $(this).attr("value"); //클릭한 아코디언의 차트 번호
+		var urlParams = new URL(location.href).searchParams;
+		var petNo = urlParams.get('petNo');
+		//alert(petNo); 
+		
+		
+		
+	 	$.post({
+			url : "/pastChartAjax",
+			data : {"chartNo" : chartNo,
+					"petNo" : petNo
+					},
+			dataType : "json"
+		}).done(function(data){
+			//alert("정상소통" + data.petExam);
+			let petExam = data.petExam;
+			//alert(petExam[0].staff_name);
+			var table = "";
+			$('.chartList'+chartNo).hide();
+			//상세보기 클릭 시 이전 기록 reset
+			$("#client-table"+chartNo).empty();
+			for (let i = 0; petExam.length > i; i++) {
+				var medical_category = petExam[i].medical_category;
+				var medical_name = petExam[i].medical_name;
+				var staff_name = petExam[i].staff_name;
+				var staff_grade = petExam[i].staff_grade;
+				var examdata_ea = petExam[i].examdata_ea;
+				var medical_price = petExam[i].medical_price;
+				
+				table += "<tr class='chartList"+chartNo+"'>";
+				table += "<td>" + medical_category + "</td>";
+				table += "<td class='text-left'>" + medical_name + "</td>";
+				table += "<td>" + staff_name + "</td>";
+				table += "<td>" + staff_grade + "</td>";
+				table += "<td>" + examdata_ea + "</td>";
+				table += "<td class='text-right'>" + medical_price + "</td>";
+				table += "</tr>";
+			}
+			
+			//$(this).children("#client-table").append(table);
+			$("#client-table"+chartNo).append(table);
+			$("#client-table"+chartNo).show();
+			 
+			
+		 }).fail(function(){
+			alert("문제가 발생했습니다.");
+		}); 
+		 
+		 
+	});
+});
 </script>
 <style type="text/css">
 .s20{
@@ -63,6 +120,16 @@ $(function(){
 	line-height: 430px;
 	text-align: center;
 }
+.table-center{
+	text-align: center;
+}
+.text-left{
+	text-align: left;
+}
+.text-right{
+	text-align: right;
+}
+
 </style>
 <script src="js/client/client_add.js"></script>
 </head>
@@ -174,24 +241,27 @@ $(function(){
 							<div style="height: 400px; overflow: auto;">
 							
 							
+							
+							
 								<!-- 진료 내역 -->
 								<div class="accordion" id="accordionExample">
+								 <c:forEach items="${petChart }" var="ch" varStatus="status">
 									<div class="accordion-item">
-										<h2 class="accordion-header" id="headingOne">
-											<button class="accordion-button" type="button"
-												data-toggle="collapse" data-target="#collapseOne"
-												aria-expanded="false" aria-controls="collapseOne">
+										<h2 class="accordion-header" id="${ch.chart_date }">
+								
+											<button class="${status.index eq 0 ? 'accordion-button pastChart':'accordion-button collapsed pastChart'}" type="button"
+												data-toggle="collapse" data-target="#A${ch.chart_no }" 
+												aria-expanded="${status.index eq 0 ? 'true':'false'}" aria-controls="A${ch.chart_no }" value="${ch.chart_no }">
 												<div class="font-weight-bold">차트번호 :</div>
-												<div class="ml-2 font-weith">(차트번호)정보가 없습니다.</div>
-												<div class="ml-4 font-weight-bold">담당의 :</div>
-												<div class="ml-2">(담당의)정보가 없습니다.</div>
-												<div class="ml-4 font-weight-bold">진료날짜 :</div>
-												<div class="ml-2">(진료날짜)정보가 없습니다.</div>
+												<div class="ml-2 font-weith">${ch.chart_no }</div>
+												<div class="ml-5 font-weight-bold">담당의 :</div>
+												<div class="ml-2">${ch.staff_name }</div>
+												<div class="ml-5 font-weight-bold">진료날짜 :</div>
+												<div class="ml-2">${ch.chart_date }</div>
 												</button>
 										</h2>
-										<div id="collapseOne" class="accordion-collapse collapse"
-											aria-labelledby="headingOne"
-											data-bs-parent="#accordionExample">
+										<div id="A${ch.chart_no }" class="${status.index eq 0 ? 'accordion-collapse collapse':'accordion-collapse collapse'}"
+											aria-labelledby="${ch.chart_date }" data-bs-parent="#accordionExample">
 											<div class="accordion-body">
 												<!-- 의사 소견 -->
 												<div class="mb-4">
@@ -203,8 +273,9 @@ $(function(){
 																		class="text-sm font-weight-bold text-info text-uppercase mb-1">의사소견
 																	</div>
 																<div class="row no-gutters align-items-center">
-																(의사소견) 정보가 없습니다.
+																${ch.chart_memo }
 																</div>
+																
 																</div>
 																
 															</div>
@@ -215,34 +286,48 @@ $(function(){
 												<!-- 처방내역 테이블 -->
 												<div class="card mb-4">
 													<div class="card-body">
+													<div class="d-flex justify-content-center">
 													<div class="text-sm font-weight-bold text-info text-uppercase mb-3 ">
-														의사소견
+														처방 상세 내역
+													</div>
 													</div>
 														<div class="table-responsive">
 															<div id="clientScroll"
 																style="height: 250px; overflow: auto">
-																<table class="table table-sm table-bordered table-hover"
+																<table class="table table-center table-sm table-bordered"
 																	id="dataTable" width="100%" cellspacing="0">
 																	<thead>
 																		<tr>
 																			<th class="col-md-1">구분</th>
-																			<th class="col-md-2">처방명</th>
-																			<th class="col-md-3">수량</th>
-																			<th class="col-md-5">담당자</th>
-																			<th class="col-md-1">단가</th>
+																			<th class="col-md-4">처방명</th>
+																			<th class="col-sm-2">담당자</th>
+																			<th class="col-sm-2">직급</th>
+																			<th class="col-md-1">수량</th>
+																			<th class="col-md-2">단가</th>
 																		</tr>
 																	</thead>
 
-																	<tbody id="client-table" data-spy="scroll"
+																	<tbody id="client-table${ch.chart_no }" data-spy="scroll"
 																		data-target="#list-example" data-offset="0"
 																		class="scrollspy-example">
-
-																		<tr>
+																		
+																		<tr class="chartList${ch.chart_no }">
 																			<td>(구분)</td>
-																			<td>(처방내역)</td>
-																			<td>(수량)</td>
+																			<td class="text-left">(처방내역)</td>
 																			<td>(담당자)</td>
-																			<td>(단가)</td>
+																			<td>(직급)</td>
+																			<td>(수량)</td>
+																			<td class="text-right">(단가)</td>
+																		</tr>
+																		
+																		
+																		<tr class="table-secondary">
+																			<td class="font-weight-bold">합계</td>
+																			<td class="text-left"></td>
+																			<td></td>
+																			<td></td>
+																			<td></td>
+																			<td class="text-right font-weight-bold">(총단가)</td>
 																		</tr>
 
 																	</tbody>
@@ -251,13 +336,14 @@ $(function(){
 														</div>
 													</div>
 												</div>
-
+												
 											</div>
+											<!-- 아코디언 바디 끝 -->
+								
 										</div>
 									</div>
+							</c:forEach>
 								</div>
-
-
 
 							</div>
 						</div>
