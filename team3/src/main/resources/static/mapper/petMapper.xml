@@ -24,6 +24,26 @@
 	GROUP BY v.vac_no
 	ORDER BY vacdata_date DESC
 </select>
-	
+
+<select id="petChart" resultType="PastChartDTO">
+	SELECT *
+	FROM chartview
+	WHERE pet_no = #{petNo }
+</select>
+
+<select id="petExam" resultType="PastChartDTO">
+	SELECT *
+	FROM chartexamview
+	WHERE pet_no = #{petNo }
+	AND chart_no = #{chartNo }
+</select>
+
+
+<select id="petDrug" resultType="PastChartDTO">
+	SELECT *
+	FROM chartdrugview
+	WHERE pet_no = #{petNo }
+	AND chart_no = #{chartNo }
+</select>
 	
 </mapper>
