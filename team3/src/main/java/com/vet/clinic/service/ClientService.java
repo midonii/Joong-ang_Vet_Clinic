@@ -5,18 +5,15 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vet.clinic.dao.ClientDAO;
 import com.vet.clinic.dto.ClientDTO;
 import com.vet.clinic.dto.SearchDTO;
 
-
 @Service
 public class ClientService {
 
-	
 	@Resource(name = "clientDAO")
 	private ClientDAO clientDAO;
 
@@ -64,7 +61,6 @@ public class ClientService {
 		return clientDAO.petAdd(map);
 	}
 
-
 	public Map<String, Object> petUpdateAjax(Map<String, Object> map) {
 		return clientDAO.petUpdateAjax(map);
 	}
@@ -72,19 +68,9 @@ public class ClientService {
 	public int petUpdate(Map<String, Object> map) {
 		return clientDAO.petUpdate(map);
 	}
-	public List<Map<String, Object>> indexPet(Map<String, Object> map) {
-		return clientDAO.indexPet(map);
-
-	}
 
 	public List<ClientDTO> clientPetDetailAjax(ClientDTO client) {
 		return clientDAO.clientPetDetailAjax(client);
 	}
-
-	
-
-
-
-
 
 }

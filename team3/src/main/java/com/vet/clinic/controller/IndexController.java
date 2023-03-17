@@ -15,25 +15,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.vet.clinic.service.ClientService;
-import com.vet.clinic.service.NoticeService;
-import com.vet.clinic.service.PayService;
-import com.vet.clinic.service.ReservService;
+import com.vet.clinic.service.IndexService;
 
 @Controller
 public class IndexController {
 
-	@Autowired
-	private NoticeService noticeService;
 
 	@Autowired
-	private ClientService clientService;
-	@Autowired
-	private ReservService reservService;
+	private IndexService indexService;
 
 	@GetMapping("/index")
 	public String index(HttpServletRequest request, HttpSession session) {
-		System.out.println(session.getAttribute("id"));
 		if (session.getAttribute("id") == null) {
 			return "user/login";
 		}
@@ -44,8 +36,7 @@ public class IndexController {
 	@PostMapping(value = "/noticeAjax", produces = "application/json;charset=UTF-8")
 	public String indexAjax() {
 		JSONObject json = new JSONObject();
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<Map<String, Object>> notice = noticeService.noticeList(map);
+		List<Map<String, Object>> notice = indexService.noticeList();
 		JSONArray noticeJ = new JSONArray(notice);
 		json.put("notice", noticeJ);
 		return json.toString();
@@ -55,8 +46,7 @@ public class IndexController {
 	@PostMapping(value = "/reservindexAjax", produces = "application/json;charset=UTF-8")
 	public String reservAjax() {
 		JSONObject json = new JSONObject();
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<Map<String, Object>> reserv = reservService.indexReserv(map);
+		List<Map<String, Object>> reserv = indexService.indexReserv();
 		JSONArray reservJ = new JSONArray(reserv);
 		json.put("reserv", reservJ);
 		return json.toString();
@@ -66,8 +56,7 @@ public class IndexController {
 	@PostMapping(value = "/receivepay", produces = "application/json;charset=UTF-8")
 	public String receivepay() {
 		JSONObject json = new JSONObject();
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<Map<String, Object>> receivepay = reservService.receivepay(map);
+		List<Map<String, Object>> receivepay = indexService.receivepay();
 		JSONArray receivepayJ = new JSONArray(receivepay);
 		json.put("receivepay", receivepayJ);
 		return json.toString();
@@ -79,7 +68,7 @@ public class IndexController {
 		JSONObject json = new JSONObject();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("search_value", request.getParameter("search_value"));
-		List<Map<String, Object>> pet = clientService.indexPet(map);
+		List<Map<String, Object>> pet = indexService.indexPet(map);
 		JSONArray petJ = new JSONArray(pet);
 		json.put("pet", petJ);
 		return json.toString();

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vet.clinic.dao.IndexDAO">
+
+	<select id="indexReserv" resultType="HashMap">
+		SELECT ROW_NUMBER()
+		over(ORDER BY r.reserv_date) AS
+		rno,r.pet_name,r.owner_name,r.reserv_time
+		FROM
+		(SELECT *
+		FROM
+		reservationview WHERE DATE_FORMAT(reservation_date, "%Y-%m-%d") =
+		CURDATE()) r
+		ORDER BY rno
+	</select>
+
+	<select id="receivepay" resultType="HashMap">
+		SELECT ROW_NUMBER()
+		over(ORDER BY i.receive_time) AS
+		ino,i.pet_name,i.owner_name,i.receive_state,i.pay_yn
+		FROM
+		(SELECT *
+		FROM
+		indexreceivepay WHERE DATE_FORMAT(receive_time, "%Y-%m-%d") =
+		CURDATE()) i
+		ORDER BY ino
+	</select>
+	<select id="indexPet" resultType="HashMap"
+		parameterType="HashMap">
+		SELECT ROW_NUMBER()
+		over(ORDER BY p.pet_no) AS pno, p.*
+		FROM
+		(
+		SELECT *
+		FROM petview
+		<if test="search_value != null">
+			WHERE
+			pet_name LIKE CONCAT('%',#{search_value}, '%') OR
+			owner_name LIKE CONCAT('%',#{search_value}, '%') OR
+			owner_tel LIKE
+			CONCAT('%',#{search_value}, '%')
+		</if>
+		) p
+	</select>
+	<select id="indexNotice" resultType="HashMap">
+
+		SELECT ROW_NUMBER()
+		over(ORDER BY n.notice_no) AS nno, n.*
+		FROM
+		(
+		SELECT * from
+		noticeview
+
+		) n
+		ORDER BY nno DESC
+		LIMIT 0, 6;
+	</select>
+</mapper>

@@ -35,18 +35,10 @@ public interface ClientDAO {
 
 	public int petAdd(Map<String, Object> map);
 
-
 	public Map<String, Object> petUpdateAjax(Map<String, Object> map);
 
 	public int petUpdate(Map<String, Object> map);
 
-
-	public List<Map<String, Object>> indexPet(Map<String, Object> map);
-
-
 	public List<ClientDTO> clientPetDetailAjax(ClientDTO client);
-
-
-
 
 }

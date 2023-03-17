@@ -141,23 +141,4 @@
 		</if>
    		WHERE pet_no=#{petNo }
 	</update>
-	
-
-
-	<select id="indexPet" resultType="HashMap"
-		parameterType="HashMap">
-		SELECT ROW_NUMBER()
-		over(ORDER BY p.pet_no) AS pno, p.*
-		FROM
-		(
-		SELECT *
-		FROM petview
-		<if test="search_value != null">
-			WHERE
-			pet_name LIKE CONCAT('%',#{search_value}, '%') OR
-			owner_name LIKE CONCAT('%',#{search_value}, '%') OR
-			owner_tel LIKE CONCAT('%',#{search_value}, '%')
-		</if>
-		) p
-	</select>
 </mapper>

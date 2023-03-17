@@ -58,7 +58,7 @@ if (session.getAttribute("id") == null) {
 							var table = "<table class='table table-sm' id='dataTable' width='100%' cellspacing='0'><thead>"
 									+ "<tr class='text-center'>"
 									+ "<th class='col-2'>번호</th>"
-									+ "<th class='col-5 text-left'>제목</th>"
+									+ "<th class='col-5'>제목</th>"
 									+ "<th class='col-4'><i class='fa-regular fa-calendar'></i></th>"
 									+ "<th class='col-1'><i class='fa-solid fa-eye'></i></th>"
 									+ "</tr></thead>";
@@ -73,7 +73,7 @@ if (session.getAttribute("id") == null) {
 								table += "<tbody>";
 								table += "<tr class='text-center'>";
 								table += "<td>" + nno + "</td>";
-								table += "<td class='text-left'><a href='#' style='text-decoration: none;' class='noticeDetailModal' data-toggle='modal' data-value='"+ notice_no +"'>"
+								table += "<td><a href='#' style='text-decoration: none;' class='noticeDetailModal' data-toggle='modal' data-value='"+ notice_no +"'>"
 										+ notice_title + "</a></td>";
 								table += "<td>" + listdate + "</td>";
 								table += "<td>" + notice_read + "</td>";
@@ -323,8 +323,9 @@ if (session.getAttribute("id") == null) {
 
 
 								<!-- Card Body -->
-								<div class="card-body p-1" style="padding-left:3px; padding-bottom:0; height: 352px;">
-									<div class="sec_cal col-12" >
+								<div class="card-body p-1"
+									style="padding-left: 3px; padding-bottom: 0; height: 352px;">
+									<div class="sec_cal col-12">
 										<div class="cal_nav">
 											<a href="javascript:;" class="nav-btn go-prev">prev</a>
 											<div class="year-month"></div>
@@ -354,7 +355,7 @@ if (session.getAttribute("id") == null) {
 									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 									<h6 class="m-0 font-weight-bold text-primary">공지사항</h6>
 									<div class="dropdown no-arrow">
-										<a href="/notice" role="button">+more </a>
+										<a href="/notice" role="button" style=" font-size:small; text-decoration: none;">더보기 </a>
 
 									</div>
 								</div>
@@ -375,26 +376,31 @@ if (session.getAttribute("id") == null) {
 							<div class="card shadow mb-4">
 								<!-- Card Header -->
 								<div
-									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">빠른 검색</h6>
+									class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
+									<div class="col-md-4 mt-1 p-0">
+										<h6 class="m-0 font-weight-bold text-primary">빠른 검색</h6>
+									</div>
+									<div class="col-md-8 mt-1 p-0">
+										<div class="input-group ">
+											<input type="text"
+												class="form-control form-control-sm border-gray col-md-12"
+												placeholder="검색어를 입력하세요" name="search_value"
+												id="search_value">
+											<div class="input-group-append">
+												<button class="btn btn-primary btn-sm" type="button"
+													id="search_btn">
+													<i class="fas fa-search"></i>
+												</button>
+											</div>
+										</div>
+									</div>
 								</div>
 								<!-- Card Body -->
 								<div class="card-body" style="margin-top: -10px;">
 
-									<div class="input-group mb-2">
-										<input type="text"
-											class="form-control form-control-sm border-gray col-md-12"
-											placeholder="검색어를 입력하세요" name="search_value"
-											id="search_value">
-										<div class="input-group-append">
-											<button class="btn btn-primary btn-sm" type="button"
-												id="search_btn">
-												<i class="fas fa-search"></i>
-											</button>
-										</div>
-									</div>
 
-									<div class="table-responsive" id="pet" style="height: 230px;">
+
+									<div class="table-responsive" id="pet" style="height: 271px;">
 										<table class="table table-sm" width="100%" cellspacing="0">
 											<thead>
 												<tr class="text-center">
@@ -424,7 +430,10 @@ if (session.getAttribute("id") == null) {
 								<div
 									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 									<h6 class="m-0 font-weight-bold text-primary">당일예약</h6>
+									<div class="dropdown no-arrow">
+										<a href="/reserv" role="button" style=" font-size:small; text-decoration: none;">더보기 </a>
 
+									</div>
 								</div>
 
 								<!-- Card Body -->
@@ -447,10 +456,17 @@ if (session.getAttribute("id") == null) {
 								<div
 									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 									<h6 class="m-0 font-weight-bold text-primary">접수/수납 현황</h6>
-									<div class="dropdown no-arrow">
-										<a href="/pay" role="button">+more </a>
-
-									</div>
+									 <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item" href="/reserv">접수</a>
+                                            <a class="dropdown-item" href="/pay">수납</a>
+                                        </div>
+                                    </div>
 								</div>
 
 								<!-- Card Body -->
@@ -475,6 +491,7 @@ if (session.getAttribute("id") == null) {
 
 			</div>
 			<!-- End of Main Content -->
+
 
 			<%@ include file="bar/footer.jsp"%>
 			<%@ include file="bar/logoutModal.jsp"%>

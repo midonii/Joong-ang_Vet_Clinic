@@ -30,20 +30,6 @@
 
 	</select>
 
-	<select id="indexNotice" resultType="HashMap">
-
-		SELECT ROW_NUMBER()
-		over(ORDER BY n.notice_no) AS nno, n.*
-		FROM
-		(
-		SELECT * from
-		noticeview
-
-		) n
-		ORDER BY nno DESC
-		LIMIT 0, 6;
-	</select>
-	
 	<select id="contentTotal" resultType="Integer"
 		parameterType="HashMap">
 		SELECT COUNT(*) FROM noticeview
