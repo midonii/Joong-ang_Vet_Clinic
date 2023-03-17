@@ -28,6 +28,7 @@
 	WHERE pet_no=#{detail_no }
 	</select>
 	
+	<!-- 예약테이블에 값 넣기 -->
 	<insert id="reservAdd" parameterType="ReservDTO">
 		INSERT INTO reservation SET
  		reservation_date = #{reservation_date},
@@ -47,35 +48,29 @@
 	</select>
 
 
-	<select id="indexReserv" resultType="HashMap">
-		SELECT ROW_NUMBER()
-		over(ORDER BY r.reserv_date) AS
-		rno,r.pet_name,r.owner_name,r.reserv_time
-		FROM
-		(SELECT *
-		FROM
-		reservationview WHERE DATE_FORMAT(reservation_date, "%Y-%m-%d") =
-		CURDATE()) r
-		ORDER BY rno
-	</select>
-
-	<select id="receivepay" resultType="HashMap">
-		SELECT ROW_NUMBER()
-		over(ORDER BY i.receive_time) AS
-		ino,i.pet_name,i.owner_name,i.receive_state,i.pay_yn
-		FROM
-		(SELECT *
-		FROM
-		indexreceivepay WHERE DATE_FORMAT(receive_time, "%Y-%m-%d") =
-		CURDATE()) i
-		ORDER BY ino
-	</select>
-
+	<!-- (예약에서)접수테이블에 값 넣기 -->
 	<insert id="receiveAdd" parameterType="ReservDTO">
 		INSERT INTO reception SET
+		pet_no = #{receive_petNo},
  		receive_time = NOW(),
-		receive_state = '1'
-		pet_no = #{receive_petNo};
+ 		owner_no = #{receive_ownerNo},
+ 		staff_no = (SELECT staff_no FROM staff WHERE staff_id = #{staff_id} ),
+		reservation_no = IFNULL(#{reservNo}, NULL)
+	</insert>	
+	
+	<update id="receiveAdd_reservYn" parameterType="ReservDTO">
+		UPDATE reservation SET
+   		reservation_yn = 'y'
+   		WHERE reservation_no=#{reservNo}
+	</update>	
+	
+	<!-- (검색에서)접수테이블에 값 넣기 -->
+	<insert id="search_receiveAdd" parameterType="ReservDTO">
+		INSERT INTO reception SET
+		pet_no = #{search_petNo},
+ 		receive_time = NOW(),
+ 		staff_no = (SELECT staff_no FROM staff WHERE staff_id = #{staff_id} ),
+ 		owner_no = #{search_ownerNo}
 	</insert>	
 
 
@@ -86,7 +81,6 @@
 	<select id="receplist" parameterType="ReservDTO" resultType="ReservDTO">
 	SELECT *
 	FROM receptionview 
-	WHERE reserv_date = CURDATE() AND (reservation_yn = 'y' OR reservation_yn = '')
 	ORDER BY receive_time DESC	
 	</select>
 	

@@ -57,6 +57,9 @@ public class ReservController {
 		ReservDTO reservDTO = new ReservDTO();
 		reservDTO.setSearch_value(request.getParameter("searchValue")); //searchValue: script의 data의 key 명!,data: { "searchValue"}
 		
+		HttpSession session = request.getSession();
+		reservDTO.setStaff_id((String) session.getAttribute("id"));
+		
 		JSONObject json = new JSONObject();
 		List<ReservDTO> searchlist = reservService.searchlist(reservDTO);
 		JSONArray jsonA = new JSONArray(searchlist); //json어레이로 감싸기
@@ -93,24 +96,24 @@ public class ReservController {
 	public String reservAdd(HttpServletRequest request) {
 		ReservDTO reservDTO = new ReservDTO();
 		String reservation_date = request.getParameter("reservation_date"); // reservation_date 변수에 매개변수 값 할당
-		
+
 		HttpSession session = request.getSession();
-		if(request.getParameter("reservation_memo") !=  null) {
+		if (request.getParameter("reservation_memo") != null) {
 			reservDTO.setReservation_memo(request.getParameter("reservation_memo"));
-		} System.out.println(request.getParameter("reservation_memo"));
+		}
+		System.out.println(request.getParameter("reservation_memo"));
 		reservDTO.setReservation_date(reservation_date); // dto의 속성 값 설정
-		//db에 저장할 깂
-		reservDTO.setStaff_id((String)session.getAttribute("id"));
+		// db에 저장할 깂
+		reservDTO.setStaff_id((String) session.getAttribute("id"));
 		reservDTO.setPetNo(request.getParameter("petNo"));
 //		reservDTO.setReservation_no(request.getParameter("reservation_no"));
-		
-		
+
 		JSONObject json = new JSONObject();
 		int result = reservService.reservAdd(reservDTO);
 		json.put("result", result);
-		//System.out.println(json);
-		//System.out.println("result:"+result); //1
-		
+		// System.out.println(json);
+		// System.out.println("result:"+result); //1
+
 		return json.toString();
 	}
 	
@@ -170,20 +173,52 @@ public class ReservController {
 		return "redirect:reserv";
 	}
 	
-	//접수버튼 (접수테이블에 저장)
+	//예약에서 접수버튼 (접수테이블에 저장)
 	@ResponseBody
 	@PostMapping("receiveAdd")
 	public String receiveAdd(HttpServletRequest request) {
 		ReservDTO reservDTO = new ReservDTO();
 		String reservNo = request.getParameter("reservNo"); // reservation_date 변수에 매개변수 값 할당
 		
-		reservDTO.setReservNo(reservNo); // dto의 속성 값 설정
+		HttpSession session = request.getSession();
+		reservDTO.setStaff_id((String) session.getAttribute("id"));
 		
+		reservDTO.setReservNo(reservNo); // dto의 속성 값 설정
+		reservDTO.setReceive_petNo(request.getParameter("receive_petNo"));
+		reservDTO.setReceive_ownerNo(request.getParameter("receive_ownerNo"));
+//		reservDTO.setReservation_Yn(request.getParameter("reservation_Yn"));
 		JSONObject json = new JSONObject();
+		
 		int result = reservService.receiveAdd(reservDTO);
+		result = reservService.receiveAdd_reservYn(reservDTO);
 		json.put("result", result);
 		//System.out.println(json);
 		//System.out.println("result:"+result); //1
+		
+		
+		
+		return json.toString();
+	}
+	//검색에서 접수버튼 (접수테이블에 저장)
+	@ResponseBody
+	@PostMapping("search_receiveAdd")
+	public String search_receiveAdd(HttpServletRequest request) {
+		ReservDTO reservDTO = new ReservDTO();
+		
+		HttpSession session = request.getSession();
+		reservDTO.setStaff_id((String) session.getAttribute("id"));
+		
+		JSONObject json = new JSONObject();
+		
+		reservDTO.setSearch_ownerNo(request.getParameter("search_ownerNo"));
+		reservDTO.setSearch_petNo(request.getParameter("search_petNo"));
+		
+		int result = reservService.search_receiveAdd(reservDTO);
+		json.put("result", result);
+		//System.out.println(json);
+		//System.out.println("result:"+result); //1
+		
+		
 		
 		return json.toString();
 	}
