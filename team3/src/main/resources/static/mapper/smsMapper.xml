@@ -3,7 +3,7 @@
 
 <mapper namespace="com.vet.clinic.dao.SMSDAO">
 	<select id="smsclientlist" resultType="SMSDTO">
-		SELECT *
+		SELECT pet_name, owner_name, owner_tel
 		FROM smsview
 	</select>
 	
@@ -39,6 +39,20 @@
 	<select id="smsDetail" resultType="HashMap">
 		SELECT *
 		FROM smsData
+		ORDER BY smsData_date DESC
 	</select>
 	
+	<select id="searchClient" parameterType="HashMap" resultType="SmsSearchDTO">
+		SELECT pet_name, owner_name, owner_tel
+		FROM smsview 
+		WHERE 
+			((pet_name LIKE CONCAT('%',#{client },'%'))
+			OR (owner_name LIKE CONCAT('%',#{client },'%')) 
+			OR (owner_tel LIKE CONCAT('%',#{client },'%')))
+		AND pet_name NOT IN 
+		<foreach collection="pet_name" item="petnames" index="index" separator="," open="(" close=")">
+		 #{petnames }
+		</foreach>
+	</select>
+
 </mapper>

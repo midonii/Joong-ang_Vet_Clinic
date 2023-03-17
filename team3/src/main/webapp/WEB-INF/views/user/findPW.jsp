@@ -182,7 +182,8 @@ $(function(){
 									</div>
 									<div class="p-2 row">
 										<div class="form-group col-12 mb-4" style="text-align:center;" >
-											입력하신 이메일로 인증번호를 보냅니다.
+											가입할때 입력하신 이메일을 입력하세요.
+											해당 이메일로 인증번호를 보냅니다.
 										</div>
 										<div class="user col-12 mb-5">
 											<input type="email" class="form-control form-control-user mb-3 " id="email" name="email" placeholder="이메일" required="required">

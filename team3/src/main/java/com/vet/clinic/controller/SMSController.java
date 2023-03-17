@@ -1,12 +1,15 @@
 package com.vet.clinic.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.vet.clinic.dto.SmsDTO;
 import com.vet.clinic.dto.SmsResponseDTO;
+import com.vet.clinic.dto.SmsSearchDTO;
 import com.vet.clinic.service.SMSService;
 
 @Controller
@@ -31,7 +35,7 @@ public class SMSController {
 		String[] smsFormName = smsService.smsFormName();
 		//System.out.println(smsformname[0]);
 		List<Map<String, Object>> smsDetail = smsService.smsDetail();
-		System.out.println(smsDetail.get(0));
+		//System.out.println(smsDetail.get(0));
 		
 		mv.addObject("clientList", smsclientlist);	// 고객리스트
 		mv.addObject("smsFormName", smsFormName);	// 문자양식
@@ -80,7 +84,7 @@ public class SMSController {
 		
 		for(int i = 0; i < toList.length; i++) {
 			smsDTO.setTo(toList[i]);
-			System.out.println("받는사람 : " + smsDTO.getTo() + " / 내용 : " + smsDTO.getContent());
+			//System.out.println("받는사람 : " + smsDTO.getTo() + " / 내용 : " + smsDTO.getContent());
 			
 			// 문자 전송하여 결과 reponse에 담기
 			SmsResponseDTO response = smsService.sendSms(smsDTO);
@@ -91,7 +95,7 @@ public class SMSController {
 			responseList.put("status", response.getStatusName());
 			responseList.put("title", smsDTO.getTitle());
 			responseList.put("content", smsDTO.getContent());
-			System.out.println(responseList);
+			//System.out.println(responseList);
 			
 			// 문자전송내역 DB에 저장
 			smsService.smsDataSave(responseList);
@@ -100,11 +104,32 @@ public class SMSController {
 		return "redirect:/smsIndex";
 	}
 	
-	/*
-	@PostMapping("/sms_search_client")
-	public String searchClient() {
+	@ResponseBody
+	@PostMapping(value = "/sms_search_client", produces = "application/json;charset=UTF-8")
+	public String searchClient(@RequestParam(value="search_client") String client,
+								@RequestParam(value="pet_names") String pet_names ) {
+		//System.out.println(client + "/" + pet_names);
+
+		// 받는사람에 있는 pet_name 배열에 넣기
+		String[] pet_name = pet_names.split(" ");
+		//System.out.println(Arrays.toString(pet_name) );
 		
+		JSONObject json = new JSONObject();
+		
+		Map<String, Object> search_param = new HashMap<String, Object>();
+		search_param.put("client", client);
+		search_param.put("pet_name", pet_name);
+		
+		List<SmsSearchDTO> search = smsService.searchClient(search_param);
+		//System.out.println(search.size());
+		
+		JSONArray searchArr = new JSONArray(search);
+		//System.out.println(searchArr);
+		json.put("search_client", searchArr);
+		//System.out.println(json.toString());
+		
+		return json.toString();
 	}
-	*/
+	
 	
 }

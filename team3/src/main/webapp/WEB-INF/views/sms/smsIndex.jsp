@@ -250,7 +250,7 @@ $(function() {
  				form.append($("<input>",{type: 'hidden', name: 'sms_title', value: sms_title}));
  				form.append($("<input>",{type: 'hidden', name: 'sms_content', value: sms_content}));
  				form.submit();
- 				
+ 		
  			} 
  		}
  	});
@@ -272,18 +272,29 @@ $(function() {
  		let owner_tel = $("#sms_newnum").val();
  		//alert(pet_name + " / " + owner_name + " / " + owner_tel);
  		
- 		var tr = "<tr class='newnum' id='receive_tr'><td class='col-3' id='pet_name'>"+pet_name+"</td><td class='col-3' id='owner_name'>"+owner_name+"</td><td class='col-4' id='owner_tel'>"+owner_tel+" </td><td class='col-2'><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td></tr>" ;
- 		
- 		$(".tbody1").append(tr);
- 		
- 		$("#sms_newdog").val("");
- 		$("#sms_newowner").val("");
- 		$("#sms_newnum").val("");
- 		
+ 		if(owner_tel == ""){
+ 			alert("전화번호를 입력해주세요.");
+ 			$("#sms_newnum").focus();
+ 		} else {
+	 		
+	 		var tr = "<tr class='newnum' id='receive_tr'>"
+	 					+"<td class='col-3' id='pet_name'>"+pet_name+"</td>"
+	 					+"<td class='col-3' id='owner_name'>"+owner_name+"</td>"
+	 					+"<td class='col-4' id='owner_tel'>"+owner_tel+" </td>" /* 공백지우면안됨!! */
+	 					+"<td class='col-2'><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td>"
+	 					+"</tr>" ;
+	 		
+	 		$(".tbody1").append(tr);
+	 		
+	 		$("#sms_newdog").val("");
+	 		$("#sms_newowner").val("");
+	 		$("#sms_newnum").val("");
+	 		
+ 		}
  	});
  	
 	
-// 고객목록에서 받는사람으로
+// 1) 고객목록 > 받는사람으로
 	$(".plusbtn").click(function(){
 		let pet_name = $(this).parent().siblings("#pet_name").text();
 		let owner_name = $(this).parent().siblings("#owner_name").text();
@@ -292,13 +303,18 @@ $(function() {
 		
 		$(this).parents("#client_tr").remove();
 		
-		var tr = "<tr id='receive_tr'><td class='col-3' id='pet_name'>"+pet_name+"</td><td class='col-3' id='owner_name'>"+owner_name+"</td><td class='col-4' id='owner_tel'>"+owner_tel+" </td><td class='col-2'><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td></tr>" ;
+		var tr = "<tr id='receive_tr'>"
+					+"<td class='col-3' id='pet_name'>"+pet_name+"</td>"
+					+"<td class='col-3' id='owner_name'>"+owner_name+"</td>"
+					+"<td class='col-4' id='owner_tel'>"+owner_tel+" </td>" /* 공백지우면안됨!! */
+					+"<td class='col-2'><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td>"
+					+"</tr>" ;
 		
 		$(".tbody1").append(tr);
 		
 	});
 
-// 받는사람에서 고객리스트로
+// 2) 받는사람 > 고객목록으로
 	$(document).on("click", ".minusbtn", function(){
 		let pet_name = $(this).parent().siblings("#pet_name").text();
 		let owner_name = $(this).parent().siblings("#owner_name").text();
@@ -309,14 +325,20 @@ $(function() {
 			$(this).parents("#receive_tr").remove();
 		} else {
 			$(this).parents("#receive_tr").remove();
-			var tr = "<tr id='client_tr'><td class='col-3' id='pet_name'>"+pet_name+"</td><td class='col-3' id='owner_name'>"+owner_name+"</td><td class='col-4' id='owner_tel'>"+owner_tel+"</td><td class='col-2'><i class='replusbtn xi-plus-circle-o xi-x' style='color:#4e73df; cursor:pointer;'></i></td></tr>";
+			var tr = "<tr id='client_tr'>"
+						+"<td class='col-3' id='pet_name'>"+pet_name+"</td>"
+						+"<td class='col-3' id='owner_name'>"+owner_name+"</td>"
+						+"<td class='col-4' id='owner_tel'>"+owner_tel+"</td>"
+						+"<td class='col-2'><i class='replusbtn xi-plus-circle-o xi-x' style='color:#4e73df; cursor:pointer;'></i></td>"
+						+"</tr>";
+			
 			$(".tbody2").append(tr);
 		}
 		
 	});
 	
 	
-// 받는사람에서 고객리스트로 돌아온사람 다시 받는사람으로
+// 3) 받는사람에서 고객목록로 돌아온사람 > 받는사람으로
 	$(document).on("click",".replusbtn", function(){
 		let pet_name = $(this).parent().siblings("#pet_name").text();
 		let owner_name = $(this).parent().siblings("#owner_name").text();
@@ -324,42 +346,54 @@ $(function() {
 		//alert(pet_name + " / " + owner_name + " / " + owner_tel);
 		$(this).parents("#client_tr").remove();
 		
-		var tr = "<tr id='receive_tr'><td class='col-3' id='pet_name'>"+pet_name+"</td><td class='col-3' id='owner_name'>"+owner_name+"</td><td class='col-4' id='owner_tel'>"+owner_tel+"</td><td class='col-2'><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td></tr>" ;
+		var tr = "<tr id='receive_tr'>"
+					+"<td class='col-3' id='pet_name'>"+pet_name+"</td>"
+					+"<td class='col-3' id='owner_name'>"+owner_name+"</td>"
+					+"<td class='col-4' id='owner_tel'>"+owner_tel+" </td>" /* 공백지우면안됨!! */
+					+"<td class='col-2'><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td>"
+					+"</tr>" ;
 		
 		$(".tbody1").append(tr);
 		
 	});
 	
 // 전체선택, 해제 버튼
+
+
 	$("#plusAll").click(function(){
 		$("#plusAll").attr("id", "replusAll")
 		$(".plusbtn").attr("class","minusbtn xi-minus-circle xi-x");
-		$("tr").attr("id","receive_tr")
+		$("tr").attr("id","receive_tr");
 		
 		var clientList = $(".tbody2").children();
 		
   		$(".tbody2").children().remove();
  		$(".tbody1").append(clientList);
 	});
-	
+
 	$(document).on("click","#minusAll", function(){
 		
-		$(".newnum").remove();
+		
+ 		$(".newnum").remove();
 		
 		$(".minusbtn").attr("class","replusbtn xi-plus-circle-o xi-x");
-		$(".minusbtn").removeClass("plusbtn");
-		$("tr").attr("id","client_tr")
+ 		$(".minusbtn").removeClass("plusbtn");
+		$("tr").attr("id","client_tr");
+		$("td .pet_name").val("${cl.pet_name} ");
 			
 		var receiverToClient = $(".tbody1").children();
 			
 	  	$(".tbody1").children().remove();
 		$(".tbody2").append(receiverToClient);
 		
+		
 	});
 	
 	$(document).on("click","#replusAll", function(){
+		
+		
 		$(".replusbtn").attr("class","minusbtn xi-minus-circle xi-x");
-		$("tr").attr("id","receive_tr")
+		$("tr").attr("id","receive_tr");
 		
 		var clientList = $(".tbody2").children();
 		
@@ -426,18 +460,40 @@ $(function() {
 		}
 	});
 	
-// 고객검색
+// 고객검색 & 검색해서 추가한 사람은 재검색시 출력안되게
 	$("#search_btn").click(function(){
-		//alert("!");
+		
 		let search_client = $("#search_client").val();
-		alert(search_client);
+		
+		let pet_names = $(".smsTo2 #pet_name").text();
+		//alert(pet_names);
+		
 		
 		$.post({
 			url : "/sms_search_client",
-			data : {"search_client" : search_client},
+			data : {"search_client" : search_client, "pet_names" : pet_names},
 			dataType :"json"
 		}).done(function(data){
-			alert("성공");
+			$(".tbody2").children().remove();
+			
+			let searchClient = data.search_client;
+			
+			for(let i = 0; i < searchClient.length; i++){
+				
+				let pet_name = searchClient[i].pet_name;
+				let owner_name = searchClient[i].owner_name;
+				let owner_tel = searchClient[i].owner_tel;
+				
+				var search_client = "<tr id='client_tr'>"
+									+"<td class='col-3' id='pet_name'>"+pet_name+" </td>"
+									+"<td class='col-3' id='owner_name'>"+owner_name+"</td>"
+									+"<td class='col-4 owner_tel' id='owner_tel'>"+owner_tel+" </td>" /* 공백지우면안됨!! */
+									+"<td class='col-2'><i class='replusbtn xi-plus-circle-o xi-x' style='color: #4e73df; cursor: pointer;'></i></td>"
+									+"</tr>"
+				$(".tbody2").append(search_client);
+			
+			}
+			
 		}).fail(function(xhr){
 			alert("통신실패");
 		});
@@ -480,6 +536,7 @@ $(function() {
 								<li class="nav-item"><a class="nav-link" href="#">예약문자</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">전송내역</a></li>
 								 -->
+								 
 							</ul>
 						</div>
 				 
@@ -627,9 +684,9 @@ $(function() {
 											<tbody class="tbody2">
 												<c:forEach items="${clientList }" var="cl">
 													<tr class="client" id="client_tr">
-														<td class="col-3" id="pet_name">${cl.pet_name }</td>
+														<td class="col-3" id="pet_name">${cl.pet_name } </td>
 														<td class="col-3" id="owner_name">${cl.owner_name }</td>
-														<td class="col-4 owner_tel" id="owner_tel" value="1">${cl.owner_tel }</td>
+														<td class="col-4 owner_tel" id="owner_tel" value="1">${cl.owner_tel } </td>
 														<td class="col-2"><i
 															class="plusbtn xi-plus-circle-o xi-x"
 															style="color: #4e73df; cursor: pointer;"></i></td>
@@ -640,10 +697,10 @@ $(function() {
 									</div>
 								</div>
 								<div class="mt-3 d-grid gap-2 d-md-flex justify-content-md-end"
-									style="width: 100%; height: 40px; padding: 0 30px 10px 30px; margin: 5px 0 0 0;">
-
+									style="width: 100%; height: 40px; padding: 0 30px 10px 30px; margin: 5px 0 0 0; font-size:12px;">
+								* SMS수신동의한 고객만 표시됩니다.
 									<input type="button" id="plusAll"
-										class="btn btn-sm btn-outline-secondary" value="전체선택">
+										class="btn btn-sm btn-outline-secondary" value="전체선택" style="margin-left:40px;">
 								</div>
 							</div>
 							

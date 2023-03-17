@@ -176,7 +176,7 @@ $(function() {
 			
 			$("#sms_title").val(sms_title);
 	  		$("#sms_content").val(sms_content);
-	  		
+	  	
 	  		var content = $("#sms_content").val();
 	 		$('#sms_count span').text(content.length);
 	  		

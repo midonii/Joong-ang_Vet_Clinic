@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Email {
-	
+
 	// static : 내부에서만 쓸것임
 		private static String emailAddr = "joong-ang-vet@outlook.kr";
 		private static String name = "JoongAng-vet";

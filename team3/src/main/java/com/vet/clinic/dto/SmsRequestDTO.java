@@ -15,6 +15,6 @@ public class SmsRequestDTO {
 	
 	String type, contentType, countryCode, from, content;
 	List<SmsDTO> messages;
-	
+
 
 }

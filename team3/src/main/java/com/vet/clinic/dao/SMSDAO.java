@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.vet.clinic.dto.SmsDTO;
 import com.vet.clinic.dto.SmsResponseDTO;
+import com.vet.clinic.dto.SmsSearchDTO;
 
 @Repository
 @Mapper
@@ -25,6 +26,8 @@ public interface SMSDAO {
 
 	public List<Map<String, Object>> smsDetail();
 
+	public List<SmsSearchDTO> searchClient(Map<String, Object> search_param);
+	
 
 
 }
