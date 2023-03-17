@@ -12,14 +12,25 @@
 		<i class="fa fa-bars"></i>
 	</button>
 
+	<div
+		class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+		<div class="row">
+			<div class="col-2 reserv">예약 : </div>
+			<div class="col-2">접수 : </div>
+		</div>
+	</div>
 
 	<!-- Topbar Navbar -->
 	<ul class="navbar-nav ml-auto">
-		<li class="d-flex justify-content-end mt-3 mr-2 text-gray-800 font-weight-bold" >
-			<div id="date" class="text-center" style="font-family:Nunito; font-size: 17px; margin-top: 6px;"></div>
+		<li
+			class="d-flex justify-content-end mt-3 mr-2 text-gray-800 font-weight-bold">
+			<div id="date" class="text-center"
+				style="font-family: Nunito; font-size: 17px; margin-top: 6px;"></div>
 		</li>
-		<li class="d-flex justify-content-end mt-3 mr-4 text-gray-800 font-weight-bold">
-			<div id="time" class="text-center" style="font-family:Nunito; font-size: 17px;  margin-top: 6px;"></div>
+		<li
+			class="d-flex justify-content-end mt-3 mr-4 text-gray-800 font-weight-bold">
+			<div id="time" class="text-center"
+				style="font-family: Nunito; font-size: 17px; margin-top: 6px;"></div>
 		</li>
 
 
