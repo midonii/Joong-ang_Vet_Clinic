@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class SmsSearchDTO {
 	
 	String pet_name, owner_name, owner_tel; 
-	
+
 }

@@ -250,7 +250,7 @@ $(function() {
  				form.append($("<input>",{type: 'hidden', name: 'sms_title', value: sms_title}));
  				form.append($("<input>",{type: 'hidden', name: 'sms_content', value: sms_content}));
  				form.submit();
- 				
+ 		
  			} 
  		}
  	});

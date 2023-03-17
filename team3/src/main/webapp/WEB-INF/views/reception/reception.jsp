@@ -99,7 +99,8 @@ if (session.getAttribute("id") == null) {
 			
 
 					<div class="row">
-
+					
+<!--  ------------ 이전차트내역 ----------------- -->
 						<div class="col-xl-4 col-lg-5 px-1" style="border: 0;">
 							<div class="card mb-2 ">
 								<!-- Card Header - Dropdown -->
@@ -113,8 +114,10 @@ if (session.getAttribute("id") == null) {
 								<div class="card-body" style="height: 705px;"></div>
 							</div>
 						</div>
-
+<!--  ------------ 의사소견 & 처방내역 ----------------- -->
 						<div class="col-xl-4 col-lg-5 px-1">
+						
+						<!-- ------ 의사소견 ------- -->
 							<div class="card  mb-2">
 								<div
 									class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
@@ -126,19 +129,26 @@ if (session.getAttribute("id") == null) {
 								<div class="card-body" style="height: 328px;"></div>
 							</div>
 
+						<!-- ------ 처방내역 ------- -->
 							<div class="card  mb-2">
 								<div
 									class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
 									<h6 class="m-0 font-weight-bold text-primary">처방내역</h6>
-
+									<div class="dropdown no-arrow">
+										<a href="#" role="button">추가 </a>
+									</div>
 								</div>
 
 								<!-- Card Body -->
 								<div class="card-body" style="height: 329px;"></div>
 							</div>
 						</div>
-
+						
+						
+<!--  ------------ 접수현황 & 접종내역 ----------------- -->
 						<div class="col-xl-4 col-lg-5 px-1">
+						
+						<!-- ------ 접수현황 ------- -->
 							<div class="card  mb-2">
 								<div
 									class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
@@ -149,7 +159,8 @@ if (session.getAttribute("id") == null) {
 								<!-- Card Body -->
 								<div class="card-body" style="height: 328px;"></div>
 							</div>
-
+							
+						<!-- ------ 접종내역 ------- -->
 							<div class="card  mb-2">
 								<div
 									class="card-header py-2 d-flex flex-row align-items-center justify-content-between">

@@ -109,7 +109,7 @@ public class SMSController {
 	public String searchClient(@RequestParam(value="search_client") String client,
 								@RequestParam(value="pet_names") String pet_names ) {
 		//System.out.println(client + "/" + pet_names);
-		
+
 		// 받는사람에 있는 pet_name 배열에 넣기
 		String[] pet_name = pet_names.split(" ");
 		//System.out.println(Arrays.toString(pet_name) );
