@@ -177,7 +177,8 @@ $(function(){
   								 </div>	
   								 <div class="list-group-item row">
   									<div class="col-4 font-weight-bold float-left">생일</div>
-  									<div class="col-8 float-left">${pi.pet_birth }</div>
+  									<div class="col-4 float-left">${pi.pet_birth }</div>
+  									<div class="col-4 float-left text-sm" style="margin-left: -40px" id="yearPlusMonth">(${pi.pet_Ym })</div>
   								 </div>	
   								 <div class="list-group-item row">
   									<div class="col-4 font-weight-bold float-left">성별</div>

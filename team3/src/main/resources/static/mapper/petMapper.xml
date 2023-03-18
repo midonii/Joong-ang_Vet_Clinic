@@ -3,7 +3,7 @@
 
 <mapper namespace="com.vet.clinic.dao.PetDAO">
 
-<select id="petInfo" resultType="PetDTO">
+<select id="petInfo" resultType="PetDTO" parameterType="PetDTO">
 	SELECT *
 	FROM petview
 	WHERE pet_no = #{petNo }
