@@ -1,6 +1,8 @@
 package com.vet.clinic.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -38,6 +40,7 @@ public class PetController {
 	@Resource(name = "petService")
 	private PetService petService;
 	
+	// ------- 반려견 상세보기 화면
 	@GetMapping("petinfo")
 	public ModelAndView petdetail(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("client/petinfo");
@@ -58,6 +61,7 @@ public class PetController {
 		return mv;
 	}
 	
+	// -------- 이전 차트 내용 불러오기
 	@ResponseBody
 	@PostMapping(value="pastChartAjax", produces = "application/json;charset=UTF-8")
 	public String pastChartAjax(HttpServletRequest request) {
@@ -69,7 +73,8 @@ public class PetController {
 		PetDTO petDTO = new PetDTO();
 		petDTO.setPetNo(request.getParameter("petNo"));
 		petDTO.setChartNo(request.getParameter("chartNo"));
-		
+	
+				
 		if((String)request.getParameter("petNo") != null) {
 			
 			List<PetDTO> petExam = petService.petExam(petDTO);
@@ -94,6 +99,7 @@ public class PetController {
 		
 	};
 	
+	// ------ 접종 기록 excel 출력
 	@GetMapping("petVaccine.xls")
 	public void petVaccine (HttpServletRequest request, HttpServletResponse response) throws IOException {
 		System.err.println("정상 접근입니다.");
@@ -104,12 +110,16 @@ public class PetController {
 		PetDTO petDTO = new PetDTO();
 		petDTO.setPetNo(request.getParameter("petNo"));
 		
+		
+			
 		List<PetDTO> list = petService.excelList(petDTO);
 		
 		//System.err.println(list);
 		//System.out.println(list.size());
 		//System.out.println(list.get(0).getVac_name()); //심장사상충 , 1은 코로나 장염 순서
 		//System.out.println(list.get(0).getVacdata_date());
+		
+		if(list.size() != 0) {
 		
 		Workbook wb = new HSSFWorkbook();
 		
@@ -253,6 +263,14 @@ public class PetController {
 		
 		wb.write(out);
 		out.close();	
+		
+		} else {
+			//리스트 없을 경우 alert 출력되며 다시 돌아오게 하기
+			response.setContentType("text/html; charset=UTF-8");
+			response.setCharacterEncoding("UTF-8");
+			out.write("<script>alert('접종 기록이 없습니다.'); history.back(); </script>".getBytes("UTF-8"));
+			out.flush();
+		}
 		
 	}
 	

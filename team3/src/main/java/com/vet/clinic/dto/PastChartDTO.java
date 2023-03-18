@@ -6,8 +6,8 @@ import lombok.Data;
 public class PastChartDTO {
 	
 	//chartview
-	private int receive_no, pet_no, chart_no, staff_no;
-	private String pet_name, chart_memo, chart_date, staff_name, staff_grade;
+	private int receive_no, pet_no, staff_no;
+	private String pet_name, chart_memo, chart_date, staff_name, staff_grade, chart_no;
 	
 	//chartdrugview
 	private int drugdata_no, drugdata_ea, medical_no, medical_price;
