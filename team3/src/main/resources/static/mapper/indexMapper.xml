@@ -6,7 +6,7 @@
 	<select id="indexReserv" resultType="HashMap">
 		SELECT ROW_NUMBER()
 		over(ORDER BY r.reserv_date) AS
-		rno,r.pet_name,r.owner_name,r.reserv_time,COUNT(*) AS count
+		rno,r.pet_name,r.owner_name,r.reserv_time
 		FROM
 		(SELECT *
 		FROM
@@ -14,7 +14,28 @@
 		CURDATE()) r
 		ORDER BY rno
 	</select>
-
+	<select id="reservCount" resultType="Integer">
+		SELECT COUNT(*) as
+		reservCount
+		FROM
+		reservationview WHERE DATE_FORMAT(reservation_date,
+		"%Y-%m-%d") =
+		CURDATE();
+	</select>
+	<select id="recepCount" resultType="Integer">
+		SELECT COUNT(*) as recepCount
+		FROM
+		reception WHERE DATE_FORMAT(receive_time, "%Y-%m-%d") =
+		CURDATE()
+		AND receive_state = 1
+	</select>
+	<select id="diagCount" resultType="Integer">
+		SELECT COUNT(*) as
+		diagCount
+		FROM
+		reception WHERE DATE_FORMAT(receive_time, "%Y-%m-%d") =
+		CURDATE() AND receive_state = 2
+	</select>
 	<select id="receivepay" resultType="HashMap">
 		SELECT ROW_NUMBER()
 		over(ORDER BY i.receive_time) AS
@@ -29,7 +50,7 @@
 	<select id="indexPet" resultType="HashMap"
 		parameterType="HashMap">
 		SELECT ROW_NUMBER()
-		over(ORDER BY p.pet_no) AS pno, p.*
+		over(ORDER BY p.pet_no) AS pno, p.*,REGEXP_REPLACE(p.owner_tel, '(02|.{3})(.+)(.{4})', '\\1-\\2-\\3') as o_Tel
 		FROM
 		(
 		SELECT *

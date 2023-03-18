@@ -17,4 +17,10 @@ public interface IndexDAO {
 
 	public List<Map<String, Object>> indexPet(Map<String, Object> map);
 
+	public int reservCount();
+
+	public int recepCount();
+
+	public int diagCount();
+
 }

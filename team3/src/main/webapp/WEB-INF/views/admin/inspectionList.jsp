@@ -82,9 +82,9 @@ function page(idx, search_value) {
 				let result = data.result;
 				if (confirm("수정하시겠습니까?")) {
 
-					$("#inspection_noU").val(result.inspection_no);
-					$("#inspection_nameU").val(result.inspection_name);
-					$("#inspection_priceU").val(result.inspection_price);
+					$("#inspection_noU").val(result.medical_no);
+					$("#inspection_nameU").val(result.medical_name);
+					$("#inspection_priceU").val(result.medical_price);
 
 					$("#updateModal").modal("show"); //수정화면 모달 보기
 				}
@@ -110,7 +110,9 @@ function page(idx, search_value) {
 				if (data.result == 1) {
 					alert("수정이 완료되었습니다.");
 					$("#updateModal").modal("hide");
-					location.href="/inspection";
+					var pagenum = $("#pagenum").val();
+					let searchValue = $("#search_value").val();
+					page(pagenum, searchValue);
 				} else {
 					alert("문제가 발생했습니다. \n다시 시도해주세요.");
 				}
@@ -296,7 +298,7 @@ function page(idx, search_value) {
 											</tbody>
 										</table>
 									</div>
-
+									<input type="hidden" id="pagenum" value="${param.pagenum }">
 									<c:if test="${page.getTotalcount() ne 0}">
 										<nav aria-label="Page navigation example">
 											<ul class="pagination pagination-sm justify-content-center">

@@ -101,7 +101,9 @@
 				if (data.result == 1) {
 					alert("수정이 완료되었습니다.");
 					$("#updateModal").modal("hide");
-					location.href="/medicine";
+					var pagenum = $("#pagenum").val();
+					let searchValue = $("#search_value").val();
+					page(pagenum, searchValue);
 				} else {
 					alert("문제가 발생했습니다. \n다시 시도해주세요.");
 				}
@@ -296,10 +298,10 @@
 														<td colspan="4">검색 결과가 없습니다.</td>
 													</tr>
 												</c:if>
-												</tbody>
+											</tbody>
 										</table>
 									</div>
-
+									<input type="hidden" id="pagenum" value="${param.pagenum }">
 									<c:if test="${page.getTotalcount() ne 0}">
 										<nav aria-label="Page navigation example">
 											<ul class="pagination pagination-sm justify-content-center">

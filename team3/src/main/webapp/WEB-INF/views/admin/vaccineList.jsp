@@ -109,7 +109,9 @@
 				if (data.result == 1) {
 					alert("수정이 완료되었습니다.");
 					$("#updateModal").modal("hide");
-					location.href="/vaccine";
+					var pagenum = $("#pagenum").val();
+					let searchValue = $("#search_value").val();
+					page(pagenum, searchValue);
 				} else {
 					alert("문제가 발생했습니다. \n다시 시도해주세요.");
 				}
@@ -181,7 +183,7 @@
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
-							<h5 class="m-0 font-weight-bold text-primary">데이터관리</h5>
+							<h6 class="m-0 font-weight-bold text-primary">데이터관리</h6>
 
 						</div>
 
@@ -341,6 +343,7 @@
 											</tbody>
 										</table>
 									</div>
+									<input type="hidden" id="pagenum" value="${param.pagenum }">
 									<c:if test="${page.getTotalcount() ne 0}">
 										<nav aria-label="Page navigation example">
 											<ul class="pagination pagination-sm justify-content-center">
