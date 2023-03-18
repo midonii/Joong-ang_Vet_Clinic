@@ -100,7 +100,9 @@
 				if (data.result == 1) {
 					alert("수정이 완료되었습니다.");
 					$("#updateModal").modal("hide");
-					location.href="/petType";
+					var pagenum = $("#pagenum").val();
+					let searchValue = $("#search_value").val();
+					page(pagenum, searchValue);
 				} else {
 					alert("문제가 발생했습니다. \n다시 시도해주세요.");
 				}
@@ -221,7 +223,7 @@
 
 								<!-- 리스트 출력 -->
 								<div class="col-6 col-md-6"
-									style="overflow: auto; height: 570px; padding: 10px;">
+									style="height: 570px; padding: 10px;">
 									<form action="/petType" name="searchForm"
 										onsubmit="return false" method="get">
 										<div class="input-group mt-2 mb-3">
@@ -236,11 +238,11 @@
 											</div>
 										</div>
 									</form>
-									<div class="table-responsive" id="printme">
+									<div class="table-responsive">
 										<table class="table table-sm table-bordered text-center"
 											id="dataTable" width="100%" cellspacing="0">
 											<thead>
-												<tr class="bg-gray-200" style="line-height: 30px;">
+												<tr class="bg-gray-200">
 													<th class="col-2">번호</th>
 													<th class="col-8">견종</th>
 													<th class="col-2"></th>
@@ -274,7 +276,7 @@
 											</tbody>
 										</table>
 									</div>
-
+									<input type="hidden" id="pagenum" value="${param.pagenum }">
 									<c:if test="${page.getTotalcount() ne 0}">
 										<nav aria-label="Page navigation example">
 											<ul class="pagination pagination-sm justify-content-center">

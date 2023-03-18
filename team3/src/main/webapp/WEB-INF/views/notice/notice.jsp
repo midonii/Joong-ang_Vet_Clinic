@@ -58,7 +58,10 @@ if (session.getAttribute("id") == null) {
 		$("#search_name").val(searchName2);
 
 		$(".refresh").click(function() {
-			location.href = "/notice";
+
+			var pagenum = $("#pagenum").val();
+			let searchValue = $("#search_value").val();
+			page(pagenum, searchName2, searchValue);
 		});
 
 		$("#search_btn").click(function() {
@@ -315,16 +318,16 @@ if (session.getAttribute("id") == null) {
 												<td>${nl.notice_read }</td>
 											</tr>
 										</c:forEach>
-									<c:if test="${page.getTotalcount() eq 0}">
-										<tr>
-											<td colspan="5">데이터가 없습니다.</td>
-										</tr>
-									</c:if>
+										<c:if test="${page.getTotalcount() eq 0}">
+											<tr>
+												<td colspan="5">데이터가 없습니다.</td>
+											</tr>
+										</c:if>
 									</tbody>
 								</table>
 							</div>
 
-
+							<input type="hidden" id="pagenum" value="${param.pagenum }">
 							<c:if test="${page.getTotalcount() ne 0}">
 								<div class="mt-3">
 									<nav aria-label="Page navigation example">

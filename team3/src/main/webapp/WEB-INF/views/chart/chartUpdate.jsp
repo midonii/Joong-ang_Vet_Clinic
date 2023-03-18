@@ -16,7 +16,7 @@ if (session.getAttribute("id") == null) {
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Team 3</title>
+<title>중앙동물병원</title>
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -38,143 +38,22 @@ if (session.getAttribute("id") == null) {
 <!-- JQUERY -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-
+<script type="text/javascript" src="js/chart/chart3.js"></script>
 <script type="text/javascript">
 	$(function() {
-		$("#search_btn")
-				.click(
-						function() {
-							var pet_search = $("#pet_search").val();
-
-							if (pet_search == "") {
-								alert("검색어를 입력하세요");
-								$("#pet_search").focus();
-								return false;
-							} else {
-								$("#petSearchModal").modal("show");
-								$
-										.ajax({
-											url : '/petSearchAjax',
-											type : 'POST',
-											data : {
-												"pet_search" : pet_search
-											},
-											success : function(data) {
-												let pet = data.pet;
-												$(".petTable").empty();
-												var table = "";
-												if (pet == "") {
-													table += "<tr class='text-center'> <td colspan='6'>존재하지 않습니다.<br><br>";
-												} else {
-													for (let i = 0; pet.length > i; i++) {
-														var pno = pet[i].pno;
-														var pet_no = pet[i].pet_no;
-														var pet_name = pet[i].pet_name;
-														var owner_name = pet[i].owner_name;
-														var owner_tel = pet[i].owner_tel;
-														var pet_gender = pet[i].pet_gender;
-
-														table += "<tr class='text-center' >";
-														table += "<td class='col-1'>"
-																+ pno + "</td>";
-														table += "<td class='col-2'>"
-																+ pet_name
-																+ "</td>";
-														table += "<td class='col-2'>"
-																+ owner_name
-																+ "</td>";
-														table += "<td class='col-1'>"
-																+ pet_gender
-																+ "</td>";
-														table += "<td class='col-4'>"
-																+ owner_tel
-																+ "</td>";
-														table += "<td class='col-2'><button type='button' class='btn btn-primary btn-sm chartUpdate' value='"+pet_no+"'>열기</button></td>";
-														table += "</tr>";
-
-													}
-
-												}
-												$(".petTable").append(table);
-											},
-											error : function(e) {
-												alert("실패");
-											}
-										});
-							}
-
-						});
-		$(document)
-				.on(
-						"click",
-						"#search_btn2",
-						function() {
-
-							console.log("search_btn2 클릭");
-							var pet_search = $("#pet_search2").val();
-
-							if (pet_search == "") {
-								alert("검색어를 입력하세요");
-								$("#pet_search").focus();
-								return false;
-							} else {
-								$
-										.ajax({
-											url : '/petSearchAjax',
-											type : 'POST',
-											data : {
-												"pet_search" : pet_search
-											},
-											success : function(data) {
-												let pet = data.pet;
-												$(".petTable").empty();
-												var table = "";
-												if (pet == "") {
-													table += "<tr class='text-center'> <td colspan='6' >존재하지 않습니다.<br><br>";
-												} else {
-													for (let i = 0; pet.length > i; i++) {
-														var pno = pet[i].pno;
-														var pet_no = pet[i].pet_no;
-														var pet_name = pet[i].pet_name;
-														var owner_name = pet[i].owner_name;
-														var owner_tel = pet[i].owner_tel;
-														var pet_gender = pet[i].pet_gender;
-
-														table += "<tr class='text-center' >";
-														table += "<td class='col-1'>"
-																+ pno + "</td>";
-														table += "<td class='col-2'>"
-																+ pet_name
-																+ "</td>";
-														table += "<td class='col-2'>"
-																+ owner_name
-																+ "</td>";
-														table += "<td class='col-1'>"
-																+ pet_gender
-																+ "</td>";
-														table += "<td class='col-4'>"
-																+ owner_tel
-																+ "</td>";
-														table += "<td class='col-2'><button type='button' class='btn btn-primary btn-sm chartUpdate' value='"+pet_no+"'>열기</button></td>";
-														table += "</tr>";
-
-													}
-
-												}
-												$(".petTable").append(table);
-											},
-											error : function(e) {
-												alert("실패");
-											}
-										});
-							}
-
-						});
-
-		$(document).on("click", ".chartUpdate", function() {
-			$("#petSearchModal").modal("hide");
-			var pet_no = $(this).attr("value");
-			location.href = "/chartUpdate?pet_no=" + pet_no;
+		var pet_no = $("#pet_no").val();
+		$.post({
+			url : "/petVacAjax",
+			cache : false,
+			data : {
+				"pet_no" : pet_no
+			},
+			dataType : "json"
+		}).done(function(data) {
+			let pet = data.pet;
+			alert(pet[0].pet_no);
+		}).fail(function(xhr, status, errorThrown) {
+			alert("실패");
 		});
 	});
 </script>
@@ -211,7 +90,8 @@ if (session.getAttribute("id") == null) {
 
 										<table border="0" cellspacing="0"
 											style="font-size: 14px; margin-left: -10px;">
-
+											<input type="hidden" id="pet_no" name="pet_no"
+												value="${param.pet_no }">
 											<tr>
 												<td>보호자명 :<b class="text-gray-800">
 														${profile.owner_name}</b>&nbsp;
@@ -222,6 +102,7 @@ if (session.getAttribute("id") == null) {
 												<td>견종 : ${profile.type_name}&nbsp;</td>
 												<td>성별 : ${profile.pet_gender}&nbsp;</td>
 												<td>생년월일 : ${profile.pet_birth}&nbsp;</td>
+												<td>나이 : ${profile.pet_Ym}&nbsp;</td>
 												<td>체중 : ${profile.pet_weight}kg&nbsp;</td>
 												<td>담당의 : ${sessionScope.username }&nbsp;</td>
 
@@ -254,11 +135,11 @@ if (session.getAttribute("id") == null) {
 
 								<!-- Card Body -->
 								<div class="card-body p-0" style="height: 705px;">
-									<div class="card shadow mb-4" >
+									<div class="card shadow mb-4">
 										<!-- Card Header - Accordion -->
 										<a href="#collapseCardExample"
-											class="d-block card-header py-3 bg-primary" data-toggle="collapse"
-											role="button" aria-expanded="true"
+											class="d-block card-header py-3 bg-primary"
+											data-toggle="collapse" role="button" aria-expanded="true"
 											aria-controls="collapseCardExample">
 											<h6 class="m-0 font-weight-bold text-light">Collapsable
 												Card Example</h6>
@@ -330,7 +211,14 @@ if (session.getAttribute("id") == null) {
 								</div>
 
 								<!-- Card Body -->
-								<div class="card-body" style="height: 329px;"></div>
+								<div class="card-body" style="height: 329px;">
+
+									<div class="list-group list-group-flush"></div>
+
+
+
+
+								</div>
 							</div>
 						</div>
 

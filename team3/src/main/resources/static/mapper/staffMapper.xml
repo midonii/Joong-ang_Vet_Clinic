@@ -3,9 +3,10 @@
 
 <mapper namespace="com.vet.clinic.dao.StaffDAO">
 
-	<select id="staffList" resultType="StaffDTO"
+		<select id="staffList" resultType="StaffDTO"
 		parameterType="HashMap">
-		SELECT ROW_NUMBER() over(ORDER BY s.staff_no) AS sno, s.*
+		SELECT ROW_NUMBER() over(ORDER BY s.staff_no) AS sno, s.*,
+		REGEXP_REPLACE(s.staff_tel, '(02|.{3})(.+)(.{4})', '\\1-\\2-\\3') as s_Tel
 		FROM
 		(
 		SELECT *

@@ -16,7 +16,7 @@ if (session.getAttribute("id") == null) {
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Team 3</title>
+<title>중앙동물병원</title>
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -39,259 +39,254 @@ if (session.getAttribute("id") == null) {
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <link rel="stylesheet" href="css/index.css">
-
-<script type="text/javascript" src="js/datetime.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
 </head>
 <script type="text/javascript">
-	$(function() {
 
-		$
-				.post({
-					url : "/noticeAjax",
-					dataType : "json"
+$(function() {
 
-				})
-				.done(
-						function(data) {
-							let notice = data.notice;
-							var table = "<table class='table table-sm' id='dataTable' width='100%' cellspacing='0'><thead>"
-									+ "<tr class='text-center'>"
-									+ "<th class='col-2'>번호</th>"
-									+ "<th class='col-5'>제목</th>"
-									+ "<th class='col-4'><i class='fa-regular fa-calendar'></i></th>"
-									+ "<th class='col-1'><i class='fa-solid fa-eye'></i></th>"
-									+ "</tr></thead>";
+$.post({
+	url: "/noticeAjax",
+	dataType: "json"
 
-							for (let i = 0; notice.length > i; i++) {
-								var listdate = notice[i].listdate;
-								var nno = notice[i].nno;
-								var notice_no = notice[i].notice_no;
-								var notice_title = notice[i].notice_title;
-								var notice_read = notice[i].notice_read;
+}).done(
+	function(data) {
+		let notice = data.notice;
+		var table = "<table class='table table-sm' id='dataTable' width='100%' cellspacing='0'><thead>"
+			+ "<tr class='text-center'>"
+			+ "<th class='col-2'>번호</th>"
+			+ "<th class='col-5'>제목</th>"
+			+ "<th class='col-4'><i class='fa-regular fa-calendar'></i></th>"
+			+ "<th class='col-1'><i class='fa-solid fa-eye'></i></th>"
+			+ "</tr></thead>";
 
-								table += "<tbody>";
-								table += "<tr class='text-center'>";
-								table += "<td>" + nno + "</td>";
-								table += "<td><a href='#' style='text-decoration: none;' class='noticeDetailModal' data-toggle='modal' data-value='"+ notice_no +"'>"
-										+ notice_title + "</a></td>";
-								table += "<td>" + listdate + "</td>";
-								table += "<td>" + notice_read + "</td>";
-								table += "</tr>";
-							}
-							$("#notice").append(table);
-						}).fail(function() {
-					alert("문제가 발생했습니다.");
-				});
-		$(document).on("click", ".noticeDetailModal", function() {
-			$("#noticeDetailModal").modal("show");
-			var notice_no = $(this).attr("data-value");
-			$.post({
-				url : "/noticeDetail",
-				cache : false,
-				data : {
-					"notice_no" : notice_no
-				},
-				dataType : "json"
-			}).done(function(data) {
-				let result = data.result;
-				let read = data.read;
-				if (read == 1) {
-					$("#D_no").val(result.notice_no);
-					$("#D_title").text(result.notice_title);
-					$("#D_content").text(result.notice_content);
-					$("#D_date").text(result.listdate);
-					$("#D_read").text(result.notice_read);
-					$("#D_name").text(result.staff_name);
-				}
-			}).fail(function(xhr, status, errorThrown) {
-				alert("실패");
-			});
-		});
+		for (let i = 0; notice.length > i; i++) {
+			var listdate = notice[i].listdate;
+			var nno = notice[i].nno;
+			var notice_no = notice[i].notice_no;
+			var notice_title = notice[i].notice_title;
+			var notice_read = notice[i].notice_read;
 
+			table += "<tbody>";
+			table += "<tr class='text-center'>";
+			table += "<td>" + nno + "</td>";
+			table += "<td><a href='#' style='text-decoration: none;' class='noticeDetailModal' data-toggle='modal' data-value='" + notice_no + "'>"
+				+ notice_title + "</a></td>";
+			table += "<td>" + listdate + "</td>";
+			table += "<td>" + notice_read + "</td>";
+			table += "</tr>";
+		}
+		$("#notice").append(table);
+	}).fail(function() {
+		alert("문제가 발생했습니다.");
 	});
 
-	$(function() {
-		$
-				.post({
-					url : "/reservindexAjax",
-					dataType : "json"
 
-				})
-				.done(
-						function(data) {
-							let reserv = data.reserv;
-							var table = "<table class='table table-sm' id='dataTable' width='100%' cellspacing='0'><thead>"
-									+ "<tr class='text-center'>"
-									+ "<th class='col-2'>번호</th>"
-									+ "<th class='col-3'>동물명</th>"
-									+ "<th class='col-3'>보호자명</th>"
-									+ "<th class='col-4'>예약시간</th>"
-									+ "</tr></thead>";
-
-							for (let i = 0; reserv.length > i; i++) {
-								var rno = reserv[i].rno;
-								var pet_name = reserv[i].pet_name;
-								var owner_name = reserv[i].owner_name;
-								var reserv_time = reserv[i].reserv_time;
-
-								table += "<tbody>";
-								table += "<tr class='text-center'>";
-								table += "<td>" + rno + "</td>";
-								table += "<td>" + pet_name + "</td>";
-								table += "<td>" + owner_name + "</td>";
-								table += "<td>" + reserv_time + "</td>";
-								table += "</tr>";
-							}
-							$("#reserv").append(table);
-						}).fail(function() {
-					alert("문제가 발생했습니다.");
-				});
-
-		$
-				.post({
-					url : "/receivepay",
-					dataType : "json"
-
-				})
-				.done(
-						function(data) {
-							let receivepay = data.receivepay;
-							var table = "<table class='table table-sm text-center' id='dataTable' width='100%' cellspacing='0'><thead>"
-									+ "<tr class='text-center'>"
-									+ "<th class='col-2'>번호</th>"
-									+ "<th class='col-3'>동물명</th>"
-									+ "<th class='col-3'>보호자명</th>"
-									+ "<th class='col-4'>접수수납현황</th>"
-									+ "</tr></thead>";
-
-							for (let i = 0; receivepay.length > i; i++) {
-								var ino = receivepay[i].ino;
-								var pet_name = receivepay[i].pet_name;
-								var owner_name = receivepay[i].owner_name;
-								var state = receivepay[i].receive_state;
-								var pay_yn = receivepay[i].pay_yn;
-
-								table += "<tbody>";
-								table += "<tr class='text-center'>";
-								table += "<td>" + ino + "</td>";
-								table += "<td>" + pet_name + "</td>";
-								table += "<td>" + owner_name + "</td>";
-								if (state == 3) {
-									if (pay_yn == "Y") {
-										table += "<td><span class='badge text-bg-primary'>수납대기</span></td>";
-									} else {
-										table += "<td><span class='badge text-bg-secondary'>수납완료</span></td>";
-									}
-								} else if (state == 2) {
-									table += "<td><span class='badge text-bg-danger' >진료 중</span></td>";
-								} else if (state == 1) {
-									table += "<td><span class='badge text-bg-success' >대기 중</span></td>";
-
-								}
-								table += "</tr>";
-							}
-							$("#receivepay").append(table);
-						}).fail(function() {
-					alert("문제가 발생했습니다.");
-				});
+$(document).on("click", ".noticeDetailModal", function() {
+	$("#noticeDetailModal").modal("show");
+	var notice_no = $(this).attr("data-value");
+	$.post({
+		url: "/noticeDetail",
+		cache: false,
+		data: {
+			"notice_no": notice_no
+		},
+		dataType: "json"
+	}).done(function(data) {
+		let result = data.result;
+		let read = data.read;
+		if (read == 1) {
+			$("#D_no").val(result.notice_no);
+			$("#D_title").text(result.notice_title);
+			$("#D_content").text(result.notice_content);
+			$("#D_date").text(result.listdate);
+			$("#D_read").text(result.notice_read);
+			$("#D_name").text(result.staff_name);
+		}
+	}).fail(function(xhr, status, errorThrown) {
+		alert("실패");
 	});
-	$(function() {
-		$.post({
-			url : "/petAjax",
-			dataType : "json"
+});
 
-		})
+});
 
-		.done(function(data) {
-			let pet = data.pet;
-			var table = "";
+$(function() {
+$
+	.post({
+		url: "/reservindexAjax",
+		dataType: "json"
 
-			for (let i = 0; pet.length > i; i++) {
-				var pet_no = pet[i].pet_no;
-				var pet_name = pet[i].pet_name;
-				var owner_name = pet[i].owner_name;
-				var owner_tel = pet[i].owner_tel;
+	})
+	.done(
+		function(data) {
+			let reserv = data.reserv;
+			var table = "<table class='table table-sm' id='dataTable' width='100%' cellspacing='0'><thead>"
+				+ "<tr class='text-center'>"
+				+ "<th class='col-2'>번호</th>"
+				+ "<th class='col-3'>동물명</th>"
+				+ "<th class='col-3'>보호자명</th>"
+				+ "<th class='col-4'>예약시간</th>"
+				+ "</tr></thead>";
 
-				table += "<tr class='text-center' >";
-				table += "<td>" + pet_no + "</td>";
+			for (let i = 0; reserv.length > i; i++) {
+				var rno = reserv[i].rno;
+				var pet_name = reserv[i].pet_name;
+				var owner_name = reserv[i].owner_name;
+				var reserv_time = reserv[i].reserv_time;
+
+				table += "<tbody>";
+				table += "<tr class='text-center'>";
+				table += "<td>" + rno + "</td>";
 				table += "<td>" + pet_name + "</td>";
 				table += "<td>" + owner_name + "</td>";
-				table += "<td>" + owner_tel + "</td>";
+				table += "<td>" + reserv_time + "</td>";
 				table += "</tr>";
 			}
-			$(".petTable").append(table);
+			$("#reserv").append(table);
 		}).fail(function() {
 			alert("문제가 발생했습니다.");
 		});
-		$(document)
-				.on(
-						"click",
-						"#search_btn",
-						function() {
-							let searchValue = $("#search_value").val();
 
-							if (searchValue == "" || searchValue.length < 2) {
-								alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
-								return false;
+$
+	.post({
+		url: "/receivepay",
+		dataType: "json"
+
+	})
+	.done(
+		function(data) {
+			let receivepay = data.receivepay;
+			var table = "<table class='table table-sm text-center' id='dataTable' width='100%' cellspacing='0'><thead>"
+				+ "<tr class='text-center'>"
+				+ "<th class='col-2'>번호</th>"
+				+ "<th class='col-3'>동물명</th>"
+				+ "<th class='col-3'>보호자명</th>"
+				+ "<th class='col-4'>접수수납현황</th>"
+				+ "</tr></thead>";
+
+			for (let i = 0; receivepay.length > i; i++) {
+				var ino = receivepay[i].ino;
+				var pet_name = receivepay[i].pet_name;
+				var owner_name = receivepay[i].owner_name;
+				var state = receivepay[i].receive_state;
+				var pay_yn = receivepay[i].pay_yn;
+
+				table += "<tbody>";
+				table += "<tr class='text-center'>";
+				table += "<td>" + ino + "</td>";
+				table += "<td>" + pet_name + "</td>";
+				table += "<td>" + owner_name + "</td>";
+				if (state == 3) {
+					if (pay_yn == "Y") {
+						table += "<td><span class='badge text-bg-primary'>수납대기</span></td>";
+					} else {
+						table += "<td><span class='badge text-bg-secondary'>수납완료</span></td>";
+					}
+				} else if (state == 2) {
+					table += "<td><span class='badge text-bg-danger' >진료 중</span></td>";
+				} else if (state == 1) {
+					table += "<td><span class='badge text-bg-success' >대기 중</span></td>";
+
+				}
+				table += "</tr>";
+			}
+			$("#receivepay").append(table);
+		}).fail(function() {
+			alert("문제가 발생했습니다.");
+		});
+});
+$(function() {
+$.post({
+	url: "/petAjax",
+	dataType: "json"
+
+}).done(function(data) {
+		let pet = data.pet;
+		var table = "";
+
+		for (let i = 0; pet.length > i; i++) {
+			var pet_no = pet[i].pet_no;
+			var pet_name = pet[i].pet_name;
+			var owner_name = pet[i].owner_name;
+			var owner_tel = pet[i].owner_tel;
+
+			table += "<tr class='text-center' >";
+			table += "<td>" + pet_no + "</td>";
+			table += "<td>" + pet_name + "</td>";
+			table += "<td>" + owner_name + "</td>";
+			table += "<td>" + owner_tel + "</td>";
+			table += "</tr>";
+		}
+		$(".petTable").append(table);
+	}).fail(function() {
+		alert("문제가 발생했습니다.");
+	});
+$(document)
+	.on(
+		"click",
+		"#search_btn",
+		function() {
+			let searchValue = $("#search_value").val();
+
+			if (searchValue == "" || searchValue.length < 2) {
+				alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
+				return false;
+			} else {
+
+				$
+					.ajax({
+						url: '/petAjax',
+						type: 'POST',
+						data: {
+							"search_value": searchValue
+						},
+						success: function(data) {
+							let pet = data.pet;
+							$(".petTable").empty();
+							var table = "";
+							if (pet == "") {
+								table += "<tr class='text-center'> <td colspan='4'>존재하지 않습니다.<br><br>";
+								table += "<button class='btn btn-sm btn-primary' id='reg_btn'>신규등록</button></td></tr>";
 							} else {
+								for (let i = 0; pet.length > i; i++) {
+									var pet_no = pet[i].pet_no;
+									var pet_name = pet[i].pet_name;
+									var owner_name = pet[i].owner_name;
+									var owner_tel = pet[i].owner_tel;
 
-								$
-										.ajax({
-											url : '/petAjax',
-											type : 'POST',
-											data : {
-												"search_value" : searchValue
-											},
-											success : function(data) {
-												let pet = data.pet;
-												$(".petTable").empty();
-												var table = "";
-												if (pet == "") {
-													table += "<tr class='text-center'> <td colspan='4'>존재하지 않습니다.<br><br>";
-													table += "<button class='btn btn-sm btn-primary' id='reg_btn'>신규등록</button></td></tr>";
-												} else {
-													for (let i = 0; pet.length > i; i++) {
-														var pet_no = pet[i].pet_no;
-														var pet_name = pet[i].pet_name;
-														var owner_name = pet[i].owner_name;
-														var owner_tel = pet[i].owner_tel;
+									table += "<tr class='text-center' >";
+									table += "<td class='col-2'>"
+										+ pet_no
+										+ "</td>";
+									table += "<td class='col-3'>"
+										+ pet_name
+										+ "</td>";
+									table += "<td class='col-3'>"
+										+ owner_name
+										+ "</td>";
+									table += "<td class='col-4'>"
+										+ owner_tel
+										+ "</td>";
+									table += "</tr>";
 
-														table += "<tr class='text-center' >";
-														table += "<td class='col-2'>"
-																+ pet_no
-																+ "</td>";
-														table += "<td class='col-3'>"
-																+ pet_name
-																+ "</td>";
-														table += "<td class='col-3'>"
-																+ owner_name
-																+ "</td>";
-														table += "<td class='col-4'>"
-																+ owner_tel
-																+ "</td>";
-														table += "</tr>";
+								}
 
-													}
-
-												}
-												$(".petTable").append(table);
-											},
-											error : function(e) {
-												alert("실패");
-											}
-										});
 							}
-						});
-
-		$(document).on("click", "#reg_btn", function() {
-			location.href = "/profile";
-
+							$(".petTable").append(table);
+						},
+						error: function(e) {
+							alert("실패");
+						}
+					});
+			}
 		});
 
-	});
-</script>
+$(document).on("click", "#reg_btn", function() {
+	location.href = "/profile";
 
+});
+
+});
+</script>
 <body id="page-top">
 
 	<!-- Page Wrapper -->
@@ -396,11 +391,11 @@ if (session.getAttribute("id") == null) {
 									</div>
 								</div>
 								<!-- Card Body -->
-								<div class="card-body" style="margin-top: -10px;">
+								<div class="card-body" style="margin-top: -10px; overflow: auto;">
 
 
 
-									<div class="table-responsive" id="pet" style="height: 271px;">
+									<div class="table-responsive" id="pet" style="height: 271px; ">
 										<table class="table table-sm" width="100%" cellspacing="0">
 											<thead>
 												<tr class="text-center">
@@ -410,7 +405,7 @@ if (session.getAttribute("id") == null) {
 													<th class="col-4">전화번호</th>
 												</tr>
 											</thead>
-											<tbody class="petTable" style="overflow: auto;">
+											<tbody class="petTable">
 											</tbody>
 										</table>
 									</div>
@@ -549,7 +544,6 @@ if (session.getAttribute("id") == null) {
 
 
 			<!-- Bootstrap core JavaScript-->
-			<script src="js/reservation/calender/calender.js"></script>
 			<script src="vendor/jquery/jquery.min.js"></script>
 			<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -561,4 +555,4 @@ if (session.getAttribute("id") == null) {
 </body>
 
 </html>
->
+

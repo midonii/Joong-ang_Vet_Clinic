@@ -15,14 +15,12 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Team 3</title>
+<title>중앙동물병원</title>
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
-<link rel="stylesheet" href="https://kit.fontawesome.com/a31e2023c3.css"
-	crossorigin="anonymous">
 <script src="https://kit.fontawesome.com/a31e2023c3.js"
 	crossorigin="anonymous"></script>
 <link
@@ -36,6 +34,10 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function() {
+
+		let searchName2 = $("#searchName").val();
+		$("#search_name").val(searchName2);
+		
 		$(".staffDetailModal").click(function() {
 			$("#staffDetailModal").modal("show");
 			var staff_no = $(this).attr("data-value");
@@ -52,7 +54,10 @@
 				$("#staff_no").val(result.staff_no);
 				$("#staff_name").text(result.staff_name);
 				$("#staff_id").text(result.staff_id);
-				$("#staff_tel").text(result.staff_tel);
+				var staff_tel = result.staff_tel
+				var staff_telH = staff_tel.replace(
+				/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
+				$("#staff_tel").text(staff_telH);
 				$("#staff_birth").text(result.staff_birth);
 				$("#staff_addr").text(result.staff_addr);
 				$("#staff_email").text(result.staff_email);
@@ -93,7 +98,12 @@
 					$("#staff_addr").text(result.staff_addr);
 					$("#staff_email").text(result.staff_email);
 					$("#staff_grade").val(result.staff_grade)
-					$("#staffDetailModal").modal("show");
+					$("#staffDetailModal").modal("hide");
+					
+					var pagenum = $("#pagenum").val();
+					let searchValue = $("#search_value").val();
+					page(pagenum, searchName2, searchValue);
+		
 
 				} else {
 					alert("문제가 발생했습니다. \n다시 시도해주세요.");
@@ -110,8 +120,6 @@
 			}
 		});
 
-		let searchName2 = $("#searchName").val();
-		$("#search_name").val(searchName2);
 
 		$("#search_btn").click(function() {
 			let searchName = $("#search_name").val();
@@ -212,7 +220,7 @@
 								</form>
 							</div>
 							<div class="table-responsive">
-								<table class="table table-sm table-bordered text-center"
+								<table class="table table-bordered text-center"
 									id="dataTable" width="100%" cellspacing="0">
 									<thead>
 										<tr class="bg-gray-200">
@@ -226,7 +234,6 @@
 									</thead>
 
 									<tbody>
-
 										<c:forEach items="${staffList }" var="sl">
 											<tr>
 												<td>${sl.sno }</td>
@@ -234,7 +241,7 @@
 													class="staffDetailModal" data-toggle="modal"
 													data-value="${sl.staff_no }"> ${sl.staff_name }</a></td>
 												<td>${sl.staff_id }</td>
-												<td> ${sl.staff_tel}</td>
+												<td>${sl.s_Tel}</td>
 												<td>${sl.staff_email }</td>
 												<td>${sl.staff_grade }</td>
 											</tr>
@@ -247,7 +254,7 @@
 									</tbody>
 								</table>
 							</div>
-
+							<input type="hidden" id="pagenum" value="${param.pagenum }">
 							<c:if test="${page.getTotalcount() ne 0}">
 								<div class="mt-3">
 									<nav aria-label="Page navigation example">

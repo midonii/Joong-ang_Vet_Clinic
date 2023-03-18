@@ -39,7 +39,7 @@
                
             }
             $("#receiveboard").append(table);
-
+			
          });
 
       });
