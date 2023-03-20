@@ -95,13 +95,24 @@ $(function(){
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
-				<!-- 회원 검색 -->
 				 <div class="row">
+				 	 <!-- Page Heading -->
+					<div style="line-height: 40px; font-size: 13px; position: absolute;">
+						<a href="/index" style="text-decoration: none;"
+							class="text-gray-600"><i class="fa-solid fa-house-chimney"></i></a>&nbsp;&nbsp;<i
+							class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp; <a
+							href="/client" style="text-decoration: none;"
+							class="text-gray-700">회원정보</a>
+					</div>		
+				 
+				 
+				<!-- 회원 검색 -->
+				 
 					<form action="/client" method="get" name="searchForm">
-						<div class="mb-2 mt-1 float-right" style="width: 35%">
+						<div class="mb-2 mt-1 float-right col-5">
 							<div class="input-group">
 								<input type="hidden" value="${search.getSearch_name() }" id="hidden_search">
-								<select class="form-control form-control-sm col-md-3" name="search_name" id="search_name">
+								<select class="form-control form-control-sm col-md-3" name="search_name" id="search_name" style="border-radius: 5px 0 0 5px;">
 									<option value="" selected disabled="disabled">선택</option>
 									<option value="owner">보호자명+전화번호</option>
 									<option value="pet">반려견명+생일</option>

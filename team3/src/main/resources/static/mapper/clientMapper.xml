@@ -32,8 +32,9 @@
 	<select id="profileMap" resultType="ClientDTO">
 		SELECT *
 		FROM clientview
+		WHERE pet_del = 1
 		<if test="clientNno != null">
-			WHERE owner_no=#{clientNno }
+			AND owner_no=#{clientNno }
 		</if>
 	</select>
 	

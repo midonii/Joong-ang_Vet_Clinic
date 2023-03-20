@@ -46,4 +46,11 @@
 	AND chart_no = #{chartNo }
 </select>
 	
+<select id="petVac" resultType="PastChartDTO" parameterType="PastChartDTO">
+	SELECT *
+	FROM chartvaccineview
+	WHERE pet_no = #{petNo }
+	AND chart_no = #{chartNo }
+</select>	
+	
 </mapper>

@@ -44,7 +44,7 @@ $(function(){
 		/* alert("!"); */
 		const urlParams = new URL(location.href).searchParams;
 		const petNo = urlParams.get('petNo');
-		alert(petNo);
+		//alert(petNo);
 		
 		location.href="/petVaccine.xls?petNo="+petNo;
 		
@@ -72,28 +72,75 @@ $(function(){
 		}).done(function(data){
 			//alert("정상소통" + data.petExam);
 			let petExam = data.petExam;
-			//alert(petExam[0].staff_name);
+			let petDrug = data.petDrug;
+			let petVac = data.petVac;
+			//alert(petExam[0].medical_subcate);
 			var table = "";
 			$('.chartList'+chartNo).hide();
 			//상세보기 클릭 시 이전 기록 reset
 			$("#client-table"+chartNo).empty();
+			
+			// -- 검사
 			for (let i = 0; petExam.length > i; i++) {
-				var medical_category = petExam[i].medical_category;
-				var medical_name = petExam[i].medical_name;
-				var staff_name = petExam[i].staff_name;
-				var staff_grade = petExam[i].staff_grade;
+				var medical_category_Ex = petExam[i].medical_category;
+				var medical_subcate_Ex = petExam[i].medical_subcate;
+				var medical_name_Ex = petExam[i].medical_name;
+				var staff_name_Ex = petExam[i].staff_name;
+				var staff_grade_Ex = petExam[i].staff_grade;
 				var examdata_ea = petExam[i].examdata_ea;
-				var medical_price = petExam[i].medical_price;
 				
 				table += "<tr class='chartList"+chartNo+"'>";
-				table += "<td>" + medical_category + "</td>";
-				table += "<td class='text-left'>" + medical_name + "</td>";
-				table += "<td>" + staff_name + "</td>";
-				table += "<td>" + staff_grade + "</td>";
+				table += "<td>" + medical_category_Ex + "</td>";
+				table += "<td>" + medical_subcate_Ex + "</td>";
+				table += "<td class='text-left'>" + medical_name_Ex + "</td>";
+				table += "<td>" + staff_name_Ex + "</td>";
+				table += "<td>" + staff_grade_Ex + "</td>";
 				table += "<td>" + examdata_ea + "</td>";
-				table += "<td class='text-right'>" + medical_price + "</td>";
 				table += "</tr>";
+				
 			}
+			
+			// -- 약처방
+			for (let i = 0; petDrug.length > i; i++) {
+				var medical_category_Dg = petDrug[i].medical_category;
+				var medical_subcate_Dg = petDrug[i].medical_subcate;
+				var medical_name_Dg = petDrug[i].medical_name;
+				var staff_name_Dg = petDrug[i].staff_name;
+				var staff_grade_Dg = petDrug[i].staff_grade;
+				var drugdata_ea = petDrug[i].drugdata_ea;
+							
+				
+				table += "<tr class='chartList"+chartNo+"'>";
+				table += "<td>" + medical_category_Dg + "</td>";
+				table += "<td>" + medical_subcate_Dg + "</td>";
+				table += "<td class='text-left'>" + medical_name_Dg + "</td>";
+				table += "<td>" + staff_name_Dg + "</td>";
+				table += "<td>" + staff_grade_Dg + "</td>";
+				table += "<td>" + drugdata_ea + "</td>";
+				table += "</tr>";
+
+			}
+			
+			// -- 접종
+			for (let i = 0; petVac.length > i; i++) {
+				var vac_name = petVac[i].vac_name;
+				var medical_category = petVac[i].medical_category;
+				var staff_name_Vac = petVac[i].staff_name;
+				var staff_grade_Vac = petVac[i].staff_grade;
+				
+				
+				table += "<tr class='chartList"+chartNo+"'>";
+				table += "<td>접종</td>";
+				table += "<td>접종</td>";
+				table += "<td class='text-left'>" + vac_name + "</td>";
+				table += "<td>" + staff_name_Vac + "</td>";
+				table += "<td>" + staff_grade_Vac + "</td>";
+				table += "<td>1</td>";
+				table += "</tr>";
+
+				
+			}
+			
 			
 			//$(this).children("#client-table").append(table);
 			$("#client-table"+chartNo).append(table);
@@ -107,7 +154,9 @@ $(function(){
 		 
 	});
 });
+
 </script>
+<script type="text/javascript" src="../js/client/petinfo_search.js"></script>
 <style type="text/css">
 .s20{
 	font-size: 20px;
@@ -118,6 +167,9 @@ $(function(){
 	margin : 0;
 	padding : 0;
 	line-height: 430px;
+	text-align: center;
+}
+.chart_none{
 	text-align: center;
 }
 .table-center{
@@ -131,7 +183,6 @@ $(function(){
 }
 
 </style>
-<script src="js/client/client_add.js"></script>
 </head>
 
 <body id="page-top">
@@ -153,8 +204,50 @@ $(function(){
 
 
 
+				
+				
+				
+
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
+				
+				
+				
+			
+				<div class="row">
+				 
+				 <!-- Page Heading -->
+					<div class="mb-1 col-7" style="line-height: 50px; font-size: 13px;">
+						<a href="/index" style="text-decoration: none;"
+							class="text-gray-600"><i class="fa-solid fa-house-chimney"></i></a>&nbsp;&nbsp;<i
+							class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp; <a
+							href="/petinfo" style="text-decoration: none;"
+							class="text-gray-700">이전 진료 내역</a>
+					</div>		
+				 
+				<!-- 검색 -->
+				 
+					<div class="d-none d-inline-block form-inline mb-3 navbar-search float-right col-5">
+						<div class="input-group d-flex justify-content-end">
+							<input type="text"
+								class="form-control border-gray col-12 pet_search"
+								placeholder="검색어를 입력하세요" aria-label="Search"
+								aria-describedby="basic-addon2" id="pet_search" name="pet_search">
+							<div class="input-group-append">
+								<button class="btn btn-primary shadow-sm" id="search_btn"
+									type="button">
+									<i class="fas fa-search fa-sm"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					
+					
+				 </div>
+				
+				
+			
+				
 				<div class="row align-top">	
 				  <!-- pet 정보 -->
 				  
@@ -236,21 +329,23 @@ $(function(){
 				<!-- 이전 진료 내역 part -->
 					<div class="card shadow mb-4 align-bottom">
 						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">이전진료</h6>
+							<h6 class="m-0 font-weight-bold text-primary">이전 진료 내역</h6>
 						</div>
 						<div class="card-body">
-							<div style="height: 400px; overflow: auto;">
+							<!-- <div style="height: 400px; overflow: auto;"> -->
 							
 							
 							
-							
+								
 								<!-- 진료 내역 -->
+							<c:choose>
+							  <c:when test="${fn:length(petChart) gt 0}">
 								<div class="accordion" id="accordionExample">
 								 <c:forEach items="${petChart }" var="ch" varStatus="status">
 									<div class="accordion-item">
 										<h2 class="accordion-header" id="${ch.chart_date }">
 								
-											<button class="${status.index eq 0 ? 'accordion-button pastChart':'accordion-button collapsed pastChart'}" type="button"
+											<button class="accordion-button collapsed pastChart" type="button"
 												data-toggle="collapse" data-target="#A${ch.chart_no }" 
 												aria-expanded="${status.index eq 0 ? 'true':'false'}" aria-controls="A${ch.chart_no }" value="${ch.chart_no }">
 												<div class="font-weight-bold">차트번호 :</div>
@@ -293,18 +388,17 @@ $(function(){
 													</div>
 													</div>
 														<div class="table-responsive">
-															<div id="clientScroll"
-																style="height: 250px; overflow: auto">
+															<div id="clientScroll">
 																<table class="table table-center table-sm table-bordered"
 																	id="dataTable" width="100%" cellspacing="0">
 																	<thead>
 																		<tr>
 																			<th class="col-md-1">구분</th>
+																			<th class="col-md-1">분류</th>
 																			<th class="col-md-4">처방명</th>
 																			<th class="col-sm-2">담당자</th>
 																			<th class="col-sm-2">직급</th>
-																			<th class="col-md-1">수량</th>
-																			<th class="col-md-2">단가</th>
+																			<th class="col-md-2">수량</th>
 																		</tr>
 																	</thead>
 
@@ -313,24 +407,12 @@ $(function(){
 																		class="scrollspy-example">
 																		
 																		<tr class="chartList${ch.chart_no }">
-																			<td>(구분)</td>
+																			<td>(카테고리)</td>
+																			<td>(상세 카테고리)</td>
 																			<td class="text-left">(처방내역)</td>
 																			<td>(담당자)</td>
 																			<td>(직급)</td>
 																			<td>(수량)</td>
-																			<td class="text-right">(단가)</td>
-																		</tr>
-																		
-																		
-																		<tr class="table-secondary">
-																			<td class="font-weight-bold">합계</td>
-																			<td class="text-left"></td>
-																			<td></td>
-																			<td></td>
-																			<td></td>
-																			<td class="text-right font-weight-bold">(총단가)</td>
-																		</tr>
-
 																	</tbody>
 																</table>
 															</div>
@@ -344,9 +426,14 @@ $(function(){
 										</div>
 									</div>
 							</c:forEach>
-								</div>
+<!-- 								</div> -->
 
 							</div>
+							</c:when>
+							<c:otherwise>
+								<div class="chart_none">진료 내역이 없습니다.</div>
+							</c:otherwise>
+							</c:choose>
 						</div>
 					</div>
 
@@ -359,6 +446,7 @@ $(function(){
 			
 			      <%@ include file="../bar/footer.jsp" %>
          		  <%@ include file="../bar/logoutModal.jsp" %>
+         		  <%@ include file="./petinfo_modal.jsp"%>
 			
 
 	<!-- Bootstrap core JavaScript-->
