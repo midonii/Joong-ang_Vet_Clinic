@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+.border{
+	border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+    font-size: 13px;
+}
+
+.radiobtn{
+	width:80px;
+}
+
+.radiobtn_1{
+	width:95px;
+}
