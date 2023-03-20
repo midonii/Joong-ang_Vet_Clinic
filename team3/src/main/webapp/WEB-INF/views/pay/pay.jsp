@@ -213,7 +213,7 @@ if (session.getAttribute("id") == null) {
 											<input type="hidden" value="${page.getSearch_name() }"
 												id="hidden_search"> 
 											<select class="form-control form-control-sm col-md-3"
-												name="search_name" id="search_name">
+												name="search_name" id="search_name" style="border-radius: 3px 0 0 3px;">
 												<option value="" selected disabled="disabled">선택</option>
 												<option value="petname">동물명</option>
 												<option value="ownername">보호자명</option>
