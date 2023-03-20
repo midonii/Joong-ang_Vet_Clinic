@@ -67,4 +67,12 @@ public class ReservService {
 	public int receiveAdd_reservYn(ReservDTO reservDTO) {
 		return reservDAO.receiveAdd_reservYn(reservDTO);
 	}
+
+	public int receiveDelete(ReservDTO reservDTO) {
+		return reservDAO.receiveDelete(reservDTO);
+	}
+
+	public List<ReservDTO> reservTimeCheck(ReservDTO reservDTO) {
+		return reservDAO.reservTimeCheck(reservDTO);
+	}
 }

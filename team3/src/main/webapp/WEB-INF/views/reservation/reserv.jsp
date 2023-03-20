@@ -56,13 +56,13 @@ if (session.getAttribute("id") == null) {
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 		<%@ include file="../bar/sideBar.jsp"%>
+
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
 			<!-- Main Content -->
 			<div id="content">
 				<%@ include file="../bar/topBar.jsp"%>
-				<div style="margin-top: -23px;"></div>
-				<%@ include file="../reservation/reserv_bar.jsp"%>
+				<div></div>
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
@@ -78,7 +78,8 @@ if (session.getAttribute("id") == null) {
 									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 									<h6 class="m-0 font-weight-bold text-primary">고객조회</h6>
 								</div>
-								<div class="card-body p-3" style="height: 660px;">
+								<div class="card-body p-3"
+									style="height: 660px; overflow: auto;">
 									<!-- 검색기능 -->
 									<div class="input-group mb-2">
 										<input type="text"
@@ -92,12 +93,44 @@ if (session.getAttribute("id") == null) {
 											</button>
 										</div>
 									</div>
+
 									<table class="table table-borderless"
 										style="color: gray; background-color: white;">
 										<tbody id="researchTable">
-											<!--                                  <tr id="search_result"> -->
+											<c:forEach items="${boardlist}" var="s">
+												<tr class="search_result"
+													style="border-bottom: 1px solid gray; padding-bottom: 5px;">
+													<td style="font-size: 14px;">
+														<div>
+															<a style="text-decoration: none;"><b
+																style="font-size: 25px; color: black">${s.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${s.owner_name}
+														</div> <br> <span>${s.type_name} | ${s.pet_gender}<br>
+															${s.pet_birth}
+													</span><br>
+													</td>
+													<input type="hidden" id="search_petNo" value="${s.pet_no}">
+													<input type="hidden" id="search_ownerNo"
+														value="${s.owner_no}">
+													<td style="text-align: right;"><span></span><br>
+														<br> <span>
+															<button type="button" class="btn btn-sm reserv_btn"
+																value="${s.pet_no}"
+																style="border: 1px solid #0d6efd; color: #0d6efd;">예약</button>
+															<button type="button" id="search_receipt_btn"
+																class="btn btn-primary btn-sm search_receipt_btn"
+																value="${s.pet_no}"
+																style="margin-left: 5px; border: none;">접수</button>
+													</span></td>
+												</tr>
+											</c:forEach>
 
-											<!--                                  </tr> -->
+
+
+
+
+
+
+
 										</tbody>
 									</table>
 								</div>
@@ -125,7 +158,7 @@ if (session.getAttribute("id") == null) {
 												style="border-bottom: 1px solid gray; padding-bottom: 5px;">
 												<td style="font-size: 14px;">
 													<div style="">
-														<a href="#" style="text-decoration: none;"><b
+														<a style="text-decoration: none;"><b
 															style="font-size: 25px; color: black"> ${l.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${l.owner_name}&nbsp;
 														<a class="reservUpdate" value="${l.reservation_no}"
 															style="text-decoration: none;"> <i
@@ -135,15 +168,17 @@ if (session.getAttribute("id") == null) {
 
 													</div> <br>
 													<div>
-														<span>${l.type_name} | ${l.pet_birth} | ${l.pet_gender}</span>
+														<span>${l.type_name} | ${l.pet_birth} |
+															${l.pet_gender}</span>
 													</div> <span> ${l.reservation_memo} </span>
 												<td style="text-align: right;"><span><b><h5>${l.reserv_time}</h5></b></span><br>
 													<input type="hidden" id="petNo" value="${l.pet_no}">
 													<input type="hidden" id="ownerNo" value="${l.owner_no}">
-													<input type="hidden" id="reservation_Yn" value="${l.reservation_yn}">
-													<span>
-														<button type="button" class="btn btn-secondary btn-sm"
-															id="reserv_cancel" value="${l.reservation_no}"
+													<input type="hidden" id="reservation_Yn"
+													value="${l.reservation_yn}"> <span>
+														<button type="button"
+															class="btn btn-secondary btn-sm reserv_cancel" id=""
+															value="${l.reservation_no}"
 															style="background-color: #7f8c8d; border: none;">취소</button>
 														<button type="button"
 															class="btn btn-primary btn-sm receipt_btn"
@@ -169,36 +204,43 @@ if (session.getAttribute("id") == null) {
 									style="height: 660px; overflow: auto;">
 									<table class="table table-borderless"
 										style="color: gray; background-color: white;">
+
+
 										<c:forEach items="${receplist}" var="l">
+
 											<input type="hidden" id="age">
 											<tr
 												style="border-bottom: 1px solid gray; padding-bottom: 5px;">
 												<td style="font-size: 14px;">
 													<div style="">
-														<a href="#" style="text-decoration: none;"><b
+														<a style="text-decoration: none;"><b
 															style="font-size: 25px; color: black">${l.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${l.owner_name}&nbsp;
+														<br>
 														<input type="hidden" id="receive_petNo"
 															value="${l.pet_no}"> <span
-															class="badge bg-secondary" style="vertical-align: 3px;">대기중</span>&nbsp;<span class="badge"
-													style="background-color: white; color: #0d6efd; border: 1px solid #0d6efd;">예약</span>
-															
+															class="badge bg-secondary">대기중</span>&nbsp;
+														<c:if test="${not empty l.reservation_no }">
+															<span class="badge"
+																style="background-color: white; color: #0d6efd; border: 1px solid #0d6efd;">예약</span>
+														</c:if>
+
 													</div> <br>
 
 													<div>
-														<span>${l.type_name} | ${l.pet_birth} | ${l.pet_gender}</span>
-														
-													</div> <span> ${l.reservation_memo} </span> 
+														<span>${l.type_name} | ${l.pet_birth} |
+															${l.pet_gender}</span>
 
-
-
-
+													</div> <%-- 													<span> ${l.reservation_memo} </span> --%>
 
 												</td>
-												<td style="text-align: right;"><span><b><h5>${l.receive_time}</h5></b></span><br>
+
+												<td style="text-align: right; width: 140px;"><span><h7>${l.receive_time}</h7></span><br>
 													<input type="hidden" id="reservNo"
-													value="${l.reservation_no}"> <br> <span>
-														<button type="button" class="btn btn-secondary btn-sm"
-															id="reserv_cancel" value="${l.receive_no}"
+													value="${l.reservation_no}"> <br> <span
+													style="width: 200px;">
+														<button type="button"
+															class="btn btn-secondary btn-sm receipt_cancel" id=""
+															value="${l.receive_no}"
 															style="background-color: #7f8c8d; border: none;">접수취소</button>
 														<button type="button" class="btn btn-success btn-sm"
 															id="check_btn" style="border: none;">수납</button>
@@ -243,7 +285,7 @@ if (session.getAttribute("id") == null) {
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="exampleModalLabel">예약하기</h1>
+							<h1 class="modal-title fs-5" id="exampleModalLabel">수정하기</h1>
 							<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close"></button>
 						</div>
@@ -277,132 +319,12 @@ if (session.getAttribute("id") == null) {
 								<!-- 예약시간 -->
 								<p class="col-md-6">
 									<label for="update_reservation_date_day" class="col-form-label">예약날짜</label>
-									<input class="form-control" type="date" value="1000-01-10"
+									<input class="form-control" type="date" value="2023-01-01"
 										id="update_reservation_date_day" tabindex="-1">
 								</p>
 
 								<!-- 시간설정 -->
-								<div class="col-md-6" style="width: auto;">
-									<label class="col-form-label"
-										for="update_reservation_date_time">예약시간</label>
-									<div class="accordion" id="accordionExample">
-										<div class="accordion-item">
-											<button class="accordion-button collapsed"
-												style="width: 470px; height: 38px;" type="button"
-												id="accordion" data-bs-toggle="collapse"
-												data-bs-target="#collapseOne" aria-expanded="false"
-												aria-controls="collapseOne">시간선택</button>
-											<div id="collapseOne" class="accordion-collapse collapse"
-												aria-labelledby="headingOne"
-												data-bs-parent="#accordionExample">
-												<div class="accordion-body">
-													<div class="row text-center mx-0">
-														
-
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined1" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined1">9:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined2" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined2">9:30</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined3" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined3">10:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined4" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined4">10:30</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined5" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined5">11:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined6" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined6">11:30</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined7" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined7">13:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined8" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined8">13:30</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined9" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined9">14:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined10" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined10">14:30</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined11" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined11">15:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined12" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined12">15:30</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined13" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined13">16:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined14" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined14">16:30</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined15" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined15">17:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time2"
-																id="btn-check-1-outlined16" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-1-outlined16">17:30</label>
-														</div><br>
-														<input type="hidden" id="update_reservation_date"
-															name="update_reservation_date">
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
+								<div class="updatetimeset" style="width: auto;"></div>
 								<input type="hidden" id="reservation_date"
 									name="reservation_date">
 								<div class="mb-3">
@@ -421,184 +343,141 @@ if (session.getAttribute("id") == null) {
 				</div>
 			</div>
 
-
-			<!-- 예약하기 modal -->
-			<div class="modal fade" id="exampleModal" tabindex="-1"
-				aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="exampleModalLabel">예약하기</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<form class="row g-4 form">
-								<div class="col-md-6">
-									<label for="owner_name" class="col-form-label">보호자 이름</label> <input
-										type="text" class="form-control" id="owner_name" value="없음"
-										readonly>
-								</div>
-								<div class="col-md-6">
-									<label for="owne_tel" class="col-form-label">전화번호</label> <input
-										type="text" class="form-control" id="owner_tel"
-										placeholder="01012345678" value="없음" readonly>
-								</div>
-								<div class="col-md-6">
-									<label for="pet_name" class="col-form-label">반려견 이름</label> <input
-										type="text" class="form-control" id="pet_name" value="없음"
-										readonly>
-								</div>
-								<div class="col-md-6">
-									<label for="pet_gender" class="col-form-label">반려견 성별</label> <input
-										type="text" class="form-control" id="pet_gender" value="없음"
-										readonly>
-								</div>
-								<div class="col-md-6">
-									<label for="pet_birth" class="col-form-label">반려견 출생년도</label>
-									<input type="text" class="form-control" id="pet_birth"
-										value="없음" readonly>
-								</div>
-								<!-- 예약시간 -->
-								<p class="col-md-6">
-									<label for="reservation_date_day" class="col-form-label">예약날짜</label>
-									<input class="form-control" type="date" value="1000-01-10"
-										id="reservation_date_day" tabindex="-1">
-								</p>
-
-								<!-- 시간설정 -->
-								<div class="" style="width: auto;">
-									<label class="col-form-label"
-										for="update_reservation_date_time">예약시간</label>
-									<div class="accordion" id="accordionExample">
-										<div class="accordion-item">
-											<button class="accordion-button collapsed"
-												style="width: 464px; height: 38px;" type="button"
-												id="accordion" data-bs-toggle="collapse"
-												data-bs-target="#collapseOne" aria-expanded="false"
-												aria-controls="collapseOne">시간선택</button>
-											<div id="collapseOne" class="accordion-collapse collapse"
-												aria-labelledby="headingOne"
-												data-bs-parent="#accordionExample">
-												<div class="accordion-body">
-													<div class="row text-center mx-0">
+			<!-- 예약하기 모달 -->
+			<%@ include file="reservation_modal.jsp"%>
 
 
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined1" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined1">9:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined2" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined2">9:30</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined3" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined3">10:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined4" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined4">10:30</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined5" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined5">11:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined6" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined6">11:30</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined7" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined7">13:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined8" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined8">13:30</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined9" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined9">14:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined10" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined10">14:30</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined11" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined11">15:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined12" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined12">15:30</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined13" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined13">16:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined14" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined14">16:30</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined15" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined15">17:00</label>
-														</div><br>
-														<div class="col-md-3 col-4 my-1 px-2">
-															<input type="radio" class="btn-check" name="reserv_time"
-																id="btn-check-2-outlined16" checked autocomplete="off">
-															<label class="btn btn-outline-primary"
-																for="btn-check-2-outlined16">17:30</label>
-														</div><br>
-													</div>
-												</div>
-											</div>
+			<!-- 시간선택 html -->
+			<div style="display: none;">
+				<div class="timeoption">
+					<label class="col-form-label" for="update_reservation_date_time">예약시간</label>
+					<div class="accordion" id="accordionExample">
+						<div class="accordion-item">
+							<button class="accordion-button collapsed"
+								style="width: 464px; height: 38px;" type="button" id="accordion"
+								data-bs-toggle="collapse" data-bs-target="#collapseOne"
+								aria-expanded="false" aria-controls="collapseOne">시간선택</button>
+							<div id="collapseOne" class="accordion-collapse collapse"
+								aria-labelledby="headingOne" style="margin-top: 10px;"
+								data-bs-parent="#accordionExample">
+								<div class="accordion-body1">
+									<div class="row text-center mx-0" id="timeAppend">
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="09:00" id="btn-check-2-outlined1" autocomplete="off">
+											<label class="btn btn-outline-primary" id="09:00"
+												for="btn-check-2-outlined1">09:00</label>
 										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="09:30" id="btn-check-2-outlined2" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined2">09:30</label>
+										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="10:00" id="btn-check-2-outlined3" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined3">10:00</label>
+										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="10:30" id="btn-check-2-outlined4" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined4">10:30</label>
+										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="11:00" id="btn-check-2-outlined5" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined5">11:00</label>
+										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="11:30" id="btn-check-2-outlined6" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined6">11:30</label>
+										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="13:00" id="btn-check-2-outlined7" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined7">13:00</label>
+										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="13:30" id="btn-check-2-outlined8" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined8">13:30</label>
+										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="14:00" id="btn-check-2-outlined9" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined9">14:00</label>
+										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="14:30" id="btn-check-2-outlined10" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined10">14:30</label>
+										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="15:00" id="btn-check-2-outlined11" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined11">15:00</label>
+										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="15:30" id="btn-check-2-outlined12" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined12">15:30</label>
+										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="16:00" id="btn-check-2-outlined13" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined13">16:00</label>
+										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="16:30" id="btn-check-2-outlined14" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined14">16:30</label>
+										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="17:00" id="btn-check-2-outlined15" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined15">17:00</label>
+										</div>
+										<br>
+										<div class="col-md-3 col-4 my-1 px-2">
+											<input type="radio" class="btn-check" name="reserv_time"
+												value="17:30" id="btn-check-2-outlined16" autocomplete="off">
+											<label class="btn btn-outline-primary"
+												for="btn-check-2-outlined16">17:30</label>
+										</div>
+										<br>
+
 									</div>
 								</div>
-								<input type="hidden" id="reservation_date"
-									name="reservation_date">
-								<div class="mb-3">
-									<label for="reservation_memo" class="col-form-label">예약메모</label>
-									<textarea class="form-control" id="reservation_memo"></textarea>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary"
-										data-bs-dismiss="modal" id="cancel-button">취소</button>
-									<button type="button" class="btn btn-primary" id="ok-button"
-										name="" value="">예약하기</button>
-								</div>
-							</form>
+							</div>
 						</div>
 					</div>
 				</div>

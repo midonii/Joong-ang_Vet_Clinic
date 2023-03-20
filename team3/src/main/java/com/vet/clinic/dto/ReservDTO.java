@@ -16,7 +16,7 @@ public class ReservDTO {
 
 	private String search_value, detail_no, petNo;
 
-	private String reservation_time, reservation_memo, reservation_date, reservation_yn, staff_id;
+	private String reservation_time, reservation_memo, reservation_date, reservation_yn, reservation_date_day, staff_id;
 	private int staff_no;
 
 	private String searchValue;
@@ -29,6 +29,6 @@ public class ReservDTO {
 	private String delete_reservation_no;
 	
 	private String receive_time, receive_state,receive_no, reservNo, receive_petNo, receive_ownerNo;
-//	reservation_Yn;
 	private String search_ownerNo, search_petNo;
+	private String delete_receive_no;
 }
