@@ -28,6 +28,7 @@
 	WHERE pet_no=#{detail_no }
 	</select>
 	
+	
 	<!-- 예약테이블에 값 넣기 -->
 	<insert id="reservAdd" parameterType="ReservDTO">
 		INSERT INTO reservation SET
@@ -46,6 +47,14 @@
 	WHERE reserv_date = CURDATE() AND (reservation_yn = 'n' OR reservation_yn = '')
 	ORDER BY reservation_date DESC		
 	</select>
+	
+	<select id="reservTimeCheck" parameterType="ReservDTO" resultType="ReservDTO">
+	SELECT reserv_time
+	FROM reservationview
+	WHERE reserv_date = #{reservation_date_day}
+	</select>
+
+
 
 
 	<!-- (예약에서)접수테이블에 값 넣기 -->
@@ -103,6 +112,12 @@
 		DELETE FROM reservation
 		WHERE
 		reservation_no=#{delete_reservation_no }
+	</delete>
+	
+	<delete id="receiveDelete" parameterType="ReservDTO">
+		DELETE FROM reception
+		WHERE
+		receive_no=#{delete_receive_no }
 	</delete>
 	
 </mapper>

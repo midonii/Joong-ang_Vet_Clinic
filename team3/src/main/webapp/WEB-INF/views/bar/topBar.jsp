@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <script type="text/javascript" src="../js/datetime.js"></script>
 <!-- Topbar -->
 <nav
@@ -15,8 +16,8 @@
 	<div
 		class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
 		<div class="row">
-			<div class="col-2 reserv">예약 : </div>
-			<div class="col-2">접수 : </div>
+			<div class="col-3 reserv"><b>예약 :</b> ${fn:length(reservlist)}</div>
+			<div class="col-3"><b>접수 :</b> ${fn:length(receplist)}</div>
 		</div>
 	</div>
 

@@ -1,7 +1,6 @@
 package com.vet.clinic.dao;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -36,5 +35,9 @@ public interface ReservDAO {
 	public int search_receiveAdd(ReservDTO reservDTO);
 
 	public int receiveAdd_reservYn(ReservDTO reservDTO);
+
+	public int receiveDelete(ReservDTO reservDTO);
+
+	public List<ReservDTO> reservTimeCheck(ReservDTO reservDTO);
 
 }

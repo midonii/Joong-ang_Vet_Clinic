@@ -148,42 +148,15 @@ function new_event(event) {
         var reserv_memo = $("#reser_memo").val();
 		var day = parseInt($(".active-date").html()); //선택된 날짜를 숫자로 변환
         //var count = parseInt($("#count").val().trim());
-		
-		//1글자이상 입력 검증
-		if (owner_name.length === 0) {
-		  $("#owner_name").addClass("error-input");
-		  alert('최소 한글자 이상 입력하세요');
-		}
-		
-		if (pet_name.length === 0) {
-		  $("#pet_name").addClass("error-input");
-		  alert('최소 한글자 이상 입력하세요');
-		}
-		
-		if (owner_addr.length === 0) {
-		  $("#owner_addr").addClass("error-input");
-		  alert('최소 한글자 이상 입력하세요');
-		}
-		
-		if (owner_tel.length === 0) {
-		  $("#owner_tel").addClass("error-input");
-		  alert('최소 한글자 이상 입력하세요');
-		} else if (isNaN(owner_tel)) {
-		  $("#owner_tel").addClass("error-input");
-		  alert('숫자만 입력이 가능합니다')
-		}
-
-        else {
             $("#dialog").hide(250);
             console.log("new event");
             new_event_json(owner_name, pet_name, owner_tel, owner_addr, time, reserv_memo, date, day);
             date.setDate(day);
             init_calendar(date);
-        }
+//        }
     });
 }
 
-// Adds a json event to event_data
 function new_event_json(owner_name, pet_name, owner_tel, owner_addr, time, reserv_memo, date, day) {
     var event = {
         "owner_name": owner_name,
@@ -215,19 +188,19 @@ function show_events(events, month, day) {
     }
     else {
         // Go through and add each event as a card to the events container
-        for(var i=0; i<events.length; i++) {
-            var event_card = $("<div class='event-card'></div>");
-            var event_name = $("<div class='event-name'>"+events[i]["owner_name"]+":</div>");
-            //var event_count = $("<div class='event-count'>"+events[i]["invited_count"]+" Invited</div>");
-            if(events[i]["cancelled"]===true) {
-                $(event_card).css({
-                    "border-left": "10px solid #FF1744"
-                });
-                event_count = $("<div class='event-cancelled'>Cancelled</div>");
-            }
-            $(event_card).append(event_name).append(event_count);
-            $(".events-container").append(event_card);
-        }
+//        for(var i=0; i<events.length; i++) {
+//            var event_card = $("<div class='event-card'></div>");
+//            var event_name = $("<div class='event-name'>"+events[i]["owner_name"]+":</div>");
+//            //var event_count = $("<div class='event-count'>"+events[i]["invited_count"]+" Invited</div>");
+//            if(events[i]["cancelled"]===true) {
+//                $(event_card).css({
+//                    "border-left": "10px solid #FF1744"
+//                });
+//                event_count = $("<div class='event-cancelled'>Cancelled</div>");
+//            }
+//            $(event_card).append(event_name).append(event_count);
+//            $(".events-container").append(event_card);
+//        }
     }
 }
 
