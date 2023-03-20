@@ -9,15 +9,15 @@
 			style="font-size: 14px; margin-left: -10px;">
 
 			<tr>
-				<td>보호자명 : <b class="text-gray-800">윤지혜</b>&nbsp;&nbsp;
+				<td>보호자명 :&nbsp; <b class="text-gray-800"><span class="ownername"></span></b>&nbsp;&nbsp;
 				</td>
-				<td>동물명</b> : <b class="text-gray-800">까미</b>&nbsp;&nbsp;
+				<td>동물명</b> :&nbsp; <b class="text-gray-800"><span class="petname"></span></b>&nbsp;&nbsp;
 				</td>
-				<td>견종 : 포메라니안&nbsp;&nbsp;</td>
-				<td>성별 : IF/NF&nbsp;&nbsp;</td>
-				<td>생년월일 : 2022-01-03&nbsp;&nbsp;</td>
-				<td>체중 : 12.0kg&nbsp;&nbsp;</td>
-				<td>담당의 : doctor&nbsp;&nbsp;</td>
+				<td>견종 :&nbsp;<span class="pettype"> </span>&nbsp;&nbsp;</td>
+				<td>성별 :&nbsp;<span class="petgender"></span>&nbsp;&nbsp;</td>
+				<td>생년월일 :&nbsp;<span class="petbirth"> </span>&nbsp;&nbsp;</td>
+				<td>체중 :&nbsp;<span class="petweight"> </span>kg&nbsp;&nbsp;</td>
+				<td>담당의 :&nbsp; <span>${sessionScope.username }</span>&nbsp;&nbsp;</td>
 
 			</tr>
 

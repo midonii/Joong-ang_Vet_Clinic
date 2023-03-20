@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <%
@@ -108,6 +110,8 @@ if (session.getAttribute("id") == null) {
 								<div
 									class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
 									<h6 class="m-0 font-weight-bold text-primary">처방내역</h6>
+									<a class="text-primary" role="button" style=" font-size:14px; text-decoration: none; " id="presc" >
+									추가<i class="fa-regular fa-plus" style="margin-left: 2px;"></i></a>
 
 								</div>
 								<%@ include file="./chart_cheobang.jsp"%>
@@ -149,8 +153,9 @@ if (session.getAttribute("id") == null) {
 
 
 			<%@ include file="./chart_searchM.jsp"%>
-			<%@ include file="../bar/footer.jsp"%>
+			<%@ include file="./chart_cheobangM.jsp"%>
 			<%@ include file="../bar/logoutModal.jsp"%>
+			<%@ include file="../bar/footer.jsp"%>
 
 
 
