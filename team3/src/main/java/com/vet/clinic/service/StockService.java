@@ -1,6 +1,7 @@
 package com.vet.clinic.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,10 @@ public class StockService {
 
 	public List<String> m_subcate() {
 		return stockDAO.m_subcate();
+	}
+
+	public List<Map<String, Object>> stockSelect(Map<String, Object> paramMap) {
+		return stockDAO.stockSelect(paramMap);
 	}
 	
 	

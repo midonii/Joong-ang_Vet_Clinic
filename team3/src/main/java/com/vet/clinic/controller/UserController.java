@@ -213,7 +213,7 @@ public class UserController {
 	
 
 // 프로필
-	@GetMapping("/profile={id}")
+	@GetMapping("/userProfile={id}")
 	public ModelAndView profile(@PathVariable("id") String id, HttpSession session) {
 		ModelAndView mv = new ModelAndView();
 		System.out.println(session.getAttribute("id"));
@@ -230,7 +230,7 @@ public class UserController {
 		return mv;
 	}
 	
-	@PostMapping("/profile={id}")
+	@PostMapping("/userProfile={id}")
 	public String profile(HttpSession session) {
 		return "redirect:/profile="+session.getAttribute("id");
 	}

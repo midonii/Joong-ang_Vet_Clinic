@@ -2,8 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.vet.clinic.dao.StockDAO">
+<!-- 초기화면 -->
+	<!-- CAST(FORMAT(medical_price,'##,###,##0') AS INT) AS medical_price, CAST(FORMAT(medical_buying,'###,##0') AS INT) as medical_buying, -->
 	<select id="stockList" resultType="StockDTO">
-		SELECT medical_subcate, medical_name, medical_price, medical_buying, medical_company, medical_buyEa
+		SELECT medical_subcate, medical_name,medical_price,medical_buying, medical_company, medical_buyEa
 		FROM medicalList
 		WHERE medical_category != '진료'
 		ORDER BY medical_name
@@ -21,6 +23,17 @@
 		FROM medicalList
 		WHERE medical_category != '진료'
 		ORDER BY medical_subcate
+	</select>
+
+<!-- 검색 -->
+	<select id="stockSelect" parameterType="HashMap" resultType="HashMap">
+		SELECT medical_subcate, medical_name, medical_price, medical_buying, medical_company, medical_buyEa
+		FROM medicalList
+		WHERE medical_category != '진료'
+		<if test="radioValue != '전체보기'">
+			AND medical_subcate = #{radioValue }
+		</if>
+		ORDER BY medical_name
 	</select>
 
 </mapper>
