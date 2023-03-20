@@ -94,7 +94,7 @@
 				<a class="collapse-item" href="/medicine">데이터 관리</a> <a
 					class="collapse-item" href="/staffList">직원 관리</a> <a
 					class="collapse-item" href="/sales">매출 관리</a> <a
-					class="collapse-item" href="cards.html">재고 관리</a>
+					class="collapse-item" href="/stockList">약품 재고 관리</a>
 			</div>
 		</div></li>
 </c:if>
