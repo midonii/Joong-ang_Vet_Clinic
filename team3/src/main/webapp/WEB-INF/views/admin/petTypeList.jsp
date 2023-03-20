@@ -41,7 +41,7 @@
 		var contentnum = $("#contentnum").val();
 		location.href = "${pageContext.request.contextPath}/petType?pagenum="
 				+ pagenum + "&contentnum=" + contentnum
-	
+
 	}
 	$(function() {
 		$("#addBtn").click(function() {
@@ -53,11 +53,10 @@
 				return false;
 			}
 		});
-		
 
 		$(".petTypeUpdate").click(function() {
 			var type_no = $(this).attr("value");
-			
+
 			$.post({
 				url : "/petTypeDetail",
 				cache : false,
@@ -78,11 +77,11 @@
 				alert("실패");
 			});
 		});
-		
-		$(".refresh").click(function(){
+
+		$(".refresh").click(function() {
 			$("#updateModal").modal("hide");
 		});
-		
+
 		$(".updateFrm").click(function() {
 
 			let type_no = $("#type_noU").val();
@@ -110,8 +109,8 @@
 				alert("문제발생");
 			});
 		});
-		
-	 	$("#search_btn").click(function() {
+
+		$("#search_btn").click(function() {
 			let searchValue = $("#search_value").val();
 
 			if (searchValue == "" || searchValue.length < 2) {
@@ -120,24 +119,48 @@
 			}
 			searchForm.submit();
 		});
+		$(".petTypeDel").click(function() {
+			var type_no = $(this).attr("value");
+			$.post({
+				url : "/petTypeDel",
+				cache : false,
+				data : {
+					"type_no" : type_no
+				},
+				dataType : "json"
+			}).done(function(data) {
+				let result = data.result;
+				if (confirm("정말 삭제하시겠습니까?")) {
+					if (result == 1) {
+						alert("삭제가 완료되었습니다.");
+						var pagenum = $("#pagenum").val();
+						let searchValue = $("#search_value").val();
+						page(pagenum, searchValue);
+					} else {
+						alert("문제가 발생했습니다. \n다시 시도해주세요.");
+					}
 
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("실패");
+			});
+		});
 	});
-	function petTypeDel(type_no){
-		if(confirm("정말 삭제하시겠습니까?")){
-		location.href =  "/petTypeDel?type_no=" + type_no;
-		}
-	}
-	
+	/* 	function petTypeDel(type_no){
+	 if(confirm("정말 삭제하시겠습니까?")){
+	 location.href =  "/petTypeDel?type_no=" + type_no;
+	 }
+	 } */
+
 	function page(idx, search_value) {
 		var pagenum = idx;
 		let searchValue = search_value;
 		var contentnum = $("#contentnum").val();
 		location.href = "${pageContext.request.contextPath}/petType?pagenum="
-				+ pagenum + "&contentnum=" + contentnum +"&search_value=" + searchValue;
+				+ pagenum + "&contentnum=" + contentnum + "&search_value="
+				+ searchValue;
 
 	}
-	
-	
 </script>
 </head>
 
@@ -167,7 +190,7 @@
 							class="text-gray-600"><i class="fa-solid fa-house-chimney"></i></a>&nbsp;&nbsp;<i
 							class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp; <a
 							href="/medicine" style="text-decoration: none;"
-							class="text-gray-700">데이터 관리</a>&nbsp;&nbsp;<i
+							class="text-gray-700">관리자(데이터 관리)</a>&nbsp;&nbsp;<i
 							class="fa-sharp fa-solid fa-chevron-right"></i> &nbsp;<a
 							href="/petType" style="text-decoration: none;"
 							class="text-gray-700">견종</a>
@@ -185,9 +208,9 @@
 							<div style="margin-top: -5px;">
 								<ul class="nav nav-tabs">
 									<li class="nav-item"><a class="nav-link"
-										aria-current="page" href="/medicine" tabindex="0">약</a></li>
+										aria-current="page" href="/medicine" tabindex="0">약품</a></li>
 									<li class="nav-item "><a class="nav-link"
-										href="/inspection">검사</a></li>
+										href="/inspection">진료</a></li>
 									<li class="nav-item"><a class="nav-link" href="/vaccine">접종</a></li>
 									<li class="nav-item"><a
 										class="nav-link active font-weight-bolder text-primary"
@@ -202,10 +225,17 @@
 										action="/petTypeAdd" method="post">
 
 										<ul class="list-group list-group-flush">
+											<li class="list-group-item">
+												<div class="row">
+													<div class="col-md-12 text-center font-weight-bold text-lg"
+														style="line-height: 38px;">견종데이터 추가</div>
 
+												</div>
+											</li>
 											<li class="list-group-item mb-4">
 												<div class="row">
-													<div class="col-md-3 " style="line-height: 40px;">견종</div>
+													<div class="col-md-3 text-center"
+														style="line-height: 40px;">견종</div>
 													<div class="col-md-9">
 														<input type="text" class="form-control" id="type_name"
 															name="type_name">
@@ -213,10 +243,9 @@
 												</div>
 											</li>
 										</ul>
-
-										<div class="text-center col-lg-12 col-12">
+										<div class="d-flex justify-content-center">
 											<button type="submit" id="addBtn"
-												class="btn btn-primary col-8 ">저장</button>
+												class="btn btn-primary col-5">저장</button>
 										</div>
 									</form>
 								</div>
@@ -260,9 +289,8 @@
 																value="${tl.type_no }">
 																<i class="fa-solid fa-pen"></i>
 															</button>
-															<button type="button"
-																onclick="petTypeDel(${tl.type_no })"
-																class="btn btn-circle btn-sm btn-danger">
+															<button type="button" value="${tl.type_no }"
+																class="btn btn-circle btn-sm btn-danger petTypeDel">
 																<i class="fa-solid fa-trash"></i>
 															</button>
 														</td>
@@ -336,7 +364,7 @@
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">견종 이름 수정</h5>
+							<h5 class="modal-title" id="exampleModalLabel">견종 데이터 수정</h5>
 							<button class="close" type="button" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">×</span>

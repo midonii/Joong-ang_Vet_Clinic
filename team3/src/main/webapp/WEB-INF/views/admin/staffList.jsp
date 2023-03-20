@@ -69,7 +69,9 @@
 		});
 
 		$(".refresh").click(function() {
-			location.href = "/staffList";
+			var pagenum = $("#pagenum").val();
+			let searchValue = $("#search_value").val();
+			page(pagenum, searchName2, searchValue);
 		});
 	
 
@@ -116,7 +118,30 @@
 		$(".deleteStaff").click(function() {
 			let staff_no = $("#staff_no").val();
 			if (confirm("정말 삭제하시겠습니까?")) {
-				location.href = "/staffDel?staff_no=" + staff_no;
+				$.post({
+					url : "/staffDel",
+					cache : false,
+					data : {
+						"staff_no" : staff_no
+					},
+					dataType : "json"
+				}).done(function(data) {
+					let result = data.result;
+					if (confirm("정말 삭제하시겠습니까?")) {
+						if (result == 1) {
+							$("#staffDetailModal").modal("hide");
+							alert("삭제가 완료되었습니다.");
+							var pagenum = $("#pagenum").val();
+							let searchValue = $("#search_value").val();
+							page(pagenum, searchName2, searchValue);
+						} else {
+							alert("문제가 발생했습니다. \n다시 시도해주세요.");
+						}
+
+					}
+				}).fail(function(xhr, status, errorThrown) {
+					alert("실패");
+				});
 			}
 		});
 
@@ -243,7 +268,17 @@
 												<td>${sl.staff_id }</td>
 												<td>${sl.s_Tel}</td>
 												<td>${sl.staff_email }</td>
-												<td>${sl.staff_grade }</td>
+												<c:choose>
+													<c:when test="${sl.staff_grade eq 'doctor' }">
+														<td>의사</td>
+													</c:when>
+													<c:when test="${sl.staff_grade eq 'admin' }">
+														<td>관리자</td>
+													</c:when>
+													<c:when test="${sl.staff_grade eq 'technician' }">
+														<td>테크니션</td>
+													</c:when>
+												</c:choose>
 											</tr>
 										</c:forEach>
 										<c:if test="${page.getTotalcount() eq 0}">

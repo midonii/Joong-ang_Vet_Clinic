@@ -1,5 +1,6 @@
 package com.vet.clinic.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.vet.clinic.dto.MedicalDTO;
 import com.vet.clinic.dto.SearchDTO;
 import com.vet.clinic.service.DataService;
 
@@ -27,13 +29,16 @@ public class DataController {
 			@RequestParam(value = "pagenum", defaultValue = "1") String pagenum,
 			@RequestParam(value = "contentnum", defaultValue = "10") String contentnum,
 			@RequestParam(value = "table", defaultValue = "medicalList") String table,
-			@RequestParam(value = "category", defaultValue = "약") String category, HttpServletRequest request) {
+			@RequestParam(value = "category", defaultValue = "약품") String category, HttpServletRequest request) {
 		mv = new ModelAndView("/admin/medicineList");
 		SearchDTO searchDTO = new SearchDTO();
 		searchDTO.setSearch_value(request.getParameter("search_value"));
+		searchDTO.setSearch_name(request.getParameter("search_name"));
 		searchDTO.setTable(table);
 		searchDTO.setCategory(category);
 		dataService.paging(mv, pagenum, contentnum, searchDTO);
+		List<String> subcate = dataService.category(searchDTO);
+		mv.addObject("subcate", subcate);
 		return mv;
 	}
 
@@ -42,13 +47,16 @@ public class DataController {
 			@RequestParam(value = "pagenum", defaultValue = "1") String pagenum,
 			@RequestParam(value = "contentnum", defaultValue = "10") String contentnum,
 			@RequestParam(value = "table", defaultValue = "medicalList") String table,
-			@RequestParam(value = "category", defaultValue = "검사") String category, HttpServletRequest request) {
+			@RequestParam(value = "category", defaultValue = "진료") String category, HttpServletRequest request) {
 		mv = new ModelAndView("/admin/inspectionList");
 		SearchDTO searchDTO = new SearchDTO();
 		searchDTO.setSearch_value(request.getParameter("search_value"));
+		searchDTO.setSearch_name(request.getParameter("search_name"));
 		searchDTO.setTable(table);
 		searchDTO.setCategory(category);
 		dataService.paging(mv, pagenum, contentnum, searchDTO);
+		List<String> subcate = dataService.category(searchDTO);
+		mv.addObject("subcate", subcate);
 		return mv;
 	}
 
@@ -60,6 +68,7 @@ public class DataController {
 		mv = new ModelAndView("/admin/vaccineList");
 
 		SearchDTO searchDTO = new SearchDTO();
+		
 		searchDTO.setSearch_value(request.getParameter("search_value"));
 		searchDTO.setTable(table);
 		dataService.paging(mv, pagenum, contentnum, searchDTO);
@@ -87,12 +96,15 @@ public class DataController {
 		return "redirect:/medicine";
 	}
 
-	@GetMapping("/medicineDel")
-	public String medicineDel(@RequestParam(name = "medical_no") int medical_no) {
-		int result = dataService.medicalDel(medical_no);
-		return "redirect:/medicine";
-	}
 
+	@ResponseBody
+	@PostMapping(value = "/medicalDel", produces = "application/json;charset=UTF-8")
+	public String medicalDel(@RequestParam(name = "medical_no") int medical_no) {
+		JSONObject json = new JSONObject();
+		int result = dataService.medicalDel(medical_no);
+		json.put("result", result);
+		return json.toString();
+	}
 	@ResponseBody
 	@PostMapping(value = "/medicineDetail", produces = "application/json;charset=UTF-8")
 	public String medicineDetail(@RequestParam(name = "medical_no") int medical_no) {
@@ -117,11 +129,7 @@ public class DataController {
 		return "redirect:/inspection";
 	}
 
-	@GetMapping("/inspectionDel")
-	public String inspectionDel(@RequestParam(name = "medical_no") int medical_no) {
-		int result = dataService.medicalDel(medical_no);
-		return "redirect:/inspection";
-	}
+
 
 	@ResponseBody
 	@PostMapping(value = "/inspectionDetail", produces = "application/json;charset=UTF-8")
@@ -141,12 +149,17 @@ public class DataController {
 		return json.toString();
 	}
 
-	@GetMapping("/vaccineDel")
-	public String vaccineDel(@RequestParam(name = "vac_no") int vac_no) {
-		int result = dataService.vaccineDel(vac_no);
-		return "redirect:/vaccine";
-	}
 
+
+	@ResponseBody
+	@PostMapping(value = "/vaccineDel", produces = "application/json;charset=UTF-8")
+	public String vaccineDel(@RequestParam(name = "vac_no") int vac_no) {
+		JSONObject json = new JSONObject();
+		int result = dataService.vaccineDel(vac_no);
+		json.put("result", result);
+		return json.toString();
+	}
+	
 	@ResponseBody
 	@PostMapping(value = "/vaccineDetail", produces = "application/json;charset=UTF-8")
 	public String vaccineDetail(@RequestParam(name = "vac_no") int vac_no) {
@@ -182,11 +195,17 @@ public class DataController {
 		return "redirect:/petType";
 	}
 
-	@GetMapping("/petTypeDel")
+	
+	@ResponseBody
+	@PostMapping(value = "/petTypeDel", produces = "application/json;charset=UTF-8")
 	public String petTypeDel(@RequestParam(name = "type_no") int type_no) {
+		JSONObject json = new JSONObject();
 		int result = dataService.petTypeDel(type_no);
-		return "redirect:/petType";
+		json.put("result", result);
+		return json.toString();
 	}
+	
+
 
 	@ResponseBody
 	@PostMapping(value = "/petTypeDetail", produces = "application/json;charset=UTF-8")

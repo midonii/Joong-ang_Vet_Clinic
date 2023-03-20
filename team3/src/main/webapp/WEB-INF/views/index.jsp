@@ -281,7 +281,7 @@ $(document)
 		});
 
 $(document).on("click", "#reg_btn", function() {
-	location.href = "/profile";
+	location.href = "/client";
 
 });
 

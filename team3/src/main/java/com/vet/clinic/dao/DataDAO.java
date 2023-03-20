@@ -9,17 +9,18 @@ import org.springframework.stereotype.Repository;
 
 import com.vet.clinic.dto.MedicalDTO;
 import com.vet.clinic.dto.PetTypeDTO;
+import com.vet.clinic.dto.SearchDTO;
 
 @Repository
 @Mapper
 public interface DataDAO {
 
 	List<MedicalDTO> medicalList(@Param("pagenum") int pagenum, @Param("contentnum") int contentnum,
-			@Param("search_value") String search_value, @Param("table") String table,
-			@Param("category") String category);
+			@Param("search_name") String search_name, @Param("search_value") String search_value,
+			@Param("table") String table, @Param("category") String category);
 
-	int TotalCount(@Param("search_value") String search_value, @Param("table") String table,
-			@Param("category") String category);
+	int TotalCount(@Param("search_name") String search_name, @Param("search_value") String search_value,
+			@Param("table") String table, @Param("category") String category);
 
 	int mediAdd(Map<String, Object> map);
 
@@ -32,7 +33,6 @@ public interface DataDAO {
 			@Param("category") String category);
 
 	int vaccineAdd(Map<String, Object> map);
-
 
 	int petTypeAdd(Map<String, Object> map);
 
@@ -55,5 +55,7 @@ public interface DataDAO {
 	int vaccineUpdate(Map<String, Object> map);
 
 	int TotalInspection(String search_value);
+
+	List<String> category(SearchDTO searchDTO);
 
 }

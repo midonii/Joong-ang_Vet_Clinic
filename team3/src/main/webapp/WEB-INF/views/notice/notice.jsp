@@ -135,22 +135,27 @@ if (session.getAttribute("id") == null) {
 		$(".noticeDelete").click(function() {
 			var notice_no = $("#D_no").val();
 
-			$.post({
-				url : "/noticeDelete",
-				cache : false,
-				data : {
-					"notice_no" : notice_no
-				},
-				dataType : "json"
-			}).done(function(data) {
-				if (data.result == 1) {
-					$("#noticeDetailModal").modal("hide");
-					location.href = "/notice";
-				}
-			}).fail(function(xhr, status, errorThrown) {
-				alert("실패");
-			});
+			if (confirm("정말 삭제하시겠습니까?")) {
 
+				$.post({
+					url : "/noticeDelete",
+					cache : false,
+					data : {
+						"notice_no" : notice_no
+					},
+					dataType : "json"
+				}).done(function(data) {
+
+					if (data.result == 1) {
+						$("#noticeDetailModal").modal("hide");
+						var pagenum = $("#pagenum").val();
+						let searchValue = $("#search_value").val();
+						page(pagenum, searchName2, searchValue);
+					}
+				}).fail(function(xhr, status, errorThrown) {
+					alert("실패");
+				});
+			}
 		});
 
 		$(".noticeUpdate").click(function() {
@@ -202,6 +207,7 @@ if (session.getAttribute("id") == null) {
 					$("#D_read").text(result.notice_read);
 					$("#D_name").text(result.staff_name);
 					$("#noticeDetailModal").modal("show");
+
 				} else {
 					alert("문제가 발생했습니다. \n다시 시도해주세요.");
 				}
