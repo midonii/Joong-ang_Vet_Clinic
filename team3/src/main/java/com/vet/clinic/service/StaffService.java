@@ -51,7 +51,6 @@ public ModelAndView paging(ModelAndView mv, String pagenum, String contentnum, S
 
 		List<StaffDTO> staffList = staffDAO.staffList(pageDTO.getPagenum() * 10, pageDTO.getContentnum(),
 				searchDTO.getSearch_name(), searchDTO.getSearch_value());
-
 		mv.addObject("staffList", staffList);
 		mv.addObject("page", pageDTO);
 		mv.addObject("search", searchDTO);

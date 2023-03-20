@@ -13,13 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vet.clinic.service.IndexService;
 
 @Controller
 public class IndexController {
-
 
 	@Autowired
 	private IndexService indexService;
@@ -63,6 +63,19 @@ public class IndexController {
 	}
 
 	@ResponseBody
+	@PostMapping("/ReCount")
+	public String ReCount() {
+		JSONObject json = new JSONObject();
+		int reservCount = indexService.reservCount();
+		int recepCount = indexService.recepCount();
+		int diagCount = indexService.diagCount();
+		json.put("reservCount", reservCount);
+		json.put("recepCount", recepCount);
+		json.put("diagCount", diagCount);
+		return json.toString();
+	}
+
+	@ResponseBody
 	@PostMapping(value = "/petAjax", produces = "application/json;charset=UTF-8")
 	public String petAjax(HttpServletRequest request) {
 		JSONObject json = new JSONObject();
@@ -73,4 +86,5 @@ public class IndexController {
 		json.put("pet", petJ);
 		return json.toString();
 	}
+
 }

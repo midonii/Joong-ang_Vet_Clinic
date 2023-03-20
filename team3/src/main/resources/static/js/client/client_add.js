@@ -285,7 +285,10 @@ $(function(){
 				var type_name = result[i].type_name
 				var pet_gender = result[i].pet_gender;
 				var pet_birth = result[i].pet_birth;
-				var pet_memo = result[i].pet_memo;
+				var pet_memo = "";
+				if(result[i].pet_memo != undefined){
+					pet_memo = result[i].pet_memo;
+				}
 				table += "<tr class='petList' value="+pet_no+">";
 				table += "<td>"+pet_no+"</td>";
 				table += "<td>"+pet_name+"</td>";
@@ -293,11 +296,18 @@ $(function(){
 				table += "<td>"+pet_gender+"</td>";
 				table += "<td>"+pet_birth+"</td>";
 				table += "<td>"+pet_memo+"</td>";
-				table += "</tr>";
+				table += "<td>"+"<button type='submit' id='petdetail-btn' class='btn btn-outline-primary btn-sm petdetail-btn' name="+pet_no+" value="+pet_no+">상세보기</button>"+"</td>";
 			}
 			
 			$("#ajaxTable").append(table);
 			$("#ajaxTable").show();
+			
+			//반려견 상세보기 기능
+			$(".petdetail-btn").click(function() {
+				let petNo = $(this).attr("value");
+				//alert(petNo);
+				location.href = "petinfo?petNo=" + petNo;
+			});
 			
 			//변경된 반려견 테이블의 반려견 삭제 기능
 			$(".petList").off().click(function(){
@@ -730,7 +740,10 @@ $(function(){
 					var type_name = result2[i].type_name
 					var pet_gender = result2[i].pet_gender;
 					var pet_birth = result2[i].pet_birth;
-					var pet_memo = result2[i].pet_memo;
+					var pet_memo = "";
+					if(result2[i].pet_memo != undefined){
+						pet_memo = result2[i].pet_memo;
+					}
 					table += "<tr class='petList' value="+pet_no+">";
 					table += "<td>"+pet_no+"</td>";
 					table += "<td>"+pet_name+"</td>";

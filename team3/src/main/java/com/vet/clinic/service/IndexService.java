@@ -27,4 +27,14 @@ public class IndexService {
 	public List<Map<String, Object>> noticeList() {
 		return indexDAO.indexNotice();
 	}
+
+	public int reservCount() {
+		return indexDAO.reservCount();
+	}
+	public int recepCount() {
+		return indexDAO.recepCount();
+	}
+	public int diagCount() {
+		return indexDAO.diagCount();
+	}
 }

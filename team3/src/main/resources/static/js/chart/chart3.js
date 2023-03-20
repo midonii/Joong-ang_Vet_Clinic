@@ -137,3 +137,32 @@
 		});
 		
 	});
+	
+	/*	$(function() {
+		var pet_no = $("#pet_no").val();
+		$
+				.post({
+					url : "/petVacAjax",
+					cache : false,
+					data : {
+						"pet_no" : pet_no
+					},
+					dataType : "json"
+				})
+				.done(
+						function(data) {
+							let pet = data.pet;
+							var div = "";
+							for (let i = 0; i < pet.length; i++) {
+								var vac_name = pet[i].vac_name;
+								var vacdata_date = pet[i].vacdata_date;
+								div += "<div class='list-group-item row'><div class='col-5 font-weight-bold float-left'>"
+										+ vac_name
+										+ "</div><div class='col-7 float-left'>"
+										+ vacdata_date + "</div></div>"
+							}
+							$("#vac").append(div);
+						}).fail(function(xhr, status, errorThrown) {
+					alert("실패");
+				});*/
+	});
