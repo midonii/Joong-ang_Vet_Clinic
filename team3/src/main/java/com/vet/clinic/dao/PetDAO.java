@@ -24,6 +24,8 @@ public interface PetDAO {
 
 	List<PetDTO> petDrug(PetDTO petDTO);
 
+	List<PetDTO> petVac(PetDTO petDTO);
+
 	
 
 

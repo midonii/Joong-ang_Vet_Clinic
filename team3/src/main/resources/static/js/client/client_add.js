@@ -39,8 +39,15 @@ $(function(){
 				data : {"detailNo" : detailNo},
 				dataType : "json"
 			}).done(function(data){
+				
 				let result = data.result
+				let result2 = data.result2
+				if(result2.length == 0){
+					alert("반려견을 추가해 주세요.");
+					return false;
+				}
 				alert(result[0].owner_name);
+				
 				
 				var owner_name = result[0].owner_name
 				var owner_addr = result[0].owner_addr
@@ -89,7 +96,7 @@ $(function(){
 					return false;
 				}
 				
-				if($("#updateClientTel").val() == "" || $("#updateClientTel").val().length > 9 || 
+				if($("#updateClientTel").val() == "" || $("#updateClientTel").val().length > 11 || 
 					RegExp.test($("#updateClientTel").val())	){
 					alert("전화번호는 숫자만 입력해 주세요.");
 					$("#updateClientTel").focus();
@@ -758,7 +765,10 @@ $(function(){
 				$("#ajaxModalTable").show();
 				
 				//변경된 반려견 테이블의 반려견 삭제 기능
-				$(".petList").off().click(function(){
+				$(document).off("click",".petList").on("click", ".petList", function(){
+					
+				
+			//	$(".petList").off().click(function(){
 					let petNo = $(this).attr("value");
 					//alert(petNo);
 					$(this).css("background-color", "#f4f4f4");
@@ -767,17 +777,11 @@ $(function(){
 						$(this).css('background-color', '');
 					});
 					
-					$(".petDelete").off().click(function(){
-						//반려견 행 클릭 후 삭제 버튼 누를 경우 삭제되게
-						alert(petNo);
-						 if(confirm("삭제하시겠습니까?")){
-				 				location.href="petDelete?petNo="+petNo;
-				 			}
-						
-					});
 					
 					//보호자 상세보기 modal에서 반려견 수정하기
-					$(".cm_petUpdate").off().click(function(){
+					$(document).off("click",".cm_petUpdate").on("click", ".cm_petUpdate",function(){
+						
+//					$(".cm_petUpdate").off().click(function(){
 						//alert(petNo);
 						//버튼 클릭 시 기존의 tr을 삭제하도록
 						$(".petList").hide();
@@ -839,6 +843,13 @@ $(function(){
 
 
 							$("#petUpdateModal").modal("show");
+							
+							//X버튼 누를 경우 기존의 petlist 다시 띄우기
+							$("#petUpdateModalClose").click(function(){
+								$(".petList").show();
+							});
+							
+							
 
 						}).fail(function(xhr, status, errorThrown) {
 							alert("문제가 발생했습니다.");
@@ -949,7 +960,10 @@ $(function(){
 												var type_name = result[i].type_name
 												var pet_gender = result[i].pet_gender;
 												var pet_birth = result[i].pet_birth;
-												var pet_memo = result[i].pet_memo;
+												var pet_memo = "";
+												if (result[i].pet_memo != undefined) {
+													pet_memo = result[i].pet_memo;
+												}
 												table += "<tr class='petList' value=" + pet_no + ">";
 												table += "<td>" + pet_no + "</td>";
 												table += "<td>" + pet_name + "</td>";
@@ -962,22 +976,45 @@ $(function(){
 
 											$("#ajaxModalTable").append(table);
 											$("#ajaxModalTable").show();
+											
+											
+											
+											
+											
 										});
 										
 										$("#detailModal").modal("show");
 										
+										
+										
 									} else {
 										alert("문제가 발생했습니다. \n다시 시도해주세요.");
 									}
+									
+									
 								}).fail(function() {
 									alert("문제가 발생했습니다.");
 								});
 							}
+							
+							
+							
 
 						});
 
 						
 					});
+					
+					$(".petDelete").off().click(function(){
+						//반려견 행 클릭 후 삭제 버튼 누를 경우 삭제되게
+						alert(petNo);
+						 if(confirm("삭제하시겠습니까?")){
+				 				location.href="petDelete?petNo="+petNo;
+				 			}
+						
+					});
+					
+					
 				});
 				
 				
@@ -1051,7 +1088,7 @@ $(function(){
 					return false;
 				}
 				
-				if($("#updateClientTel").val() == "" || $("#updateClientTel").val().length > 9 || 
+				if($("#updateClientTel").val() == "" || $("#updateClientTel").val().length > 11 || 
 					RegExp.test($("#updateClientTel").val())	){
 					alert("전화번호는 숫자만 입력해 주세요.");
 					$("#updateClientTel").focus();
@@ -1292,6 +1329,9 @@ $(function(){
     			});
 
 				if(confirm("반려견을 바로 등록 하시겠습니까?")){
+				//보호자 추가 모달 숨기기
+				$("#clientAddModal").modal("hide");
+				
 				var clientName = $("#floatingClientName").val();
 				//alert(clientName);
 				$("#owner_nameAdd").val(clientName);

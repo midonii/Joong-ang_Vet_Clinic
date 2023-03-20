@@ -1,8 +1,6 @@
 package com.vet.clinic.controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -44,7 +42,7 @@ public class PetController {
 	@GetMapping("petinfo")
 	public ModelAndView petdetail(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("client/petinfo");
-		System.err.println(request.getParameter("petNo"));
+		//System.err.println(request.getParameter("petNo"));
 		
 		PetDTO petDTO = new PetDTO();
 		petDTO.setPetNo(request.getParameter("petNo"));
@@ -66,8 +64,8 @@ public class PetController {
 	@PostMapping(value="pastChartAjax", produces = "application/json;charset=UTF-8")
 	public String pastChartAjax(HttpServletRequest request) {
 		
-		System.err.println(request.getParameter("petNo"));
-		System.err.println(request.getParameter("chartNo"));
+		//System.err.println(request.getParameter("petNo"));
+		//System.err.println(request.getParameter("chartNo"));
 		JSONObject json = new JSONObject();
 		
 		PetDTO petDTO = new PetDTO();
@@ -79,19 +77,23 @@ public class PetController {
 			
 			List<PetDTO> petExam = petService.petExam(petDTO);
 			List<PetDTO> petDrug = petService.petDrug(petDTO);
+			List<PetDTO> petVac = petService.petVac(petDTO);
 			
 			//array json
 			JSONArray jsonA = new JSONArray(petExam);
 			JSONArray jsonB = new JSONArray(petDrug);
+			JSONArray jsonC = new JSONArray(petVac);
 			
 			json.put("petExam", petExam);
 			json.put("petDrug", petDrug);
+			json.put("petVac", petVac);
 			//System.out.println(json.toString());
 
 		
 		} else {
 			json.put("petExam", 0);
 			json.put("petDrug", 0);
+			json.put("petVac", 0);
 			
 		}
 		
@@ -102,8 +104,8 @@ public class PetController {
 	// ------ 접종 기록 excel 출력
 	@GetMapping("petVaccine.xls")
 	public void petVaccine (HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.err.println("정상 접근입니다.");
-		System.err.println(request.getParameter("petNo"));
+		//System.err.println("정상 접근입니다.");
+		//System.err.println(request.getParameter("petNo"));
 		
 		ServletOutputStream out = response.getOutputStream();
 		
@@ -258,7 +260,12 @@ public class PetController {
 			sheet.autoSizeColumn(i);
 			sheet.setColumnWidth(i, sheet.getColumnWidth(i) + 300);
 		}
-				
+		
+		for(PetDTO dto : list) {
+			String fileName = dto.getPet_name()+" 접종 내역(중앙동물병원).xls";
+			String outputFileName = new String(fileName.getBytes("KSC5601"), "8859_1");
+			response.setHeader("Content-Disposition", "attachment; fileName=\"" + outputFileName + "\"");			
+		}
 		
 		
 		wb.write(out);

@@ -7,7 +7,7 @@ public class PastChartDTO {
 	
 	//chartview
 	private int receive_no, pet_no, staff_no;
-	private String pet_name, chart_memo, chart_date, staff_name, staff_grade, chart_no;
+	private String pet_name, chart_memo, chart_date, staff_name, staff_grade, chart_no, medical_subcate;
 	
 	//chartdrugview
 	private int drugdata_no, drugdata_ea, medical_no, medical_price;

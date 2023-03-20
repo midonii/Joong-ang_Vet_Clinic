@@ -132,7 +132,7 @@ cell {
 <body id="page-top">
 	<!-- Page Wrapper -->
 	<div id="wrapper">
-		<%@ include file="../bar/sideBar.jsp"%>
+		<%@ include file=".../bar/sideBar.jsp"%>
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
 			<!-- Main Content -->

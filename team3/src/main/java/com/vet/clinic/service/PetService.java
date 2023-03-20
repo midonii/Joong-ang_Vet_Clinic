@@ -40,6 +40,10 @@ public class PetService {
 		return petDAO.petDrug(petDTO);
 	}
 
+	public List<PetDTO> petVac(PetDTO petDTO) {
+		return petDAO.petVac(petDTO);
+	}
+
 
 	
 	
