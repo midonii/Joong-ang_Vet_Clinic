@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <%
@@ -18,10 +19,10 @@ if (session.getAttribute("id") == null) {
 
 <title>중앙동물병원</title>
 
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<!--   <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"> -->
+<!--    <link rel="stylesheet" href="/resources/demos/style.css"> -->
+<!--   <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
+<!--   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script> -->
 
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
@@ -60,8 +61,9 @@ if (session.getAttribute("id") == null) {
 	cursor:pointer;
 }
 .radio-div{
-	width: 100px; 
+	width: auto; 
 	height:40px; 
+	margin:0 15px;
 	line-height:35px;
 }
 .radio{
@@ -91,26 +93,66 @@ td {
   border-left: none;
 }
 </style>
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-
-
-<!--   //제이쿼리 ui css 
- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
- //제이쿼리 style css
- <link rel="stylesheet" href="/resources/demos/style.css">
- //제이쿼리 js
- <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
- //제이쿼리 ui js
- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
- 
-<script type="text/javascript">
-	
-// $(function(){
-// 	$('#datepicker').datepicker();
-// })
-</script>
 </head>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script type="text/javascript">
 
+$(function(){
+
+	$("#reset").click(function(){
+		location.href="/stockList";
+	});
+	
+//-- 조회
+
+	$("#select").click(function(){
+		
+		var radioValue = $("input[name='stock_radio']:checked").val();
+		alert(radioValue);
+		
+		$.post({
+			url : "/stockSelect",
+			data : {"radioValue" : radioValue},
+			dataType : "json"
+		}).done(function(data){
+			//alert(data.searchList[0].medical_name);
+			$("tbody").empty();
+			
+			var searchList = data.searchList ;
+			
+			for(let i = 1 ; i <= searchList.length; i++){
+				
+				let medical_subcate = data.searchList[i-1].medical_subcate;
+				let medical_name = data.searchList[i-1].medical_name;
+				let medical_buyEa = data.searchList[i-1].medical_buyEa;
+				let medical_company = data.searchList[i-1].medical_company;
+				let medical_buying = (data.searchList[i-1].medical_buying).toLocaleString();
+				let medical_price = (data.searchList[i-1].medical_price).toLocaleString();
+				
+				var tr = "<tr>"
+							+"<td style='width: 3%'>"+i+"</td>"
+							+"<td style='width: 5%'>"+medical_subcate+"</td>"
+							+"<td style='width: 10%'>"+medical_name+"</td>"
+							+"<td style='width: 5%'>"+"30"+"</td>"
+							+"<td style='width: 10%'>"+medical_company+"</td>"
+							+"<td style='width: 7%'>"+medical_buying+"</td>"
+							+"<td style='width: 5%'>"+medical_buyEa+"</td>"
+							+"<td style='width: 7%'>"+medical_price+"</td>"
+							+"<td style='width: 5%'>25</td>"
+							+"<td style='width: 3%'><i class='xi-border-color' style='color: #4E73DF;'></i></td>";
+						+"</tr>"
+						
+				$(".tbody1").append(tr);
+			}
+			
+		}).fail(function(xhr){
+			alert("실패");
+			
+		});
+	});
+});
+
+</script>
 <body id="page-top">
 
 	<!-- Page Wrapper -->
@@ -133,10 +175,10 @@ td {
 					<div class="mb-1"
 						style="font-size: 13px; margin-top: -10px; padding-left: 8px;">
 						<a href="/index" style="text-decoration: none;"
-							class="text-gray-600"><i class="fa-solid fa-house-chimney"></i></a>&nbsp;&nbsp;<i
-							class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp; <a
-							href="/stockList" style="text-decoration: none;"
-							class="text-gray-700">약품 재고 관리</a>
+							class="text-gray-600"> <i class="fa-solid fa-house-chimney"></i>
+						</a>&nbsp;&nbsp; <i class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp;
+						<a href="/stockList" style="text-decoration: none;"
+							class="text-gray-700">관리자(약품 재고 관리)</a>
 					</div>
 					<!-- card -->
 					<div class="card shadow">
@@ -151,79 +193,21 @@ td {
 										카테고리</div>
 									<div class="row row-margin0 align-middle"
 										style="vertical-align: middle; padding-left: 10px;">
-										<div class="form-check radio-div" style="margin-right: 10px;">
+										<div class="form-check radio-div" style="margin: 0 10px 0 0;">
 											<input class="form-check-input radio" type="radio"
-												name="stock_radio" id="stock_radio1" checked> <label
-												class="form-check-label cursor" for="stock_radio1">
+												name="stock_radio" id="stock_radio0" checked value="전체보기"> <label
+												class="form-check-label cursor" for="stock_radio0">
 												전체보기 </label>
 										</div>
-										<div class="form-check radio-div">
-											<input class="form-check-input radio" type="radio"
-												name="stock_radio" id="stock_radio2"> <label
-												class="form-check-label cursor" for="stock_radio2">
-												내복약 </label>
-										</div>
-										<div class="form-check radio-div">
-											<input class="form-check-input radio" type="radio"
-												name="stock_radio" id="stock_radio3"> <label
-												class="form-check-label cursor" for="stock_radio3">
-												물약 </label>
-										</div>
-										<div class="form-check radio-div">
-											<input class="form-check-input radio" type="radio"
-												name="stock_radio" id="stock_radio4"> <label
-												class="form-check-label cursor" for="stock_radio4">
-												소독약 </label>
-										</div>
-										<div class="form-check radio-div">
-											<input class="form-check-input radio" type="radio"
-												name="stock_radio" id="stock_radio5"> <label
-												class="form-check-label cursor" for="stock_radio5">
-												수액 </label>
-										</div>
-										<div class="form-check radio-div"
-											style="margin: 0 15px 0 -10px;">
-											<input class="form-check-input radio" type="radio"
-												name="stock_radio" id="stock_radio6"> <label
-												class="form-check-label cursor" for="stock_radio6">
-												수액첨가제 </label>
-										</div>
-										<div class="form-check radio-div">
-											<input class="form-check-input radio" type="radio"
-												name="stock_radio" id="stock_radio7"> <label
-												class="form-check-label cursor" for="stock_radio7">
-												안약 </label>
-										</div>
-										<div class="form-check radio-div">
-											<input class="form-check-input radio" type="radio"
-												name="stock_radio" id="stock_radio8"> <label
-												class="form-check-label cursor" for="stock_radio8">
-												연고 </label>
-										</div>
-										<div class="form-check radio-div">
-											<input class="form-check-input radio" type="radio"
-												name="stock_radio" id="stock_radio9"> <label
-												class="form-check-label cursor" for="stock_radio9">
-												영양제 </label>
-										</div>
-										<div class="form-check radio-div">
-											<input class="form-check-input radio" type="radio"
-												name="stock_radio" id="stock_radio10"> <label
-												class="form-check-label cursor" for="stock_radio10">
-												외용약 </label>
-										</div>
-										<div class="form-check radio-div">
-											<input class="form-check-input radio" type="radio"
-												name="stock_radio" id="stock_radio11"> <label
-												class="form-check-label cursor" for="stock_radio11">
-												주사액 </label>
-										</div>
-										<div class="form-check radio-div">
-											<input class="form-check-input radio" type="radio"
-												name="stock_radio" id="stock_radio12"> <label
-												class="form-check-label cursor" for="stock_radio12">
-												처방식 </label>
-										</div>
+										<c:forEach items="${m_subcate }" var="ms" varStatus="no">
+											<div class="form-check radio-div">
+												<input class="form-check-input radio" type="radio"
+													name="stock_radio" id="stock_radio${no.count }" value="${ms }"> 
+												<label
+													class="form-check-label cursor" for="stock_radio${no.count }">
+													${ms } </label>
+											</div>
+										</c:forEach>
 									</div>
 								</div>
 								<!----- 검색둘째줄 ----->
@@ -282,9 +266,9 @@ td {
 								<!-- 조회/수정버튼 -->
 								<div class="row row-margin0 d-flex justify-content-end mt-3"
 									style="width: 100%; height: 35px;">
-									<button type="button" class="btn btn-primary"
+									<button type="button" class="btn btn-primary" name="select" id="select"
 										style="width: 100px; height: 35px; margin-right: 10px;">조회</button>
-									<button type="button" class="btn btn-outline-primary"
+									<button type="button" class="btn btn-outline-primary" name="reset" id="reset"
 										style="width: 100px; height: 35px; margin-right: 10px;">초기화</button>
 								</div>
 							</div>
@@ -309,7 +293,7 @@ td {
 												<th class="" style="width: 3%">수정</th>
 											</tr>
 										</thead>
-										<tbody class="">
+										<tbody class="tbody1" value="1">
 											<c:forEach items="${stockList }" var="sL" varStatus="status">
 												<tr>
 													<td class="" style="width: 3%">${status.count }</td>
@@ -317,9 +301,13 @@ td {
 													<td class="" style="width: 10%">${sL.medical_name }</td>
 													<td class="" style="width: 5%">${sL.medical_buyEa }</td>
 													<td class="" style="width: 10%">${sL.medical_company }</td>
-													<td class="" style="width: 7%">${sL.medical_buying }</td>
+													<td class="" style="width: 7%">
+														<fmt:formatNumber value="${sL.medical_buying }" pattern="#,###" />
+													</td>
 													<td class="" style="width: 5%">30</td>
-													<td class="" style="width: 7%">${sL.medical_price }</td>
+													<td class="" style="width: 7%">
+														<fmt:formatNumber value="${sL.medical_price }" pattern="#,###" />
+													</td>
 													<td class="" style="width: 5%">25</td>
 													<td class="" style="width: 3%"><i
 														class="xi-border-color" style="color: #4E73DF;"></i></td>
