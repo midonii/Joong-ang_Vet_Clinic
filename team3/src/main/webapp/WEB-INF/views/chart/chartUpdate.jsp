@@ -38,23 +38,35 @@ if (session.getAttribute("id") == null) {
 <!-- JQUERY -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script type="text/javascript" src="js/chart/chart3.js"></script>
+<script type="text/javascript" src="js/chart/chart1.js"></script>
 <script type="text/javascript">
 	$(function() {
 		var pet_no = $("#pet_no").val();
-		$.post({
-			url : "/petVacAjax",
-			cache : false,
-			data : {
-				"pet_no" : pet_no
-			},
-			dataType : "json"
-		}).done(function(data) {
-			let pet = data.pet;
-			alert(pet[0].pet_no);
-		}).fail(function(xhr, status, errorThrown) {
-			alert("실패");
-		});
+		$
+				.post({
+					url : "/petVacAjax",
+					cache : false,
+					data : {
+						"pet_no" : pet_no
+					},
+					dataType : "json"
+				})
+				.done(
+						function(data) {
+							let pet = data.pet;
+							var div = "";
+							for (let i = 0; i < pet.length; i++) {
+								var vac_name = pet[i].vac_name;
+								var vacdata_date = pet[i].vacdata_date;
+								div += "<div class='list-group-item row'><div class='col-5 font-weight-bold float-left'>"
+										+ vac_name
+										+ "</div><div class='col-7 float-left'>"
+										+ vacdata_date + "</div></div>"
+							}
+							$("#vac").append(div);
+						}).fail(function(xhr, status, errorThrown) {
+					alert("실패");
+				});
 	});
 </script>
 
@@ -135,8 +147,8 @@ if (session.getAttribute("id") == null) {
 
 								<!-- Card Body -->
 								<div class="card-body p-0" style="height: 705px;">
-									<div class="card shadow mb-4">
-										<!-- Card Header - Accordion -->
+									<!-- <div class="card shadow mb-4">
+										Card Header - Accordion
 										<a href="#collapseCardExample"
 											class="d-block card-header py-3 bg-primary"
 											data-toggle="collapse" role="button" aria-expanded="true"
@@ -144,7 +156,7 @@ if (session.getAttribute("id") == null) {
 											<h6 class="m-0 font-weight-bold text-light">Collapsable
 												Card Example</h6>
 										</a>
-										<!-- Card Content - Collapse -->
+										Card Content - Collapse
 										<div class="collapse show" id="collapseCardExample">
 											<div class="card-body">
 												This is a collapsable card example using Bootstrap's built
@@ -153,7 +165,7 @@ if (session.getAttribute("id") == null) {
 											</div>
 										</div>
 									</div>
-
+ -->
 
 
 
@@ -200,10 +212,16 @@ if (session.getAttribute("id") == null) {
 								</div>
 
 								<!-- Card Body -->
-								<div class="card-body" style="height: 328px;"></div>
+								<div class="card-body" style="height: 328px;">
+									<div class="table-responsive" id="receiveboard"
+		style="overflow: auto; max-height: 280px;">
+
+		</table>
+	</div>
+								</div>
 							</div>
 
-							<div class="card  mb-2">
+							<div class="card mb-2">
 								<div
 									class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
 									<h6 class="m-0 font-weight-bold text-primary">접종내역</h6>
@@ -213,7 +231,8 @@ if (session.getAttribute("id") == null) {
 								<!-- Card Body -->
 								<div class="card-body" style="height: 329px;">
 
-									<div class="list-group list-group-flush"></div>
+									<div class="list-group list-group-flush"
+										style="margin-top: -15px;" id="vac"></div>
 
 
 
