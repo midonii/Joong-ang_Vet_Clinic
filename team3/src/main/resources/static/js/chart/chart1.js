@@ -9,6 +9,7 @@ $(function() {
 		dataType: "json"
 	}).done(function(data) {
 		let receiveboard = data.receiveboard;
+	
 		var table = "<table class='table table-sm text-center' style='margin-top:-8px;'>";
 
 		for (let i = 0; i < receiveboard.length; i++) {
@@ -33,6 +34,7 @@ $(function() {
 				table += "<td class='col-2' style='vertical-align : middle;'><span class=' badge  rounded-pill bgtime1'>접</span>&nbsp;" + receive_time;
 			}
 			table += "<td class='col-5'><a  style='text-decoration: none;' id='pet_name' value='" + receive_no + "' >";
+			table += "<input type='hidden' id='pet_no' name='pet_no' value='"+pet_no +"'>";
 			table += "<b class='text-primary' style='cursor:pointer;'>" + pet_name + "&nbsp;(" + type_name + ")" + "</b></a><br>" + owner_name + "</td>";
 			if (receive_state == 1) {
 				table += "<td style='vertical-align: middle'><span class='badge text-bg-primary'>진료대기</span></td>";
@@ -62,6 +64,9 @@ $(function() {
 			dateType: "json"
 		}).done(function(data) {
 			let result = data.result;
+			let petno = data.petno;
+			alert(petno);
+			
 			$(".ownername").text(result.owner_name);
 			$(".petname").text(result.pet_name);
 			$(".pettype").text(result.type_name);
