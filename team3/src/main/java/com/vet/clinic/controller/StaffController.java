@@ -53,10 +53,15 @@ public class StaffController {
 		return json.toString();
 	}
 
-	@GetMapping("/staffDel")
+	@ResponseBody
+	@PostMapping(value = "/staffDel", produces = "application/json;charset=UTF-8")
 	public String staffDel(@RequestParam(name = "staff_no") int staff_no) {
+		JSONObject json = new JSONObject();
 		int result = staffService.staffDel(staff_no);
-		return "redirect:/staffList";
+		json.put("result", result);
+		return json.toString();
 	}
+
+
 
 }

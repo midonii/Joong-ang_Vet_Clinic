@@ -3,6 +3,7 @@ package com.vet.clinic.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -76,7 +77,9 @@ public class DataService {
 		int ccontentnum = Integer.parseInt(contentnum);
 
 		pageDTO.setTotalcount(
-				dataDAO.TotalCount(searchDTO.getSearch_value(), searchDTO.getTable(), searchDTO.getCategory())); // 전체 게시글 개수
+				dataDAO.TotalCount(searchDTO.getSearch_name(),searchDTO.getSearch_value(), searchDTO.getTable(), searchDTO.getCategory())); // 전체
+																													// 게시글
+																													// 개수
 		pageDTO.setPagenum(cpagenum - 1); // 현재 페이지를 페이지 객체에 지정한다 -1 을 해야 쿼리에서 사용할수 있다
 		pageDTO.setContentnum(ccontentnum); // 한 페이지에 몇개씩 게시글을 보여줄지 지정한다.
 		pageDTO.setCurrentblock(cpagenum); // 현재 페이지 블록이 몇번인지 현재 페이지 번호를 통해서 지정한다.
@@ -88,7 +91,7 @@ public class DataService {
 		// 마지막 페이지를 마지막 페이지 블록과 현재 페이지 블록 번호로 정한다.
 
 		List<MedicalDTO> medicalList = dataDAO.medicalList(pageDTO.getPagenum() * 10, pageDTO.getContentnum(),
-				searchDTO.getSearch_value(), searchDTO.getTable(), searchDTO.getCategory());
+				searchDTO.getSearch_name(), searchDTO.getSearch_value(), searchDTO.getTable(), searchDTO.getCategory());
 		List<MedicalDTO> vaccineList = dataDAO.vaccineList(pageDTO.getPagenum() * 10, pageDTO.getContentnum(),
 				searchDTO.getSearch_value(), searchDTO.getTable(), searchDTO.getCategory());
 		List<PetTypeDTO> petTypeList = dataDAO.petTypeList(pageDTO.getPagenum() * 10, pageDTO.getContentnum(),
@@ -101,6 +104,10 @@ public class DataService {
 		mv.addObject("search", searchDTO);
 
 		return mv;
+	}
+
+	public List<String> category(SearchDTO searchDTO) {
+		return dataDAO.category(searchDTO);
 	}
 
 }

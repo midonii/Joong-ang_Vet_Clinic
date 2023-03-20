@@ -15,7 +15,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Team 3</title>
+<title>중앙동물병원</title>
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -38,14 +38,16 @@
 <script type="text/javascript">
 
 
-function page(idx, search_value) {
+function page(idx,search_name, search_value) {
 	var pagenum = idx;
 	let searchValue = search_value;
+	let searchName = search_name;
 	var contentnum = $("#contentnum").val();
 	location.href = "${pageContext.request.contextPath}/inspection?pagenum="
-			+ pagenum + "&contentnum=" + contentnum +"&search_value=" + searchValue;
+			+ pagenum + "&contentnum=" + contentnum+"&search_name=" + searchName +"&search_value=" + searchValue;
 
 }
+
 	$(function() {
 		$("#addBtn").click(function() {
 
@@ -59,13 +61,16 @@ function page(idx, search_value) {
 				return false;
 			}
 
-			if (medical_price == "") {
-				alert("가격을 입력해주세요.");
+			if (medical_subcate == "") {
+				alert("분류항목을 선택해주세요.");
+				$("#medical_subcate").focus();
+				return false;
+			}
+			if (medical_price == "" || $.isNumeric(medical_price) == false) {
+				alert("처방가격을 올바르게 입력해주세요.");
 				$("#medical_price").focus();
 				return false;
 			}
-
-			mediAddFrm.submit();
 
 		});
 		
@@ -84,7 +89,7 @@ function page(idx, search_value) {
 
 					$("#inspection_noU").val(result.medical_no);
 					$("#inspection_nameU").val(result.medical_name);
-					$("#inspection_priceU").val(result.medical_price);
+					$("#medical_subcateU").val(result.medical_subcate);
 
 					$("#updateModal").modal("show"); //수정화면 모달 보기
 				}
@@ -96,14 +101,14 @@ function page(idx, search_value) {
 
 			let medical_no = $("#inspection_noU").val();
 			let medical_name = $("#inspection_nameU").val();
-			let medical_price = $("#inspection_priceU").val();
+			let medical_subcate = $("#medical_subcateU").val();
 
 			$.post({
 				url : "/inspectionUpdate",
 				data : {
 					"medical_no" : medical_no,
 					"medical_name" : medical_name,
-					"medical_price" : medical_price
+					"medical_subcate" : medical_subcate
 				},
 				dataType : "json"
 			}).done(function(data) {
@@ -124,20 +129,50 @@ function page(idx, search_value) {
 		
 	 	$("#search_btn").click(function() {
 			let searchValue = $("#search_value").val();
-
+			let searchName = $("#search_name").val();
+			if (searchName == "") {
+				alert("검색하시려는 항목을 선택하세요");
+				return false;
+			}
 			if (searchValue == "" || searchValue.length < 2) {
 				alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
 				return false;
 			}
 			searchForm.submit();
 		});
+	 	
+	 	let searchName2 = $("#searchName").val();
+	 	$("#search_name").val(searchName2);
 
+	 	
+		$(".medicalDel").click(function() {
+			var medical_no = $(this).attr("value");
+			$.post({
+				url : "/medicalDel",
+				cache : false,
+				data : {
+					"medical_no" : medical_no
+				},
+				dataType : "json"
+			}).done(function(data) {
+				let result = data.result;
+				if (confirm("정말 삭제하시겠습니까?")) {
+					if (result == 1) {
+						alert("삭제가 완료되었습니다.");
+						var pagenum = $("#pagenum").val();
+						let searchValue = $("#search_value").val();
+						page(pagenum, searchName2, searchValue);
+					} else {
+						alert("문제가 발생했습니다. \n다시 시도해주세요.");
+					}
+
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("실패");
+			});
+		});
 	});
-	function inspectionDel(medical_no){
-		if(confirm("정말 삭제하시겠습니까?")){
-		location.href =  "/inspectionDel?medical_no=" + medical_no;
-		}
-	}
+
 	
 </script>
 </head>
@@ -169,10 +204,10 @@ function page(idx, search_value) {
 							class="text-gray-600"><i class="fa-solid fa-house-chimney"></i></a>&nbsp;&nbsp;<i
 							class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp; <a
 							href="/medicine" style="text-decoration: none;"
-							class="text-gray-700">데이터 관리</a>&nbsp;&nbsp;<i
+							class="text-gray-700">관리자(데이터 관리)</a>&nbsp;&nbsp;<i
 							class="fa-sharp fa-solid fa-chevron-right"></i> &nbsp;<a
 							href="/inspection" style="text-decoration: none;"
-							class="text-gray-700">검사</a>
+							class="text-gray-700">진료</a>
 					</div>
 
 					<!-- DataTales Example -->
@@ -186,10 +221,10 @@ function page(idx, search_value) {
 							<div style="margin-top: -5px;">
 								<ul class="nav nav-tabs">
 									<li class="nav-item"><a class="nav-link"
-										aria-current="page" href="/medicine" tabindex="0">약</a></li>
+										aria-current="page" href="/medicine" tabindex="0">약품</a></li>
 									<li class="nav-item "><a
 										class="nav-link  active font-weight-bolder text-primary"
-										href="/inspection">검사</a></li>
+										href="/inspection">진료</a></li>
 									<li class="nav-item"><a class="nav-link" href="/vaccine">접종</a></li>
 									<li class="nav-item"><a class="nav-link" href="/petType">견종</a></li>
 								</ul>
@@ -197,46 +232,68 @@ function page(idx, search_value) {
 							<div class="row justify-content-center">
 
 								<!-- 데이터 추가 -->
-								<div class="border-right col-6 col-md-6"
+								<div class="border-right col-4 col-md-4"
 									style="padding: 10px; height: 570px;">
 									<form id="mediAddFrm" name="mediAddFrm" action="/inspectionAdd"
 										method="post">
-										<input type="hidden" value="검사" id="medical_category"
+										<input type="hidden" value="진료" id="medical_category"
 											name="medical_category">
 										<ul class="list-group list-group-flush">
 											<li class="list-group-item">
 												<div class="row">
-													<div class="col-md-3" style="line-height: 38px;">이름</div>
+													<div class="col-md-12 text-center font-weight-bold text-lg"
+														style="line-height: 38px;">진료데이터 추가</div>
+
+												</div>
+											</li>
+											<li class="list-group-item">
+												<div class="row">
+													<div class="col-md-3 text-center"
+														style="line-height: 38px;">이름</div>
 													<div class="col-md-9">
 														<input type="text" class="form-control" id="medical_name"
 															name="medical_name">
 													</div>
 												</div>
 											</li>
-											<li class="list-group-item mb-4">
+											<li class="list-group-item">
 												<div class="row">
-													<div class="col-md-3 " style="line-height: 40px;">가격</div>
+													<div class="col-md-3 text-center "
+														style="line-height: 40px;">분류</div>
+													<div class="col-md-9">
+														<select class="form-control" id="medical_subcate"
+															name="medical_subcate">
+															<option value="" selected disabled="disabled">선택</option>
+															<c:forEach items="${subcate}" var="sc">
+																<option value="${sc }">${sc }</option>
+															</c:forEach>
+														</select>
+													</div>
+
+												</div>
+											</li>
+												<li class="list-group-item mb-4">
+												<div class="row">
+													<div class="col-md-3 text-center"
+														style="line-height: 38px;">처방가격</div>
 													<div class="col-md-9">
 														<input type="text" class="form-control" id="medical_price"
 															name="medical_price">
 													</div>
 												</div>
-
 											</li>
-
-
 										</ul>
 
 
-										<div class="text-center col-lg-12 col-12">
-											<button type="button" id="addBtn"
-												class="btn btn-primary col-8 ">저장</button>
+										<div class="d-flex justify-content-center">
+											<button type="submit" id="addBtn"
+												class="btn btn-primary col-5">저장</button>
 										</div>
 									</form>
 								</div>
 
 								<!-- 리스트 출력 -->
-								<div class="col-6 col-md-6"
+								<div class="col-8 col-md-8"
 									style="overflow: auto; height: 570px; padding: 10px;">
 
 									<form action="/inspection" name="searchForm"
@@ -244,10 +301,18 @@ function page(idx, search_value) {
 										<input type="hidden" name="contentnum" id="contentnum"
 											value="${page.getContentnum()}">
 										<div class="input-group mb-3">
-											<input type="text" class="form-control border-gray col-md-12"
+											<input type="hidden" value="${search.getSearch_name() }"
+												id="searchName"> <select
+												class="form-control col-md-3" name="search_name"
+												id="search_name" style="border-radius: 5px 0 0 5px">
+												<option value="" selected disabled="disabled">선택</option>
+												<option value="name">진료명</option>
+												<option value="category">분류</option>
+											</select> <input type="text"
+												class="form-control border-gray col-md-12"
 												name="search_value" id="search_value"
 												value="${search.getSearch_value() }"
-												placeholder="검사 이름을 입력하세요">
+												placeholder="검색어를 입력하세요">
 											<div class="input-group-append">
 												<button class="btn btn-primary" type="button"
 													id="search_btn">
@@ -262,9 +327,10 @@ function page(idx, search_value) {
 											<thead>
 												<tr class="bg-gray-200">
 													<th class="col-1">번호</th>
-													<th class="col-2">이름</th>
-													<th class="col-2">가격</th>
-													<th class="col-2">카테고리</th>
+													<th class="col-3">이름</th>
+													<th class="col-2">분류</th>
+													<th class="col-2">처방가격</th>
+													<th class="col-1"></th>
 
 												</tr>
 											</thead>
@@ -274,16 +340,17 @@ function page(idx, search_value) {
 													<tr>
 														<td>${ml.mno }</td>
 														<td>${ml.medical_name }</td>
-														<td>${ml.medical_price }원</td>
+														<td>${ml.medical_subcate }</td>
+														<td><fmt:formatNumber value="${ml.medical_price }"
+															pattern="#,###" />원</td>
 														<td>
 															<button type="button"
 																class="btn btn-circle btn-sm btn-warning inspectionUpdate"
 																value="${ml.medical_no }">
 																<i class="fa-solid fa-pen"></i>
 															</button>
-															<button type="button"
-																onclick="inspectionDel(${ml.medical_no })"
-																class="btn btn-circle btn-sm btn-danger">
+															<button type="button" value="${ml.medical_no }"
+																class="btn btn-circle btn-sm btn-danger medicalDel">
 																<i class="fa-solid fa-trash"></i>
 															</button>
 														</td>
@@ -292,7 +359,7 @@ function page(idx, search_value) {
 
 												<c:if test="${page.getTotalcount() eq 0}">
 													<tr>
-														<td colspan="4">검색 결과가 없습니다.</td>
+														<td colspan="5">검색 결과가 없습니다.</td>
 													</tr>
 												</c:if>
 											</tbody>
@@ -305,7 +372,7 @@ function page(idx, search_value) {
 
 												<c:if test="${page.prev}">
 													<li class="page-item"><a class="page-link"
-														href="javascript:page('${page.getStartPage()-1}','${search.getSearch_value()}');"
+														href="javascript:page('${page.getStartPage()-1}','${search.getSearch_name()}','${search.getSearch_value()}');"
 														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 													</a></li>
 												</c:if>
@@ -314,17 +381,17 @@ function page(idx, search_value) {
 													<c:choose>
 														<c:when test="${idx ne page.pagenum+1 }">
 															<li class="page-item"><a class="page-link"
-																href="javascript:page('${idx}','${search.getSearch_value()}');">${idx }</a></li>
+																href="javascript:page('${idx}','${search.getSearch_name()}','${search.getSearch_value()}');">${idx }</a></li>
 														</c:when>
 														<c:otherwise>
 															<li class="page-item active"><a class="page-link"
-																href="javascript:page('${idx}','${search.getSearch_value()}');">${idx }</a></li>
+																href="javascript:page('${idx}','${search.getSearch_name()}','${search.getSearch_value()}');">${idx }</a></li>
 														</c:otherwise>
 													</c:choose>
 												</c:forEach>
 												<c:if test="${page.next}">
 													<li class="page-item"><a class="page-link"
-														href="javascript:page('${page.getEndPage()+1}','${search.getSearch_value()}');"
+														href="javascript:page('${page.getEndPage()+1}','${search.getSearch_name()}','${search.getSearch_value()}');"
 														aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 													</a></li>
 												</c:if>
@@ -357,8 +424,7 @@ function page(idx, search_value) {
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Inspection
-								데이터 수정</h5>
+							<h5 class="modal-title" id="exampleModalLabel">진료 데이터 수정</h5>
 							<button class="close" type="button" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">×</span>
@@ -370,7 +436,7 @@ function page(idx, search_value) {
 							<ul class="list-group list-group-flush">
 								<li class="list-group-item">
 									<div class="row">
-										<div class="col-md-3" style="line-height: 38px;">Name</div>
+										<div class="col-md-3 text-center" style="line-height: 38px;">이름</div>
 										<div class="col-md-9">
 											<input type="text" class="form-control" id="inspection_nameU"
 												name="inspection_nameU">
@@ -379,11 +445,16 @@ function page(idx, search_value) {
 								</li>
 								<li class="list-group-item mb-4">
 									<div class="row">
-										<div class="col-md-3 " style="line-height: 40px;">Price</div>
+										<div class="col-md-3 text-center" style="line-height: 40px;">분류</div>
 										<div class="col-md-9">
-											<input type="text" class="form-control"
-												id="inspection_priceU" name="inspection_priceU">
+											<select class="form-control" id="medical_subcateU"
+												name="medical_subcateU">
+												<c:forEach items="${subcate}" var="sc">
+													<option value="${sc }">${sc }</option>
+												</c:forEach>
+											</select>
 										</div>
+
 									</div>
 								</li>
 							</ul>

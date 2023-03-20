@@ -49,8 +49,8 @@
 				return false;
 			}
 
-			if (vac_price == "") {
-				alert("접종 가격을 입력해주세요.");
+			if (vac_price == "" || $.isNumeric(vac_price) == false) {
+				alert("접종 가격을 올바르게 입력해주세요.");
 				$("#vac_price").focus();
 				return false;
 			}
@@ -129,7 +129,32 @@
 			}
 			searchForm.submit();
 		});
-		
+		$(".vaccineDel").click(function() {
+			var vac_no = $(this).attr("value");
+			$.post({
+				url : "/vaccineDel",
+				cache : false,
+				data : {
+					"vac_no" : vac_no
+				},
+				dataType : "json"
+			}).done(function(data) {
+				let result = data.result;
+				if (confirm("정말 삭제하시겠습니까?")) {
+					if (result == 1) {
+						alert("삭제가 완료되었습니다.");
+						var pagenum = $("#pagenum").val();
+						let searchValue = $("#search_value").val();
+						page(pagenum, searchValue);
+					} else {
+						alert("문제가 발생했습니다. \n다시 시도해주세요.");
+					}
+
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("실패");
+			});
+		});
 	});
 	
 	function page(idx, search_value) {
@@ -140,11 +165,7 @@
 				+ pagenum + "&contentnum=" + contentnum +"&search_value=" + searchValue;
 
 	}
-	function vaccineDel(vac_no){
-		if(confirm("정말 삭제하시겠습니까?")){
-		location.href =  "/vaccineDel?vac_no=" + vac_no;
-		}
-	}
+
 </script>
 </head>
 
@@ -174,7 +195,7 @@
 							class="text-gray-600"><i class="fa-solid fa-house-chimney"></i></a>&nbsp;&nbsp;<i
 							class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp; <a
 							href="/medicine" style="text-decoration: none;"
-							class="text-gray-700">데이터 관리</a>&nbsp;&nbsp;<i
+							class="text-gray-700">관리자(데이터 관리)</a>&nbsp;&nbsp;<i
 							class="fa-sharp fa-solid fa-chevron-right"></i> &nbsp;<a
 							href="/vaccine" style="text-decoration: none;"
 							class="text-gray-700">접종</a>
@@ -191,9 +212,9 @@
 							<div style="margin-top: -5px;">
 								<ul class="nav nav-tabs">
 									<li class="nav-item"><a class="nav-link"
-										aria-current="page" href="/medicine" tabindex="0">약</a></li>
+										aria-current="page" href="/medicine" tabindex="0">약품</a></li>
 									<li class="nav-item "><a class="nav-link"
-										href="/inspection">검사</a></li>
+										href="/inspection">진료</a></li>
 									<li class="nav-item"><a
 										class="nav-link active font-weight-bolder text-primary"
 										href="/vaccine">접종</a></li>
@@ -209,7 +230,15 @@
 										<ul class="list-group list-group-flush">
 											<li class="list-group-item">
 												<div class="row">
-													<div class="col-md-3" style="line-height: 38px;">이름</div>
+													<div class="col-md-12 text-center font-weight-bold text-lg"
+														style="line-height: 38px;">접종데이터 추가</div>
+
+												</div>
+											</li>
+											<li class="list-group-item">
+												<div class="row">
+													<div class="col-md-3 text-center"
+														style="line-height: 38px;">이름</div>
 													<div class="col-md-9">
 														<input type="text" class="form-control" id="vac_name"
 															name="vac_name">
@@ -218,7 +247,8 @@
 											</li>
 											<li class="list-group-item">
 												<div class="row">
-													<div class="col-md-3 " style="line-height: 40px;">가격</div>
+													<div class="col-md-3 text-center"
+														style="line-height: 40px;">가격</div>
 													<div class="col-md-9">
 														<input type="text" class="form-control" id="vac_price"
 															name="vac_price">
@@ -228,7 +258,8 @@
 											</li>
 											<li class="list-group-item mb-4">
 												<div class="row">
-													<div class="col-md-3 " style="line-height: 40px;">주기</div>
+													<div class="col-md-3 text-center"
+														style="line-height: 40px;">주기</div>
 													<div class="col-md-3">
 														<select class="form-control" id="vac_cycleY"
 															name="vac_cycleY">
@@ -238,8 +269,8 @@
 															<option value="3Y">3Y</option>
 														</select>
 													</div>
-													<div class="col-md-3">
-														<select class="form-control" id="vac_cycleM"
+													<div class="col-md-3 ">
+														<select class="form-control " id="vac_cycleM"
 															name="vac_cycleM">
 															<option value="" selected disable hidden>개월</option>
 															<%
@@ -275,9 +306,9 @@
 										</ul>
 
 
-										<div class="text-center col-lg-12 col-12">
+										<div class="d-flex justify-content-center">
 											<button type="submit" id="addBtn"
-												class="btn btn-primary col-8 ">저장</button>
+												class="btn btn-primary col-5">저장</button>
 										</div>
 									</form>
 								</div>
@@ -320,7 +351,8 @@
 													<tr>
 														<td>${vl.vno }</td>
 														<td>${vl.vac_name }</td>
-														<td>${vl.vac_price }원</td>
+														<td><fmt:formatNumber value="${vl.vac_price }"
+															pattern="#,###" />원</td>
 														<td>${vl.vac_cycleY }${vl.vac_cycleM }${vl.vac_cycleW }</td>
 														<td>
 															<button type="button"
@@ -328,8 +360,8 @@
 																value="${vl.vac_no }">
 																<i class="fa-solid fa-pen"></i>
 															</button>
-															<button type="button" onclick="vaccineDel(${vl.vac_no })"
-																class="btn btn-circle btn-sm btn-danger">
+															<button type="button" value="${vl.vac_no }"
+																class="btn btn-circle btn-sm btn-danger vaccineDel">
 																<i class="fa-solid fa-trash"></i>
 															</button>
 														</td>

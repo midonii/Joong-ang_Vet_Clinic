@@ -38,36 +38,11 @@ if (session.getAttribute("id") == null) {
 <!-- JQUERY -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<link href="css/chart/chart1.css" rel="stylesheet">
 <script type="text/javascript" src="js/chart/chart1.js"></script>
+<script type="text/javascript" src="js/chart/chart3.js"></script>
 <script type="text/javascript">
-	$(function() {
-		var pet_no = $("#pet_no").val();
-		$
-				.post({
-					url : "/petVacAjax",
-					cache : false,
-					data : {
-						"pet_no" : pet_no
-					},
-					dataType : "json"
-				})
-				.done(
-						function(data) {
-							let pet = data.pet;
-							var div = "";
-							for (let i = 0; i < pet.length; i++) {
-								var vac_name = pet[i].vac_name;
-								var vacdata_date = pet[i].vacdata_date;
-								div += "<div class='list-group-item row'><div class='col-5 font-weight-bold float-left'>"
-										+ vac_name
-										+ "</div><div class='col-7 float-left'>"
-										+ vacdata_date + "</div></div>"
-							}
-							$("#vac").append(div);
-						}).fail(function(xhr, status, errorThrown) {
-					alert("실패");
-				});
-	});
+	
 </script>
 
 </head>
@@ -125,7 +100,7 @@ if (session.getAttribute("id") == null) {
 
 									</div>
 									<div class="col-4 d-flex justify-content-end">
-										<button type="button" class=" btn btn-primary btn-sm">저장</button>
+										<button type="button" class=" btn btn-warning btn-sm">수정</button>
 									</div>
 								</div>
 							</div>
@@ -214,10 +189,10 @@ if (session.getAttribute("id") == null) {
 								<!-- Card Body -->
 								<div class="card-body" style="height: 328px;">
 									<div class="table-responsive" id="receiveboard"
-		style="overflow: auto; max-height: 280px;">
+										style="overflow: auto; max-height: 280px;">
 
-		</table>
-	</div>
+										</table>
+									</div>
 								</div>
 							</div>
 

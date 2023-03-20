@@ -6,31 +6,52 @@
 	<select id="medicalList" resultType="MedicalDTO"
 		parameterType="HashMap">
 		SELECT ROW_NUMBER()
-		over(order by m.medical_no desc) AS
+		over(order by m.medical_no DESC) AS
 		mno,m.*
 		FROM
 		(
 		SELECT * FROM medicalList
 		WHERE medical_category=#{category}
-		<if test="search_value != null">
-			AND medical_name LIKE CONCAT('%', #{search_value},'%')
+		<if test="search_name != null">
+			<choose>
+				<when test="search_name == 'name'">
+					AND medical_name LIKE CONCAT('%', #{search_value},
+					'%')
+				</when>
+				<when test="search_name == 'category'">
+					AND medical_subcate LIKE CONCAT('%',
+					#{search_value}, '%')
+				</when>
+			</choose>
 		</if>
 		) m
 		ORDER BY mno
 		LIMIT #{pagenum},#{contentnum}
 	</select>
-
+	<select id="category" resultType="String"
+		parameterType="HashMap">
+		SELECT DISTINCT medical_subcate
+		FROM ${table}
+		WHERE
+		medical_category=#{category}
+	</select>
 	<select id="TotalCount" resultType="Integer"
 		parameterType="HashMap">
 		SELECT COUNT(*) FROM ${table}
 		<if test='table == "medicalList"'>
 			WHERE medical_category= #{category}
-			<choose>
-				<when test="search_value != null">
-					AND medical_name LIKE CONCAT('%',
-					#{search_value},'%')
-				</when>
-			</choose>
+			<if test="search_name != null">
+				<choose>
+					<when test="search_name == 'name'">
+						AND medical_name LIKE CONCAT('%', #{search_value},
+						'%')
+					</when>
+					<when test="search_name =='category'">
+						AND medical_subcate LIKE CONCAT('%',
+						#{search_value}, '%')
+					</when>
+				</choose>
+			</if>
 		</if>
 		<if test='table == "vaccine"'>
 			<choose>
@@ -48,7 +69,8 @@
 		</if>
 	</select>
 
-	<select id="vaccineList" resultType="MedicalDTO" parameterType="HashMap">
+	<select id="vaccineList" resultType="MedicalDTO"
+		parameterType="HashMap">
 		SELECT ROW_NUMBER()
 		over(ORDER BY v.vac_no) AS
 		vno,v.*
@@ -70,8 +92,9 @@
 		tno,t.*
 		FROM
 		(
-		SELECT * FROM petType
-			<if test="search_value != null">
+		SELECT *
+		FROM petType
+		<if test="search_value != null">
 			WHERE type_name LIKE CONCAT('%', #{search_value},'%')
 		</if>
 		) t
@@ -86,7 +109,7 @@
 		INSERT INTO medicalList
 		SET
 		medical_name=#{medical_name},
-		medical_price=#{medical_price},
+		medical_subcate=#{medical_subcate},
 		medical_category=#{medical_category};
 
 	</insert>
@@ -144,7 +167,7 @@
 	</delete>
 	<update id="medicalUpdate" parameterType="HashMap">
 		UPDATE medicalList SET
-		medical_name=#{medical_name}, medical_price=#{medical_price}
+		medical_name=#{medical_name}, medical_subcate=#{medical_subcate}
 		WHERE
 		medical_no =#{medical_no};
 
@@ -160,7 +183,6 @@
 		UPDATE petType SET
 		type_name=#{type_name}
 		WHERE type_no=#{type_no};
-
 	</update>
 
 
