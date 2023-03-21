@@ -42,7 +42,39 @@ if (session.getAttribute("id") == null) {
 <script type="text/javascript" src="js/chart/chart1.js"></script>
 <script type="text/javascript" src="js/chart/chart3.js"></script>
 <script type="text/javascript">
-	
+$(function() {
+	var pet_no = $("#pet_no").val();
+	alert(pet_no);
+	$.post({
+		url: "/petVacAjax",
+		cache: false,
+		data: {
+			"pet_no": pet_no
+		},
+		dataType: "json"
+	})
+		.done(
+			function(data) {
+				let pet = data.pet;
+				$("#vac").empty();
+				var div = "";
+				if (pet == "") {
+					div += "<div class='list-group-item'><div style='line-height: 250px;text-align: center;'>접종 내역이 없습니다.</div></div>";
+				} else {
+					for (let i = 0; i < pet.length; i++) {
+						var vac_name = pet[i].vac_name;
+						var vacdata_date = pet[i].vacdata_date;
+						div += "<div class='list-group-item row'><div class='col-5 font-weight-bold float-left'>"
+							+ vac_name
+							+ "</div><div class='col-7 float-left'>"
+							+ vacdata_date + "</div></div>";
+					}
+				}
+				$("#vac").append(div);
+			}).fail(function(xhr, status, errorThrown) {
+				alert("실패");
+			});
+});
 </script>
 
 </head>
