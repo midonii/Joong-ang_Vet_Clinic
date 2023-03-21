@@ -19,9 +19,9 @@ public class PetDTO {
 
 	private String vac_name, vacdata_date;
 
-	private int staff_no, medical_no, receive_no;
+	private int staff_no, medical_no, receive_no, u_no;
 
-	private String chart_memo, chart_date;
+	private String chart_memo, chart_date , filename;
 
 	private String heartworm, corona, rabies, swine_flu, dhppl, kennel_cough, antibody_test, ectoparasite, helminthic;
 }

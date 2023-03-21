@@ -251,14 +251,26 @@ $(function(){
 				<div class="row align-top">	
 				  <!-- pet 정보 -->
 				  
-				   <div class="col-5">	
+				   <div class="col-7">	
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-primary">반려견 Info</h6>
 						</div>
 						<div class="card-body">
-							<div style="height: 430px;">
+							<div style="height: 430px;" class="row">
+
 							<c:forEach items="${petInfo }" var="pi">
+							<div class="col-5">
+							<c:choose>
+								<c:when test="${fn:length(pi.filename) gt 0}">
+									<img src="../resources/static/upFile/${pi.filename }" class="img-thumbnail" style="width: 260px; height: 260px; border-radius: 12px">								
+								</c:when>
+								<c:otherwise>
+									<img src="../img/logoda.png" class="rounded img-thumbnail" style="width: 260px; height: 260px;">
+								</c:otherwise>
+							</c:choose>
+							</div>
+							<div class="col-7">
 								<div class="list-group list-group-flush">
   								 <div class="list-group-item row">
   									<div class="col-4 font-weight-bold float-left">이름</div>
@@ -270,8 +282,7 @@ $(function(){
   								 </div>	
   								 <div class="list-group-item row">
   									<div class="col-4 font-weight-bold float-left">생일</div>
-  									<div class="col-4 float-left">${pi.pet_birth }</div>
-  									<div class="col-4 float-left text-sm" style="margin-left: -40px" id="yearPlusMonth">(${pi.pet_Ym })</div>
+  									<div class="col-4 float-left">${pi.pet_birth } (${pi.pet_Ym })</div>
   								 </div>	
   								 <div class="list-group-item row">
   									<div class="col-4 font-weight-bold float-left">성별</div>
@@ -286,6 +297,7 @@ $(function(){
   									<div class="col-8 float-left">${pi.pet_memo }</div>
   								 </div>	
 								</div>
+							</div>
 								</c:forEach>
 							</div>
 						</div>
@@ -293,7 +305,7 @@ $(function(){
 				  </div>
 
 					<!-- 접종 내역 / vac_name=신종플루, vacdata_date=2023-03-02 -->
-					<div class="col-7">
+					<div class="col-5">
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-primary">
@@ -308,8 +320,8 @@ $(function(){
 								<div class="list-group list-group-flush">
 								<c:forEach items="${petVaccine }" var="v">	
   								 <div class="list-group-item row">
-  									<div class="col-5 font-weight-bold float-left">${v.vac_name }</div>
-  									<div class="col-7 float-left">${v.vacdata_date }</div>
+  									<div class="col-6 font-weight-bold float-left">${v.vac_name }</div>
+  									<div class="col-6 float-left">${v.vacdata_date }</div>
   								 </div>	
 								</c:forEach>
 								</div>
