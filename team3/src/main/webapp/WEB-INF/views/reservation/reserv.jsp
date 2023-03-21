@@ -108,17 +108,16 @@ if (session.getAttribute("id") == null) {
 															${s.pet_birth}
 													</span><br>
 													</td>
-													<input type="hidden" id="search_petNo" value="${s.pet_no}">
-													<input type="hidden" id="search_ownerNo"
-														value="${s.owner_no}">
 													<td style="text-align: right;"><span></span><br>
+<%-- 													<input type="hidden" id="search_petNo" value="${s.pet_no}"> --%>
 														<br> <span>
+													<input type="hidden" id="search_ownerNo" class="search_ownerNo1" value="${s.owner_no}">
 															<button type="button" class="btn btn-sm reserv_btn"
 																value="${s.pet_no}"
 																style="border: 1px solid #0d6efd; color: #0d6efd;">예약</button>
 															<button type="button" id="search_receipt_btn"
 																class="btn btn-primary btn-sm search_receipt_btn"
-																value="${s.pet_no}"
+																value="${s.pet_no}" data-value="${s.owner_no}"
 																style="margin-left: 5px; border: none;">접수</button>
 													</span></td>
 												</tr>
@@ -206,7 +205,7 @@ if (session.getAttribute("id") == null) {
 										style="color: gray; background-color: white;">
 
 
-										<c:forEach items="${receplist}" var="l">
+										<c:forEach items="${receplist}" var="r">
 
 											<input type="hidden" id="age">
 											<tr
@@ -214,12 +213,20 @@ if (session.getAttribute("id") == null) {
 												<td style="font-size: 14px;">
 													<div style="">
 														<a style="text-decoration: none;"><b
-															style="font-size: 25px; color: black">${l.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${l.owner_name}&nbsp;
+															style="font-size: 25px; color: black">${r.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${r.owner_name}&nbsp;
 														<br>
-														<input type="hidden" id="receive_petNo"
-															value="${l.pet_no}"> <span
-															class="badge bg-secondary">대기중</span>&nbsp;
-														<c:if test="${not empty l.reservation_no }">
+														<c:if test="${r.receive_state eq '1'}">
+															<input type="hidden" id="receive_petNo"
+																value="${r.pet_no}"> <span
+																class="badge bg-secondary">대기중</span>&nbsp;
+														</c:if>
+														<c:if test="${r.receive_state eq '2'}">
+															<input type="hidden" id="receive_petNo"
+																value="${r.pet_no}"> <span
+																class="badge bg-danger">진료중</span>&nbsp;
+														</c:if>
+															
+														<c:if test="${not empty r.reservation_no }">
 															<span class="badge"
 																style="background-color: white; color: #0d6efd; border: 1px solid #0d6efd;">예약</span>
 														</c:if>
@@ -227,23 +234,28 @@ if (session.getAttribute("id") == null) {
 													</div> <br>
 
 													<div>
-														<span>${l.type_name} | ${l.pet_birth} |
-															${l.pet_gender}</span>
+														<span>${r.type_name} | ${r.pet_birth} |
+															${r.pet_gender}</span>
 
-													</div> <%-- 													<span> ${l.reservation_memo} </span> --%>
+													</div> 
 
 												</td>
 
-												<td style="text-align: right; width: 140px;"><span><h7>${l.receive_time}</h7></span><br>
+												<td style="text-align: right; width: 140px;"><span><h7>${r.receive_time}</h7></span><br>
 													<input type="hidden" id="reservNo"
-													value="${l.reservation_no}"> <br> <span
+													value="${r.reservation_no}"> <br> <span
 													style="width: 200px;">
-														<button type="button"
-															class="btn btn-secondary btn-sm receipt_cancel" id=""
-															value="${l.receive_no}"
-															style="background-color: #7f8c8d; border: none;">접수취소</button>
-														<button type="button" class="btn btn-success btn-sm"
-															id="check_btn" style="border: none;">수납</button>
+													
+														
+														
+														<c:if test="${r.receive_state eq '1'}">
+															<button type="button"
+																class="btn btn-secondary btn-sm receipt_cancel" id=""
+																value="${r.receive_no}"
+																style="background-color: #7f8c8d; border: none;">접수취소</button>
+														</c:if>
+															<button type="button" class="btn btn-success btn-sm"
+																id="check_btn" style="border: none;">수납</button>
 												</span></td>
 											</tr>
 										</c:forEach>

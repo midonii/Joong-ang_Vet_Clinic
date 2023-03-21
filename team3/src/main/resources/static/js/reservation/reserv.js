@@ -7,8 +7,8 @@ $(function() {
 	var todayMonth = ('0' + (today.getMonth() + 1)).slice(-2);
 	var todayDate = ('0' + today.getDate()).slice(-2);
 	var reservationdateday = todayYear + '-' + todayMonth + '-' + todayDate;
-	
-	
+
+
 	//검색
 	$('#search_btn').click(function() {
 		var searchValue = $("#search_value").val();
@@ -54,50 +54,54 @@ $(function() {
 						table += '<input type="hidden" id="search_ownerNo" value="' + result[i].owner_no + '">';
 						table += '<td style="text-align: right;"><span></span><br><br><span>';
 						table += '<button type="button" class="btn btn-sm reserv_btn" value="' + result[i].pet_no + '" style="border: 1px solid #0d6efd; color: #0d6efd;">예약</button>';
-						table += '<button type="button" id="search_receipt_btn" class="btn btn-primary btn-sm search_receipt_btn" value="' + result[i].pet_no + '" style="margin-left:5px; border: none;">접수</button></span></td></tr>';
+						table += '<button type="button" id="search_receipt_btn" class="btn btn-primary btn-sm search_receipt_btn" value="' + result[i].pet_no + '" data-value="'+result[i].owner_no+'" style="margin-left:5px; border: none;">접수</button></span></td></tr>';
 					}
 					$("#researchTable").append(table);
 					$("#researchTable").show();
-
 				}
-
-				//alert($('#search_petNo').val()); //ok
-
-
 			}).fail(function(jqXHR, textStatus, errorThrown) {
 				alert("POST request failed: " + errorThrown);
 			});
 		}
+
 	});
+					
 	
-	//검색에서 접수버튼
-	$(".search_receipt_btn").click(function() {
-		if (confirm("접수 하시겠습니까?")) {
-		//alert("검색에서 접수버튼");
-		var search_petNo = $(this).attr("value")
-		//alert("search_petNo값 : " + search_petNo); //ok
-		var search_ownerNo = $('#search_ownerNo').val();
-		//alert(search_ownerNo); //ok
-		//백으로 보내서 삽입
-		$.post({
-			url: "/search_receiveAdd",
-			data: {
-				"search_petNo": search_petNo,
+				//검색에서 접수버튼
+					$(document).on("click", ".search_receipt_btn", function() {
+					//$('.search_receipt_btn').change(function() {
+					//$(document).off("click", "#search_receipt_btn").on("click", "#search_receipt_btn", function() {
+					if (confirm("접수 하시겠습니까?")) {
+						//alert("검색에서 접수버튼");
+						var search_petNo = $(this).attr("value");
+						//alert("search_petNo값 : " + search_petNo); //ok
+						var search_ownerNo = $(this).attr("data-value");
+						//var search_ownerNo = $('input[name=search_ownerNo]').val();
+						//alert($('#search_ownerNo').val());//안옴
+						alert(search_ownerNo);//안옴
+						
+						//백으로 보내서 삽입
+						$.ajax({
+							url: "/search_receiveAdd",
+							type: "POST",
+							data: {
+								"search_petNo": search_petNo,
+								"search_ownerNo": search_ownerNo
+							},
+							dataType: "json",
+							cache: false
+						}).done(function(data) {
+							//alert("통신성공");
+						}).fail(function() {
+							alert("통신실패 : " + data.result);
+						});
+						//alert(petNo); //ok
+						alert("접수 등록이 되었습니다.");
+						location.reload(); //모달창 hide + 부모창새로고침
+					}
+				});
 
-				"search_ownerNo": search_ownerNo
-			},
-			dataType: "json"
-		}).done(function(data) {
-			//alert("통신성공");
-		}).fail(function() {
-			alert("통신실패 : " + data.result);
-		});
-		//alert(petNo); //ok
-		alert("접수 등록이 되었습니다.");
-		location.reload(); //모달창 hide + 부모창새로고침
-		}
-	});
-
+	
 
 	//예약모달창 + 시간막기 구현
 	$(document).on("click", ".reserv_btn", function() {
@@ -126,12 +130,12 @@ $(function() {
 			for (var i = 0; i < result1.length; i++) {
 				let disabled_time = result1[i].reserv_time;
 				//alert(disabled_time);
-				let time = $("input[name='reserv_time'][value='" + disabled_time +"']").siblings('label').text();
+				let time = $("input[name='reserv_time'][value='" + disabled_time + "']").siblings('label').text();
 				//alert(reservation_date_day+"날짜의 "+"disabled_time:"+disabled_time); //예약된 시간 다 조회
 				//alert("time:"+time); //ok
 				if (disabled_time == time) {
 					//alert("일치");
-					$("input[name='reserv_time'][value='"+disabled_time + "']").attr("disabled", true);
+					$("input[name='reserv_time'][value='" + disabled_time + "']").attr("disabled", true);
 				}
 			}
 			// 				    컨트롤러에 result 선언함. json.put("result", searchDetail);
@@ -178,7 +182,7 @@ $(function() {
 			for (var i = 0; i < result1.length; i++) {
 				let disabled_time = result1[i].reserv_time;
 				//alert(disabled_time);
-				let time = $("input[name='reserv_time'][value='" + disabled_time+"']").siblings('label').text();
+				let time = $("input[name='reserv_time'][value='" + disabled_time + "']").siblings('label').text();
 				//alert(reservation_date_day+"날짜의 "+"disabled_time:"+disabled_time); //예약된 시간 다 조회
 				//alert("time:"+time); //ok
 				if (disabled_time == time) {
@@ -188,7 +192,7 @@ $(function() {
 			}
 		});
 	});
-	
+
 	// 수정모달_날짜변경시 
 	$('#update_reservation_date_day').change(function() {
 		$("input[name='reserv_time']").attr("disabled", false); //다른 날짜 선택했을때 disabled초기화
@@ -215,7 +219,7 @@ $(function() {
 			for (var i = 0; i < result1.length; i++) {
 				let disabled_time = result1[i].reserv_time;
 				//alert(disabled_time);
-				let time = $("input[name='reserv_time'][value='" + disabled_time+"']").siblings('label').text();
+				let time = $("input[name='reserv_time'][value='" + disabled_time + "']").siblings('label').text();
 				//alert(reservation_date_day+"날짜의 "+"disabled_time:"+disabled_time); //예약된 시간 다 조회
 				//alert("time:"+time); //ok
 				if (disabled_time == time) {
@@ -225,56 +229,56 @@ $(function() {
 			}
 		});
 	});
-	
+
 
 	//예약시간
 	//var reservation_date = ''; //최종 날짜+시간
 	//예약완료 버튼
 	$("#ok-button").click(function() {
 		if (confirm("예약 하시겠습니까?")) {
-		var reservation_date_time = $("input[name='reserv_time']:checked").siblings('label').text(); //시간
-		//alert("reservation_date_time:" + reservation_date_time);
-		if (reservation_date_day !== '' && ('input:radio[name="reserv_time"]:checked').length > 0) {
-			//최종날짜+최종시간
-			var reservationdate = ($('#reservation_date_day').val() + ' ' + reservation_date_time + ':00');
-			$('#reservation_date').val(reservationdate);
-		}
-		let petNo = $(this).attr("value"); //button안의 pet_no값 //ok
-		if ($('input:radio[name="reserv_time"]:checked').length < 1) {
-			alert('예약 시간을 선택해주세요');
-			return false;
-		}
-		var reservation_memo = $('#reservation_memo').val();
-		var reservation_date = $('#reservation_date').val();
+			var reservation_date_time = $("input[name='reserv_time']:checked").siblings('label').text(); //시간
+			//alert("reservation_date_time:" + reservation_date_time);
+			if (reservation_date_day !== '' && ('input:radio[name="reserv_time"]:checked').length > 0) {
+				//최종날짜+최종시간
+				var reservationdate = ($('#reservation_date_day').val() + ' ' + reservation_date_time + ':00');
+				$('#reservation_date').val(reservationdate);
+			}
+			let petNo = $(this).attr("value"); //button안의 pet_no값 //ok
+			if ($('input:radio[name="reserv_time"]:checked').length < 1) {
+				alert('예약 시간을 선택해주세요');
+				return false;
+			}
+			var reservation_memo = $('#reservation_memo').val();
+			var reservation_date = $('#reservation_date').val();
 
-		//선택된 radio값 구별
-		var reservation_date1 = new Date($('#reservation_date').val());
-		let reserv_time = reservation_date1.getHours() + ':' + reservation_date1.getMinutes();
+			//선택된 radio값 구별
+			var reservation_date1 = new Date($('#reservation_date').val());
+			let reserv_time = reservation_date1.getHours() + ':' + reservation_date1.getMinutes();
 
 
-		//alert(reservation_date);
-		//백으로 보내서 삽입
-		$.post({
-			url: "/reservAdd",
-			data: {
-				"petNo": petNo,
-				"reservation_memo": reservation_memo,
-				"reservation_date": reservation_date
-			},
-			dataType: "json"
-		}).done(function(data) {
+			//alert(reservation_date);
+			//백으로 보내서 삽입
+			$.post({
+				url: "/reservAdd",
+				data: {
+					"petNo": petNo,
+					"reservation_memo": reservation_memo,
+					"reservation_date": reservation_date
+				},
+				dataType: "json"
+			}).done(function(data) {
 
-			//alert("통신성공?"); //ok
-			//alert("reserv_time:" + reserv_time); //ok
-			//if (reservation_date_time == reserv_time) {
-			//$($("input[name='reserv_time']:checked")).attr("disabled", true);
+				//alert("통신성공?"); //ok
+				//alert("reserv_time:" + reserv_time); //ok
+				//if (reservation_date_time == reserv_time) {
+				//$($("input[name='reserv_time']:checked")).attr("disabled", true);
 
-			//}
-		}).fail(function() {
-			alert("통신실패 : " + data.result);
-		});
-		alert("예약이 등록 되었습니다.");
-		location.reload(); //모달창 hide + 부모창새로고침
+				//}
+			}).fail(function() {
+				alert("통신실패 : " + data.result);
+			});
+			alert("예약이 등록 되었습니다.");
+			location.reload(); //모달창 hide + 부모창새로고침
 		}
 
 	});
@@ -359,47 +363,47 @@ $(function() {
 			.fail(function(jqXHR, textStatus, errorThrown) {
 				alert("get request failed: " + errorThrown);
 			});
-			
-			
+
+
 	});
 	//수정완료 버튼
 	$("#update_ok-button").click(function() {
 		if (confirm("수정 하시겠습니까?")) {
-		let update_reservation_no = $(this).attr("value"); //reservation_no
-		//alert("update_reservation_no:" + update_reservation_no); //ok
+			let update_reservation_no = $(this).attr("value"); //reservation_no
+			//alert("update_reservation_no:" + update_reservation_no); //ok
 
-		var update_reservation_date_time = $("input[name='reserv_time']:checked").siblings('label').text();
-		//alert("update_reservation_date_time:"+update_reservation_date_time); //ok
-		//최종날짜+최종시간
-		//alert("$('#update_reservation_date_day').val():"+$('#update_reservation_date_day').val());//ok
-		var updatereservationdate = ($('#update_reservation_date_day').val() + ' ' + update_reservation_date_time + ':00');
-		$('#update_reservation_date').val(updatereservationdate); //최종날짜시간 value에 삽입
-		//alert("$('#update_reservation_date').val():"+$('#update_reservation_date').val());//
+			var update_reservation_date_time = $("input[name='reserv_time']:checked").siblings('label').text();
+			//alert("update_reservation_date_time:"+update_reservation_date_time); //ok
+			//최종날짜+최종시간
+			//alert("$('#update_reservation_date_day').val():"+$('#update_reservation_date_day').val());//ok
+			var updatereservationdate = ($('#update_reservation_date_day').val() + ' ' + update_reservation_date_time + ':00');
+			$('#update_reservation_date').val(updatereservationdate); //최종날짜시간 value에 삽입
+			//alert("$('#update_reservation_date').val():"+$('#update_reservation_date').val());//
 
-		var update_reservation_memo = $('#update_reservation_memo').val();
-		var update_reservation_date = $('#update_reservation_date').val();
-		//alert(update_reservation_date);
+			var update_reservation_memo = $('#update_reservation_memo').val();
+			var update_reservation_date = $('#update_reservation_date').val();
+			//alert(update_reservation_date);
 
-		$.post({
-			url: "/reservUpdateSaved",
-			data: {
-				"update_reservation_no": update_reservation_no,
-				"update_reservation_memo": update_reservation_memo,
-				"update_reservation_date": update_reservation_date
-			},
-			dataType: "json"
-		}).done(function(data) {
-			let result = data.result;
+			$.post({
+				url: "/reservUpdateSaved",
+				data: {
+					"update_reservation_no": update_reservation_no,
+					"update_reservation_memo": update_reservation_memo,
+					"update_reservation_date": update_reservation_date
+				},
+				dataType: "json"
+			}).done(function(data) {
+				let result = data.result;
 
-			if (data.result == 1) {
-				alert("수정이 완료되었습니다.");
-			} else {
-				alert("문제가 발생했습니다. \n다시 시도해주세요.");
-			}
-			location.reload(); //모달창 hide + 부모창새로고침
-		}).fail(function() {
-			alert("통신실패 : " + data.result);
-		});
+				if (data.result == 1) {
+					alert("수정이 완료되었습니다.");
+				} else {
+					alert("문제가 발생했습니다. \n다시 시도해주세요.");
+				}
+				location.reload(); //모달창 hide + 부모창새로고침
+			}).fail(function() {
+				alert("통신실패 : " + data.result);
+			});
 		}
 	});
 
@@ -429,37 +433,37 @@ $(function() {
 	//접수 버튼 -> 접수테이블에 데이터 넣기
 	$(".receipt_btn").click(function() {
 		//alert("접수버튼");
-	if (confirm("접수 하시겠습니까?")) {
-		let reservNo = $(this).attr("value"); //reservation_no
-		//alert("reservNo값 : " + reservNo); //ok
-		var receive_petNo = $('#petNo').val();
-		var receive_ownerNo = $('#ownerNo').val();
-		//alert(receive_petNo);
-		//alert(receive_ownerNo);
-		//백으로 보내서 삽입
-		$.post({
-			url: "/receiveAdd",
-			data: {
-				"reservNo": reservNo,
-				"receive_petNo": receive_petNo,
-				"receive_ownerNo": receive_ownerNo
-			},
-			dataType: "json"
-		}).done(function(data) {
-			//alert("통신성공");
-			//let result = data.result;
-			//if (data.result == 1) {
-			//    alert("저장성공");
-			//    console.log("저장성공");
-			//} else {
-			//    alert("저장실패");
-			//}
-		}).fail(function() {
-			alert("통신실패 : " + data.result);
-		});
-		//alert(petNo); //ok
-		alert("접수 등록이 되었습니다.");
-		location.reload(); //모달창 hide + 부모창새로고침
+		if (confirm("접수 하시겠습니까?")) {
+			let reservNo = $(this).attr("value"); //reservation_no
+			//alert("reservNo값 : " + reservNo); //ok
+			var receive_petNo = $('#petNo').val();
+			var receive_ownerNo = $('#ownerNo').val();
+			//alert(receive_petNo);
+			//alert(receive_ownerNo);
+			//백으로 보내서 삽입
+			$.post({
+				url: "/receiveAdd",
+				data: {
+					"reservNo": reservNo,
+					"receive_petNo": receive_petNo,
+					"receive_ownerNo": receive_ownerNo
+				},
+				dataType: "json"
+			}).done(function(data) {
+				//alert("통신성공");
+				//let result = data.result;
+				//if (data.result == 1) {
+				//    alert("저장성공");
+				//    console.log("저장성공");
+				//} else {
+				//    alert("저장실패");
+				//}
+			}).fail(function() {
+				alert("통신실패 : " + data.result);
+			});
+			//alert(petNo); //ok
+			alert("접수 등록이 되었습니다.");
+			location.reload(); //모달창 hide + 부모창새로고침
 		}
 	});
 

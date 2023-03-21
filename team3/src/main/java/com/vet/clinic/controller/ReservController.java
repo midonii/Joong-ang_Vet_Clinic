@@ -38,12 +38,10 @@ public class ReservController {
 		// 예약 리스트
 		List<ReservDTO> reservlist = reservService.reservlist(reservDTO);
 		mv.addObject("reservlist", reservlist);
-		// System.err.println(reservlist);
 
 		// 접수 리스트
 		List<ReservDTO> receplist = reservService.receplist(reservDTO);
 		mv.addObject("receplist", receplist);
-		// System.err.println(reservlist);
 
 		return mv;
 	}
@@ -184,19 +182,18 @@ public class ReservController {
 
 		JSONObject json = new JSONObject();
 		json.put("result", result);
-		System.err.println(json);
 		return json.toString();
 	}
 
 	// 예약삭제
 	@GetMapping("reservDelete")
 	public String reservDelete(HttpServletRequest request) {
-		System.out.println(request.getParameter("delete_reservation_no"));
+		//System.out.println(request.getParameter("delete_reservation_no"));
 
 		ReservDTO reservDTO = new ReservDTO();
 		reservDTO.setDelete_reservation_no(request.getParameter("delete_reservation_no"));
 		int result = reservService.delete_reservation_no(reservDTO);
-		System.out.println("처리결과는 : " + result);
+		//System.out.println("처리결과는 : " + result);
 
 		return "redirect:reserv";
 	}
@@ -220,8 +217,6 @@ public class ReservController {
 		int result = reservService.receiveAdd(reservDTO);
 		result = reservService.receiveAdd_reservYn(reservDTO);
 		json.put("result", result);
-		// System.out.println(json);
-		// System.out.println("result:"+result); //1
 
 		return json.toString();
 	}
@@ -236,14 +231,17 @@ public class ReservController {
 		reservDTO.setStaff_id((String) session.getAttribute("id"));
 
 		JSONObject json = new JSONObject();
-
-		reservDTO.setSearch_ownerNo(request.getParameter("search_ownerNo"));
+		
 		reservDTO.setSearch_petNo(request.getParameter("search_petNo"));
+		reservDTO.setSearch_ownerNo(request.getParameter("search_ownerNo"));
+		System.err.println(request.getParameter("search_ownerNo")); //안들어옴
 
 		int result = reservService.search_receiveAdd(reservDTO);
 		json.put("result", result);
-		// System.out.println(json);
-		// System.out.println("result:"+result); //1
+		
+		
+		
+		
 		return json.toString();
 	}
 
@@ -266,5 +264,6 @@ public class ReservController {
 
 		return "/reservation/calender";
 	}
+	
 
 }
