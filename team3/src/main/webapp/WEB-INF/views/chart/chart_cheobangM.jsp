@@ -27,8 +27,8 @@
 											<select class="form-control form-control-sm col-md-3"
 												name="search_name" id="search_name" style="border-radius: 3px 0 0 3px;">
 												<option value="" selected disabled="disabled">선택</option>
-												<option value="drug">약</option>
-												<option value="exam">검사</option>
+												<option value="drug">약품</option>
+												<option value="exam">진료</option>
 												<option value="vac">접종</option>
 											</select> 
 											<input type="text"
@@ -43,7 +43,7 @@
 									</div>
 								</form>
 						<!--리스트테이블 시작  -->
-						<div class="table-responsive" style="height : 800px;">
+						<div class="table-responsive" style="height : 600px;">
 							<table class="table table-bordered table-sm" width="100%"
 								cellspacing="0" style="text-align: center; overflow: auto;">
 								<thead>
@@ -65,9 +65,9 @@
 					<!-- 우측 시작 -->
 					<div class="col-6 col-md-6"
 						style=" padding: 10px;  ">
-						<div class="table-responsive" style="max-height : 848px;">
+						<div class="table-responsive" style="max-height : 648px;">
 						<table class="table table-bordered table-sm" width="100%"
-								cellspacing="0" style="text-align: center; overflow: auto; max-height: 848px;">
+								cellspacing="0" style="text-align: center; overflow: auto; max-height: 648px;">
 								<thead>
 									<tr class="bg-gray-100" style="float:center;">
 										<th class="col-1"></th>
