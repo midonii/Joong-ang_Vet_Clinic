@@ -27,7 +27,7 @@ function calendarInit() {
 	renderCalender(thisMonth);
 
 	function renderCalender(thisMonth) {
-/*
+
 		// 렌더링을 위한 데이터 정리
 		currentYear = thisMonth.getFullYear();
 		currentMonth = thisMonth.getMonth();
@@ -71,7 +71,7 @@ function calendarInit() {
 			var currentMonthDate = document.querySelectorAll('.dates .current');
 			currentMonthDate[todayDate - 1].classList.add('today');
 		}
-*/
+
 	}
 	// 이전달로 이동
 	$('.go-prev').on('click', function() {
