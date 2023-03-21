@@ -64,8 +64,6 @@ $(function() {
 			dateType: "json"
 		}).done(function(data) {
 			let result = data.result;
-			let petno = data.petno;
-			alert(petno);
 			
 			$(".ownername").text(result.owner_name);
 			$(".petname").text(result.pet_name);
@@ -73,6 +71,7 @@ $(function() {
 			$(".petgender").text(result.pet_gender);
 			$(".petbirth").text(result.pet_birth);
 			$(".petweight").text(result.pet_weight);
+			$("#pet_no").val(result.pet_no);
 					
 		}).fail(function(xhr, status, errorThrown) {
 			alert("문제가 발생했습니다.");
