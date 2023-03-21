@@ -20,11 +20,10 @@ public class Chart1Controller {
 	
 	@ResponseBody
 	@GetMapping(value="/petdetailAjax", produces = "application/json;charset=UTF-8")
-	public String petdetailAjax(@RequestParam("receiveno") String receiveno, @RequestParam("pet_no") String petno){
+	public String petdetailAjax(@RequestParam("receiveno") String receiveno){
 		JSONObject json = new JSONObject();
 		Map<String, Object> map = chartService.petdetailAjax(receiveno);
 		
-		json.put("petno", petno);
 		json.put("result", map);
 		return json.toString();
 	}
