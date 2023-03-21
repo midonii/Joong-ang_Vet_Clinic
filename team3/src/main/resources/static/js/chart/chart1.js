@@ -34,7 +34,6 @@ $(function() {
 				table += "<td class='col-2' style='vertical-align : middle;'><span class=' badge  rounded-pill bgtime1'>접</span>&nbsp;" + receive_time;
 			}
 			table += "<td class='col-5'><a  style='text-decoration: none;' id='pet_name' value='" + receive_no + "' >";
-			table += "<input type='hidden' id='pet_no' name='pet_no' value='"+pet_no +"'>";
 			table += "<b class='text-primary' style='cursor:pointer;'>" + pet_name + "&nbsp;(" + type_name + ")" + "</b></a><br>" + owner_name + "</td>";
 			if (receive_state == 1) {
 				table += "<td style='vertical-align: middle'><span class='badge text-bg-primary'>진료대기</span></td>";
@@ -54,30 +53,65 @@ $(function() {
 		alert("문제가 발생했습니다.");
 	});
 
+	
 	/*펫네임 클릭시*/
-	$(document).on("click", "#pet_name", function() {
-		let receiveno = $(this).attr("value");
-		$.get({
-			url: "/petdetailAjax",
-			cache: false,
-			data: { "receiveno": receiveno },
-			dateType: "json"
-		}).done(function(data) {
-			let result = data.result;
-			
-			$(".ownername").text(result.owner_name);
-			$(".petname").text(result.pet_name);
-			$(".pettype").text(result.type_name);
-			$(".petgender").text(result.pet_gender);
-			$(".petbirth").text(result.pet_birth);
-			$(".petweight").text(result.pet_weight);
-			$("#pet_no").val(result.pet_no);
-					
-		}).fail(function(xhr, status, errorThrown) {
-			alert("문제가 발생했습니다.");
+   $(document).on("click", "#pet_name", function() {
+      let receiveno = $(this).attr("value");
+      $.get({
+         url: "/petdetailAjax",
+         cache: false,
+         data: { "receiveno": receiveno },
+         dateType: "json"
+      }).done(function(data) {
+         let result = data.result;
 
-		})
-	});
+         $(".ownername").text(result.owner_name);
+         $(".petname").text(result.pet_name);
+         $(".pettype").text(result.type_name);
+         $(".petgender").text(result.pet_gender);
+         $(".petbirth").text(result.pet_birth);
+         $(".petweight").text(result.pet_weight);
+         $("#pet_no").val(result.pet_no);
+
+      var pet_no = $("#pet_no").val();
+      alert(pet_no);
+      $.post({
+         url: "/petVacAjax",
+         cache: false,
+         data: {
+            "pet_no": pet_no
+         },
+         dataType: "json"
+      })
+         .done(
+            function(data) {
+               let pet = data.pet;
+               $("#vac").empty();
+               var div = "";
+               if (pet == "") {
+                  div += "<div class='list-group-item'><div style='line-height: 250px;text-align: center;'>접종 내역이 없습니다.</div></div>";
+               } else {
+                  for (let i = 0; i < pet.length; i++) {
+                     var vac_name = pet[i].vac_name;
+                     var vacdata_date = pet[i].vacdata_date;
+                     div += "<div class='list-group-item row'><div class='col-5 font-weight-bold float-left'>"
+                        + vac_name
+                        + "</div><div class='col-7 float-left'>"
+                        + vacdata_date + "</div></div>";
+                  }
+               }
+               $("#vac").append(div);
+            }).fail(function(xhr, status, errorThrown) {
+               alert("실패");
+            });
+
+
+      }).fail(function(xhr, status, errorThrown) {
+         alert("문제가 발생했습니다.");
+
+      });
+
+   });
 
 
 	/*처방내역*/
