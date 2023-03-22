@@ -48,6 +48,11 @@ h6{
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script type="text/javascript">
 
+window.history.forward(); 
+function noBack(){
+	window.history.forward();
+} 
+
 $(function(){
 	
 	$(".edit").click(function(){
@@ -60,6 +65,7 @@ $(function(){
 	
 	$(".checkbtn").click(function(){
 		let pwCheck = $("#pwCheck").val();
+		$("#pwCheck").val('');
 		$.post({
 			url : "/profilePwCheck",
 			data : {"pw" : pwCheck},

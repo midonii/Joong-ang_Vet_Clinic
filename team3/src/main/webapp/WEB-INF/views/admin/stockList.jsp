@@ -8,7 +8,7 @@
 if (session.getAttribute("id") == null) {
 	response.sendRedirect("/login");
 }
-%>
+%> 
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,10 +19,10 @@ if (session.getAttribute("id") == null) {
 
 <title>중앙동물병원</title>
 
-<!--   <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"> -->
-<!--    <link rel="stylesheet" href="/resources/demos/style.css"> -->
-<!--   <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
-<!--   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script> -->
+<!-- datepicker -->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+	<!-- 안됨ㅡㅡ <link rel="stylesheet" href="/resources/demos/style.css">  -->
+	<link rel="stylesheet" href="css/stock/jquery-ui.css">
 
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
@@ -71,23 +71,23 @@ if (session.getAttribute("id") == null) {
 	border-color: #f8f9fc;
 }
 
-thead {
+.list_table thead {
   display: table; /* to take the same width as tr */
   width: calc(100% - 17px); /* - 17px because of the scrollbar width */
 }
 
-tbody {
+.list_table tbody {
   display: block; /* to enable vertical scrolling */
   max-height: 466px; /* e.g. */
   overflow-y: scroll; /* keeps the scrollbar even if it doesn't need it; display purpose */
 }
-tr {
+.list_tr {
   display: table; /* display purpose; th's border */
   width: 100%;
   box-sizing: border-box; /* because of the border (Chrome needs this line, but not FF) */
 }
 
-td {
+.list_tr td {
   text-align: center;
   border-bottom: none;
   border-left: none;
@@ -96,23 +96,108 @@ td {
 </head>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
-
 $(function(){
 
+// ----- datepicker -------
+	$( ".datepicker" ).datepicker({
+		dateFormat: 'yy-mm-dd',
+	  	  prevText: '이전 달',
+	  	  nextText: '다음 달',
+	  	  monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	  	  monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	  	  dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+	  	  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+	  	  dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+	  	  showMonthAfterYear: true,
+	  	  changeMonth: true,
+	  	  changeYear: true,
+	  	  yearSuffix: '년',
+	  	  beforeShowDay: noSundays,                                                                                                                                                                               
+	  	  
+ 		  minDate: new Date('2023-01-01'),
+		  maxDate: 0,
+		  onClose: function( selectedDate ) {    
+			  //alert(selectedDate);
+              $(".datepicker2").datepicker( "option", "minDate", selectedDate );
+              // 시작일(sDatepicker) datepicker가 닫힐때
+              // 종료일(eDatepicker)의 선택할수있는 최소 날짜(minDate)를 선택한 시작일로 지정
+          }                	
+	});
+	
+	// 일요일 선택 막기
+	function noSundays(date) {
+		return [date.getDay() != 0, ''];
+	}
+	
+	
+	$(".datepicker2").datepicker({
+		dateFormat: 'yy-mm-dd',
+	  	  prevText: '이전 달',
+	  	  nextText: '다음 달',
+	  	  monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	  	  monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+	  	  dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+	  	  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+	  	  dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+	  	  showMonthAfterYear: true,
+	  	  changeMonth: true,
+	  	  changeYear: true,
+	  	  yearSuffix: '년',
+	  	  beforeShowDay: noSundays,                                                                                                                                                                               
+		  maxDate: 0,
+	});
+	
+	
+// ----- 초기화버튼 --------
 	$("#reset").click(function(){
 		location.href="/stockList";
 	});
 	
-//-- 조회
-
+	
+// -- 구매처명 직접입력 아닐때 텍스트박스 비활성화 --
+	$("#purchasingOfficeSelect").change(function(){
+		
+		var purchasingOfficeOption = $("#purchasingOfficeSelect option:selected").text();
+		
+		if(purchasingOfficeOption != "직접입력"){
+			$("#purchasingOffice").attr("readonly",true);
+		} else {
+			$("#purchasingOffice").attr("readonly",false);
+		}
+	});
+	
+//-------- 조회버튼 클릭 --------------
 	$("#select").click(function(){
 		
+	// 카테고리 - 라디오버튼
 		var radioValue = $("input[name='stock_radio']:checked").val();
-		alert(radioValue);
+		//alert(radioValue);
+		
+	// 약명
+		var medicineName = $("#medicineName").val();
+		//alert(medicineName);
+		
+	// 구매처명
+		var purchasingOfficeOption = $("#purchasingOfficeSelect option:selected").text();
+		//alert(purchasingOfficeOption);
+		var purchasingOffice = $("#purchasingOffice").val();
+		//alert(purchasingOffice);
+		
+	// 처방기간조회
+		 var fromDate = $("#fromDate").val();
+	 	 var toDate = $("#fromDate").val();
+	  
+	  	alert(fromDate + " / " + toDate);
+		
 		
 		$.post({
 			url : "/stockSelect",
-			data : {"radioValue" : radioValue},
+			data : {
+				"radioValue" : radioValue,
+				"medicineName" : medicineName,
+				"purchasingOfficeOption" : purchasingOfficeOption,
+				"purchasingOffice" : purchasingOffice
+			},
 			dataType : "json"
 		}).done(function(data){
 			//alert(data.searchList[0].medical_name);
@@ -129,7 +214,7 @@ $(function(){
 				let medical_buying = (data.searchList[i-1].medical_buying).toLocaleString();
 				let medical_price = (data.searchList[i-1].medical_price).toLocaleString();
 				
-				var tr = "<tr>"
+				var tr = "<tr class='list_tr'>"
 							+"<td style='width: 3%'>"+i+"</td>"
 							+"<td style='width: 5%'>"+medical_subcate+"</td>"
 							+"<td style='width: 10%'>"+medical_name+"</td>"
@@ -199,13 +284,11 @@ $(function(){
 												class="form-check-label cursor" for="stock_radio0">
 												전체보기 </label>
 										</div>
-										<c:forEach items="${m_subcate }" var="ms" varStatus="no">
+										<c:forEach items="${m_subcate }" var="ms" varStatus="cate_no">
 											<div class="form-check radio-div">
 												<input class="form-check-input radio" type="radio"
-													name="stock_radio" id="stock_radio${no.count }" value="${ms }"> 
-												<label
-													class="form-check-label cursor" for="stock_radio${no.count }">
-													${ms } </label>
+													name="stock_radio" id="stock_radio${cate_no.count }" value="${ms }"> 
+												<label class="form-check-label cursor" for="stock_radio${cate_no.count }">${ms } </label>
 											</div>
 										</c:forEach>
 									</div>
@@ -215,32 +298,30 @@ $(function(){
 									<!-- 약 -->
 									<div class="row row-margin0 "
 										style="width: 25%; margin-right: 10px;">
-										<div class="card search_criteria" style="width: 39%;">약&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;명</div>
-										<div class="card"
-											style="width: 57%; height: 35px; margin: 0 0 5px 10px;">
-											<input type="text" class="form-control"
-												style="height: 33px; border: 0">
+										<div class="card search_criteria" style="width: 39%;">약&nbsp;&nbsp;품&nbsp;&nbsp;명</div>
+										<!-- 약명 입력 id="medicineName" -->
+										<div class="card" style="width: 57%; height: 35px; margin: 0 0 5px 10px;">
+											<input type="text" class="form-control" id="medicineName" style="height: 33px; border: 0">
 										</div>
 									</div>
 									<!-- 구매처 -->
 									<div class="row row-margin0"
 										style="width: 33%; margin-right: 10px;">
 										<div class="card search_criteria" style="width: 32%;">구매처명</div>
+										<!-- 구매처선택 -->
 										<div class=""
 											style="width: 30%; height: 35px; margin: 0 0 5px 10px;">
-											<select class="form-control form-select"
-												aria-label="Default select example"
-												style="height: 35px; font-size: 14px;">
+											<select class="form-control form-select" id="purchasingOfficeSelect" style="height: 35px; font-size: 14px;">
 												<option selected value="0">직접입력</option>
 												<c:forEach items="${m_company }" var="mc">
 													<option>${mc }</option>
 												</c:forEach>
 											</select>
 										</div>
+										<!-- 구매처 직접입력 id="purchasingOffice" -->
 										<div class="card"
 											style="width: 33%; height: 35px; margin: 0 0 5px 10px;">
-											<input type="text" class="form-control"
-												style="height: 33px; border: 0">
+											<input type="text" class="form-control" id="purchasingOffice" style="height: 33px; border: 0">
 										</div>
 									</div>
 									<!-- 기간조회 -->
@@ -250,13 +331,13 @@ $(function(){
 										<div class="row row-margin0" style="width: 70%;">
 											<div class="card"
 												style="width: 45%; height: 35px; margin: 0 10px 5px 10px;">
-												<input class="datepicker"
+												<input class="form-control datepicker" id="fromDate"
 													style="width: 100%; height: 33px; border: 0">
 											</div>
 											~
 											<div class="card"
 												style="width: 45%; height: 35px; margin: 0 0 5px 10px;">
-												<input class="datepicker"
+												<input class="form-control datepicker2" id="toDate"
 													style="width: 100%; height: 33px; border: 0">
 											</div>
 										</div>
@@ -277,10 +358,10 @@ $(function(){
 							<div class="card"
 								style="width: 100%; height: 505px; margin: 10px;">
 								<div class="border-radius" style="width: 100%">
-									<table class="border table-sm table-bordered"
+									<table class="list_table border table-sm table-bordered"
 										style="width: 100%; text-align: center; font-size: 14px;">
 										<thead>
-											<tr style="background-color: #f8f9fc;">
+											<tr class="list_tr" style="background-color: #f8f9fc;">
 												<th class="" style="width: 3%">번호</th>
 												<th class="" style="width: 5%">분류</th>
 												<th class="" style="width: 10%">약품명</th>
@@ -335,6 +416,13 @@ $(function(){
 
 				<!-- Custom scripts for all pages-->
 				<script src="js/sb-admin-2.min.js"></script>
+				
+
+<!-- datepicker -->
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <script type="text/javascript" src="../js/stock/jquery-ui.min.js"></script>		
+
 </body>
 
 </html>

@@ -33,6 +33,17 @@
 		<if test="radioValue != '전체보기'">
 			AND medical_subcate = #{radioValue }
 		</if>
+		<if test='medicineName != null and !"".equals(medicineName)'>
+			AND medical_name = #{medicineName }
+		</if>
+		<choose>
+			<when test="purchasingOfficeOption != '직접입력'">
+				AND medical_company = #{purchasingOfficeOption }
+			</when>
+			<when test='purchasingOfficeOption == "직접입력" and purchasingOffice != null and !"".equals(purchasingOffice)'>
+				AND medical_company = #{purchasingOffice }
+			</when>
+		</choose>
 		ORDER BY medical_name
 	</select>
 
