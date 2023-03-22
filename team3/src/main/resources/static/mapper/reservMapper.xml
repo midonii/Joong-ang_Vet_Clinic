@@ -3,55 +3,63 @@
 
 <mapper namespace="com.vet.clinic.dao.ReservDAO">
 
-	<select id="boardlist" parameterType="ReservDTO" resultType="ReservDTO">
-	SELECT * FROM clientview	
+	<select id="boardlist" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT * FROM clientview
 	</select>
-	
+
 
 	<!-- #() : dto변수명 -->
-	<select id="searchlist" parameterType="ReservDTO" resultType="ReservDTO">
-	SELECT * FROM clientview
-	<if test="search_value != null">
-		WHERE owner_name 
-		
-		LIKE CONCAT('%', #{search_value}, '%')		
-		OR pet_name 
-		LIKE CONCAT('%', #{search_value}, '%')		
-		OR owner_tel 
-		LIKE CONCAT('%', #{search_value}, '%')	
-	</if>	
+	<select id="searchlist" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT * FROM clientview
+		<if test="search_value != null">
+			WHERE owner_name
+
+			LIKE CONCAT('%', #{search_value}, '%')
+			OR pet_name
+			LIKE CONCAT('%', #{search_value}, '%')
+			OR owner_tel
+			LIKE CONCAT('%', #{search_value}, '%')
+		</if>
 	</select>
-	
-	<select id="reservAjax" parameterType="ReservDTO" resultType="ReservDTO">
-	SELECT *
-	FROM searchview
-	WHERE pet_no=#{detail_no }
+
+	<select id="reservAjax" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT *
+		FROM searchview
+		WHERE pet_no=#{detail_no }
 	</select>
-	
-	
+
+
 	<!-- 예약테이블에 값 넣기 -->
 	<insert id="reservAdd" parameterType="ReservDTO">
 		INSERT INTO reservation SET
- 		reservation_date = #{reservation_date},
-		reservation_memo = #{reservation_memo },
+		reservation_date = #{reservation_date},
+		reservation_memo =
+		#{reservation_memo },
 		reservation_time=NOW(),
-		staff_no = (SELECT staff_no FROM staff WHERE staff_id = #{staff_id} ),
-   		pet_no = #{petNo};
-   		
+		staff_no = (SELECT
+		staff_no FROM staff WHERE staff_id = #{staff_id} ),
+		pet_no = #{petNo};
+
 	</insert>
-	
+
 	<!-- 예약리스트 -->
-	<select id="reservlist" parameterType="ReservDTO" resultType="ReservDTO">
-	SELECT *
-	FROM reservationview 
-	WHERE reserv_date = CURDATE() AND (reservation_yn = 'n' OR reservation_yn = '')
-	ORDER BY reservation_date DESC		
+	<select id="reservlist" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT *
+		FROM reservationview
+		WHERE reserv_date = CURDATE() AND (reservation_yn = 'N' OR reservation_yn =
+		'')
+		ORDER BY reservation_date ASC
 	</select>
-	
-	<select id="reservTimeCheck" parameterType="ReservDTO" resultType="ReservDTO">
-	SELECT reserv_time
-	FROM reservationview
-	WHERE reserv_date = #{reservation_date_day}
+
+	<select id="reservTimeCheck" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT reserv_time
+		FROM reservationview
+		WHERE reserv_date = #{reservation_date_day}
 	</select>
 
 
@@ -61,63 +69,80 @@
 	<insert id="receiveAdd" parameterType="ReservDTO">
 		INSERT INTO reception SET
 		pet_no = #{receive_petNo},
- 		receive_time = NOW(),
- 		owner_no = #{receive_ownerNo},
- 		staff_no = (SELECT staff_no FROM staff WHERE staff_id = #{staff_id} ),
+		receive_time = NOW(),
+		owner_no = #{receive_ownerNo},
+		staff_no = (SELECT staff_no FROM staff WHERE staff_id = #{staff_id} ),
 		reservation_no = IFNULL(#{reservNo}, NULL)
-	</insert>	
-	
+	</insert>
+
 	<update id="receiveAdd_reservYn" parameterType="ReservDTO">
-		UPDATE reservation SET
-   		reservation_yn = 'y'
-   		WHERE reservation_no=#{reservNo}
-	</update>	
-	
+		UPDATE
+		reservation SET
+		reservation_yn = 'Y'
+		WHERE reservation_no=#{reservNo}
+	</update>
+
 	<!-- (검색에서)접수테이블에 값 넣기 -->
 	<insert id="search_receiveAdd" parameterType="ReservDTO">
-		INSERT INTO reception SET
+		INSERT INTO
+		reception SET
 		pet_no = #{search_petNo},
- 		receive_time = NOW(),
- 		staff_no = (SELECT staff_no FROM staff WHERE staff_id = #{staff_id} ),
- 		owner_no = #{search_ownerNo}
-	</insert>	
+		receive_time = NOW(),
+		staff_no = (SELECT staff_no FROM staff WHERE staff_id = #{staff_id} ),
+		owner_no = #{search_ownerNo}
+	</insert>
 
 
-
-
-
-<!-- 접수리스트 -->
-	<select id="receplist" parameterType="ReservDTO" resultType="ReservDTO">
-	SELECT *
-	FROM receptionview 
-	ORDER BY receive_time DESC	
+	<!-- 접수리스트 -->
+	<select id="receplist" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT *
+		FROM receptionview
+		WHERE date_format(receive_time, '%Y-%m-%d') = CURDATE()
+		ORDER BY receive_time ASC
 	</select>
-	
-	<select id="reservUpdate" parameterType="ReservDTO" resultType="ReservDTO">
-	SELECT *
-	FROM reservationview 
-	WHERE reservation_no = #{reservation_no}
-	ORDER BY reservation_date DESC	
+
+	<select id="reservUpdate" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT *
+		FROM reservationview
+		WHERE reservation_no = #{reservation_no}
+		ORDER BY reservation_date DESC
 	</select>
-	
+
 	<update id="reservUpdateSaved" parameterType="ReservDTO">
-		UPDATE reservation SET
-   		reservation_date = #{update_reservation_date },
+		UPDATE reservation
+		SET
+		reservation_date = #{update_reservation_date },
 		reservation_memo = #{update_reservation_memo }
-   		WHERE reservation_no=#{update_reservation_no}
-   		
+		WHERE reservation_no=#{update_reservation_no}
+
 	</update>
-	
+
 	<delete id="delete_reservation_no" parameterType="ReservDTO">
-		DELETE FROM reservation
+		DELETE FROM
+		reservation
 		WHERE
 		reservation_no=#{delete_reservation_no }
 	</delete>
-	
+
 	<delete id="receiveDelete" parameterType="ReservDTO">
 		DELETE FROM reception
 		WHERE
 		receive_no=#{delete_receive_no }
 	</delete>
-	
+
+	<!-- 캘린더 -->
+	<select id="calender" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT *
+		FROM reservationview
+
+	</select>
+
+<!-- 	<select id="calendarList" parameterType="ReservDTO" -->
+<!-- 		resultType="ReservDTO"> -->
+<!-- 		SELECT * FROM calendar -->
+<!-- 	</select> -->
+
 </mapper>

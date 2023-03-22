@@ -377,12 +377,13 @@ $(function() {
 			//최종날짜+최종시간
 			//alert("$('#update_reservation_date_day').val():"+$('#update_reservation_date_day').val());//ok
 			var updatereservationdate = ($('#update_reservation_date_day').val() + ' ' + update_reservation_date_time + ':00');
+			//alert(updatereservationdate); //ok
 			$('#update_reservation_date').val(updatereservationdate); //최종날짜시간 value에 삽입
-			//alert("$('#update_reservation_date').val():"+$('#update_reservation_date').val());//
+			//alert("$('#update_reservation_date').val():"+$('#update_reservation_date').val());//undefined
 
 			var update_reservation_memo = $('#update_reservation_memo').val();
-			var update_reservation_date = $('#update_reservation_date').val();
-			//alert(update_reservation_date);
+			var update_reservation_date = updatereservationdate
+			alert(update_reservation_date);
 
 			$.post({
 				url: "/reservUpdateSaved",
