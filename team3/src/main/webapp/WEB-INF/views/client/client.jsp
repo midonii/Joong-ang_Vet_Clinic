@@ -67,6 +67,37 @@ $(function(){
 		location.href="petinfo?petNo="+petNo;
 	});
 });
+
+/* function readURL(input){
+	if(input.files && input.files[0]) {
+		var reader = new FileReader();
+		reader.onload = function(e){
+			$('#petProfileImg').attr('src',e.target.result);
+		}
+		reader.readAsDataURL(input.files[0]);
+	}
+} */
+
+$(function(){
+	//이미지 파일 미리보기
+	$("#petImg").change(function() {
+		 setImageFromFile(this,'#petProfileImg');
+	});
+	
+	 function setImageFromFile(input, expression){
+		if(input.files && input.files[0]){
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$(expression).attr('src',e.target.result);
+			}
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+ 
+ 
+});
+
+ 
 </script>
 <style type="text/css">
 .table{

@@ -304,12 +304,14 @@
 				<div class="modal-body">
 					<div class="row g-1">
 						<div class="col-4">
-							<img src="../img/logoda.png" class="img-thumbnail mb-3"
+							<div id="petImgArea">
+							<img src="../img/logoda.png" id="petProfileImg" class="img-thumbnail mb-3" onerror="imgAreaError()"
 								alt="이미지를 불러올 수 없습니다." style="width: 200px; height: 200px;">
+							</div>
 							<div class="mb-3">
-								<label for="formFileSm" class="form-label">반려견 img file</label>
+								<label for="petImg" class="form-label">반려견 img file</label>
 								<input class="form-control form-control-sm" accept="image/*"
-									id="petImg" type="file" style="width: 200px;">
+									id="petImg" name="petImg" onchange="previewImage(this,'View_area')" onclick="dataSubmit();" multiple type="file" style="width: 200px;">
 							</div>
 						</div>
 						<div class="col-8">
@@ -481,6 +483,7 @@
 					</div>
 					<div class="mt-3 float-right">
 						<button type="button" class="btn btn-warning" id="petUpdateSave">저장</button>
+						<button type="button" class="btn btn-danger" id="petUpdateDel">삭제</button>
 					</div>
 				</div>
 			</div>

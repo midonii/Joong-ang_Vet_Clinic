@@ -73,4 +73,8 @@ public class ClientService {
 		return clientDAO.clientPetDetailAjax(client);
 	}
 
+	public void fileSave(Map<String, Object> map) {
+		clientDAO.fileSave(map);
+	}
+
 }

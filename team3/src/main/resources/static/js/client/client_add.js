@@ -249,6 +249,8 @@ $(function(){
 		   		var inputValue = $(this).find('select:eq(0) option:eq(0)');
 		    }
 
+			$("#petProfileImg").attr("src","../img/logoda.png");
+
 		    // 셀렉트 초기화
 		    //$('.select2').val(0).trigger('change.select2');
 		});
@@ -269,8 +271,8 @@ $(function(){
 	    //$('.select2').val(0).trigger('change.select2');
 	});
 	
-	
-	$(".owner-tr").dblclick (function (){
+	$(document).on("dblclick",".owner-tr",function(){ 
+	//$(".owner-tr").dblclick (function (){
 		//보호자 행 더블 클릭시 해당 보호자의 반려견 띄우기
 		let clientNno = $(this).attr("value");
 		
@@ -316,197 +318,9 @@ $(function(){
 				location.href = "petinfo?petNo=" + petNo;
 			});
 			
-			//변경된 반려견 테이블의 반려견 삭제 기능
-			$(".petList").off().click(function(){
-				//alert("!");
-				let petNo = $(this).attr("value");
-				//alert(petNo);
-				$(this).css("background-color", "#f4f4f4");
-				
-				$(".petList").not(this).each(function() {
-					$(this).css('background-color', '');
-				});
-				
-				$(".petDelete").off().click(function(){
-					//반려견 행 클릭 후 삭제 버튼 누를 경우 삭제되게
-					//alert(petNo);
-					 if(confirm("삭제하시겠습니까?")){
-			 				location.href="petDelete?petNo="+petNo;
-			 			}
-					
-				});
-				
-				//변경된 반려견 테이블의 반려견 수정 기능
-				
-				$(".petUpdate").off().click(function(){
-					alert(petNo);
-
-
-					$.post({
-						url: "/petUpdateAjax",
-						cache: false,
-						data: { "petNo": petNo },
-						dataType: "json"
-					}).done(function(data) {
-						let result = data.result;
-						alert(result.pet_name);
-
-						var pet_name = result.pet_name
-						var pet_weight = result.pet_weight
-						var pet_type = result.type_no
-						var pet_gender = result.pet_gender
-						var pet_year = result.pYear
-						var pet_Month = result.pMonth
-						var pet_Day = result.pDay
-						var pet_memo = result.pet_memo
-						var pet_death = result.pet_death
-
-						var now = new Date();
-						var now_year = now.getFullYear();
-
-						$("#petUpdateBirthYear").append("<option value=''>생년</option>");
-
-						// 올해로 부터 -30년 까지
-						for (var i = now_year; i >= (now_year - 30); i--) {
-							$("#petUpdateBirthYear").append("<option value='" + i + "'>" + i + "</option>");
-						}
-
-						$("#petUpdateBirthMonth").append("<option value=''>월</option>");
-						// 월 (1~12월)
-						for (var i = 1; i < 13; i++) {
-							$('#petUpdateBirthMonth').append('<option value="' + i + '">' + i + '</option>');
-						}
-
-						$("#petUpdateBirthDay").append("<option value=''>일</option>");
-						// 일 (1~31)
-						for (var i = 1; i < 32; i++) {
-							$('#petUpdateBirthDay').append('<option value="' + i + '">' + i + '</option>');
-						}
-
-
-						$("#petUpdateName").val(pet_name);
-						$("#petUpdateWeight").val(pet_weight);
-						$("#petUpdateType").val(pet_type).prop("selected", true);
-						$("#petUpdateSex").val(pet_gender).prop("selected", true);
-						$("#petUpdateBirthYear").val(pet_year).prop("selected", true);
-						$("#petUpdateBirthMonth").val(pet_Month).prop("selected", true);
-						$("#petUpdateBirthDay").val(pet_Day).prop("selected", true);
-						$("#petUpdateComments").val(pet_memo);
-						$("#petDeath").val(pet_death);
-
-
-
-
-
-						$("#petUpdateModal").modal("show");
-
-					}).fail(function(xhr, status, errorThrown) {
-						alert("문제가 발생했습니다.");
-					});
-					//반려견 정보 수정 후 저장 누르면 데이터로 전송
-					$("#petUpdateSave").off().click(function() {
-						var NumberExp = /[^0123456789.]/g;
-
-						if ($("#petUpdateName").val() == "" || $("#petUpdateName").val().length < 1) {
-							alert("이름을 1글자 이상 입력해주세요.");
-							$("#petUpdateName").focus();
-							return false;
-						}
-
-						if ((NumberExp.test($("#petUpdateWeight").val())) || $("#petUpdateWeight").val() == "" ||
-							$("#petUpdateWeight").val().length < 1) {
-							alert("몸무게는 숫자와 소수점(.)만 입력 가능합니다.");
-							$("#petUpdateWeight").focus();
-							return false;
-						}
-
-
-						if ($("select[name=petUpdateType]").val() == "견종을 선택하세요") {
-							alert("견종을 선택해 주세요.");
-							$("#petUpdateType").focus();
-							return false;
-						}
-
-						if ($("select[name=petUpdateSex]").val() == "성별을 선택하세요") {
-							alert("성별을 선택해 주세요.");
-							$("#petUpdateSex").focus();
-							return false;
-						}
-
-						if ($("select[name=petUpdateBirthYear]").val() == "") {
-							alert("생년을 선택해 주세요.");
-							$("#petUpdateBirthYear").focus();
-							return false;
-						}
-						if ($("select[name=petUpdateBirthMonth]").val() == "") {
-							alert("생월을 선택해 주세요.");
-							$("#petUpdateBirthMonth").focus();
-							return false;
-						}
-						if ($("select[name=petUpdateBirthDay]").val() == "") {
-							alert("생일을 선택해 주세요.");
-							$("#petUpdateBirthDay").focus();
-							return false;
-						}
-						if ($("#petDeath").val().length > 11) {
-							alert("사망날짜는 0000-00-00 형태로 입력해 주세요.");
-							$("#petDeath").focus();
-							return false;
-						}
-
-						if (confirm("반려견 수정 정보를 저장하시겠습니까?")) {
-							let petUpdateName = $("#petUpdateName").val();
-							let petUpdateWeight = $("#petUpdateWeight").val();
-							let petUpdateType = $("select[name=petUpdateType]").val();
-							let petUpdateSex = $("select[name=petUpdateSex]").val();
-							let petUpdateBirthYear = $("select[name=petUpdateBirthYear]").val();
-							let petUpdateBirthMonth = $("select[name=petUpdateBirthMonth]").val();
-							let petUpdateBirthDay = $("select[name=petUpdateBirthDay]").val();
-							let petUpdateComments = $("#petUpdateComments").val();
-							let petDeath = $("#petDeath").val();
-
-							//alert("견종 : " + petUpdateType);
-
-
-							//백으로 보내서 수정하게 하기
-							$.post({
-								url: "/petUpdate",
-								data: {
-									"petNo": petNo,
-									"petUpdateName": petUpdateName,
-									"petUpdateWeight": petUpdateWeight,
-									"petUpdateType": petUpdateType,
-									"petUpdateSex": petUpdateSex,
-									"petUpdateBirthYear": petUpdateBirthYear,
-									"petUpdateBirthMonth": petUpdateBirthMonth,
-									"petUpdateBirthDay": petUpdateBirthDay,
-									"petUpdateComments": petUpdateComments,
-									"petDeath": petDeath
-								},
-								dataType: "json"
-							}).done(function(data) {
-								//alert("정상소통" + data.result);
-								if (data.result == 1) {
-									alert("수정이 완료되었습니다.");
-									location.href = "/client";
-
-								} else {
-									alert("문제가 발생했습니다. \n다시 시도해주세요.");
-								}
-							}).fail(function() {
-								alert("문제가 발생했습니다.");
-							});
-						}
-
-					});
-		
-		
-				});
-				
-			});
-			
 			
 			$(this).css("background-color", "#f4f4f4");
+			
 		}).fail(function(xhr, status,errorThrown){
 			alert("문제가 발생했습니다.");
 			
@@ -515,7 +329,8 @@ $(function(){
 		
 	});
 	
-	$(".petList").off().click(function(){
+	$(document).off("click",".petList").on("click",".petList",function(){
+	//$(".petList").off().click(function(){
 		//반려견 테이블 행 클릭시 동작
 		var petNo = $(this).attr("value");
 		//alert("petNo : " + petNo);		
@@ -527,7 +342,8 @@ $(function(){
 				});
 		
 		//alert("petNo : " + petNo);
-		$(".petDelete").off().click(function(){
+		$(document).off("click",".petDelete").on("click",".petDelete",function(){
+		//$(".petDelete").off().click(function(){
 			//반려견 행 클릭 후 삭제 버튼 누를 경우 삭제되게
 			//alert(petNo);
 			 if(confirm("삭제하시겠습니까?")){
@@ -537,7 +353,7 @@ $(function(){
 		});
 		
 		//반려견 수정 Modal 띄우기
-		$(".petUpdate").off().click(function(){
+		$(document).off("click",".petUpdate").on("click",".petUpdate",function(){
 			//alert(petNo);
 			
 		
@@ -603,6 +419,7 @@ $(function(){
 			}).fail(function(xhr, status,errorThrown){
 				alert("문제가 발생했습니다.");
 			});
+			
 			
 		$("#petUpdateSave").off().click(function(){
 			var NumberExp = /[^0123456789.]/g;
@@ -698,9 +515,22 @@ $(function(){
 			}
 			
 		  });
-	
+
+			//반려견 수정 modal에서 삭제버튼 누를 경우
+			$("#petUpdateDel").off().click(function(){
+				//alert(petNo);
+				let petDeath = $("#petDeath").val();
+				//alert(petDeath);
+				if(confirm("삭제하시겠습니까?")){
+					location.href="petDelete?petNo="+petNo+"&petDeath="+petDeath;
+				}
+				
+				
+			});
+
 			
 		});
+		
 			
 			
 			
@@ -853,6 +683,18 @@ $(function(){
 
 						}).fail(function(xhr, status, errorThrown) {
 							alert("문제가 발생했습니다.");
+						});
+						
+						//반려견 수정 modal에서 삭제버튼 누를 경우
+						$("#petUpdateDel").off().click(function() {
+							//alert(petNo);
+							let petDeath = $("#petDeath").val();
+							//alert(petDeath);
+							if (confirm("삭제하시겠습니까?")) {
+								location.href = "petDelete?petNo=" + petNo + "&petDeath=" + petDeath;
+							}
+
+
 						});
 						
 						//반려견 정보 수정 후 저장 누르면 데이터로 전송

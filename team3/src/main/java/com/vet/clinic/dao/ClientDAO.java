@@ -41,4 +41,6 @@ public interface ClientDAO {
 
 	public List<ClientDTO> clientPetDetailAjax(ClientDTO client);
 
+	public void fileSave(Map<String, Object> map);
+
 }

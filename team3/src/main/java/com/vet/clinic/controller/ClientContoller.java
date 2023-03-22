@@ -1,29 +1,47 @@
 package com.vet.clinic.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List; 
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vet.clinic.dto.ClientDTO;
 import com.vet.clinic.dto.SearchDTO;
 import com.vet.clinic.service.ClientService;
+import com.vet.clinic.util.FileUp;
 
 @Controller
 public class ClientContoller {
 	
 	@Resource(name = "clientService")
 	private ClientService clientService;
+	
+	@Autowired
+	private ServletContext context;
+	
+	@Autowired
+	private FileUp fileup;
 	
 	//회원관리 페이지 보기 + 검색
 	@GetMapping("client")
@@ -125,12 +143,14 @@ public class ClientContoller {
 	//반려견 정보 삭제
 	@GetMapping("petDelete")
 	public String petDelete(HttpServletRequest request) {
-		//System.out.println(request.getParameter("petNo"));
+		System.out.println(request.getParameter("petNo"));
 		
 		ClientDTO client = new ClientDTO();
 		client.setPetNo(request.getParameter("petNo"));
+		client.setPetDeath(request.getParameter("petDeath"));
 		
 		int result = clientService.petDel(client);
+
 		System.out.println("반려견 삭제 결과는 : " + result);
 		
 		return "redirect:client";
@@ -197,7 +217,8 @@ public class ClientContoller {
 	
 	//반려견 추가
 	@PostMapping("petAdd")
-	public String petAdd(@RequestParam Map<String, Object> map) {
+	public String petAdd(@RequestParam Map<String, Object> map, 
+						@RequestParam(value = "petImg",required = false)MultipartFile petImg) throws IOException {
 
 		//System.out.println(map);
 		
@@ -208,8 +229,24 @@ public class ClientContoller {
 		String petBirth = petBirthYear+"-"+petBirthMonth+"-"+petBirthDay;
 		map.put("petBirth", petBirth);
 		
-		//System.out.println(map);
+		
+		//System.err.println(petImg.getOriginalFilename()); // 파일 이름
+		//System.out.println(petImg.getSize()); // 위 파일의 크기
+		//System.out.println(petImg.getContentType()); // 올린게 뭔지 확인
+		
 		int petAdd = clientService.petAdd(map);
+		
+		//반려견 이미지 올리기
+		if(!petImg.isEmpty()) {
+			String realPath = context.getRealPath("resources/static/");
+			String fileName = fileup.fileSave(realPath+"upFile", petImg);
+			//System.err.println(realPath); 서버 저장된 경로
+			map.put("fileName",fileName);
+			clientService.fileSave(map);
+			
+		}
+		
+		//System.out.println(map);
 		
 		return "redirect:client";
 	}
@@ -264,6 +301,8 @@ public class ClientContoller {
 		return json.toString();
 
 	}
+	
+
 	
 	
 	

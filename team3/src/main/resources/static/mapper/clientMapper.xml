@@ -56,6 +56,9 @@
 	<update id="petDel" parameterType="ClientDTO">
 		UPDATE pet SET
 		pet_del = 0
+		<if test="petDeath != '' ">
+		, pet_death=#{petDeath}		
+		</if>
 		WHERE pet_no=#{petNo }
 	</update>
 	
@@ -117,6 +120,13 @@
 		<if test="owner_nameAdd != '' ">
 		owner_no=(SELECT owner_no FROM owner WHERE owner_name = #{owner_nameAdd});
 		</if>
+	</insert>
+	
+	<insert id="fileSave" parameterType="HashMap">
+		INSERT INTO upfile
+		SET
+		pet_no = (SELECT pet_no FROM pet WHERE pet_name=#{petAddName}),
+		filename = #{fileName }
 	</insert>
 
 	
