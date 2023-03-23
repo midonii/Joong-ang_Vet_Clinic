@@ -63,7 +63,7 @@
 		$(".medicineUpdate").click(function() {
 			var medical_no = $(this).attr("value");
 			$.post({
-				url : "/medicineDetail",
+				url : "/medicalDetail",
 				cache : false,
 				data : {
 					"medical_no" : medical_no
@@ -73,8 +73,8 @@
 				let result = data.result;
 				if (confirm("수정하시겠습니까?")) {
 
-					$("#medicine_noU").val(result.medical_no);
-					$("#medicine_nameU").val(result.medical_name);
+					$("#medical_noU").val(result.medical_no);
+					$("#medical_nameU").val(result.medical_name);
 					$("#medical_subcateU").val(result.medical_subcate);
 
 					$("#updateModal").modal("show"); //수정화면 모달 보기
@@ -85,12 +85,12 @@
 		});
 		$(".updateFrm").click(function() {
 
-			let medical_no = $("#medicine_noU").val();
-			let medical_name = $("#medicine_nameU").val();
+			let medical_no = $("#medical_noU").val();
+			let medical_name = $("#medical_nameU").val();
 			let medical_subcate = $("#medical_subcateU").val();
 
 			$.post({
-				url : "/medicineUpdate",
+				url : "/medicalUpdate",
 				data : {
 					"medical_no" : medical_no,
 					"medical_name" : medical_name,
@@ -234,6 +234,7 @@
 											name="medical_category">
 										<ul class="list-group list-group-flush">
 											<li class="list-group-item">
+								
 												<div class="row">
 													<div class="col-md-12 text-center font-weight-bold text-lg"
 														style="line-height: 38px;">약품데이터 추가</div>
@@ -311,8 +312,8 @@
 											<thead>
 												<tr class="bg-gray-200">
 													<th class="col-1">번호</th>
-													<th class="col-3">이름</th>
 													<th class="col-2">분류</th>
+													<th class="col-3">이름</th>
 													<th class="col-1"></th>
 
 												</tr>
@@ -322,8 +323,8 @@
 												<c:forEach items="${medicalList }" var="ml">
 													<tr style="line-height: 30px;">
 														<td>${ml.mno }</td>
-														<td>${ml.medical_name }</td>
 														<td>${ml.medical_subcate }</td>
+														<td>${ml.medical_name }</td>
 														<td>
 															<button type="button"
 																class="btn btn-circle btn-sm btn-warning medicineUpdate"
@@ -413,15 +414,15 @@
 								</button>
 							</div>
 							<div class="modal-body">
-								<input type="hidden" id="medicine_noU" name="medicine_noU">
+								<input type="hidden" id="medical_noU" name="medical_noU">
 
 								<ul class="list-group list-group-flush">
 									<li class="list-group-item">
 										<div class="row">
 											<div class="col-md-3 text-center" style="line-height: 38px;">이름</div>
 											<div class="col-md-9">
-												<input type="text" class="form-control" id="medicine_nameU"
-													name="medicine_nameU">
+												<input type="text" class="form-control" id="medical_nameU"
+													name="medical_nameU">
 											</div>
 										</div>
 									</li>

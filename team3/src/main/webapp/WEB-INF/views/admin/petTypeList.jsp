@@ -87,7 +87,6 @@
 			let type_no = $("#type_noU").val();
 			let type_name = $("#type_nameU").val();
 
-			//백으로 보내서 수정하게 하기,
 			$.post({
 				url : "/petTypeUpdate",
 				data : {
@@ -146,12 +145,7 @@
 			});
 		});
 	});
-	/* 	function petTypeDel(type_no){
-	 if(confirm("정말 삭제하시겠습니까?")){
-	 location.href =  "/petTypeDel?type_no=" + type_no;
-	 }
-	 } */
-
+	
 	function page(idx, search_value) {
 		var pagenum = idx;
 		let searchValue = search_value;

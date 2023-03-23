@@ -24,10 +24,6 @@ public interface DataDAO {
 
 	int mediAdd(Map<String, Object> map);
 
-	List<MedicalDTO> vaccineList(@Param("pagenum") int pagenum, @Param("contentnum") int contentnum,
-			@Param("search_value") String search_value, @Param("table") String table,
-			@Param("category") String category);
-
 	List<PetTypeDTO> petTypeList(@Param("pagenum") int pagenum, @Param("contentnum") int contentnum,
 			@Param("search_value") String search_value, @Param("table") String table,
 			@Param("category") String category);
@@ -47,12 +43,6 @@ public interface DataDAO {
 	int medicalDel(int medical_no);
 
 	int medicalUpdate(Map<String, Object> map);
-
-	int vaccineDel(int vac_no);
-
-	Map<String, Object> vaccineDetail(int vac_no);
-
-	int vaccineUpdate(Map<String, Object> map);
 
 	int TotalInspection(String search_value);
 
