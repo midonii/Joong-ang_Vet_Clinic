@@ -5,7 +5,8 @@
 	<select id="petSearch" parameterType="HashMap"
 		resultType="HashMap">
 		SELECT ROW_NUMBER()
-		over(ORDER BY p.pet_no) AS pno, p.*
+		over(ORDER BY p.pet_no) AS pno, p.*,
+		REGEXP_REPLACE(p.owner_tel, '(02|.{3})(.+)(.{4})', '\\1-\\2-\\3') as s_Tel
 		FROM
 		(
 		SELECT *

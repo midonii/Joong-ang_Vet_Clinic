@@ -37,47 +37,44 @@
 
 <script type="text/javascript">
 	$(function() {
+		let searchName2 = $("#search_name").val();
 		$("#addBtn").click(function() {
 
-			var vac_name = $("#vac_name").val();
-			var vac_price = $("#vac_price").val();
-			var vac_cycle = $("#vac_cycle").val();
+			var medical_name = $("#medical_name").val();
+			var medical_price = $("#medical_price").val();
 
-			if (vac_name == "") {
+			if (medical_name == "") {
 				alert("접종명을 입력해주세요.");
-				$("#vac_name").focus();
+				$("#medical_name").focus();
 				return false;
 			}
 
-			if (vac_price == "" || $.isNumeric(vac_price) == false) {
+			if (medical_price == "" || $.isNumeric(medical_price) == false) {
 				alert("접종 가격을 올바르게 입력해주세요.");
-				$("#vac_price").focus();
+				$("#medical_price").focus();
 				return false;
 			}
 
-// 			vacAddFrm.submit();
+			// 			medicalAddFrm.submit();
 
 		});
 
-		$(".vaccineUpdate").click(function() {
-			var vac_no = $(this).attr("value");
+		$(".medicalUpdate").click(function() {
+			var medical_no = $(this).attr("value");
 			$.post({
-				url : "/vaccineDetail",
+				url : "/medicalDetail",
 				cache : false,
 				data : {
-					"vac_no" : vac_no
+					"medical_no" : medical_no
 				},
 				dataType : "json"
 			}).done(function(data) {
 				let result = data.result
 				if (confirm("수정하시겠습니까?")) {
 
-					$("#vac_noU").val(result.vac_no);
-					$("#vac_nameU").val(result.vac_name);
-					$("#vac_priceU").val(result.vac_price);
-					$("#vac_cycleYU").val(result.vac_cycleY);
-					$("#vac_cycleMU").val(result.vac_cycleM);
-					$("#vac_cycleWU").val(result.vac_cycleW);
+					$("#medical_noU").val(result.medical_no);
+					$("#medical_nameU").val(result.medical_name);
+					$("#medical_priceU").val(result.medical_price);
 
 					$("#updateModal").modal("show");
 				}
@@ -85,24 +82,19 @@
 				alert("실패");
 			});
 		});
-	 	$(".updateFrm").click(function() {
+		$(".updateFrm").click(function() {
 
-			let vac_no = $("#vac_noU").val();
-			let vac_name = $("#vac_nameU").val();
-			let vac_price = $("#vac_priceU").val();
-			let vac_cycleY = $("#vac_cycleYU").val();
-			let vac_cycleM = $("#vac_cycleMU").val();
-			let vac_cycleW = $("#vac_cycleWU").val();
-			
+			let medical_no = $("#medical_noU").val();
+			let medical_name = $("#medical_nameU").val();
+			let medical_price = $("#medical_priceU").val();
+
 			$.post({
-				url : "/vaccineUpdate",
+				url : "/medicalUpdate",
 				data : {
-					"vac_no" : vac_no,
-					"vac_name" : vac_name,
-					"vac_price" : vac_price,
-					"vac_cycleY" : vac_cycleY,
-					"vac_cycleM" : vac_cycleM,
-					"vac_cycleW" : vac_cycleW
+					"medical_no" : medical_no,
+					"medical_name" : medical_name,
+					"medical_price" : medical_price
+
 				},
 				dataType : "json"
 			}).done(function(data) {
@@ -111,7 +103,7 @@
 					$("#updateModal").modal("hide");
 					var pagenum = $("#pagenum").val();
 					let searchValue = $("#search_value").val();
-					page(pagenum, searchValue);
+					page(pagenum, searchName2, searchValue);
 				} else {
 					alert("문제가 발생했습니다. \n다시 시도해주세요.");
 				}
@@ -120,7 +112,7 @@
 			});
 		});
 
-	 	$("#search_btn").click(function() {
+		$("#search_btn").click(function() {
 			let searchValue = $("#search_value").val();
 
 			if (searchValue == "" || searchValue.length < 2) {
@@ -129,13 +121,13 @@
 			}
 			searchForm.submit();
 		});
-		$(".vaccineDel").click(function() {
-			var vac_no = $(this).attr("value");
+		$(".medicalDel").click(function() {
+			var medical_no = $(this).attr("value");
 			$.post({
-				url : "/vaccineDel",
+				url : "/medicalDel",
 				cache : false,
 				data : {
-					"vac_no" : vac_no
+					"medical_no" : medical_no
 				},
 				dataType : "json"
 			}).done(function(data) {
@@ -145,7 +137,7 @@
 						alert("삭제가 완료되었습니다.");
 						var pagenum = $("#pagenum").val();
 						let searchValue = $("#search_value").val();
-						page(pagenum, searchValue);
+						page(pagenum, searchName2, searchValue);
 					} else {
 						alert("문제가 발생했습니다. \n다시 시도해주세요.");
 					}
@@ -156,16 +148,17 @@
 			});
 		});
 	});
-	
-	function page(idx, search_value) {
+
+	function page(idx, search_name, search_value) {
 		var pagenum = idx;
 		let searchValue = search_value;
+		let searchName = search_name;
 		var contentnum = $("#contentnum").val();
 		location.href = "${pageContext.request.contextPath}/vaccine?pagenum="
-				+ pagenum + "&contentnum=" + contentnum +"&search_value=" + searchValue;
+				+ pagenum + "&contentnum=" + contentnum + "&search_name="
+				+ searchName + "&search_value=" + searchValue;
 
 	}
-
 </script>
 </head>
 
@@ -225,11 +218,13 @@
 								<!-- 데이터 추가 -->
 								<div class="border-right col-6 col-md-6"
 									style="padding: 10px; height: 570px;">
-									<form id="vacAddFrm" name="vacAddFrm" action="/vaccineAdd"
-										method="post">
+									<form id="medicalAddFrm" name="medicalAddFrm"
+										action="/vaccineAdd" method="post">
 										<ul class="list-group list-group-flush">
 											<li class="list-group-item">
 												<div class="row">
+													<input type="hidden" value="접종" id="medical_category"
+														name="medical_category">
 													<div class="col-md-12 text-center font-weight-bold text-lg"
 														style="line-height: 38px;">접종데이터 추가</div>
 
@@ -240,68 +235,21 @@
 													<div class="col-md-3 text-center"
 														style="line-height: 38px;">이름</div>
 													<div class="col-md-9">
-														<input type="text" class="form-control" id="vac_name"
-															name="vac_name">
+														<input type="text" class="form-control" id="medical_name"
+															name="medical_name">
 													</div>
 												</div>
-											</li>
-											<li class="list-group-item">
-												<div class="row">
-													<div class="col-md-3 text-center"
-														style="line-height: 40px;">가격</div>
-													<div class="col-md-9">
-														<input type="text" class="form-control" id="vac_price"
-															name="vac_price">
-													</div>
-												</div>
-
 											</li>
 											<li class="list-group-item mb-4">
 												<div class="row">
 													<div class="col-md-3 text-center"
-														style="line-height: 40px;">주기</div>
-													<div class="col-md-3">
-														<select class="form-control" id="vac_cycleY"
-															name="vac_cycleY">
-															<option value="" selected disable hidden>년</option>
-															<option value="1Y">1Y</option>
-															<option value="2Y">2Y</option>
-															<option value="3Y">3Y</option>
-														</select>
-													</div>
-													<div class="col-md-3 ">
-														<select class="form-control " id="vac_cycleM"
-															name="vac_cycleM">
-															<option value="" selected disable hidden>개월</option>
-															<%
-															for (int i = 1; i <= 12; i++) {
-															%>
-															<option value="<%=i%>M">
-																<%=i%>M
-															</option>
-															<%
-															}
-															%>
-														</select>
-													</div>
-													<div class="col-md-3">
-														<select class="form-control" id="vac_cycleW"
-															name="vac_cycleW">
-															<option value="" selected disable hidden>주</option>
-															<%
-															for (int i = 1; i <= 5; i++) {
-															%>
-															<option value="<%=i%>W">
-																<%=i%>W
-															</option>
-															<%
-															}
-															%>
-														</select>
+														style="line-height: 40px;">가격</div>
+													<div class="col-md-9">
+														<input type="text" class="form-control" id="medical_price"
+															name="medical_price">
 													</div>
 												</div>
 											</li>
-
 
 										</ul>
 
@@ -319,7 +267,8 @@
 									<form action="/vaccine" name="searchForm"
 										onsubmit="return false" method="get">
 										<input type="hidden" name="contentnum" id="contentnum"
-											value="${page.getContentnum()}">
+											value="${page.getContentnum()}"> <input type="hidden"
+											value="name" id="search_name" name="search_name">
 										<div class="input-group mb-3">
 											<input type="text" class="form-control border-gray col-md-12"
 												placeholder="검색어를 입력하세요" name="search_value"
@@ -340,28 +289,26 @@
 													<th class="col-1">번호</th>
 													<th class="col-4">이름</th>
 													<th class="col-2">가격</th>
-													<th class="col-3">접종 주기</th>
 													<th class="col-2"></th>
 
 												</tr>
 											</thead>
 
 											<tbody>
-												<c:forEach items="${vaccineList }" var="vl">
+												<c:forEach items="${medicalList }" var="vl">
 													<tr>
-														<td>${vl.vno }</td>
-														<td>${vl.vac_name }</td>
-														<td><fmt:formatNumber value="${vl.vac_price }"
-															pattern="#,###" />원</td>
-														<td>${vl.vac_cycleY }${vl.vac_cycleM }${vl.vac_cycleW }</td>
+														<td>${vl.mno }</td>
+														<td>${vl.medical_name }</td>
+														<td><fmt:formatNumber value="${vl.medical_price }"
+																pattern="#,###" />원</td>
 														<td>
 															<button type="button"
-																class="btn btn-circle btn-sm btn-warning vaccineUpdate"
-																value="${vl.vac_no }">
+																class="btn btn-circle btn-sm btn-warning medicalUpdate"
+																value="${vl.medical_no }">
 																<i class="fa-solid fa-pen"></i>
 															</button>
-															<button type="button" value="${vl.vac_no }"
-																class="btn btn-circle btn-sm btn-danger vaccineDel">
+															<button type="button" value="${vl.medical_no }"
+																class="btn btn-circle btn-sm btn-danger medicalDel">
 																<i class="fa-solid fa-trash"></i>
 															</button>
 														</td>
@@ -382,7 +329,7 @@
 
 												<c:if test="${page.prev}">
 													<li class="page-item"><a class="page-link"
-														href="javascript:page('${page.getStartPage()-1}','${search.getSearch_value()}');"
+														href="javascript:page('${page.getStartPage()-1}','${search.getSearch_name()}','${search.getSearch_value()}');"
 														aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 													</a></li>
 												</c:if>
@@ -391,17 +338,17 @@
 													<c:choose>
 														<c:when test="${idx ne page.pagenum+1 }">
 															<li class="page-item"><a class="page-link"
-																href="javascript:page('${idx}','${search.getSearch_value()}');">${idx }</a></li>
+																href="javascript:page('${idx}','${search.getSearch_name()}','${search.getSearch_value()}');">${idx }</a></li>
 														</c:when>
 														<c:otherwise>
 															<li class="page-item active"><a class="page-link"
-																href="javascript:page('${idx}','${search.getSearch_value()}');">${idx }</a></li>
+																href="javascript:page('${idx}','${search.getSearch_name()}','${search.getSearch_value()}');">${idx }</a></li>
 														</c:otherwise>
 													</c:choose>
 												</c:forEach>
 												<c:if test="${page.next}">
 													<li class="page-item"><a class="page-link"
-														href="javascript:page('${page.getEndPage()+1}','${search.getSearch_value()}');"
+														href="javascript:page('${page.getEndPage()+1}','${search.getSearch_name()}','${search.getSearch_value()}');"
 														aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 													</a></li>
 												</c:if>
@@ -426,78 +373,33 @@
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">Vaccine 데이터
-									수정</h5>
+								<h5 class="modal-title" id="exampleModalLabel">접종 데이터 수정</h5>
 								<button class="close" type="button" data-dismiss="modal"
 									aria-label="Close">
 									<span aria-hidden="true">×</span>
 								</button>
 							</div>
 							<div class="modal-body">
-								<input type="hidden" id="vac_noU" name="vac_noU">
+								<input type="hidden" id="medical_noU" name="medical_noU">
 								<ul class="list-group list-group-flush">
 									<li class="list-group-item">
 										<div class="row">
-											<div class="col-md-3" style="line-height: 38px;">Name</div>
+											<div class="col-md-3" style="line-height: 38px;">이름</div>
 											<div class="col-md-9">
-												<input type="text" class="form-control" id="vac_nameU"
-													name="vac_nameU">
+												<input type="text" class="form-control" id="medical_nameU"
+													name="medical_nameU">
 											</div>
 										</div>
 									</li>
 									<li class="list-group-item">
 										<div class="row">
-											<div class="col-md-3 " style="line-height: 40px;">Price</div>
+											<div class="col-md-3 " style="line-height: 40px;">처방가격</div>
 											<div class="col-md-9">
-												<input type="text" class="form-control" id="vac_priceU"
-													name="vac_priceU">
+												<input type="text" class="form-control" id="medical_priceU"
+													name="medical_priceU">
 											</div>
 										</div>
 
-									</li>
-									<li class="list-group-item mb-4">
-										<div class="row">
-											<div class="col-md-3 " style="line-height: 40px;">Cycle</div>
-											<div class="col-md-3">
-												<select class="form-control" id="vac_cycleYU"
-													name="vac_cycleYU">
-													<option value="" selected disable hidden>Year</option>
-													<option value="1Y">1Y</option>
-													<option value="2Y">2Y</option>
-													<option value="3Y">3Y</option>
-												</select>
-											</div>
-											<div class="col-md-3">
-												<select class="form-control" id="vac_cycleMU"
-													name="vac_cycleMU">
-													<option value="" selected disable hidden>Month</option>
-													<%
-													for (int i = 1; i <= 12; i++) {
-													%>
-													<option value="<%=i%>M">
-														<%=i%>M
-													</option>
-													<%
-													}
-													%>
-												</select>
-											</div>
-											<div class="col-md-3">
-												<select class="form-control" id="vac_cycleWU"
-													name="vac_cycleWU">
-													<option value="" selected disable hidden>Week</option>
-													<%
-													for (int i = 1; i <= 5; i++) {
-													%>
-													<option value="<%=i%>W">
-														<%=i%>W
-													</option>
-													<%
-													}
-													%>
-												</select>
-											</div>
-										</div>
 									</li>
 
 

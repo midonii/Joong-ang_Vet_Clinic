@@ -1,5 +1,43 @@
 /* 예지 */
 $(function() {
+	$(".sidebar").addClass("toggled");
+	$("#chartAdd").click(function() {
+		var pet_no = $("#pet_no").val();
+		var receive_no = $("#receive_no").val();
+		var chart_memo = $("#chart_memo").val();
+		if (pet_no == "") {
+			alert("동물을 선택해주세요.");
+		} else {
+			$.post({
+				url: "/chartAdd",
+				data: {
+					"pet_no": pet_no,
+					"chart_memo": chart_memo,
+					"receive_no": receive_no
+				},
+				dataType: "json"
+			}).done(function(data) {
+				if (confirm("차트를 저장하시겠습니까?")) {
+
+					if (data.result == 1 && data.stateUpdate == 1) {
+						alert("차트가 저장되었습니다.");
+						location.href = "/chart";
+
+					} else {
+						alert("권한이 없습니다.");
+					}
+				}
+			}).fail(function() {
+				alert("문제발생");
+			});
+		}
+
+
+	});
+
+});
+
+$(function() {
 	$("#search_btn")
 		.click(
 			function() {
@@ -30,7 +68,7 @@ $(function() {
 										var pet_no = pet[i].pet_no;
 										var pet_name = pet[i].pet_name;
 										var owner_name = pet[i].owner_name;
-										var owner_tel = pet[i].owner_tel;
+										var owner_tel = pet[i].s_Tel;
 										var pet_gender = pet[i].pet_gender;
 
 										table += "<tr class='text-center' >";
@@ -69,7 +107,6 @@ $(function() {
 			"#search_btn2",
 			function() {
 
-				console.log("search_btn2 클릭");
 				var pet_search = $("#pet_search2").val();
 
 				if (pet_search == "") {
@@ -96,7 +133,7 @@ $(function() {
 										var pet_no = pet[i].pet_no;
 										var pet_name = pet[i].pet_name;
 										var owner_name = pet[i].owner_name;
-										var owner_tel = pet[i].owner_tel;
+										var owner_tel = pet[i].s_Tel;
 										var pet_gender = pet[i].pet_gender;
 
 										table += "<tr class='text-center' >";
@@ -137,37 +174,3 @@ $(function() {
 	});
 
 });
-
-/*$(function() {
-		var pet_no = $("#pet_no").val();
-		alert(pet_no);
-		$.post({
-			url: "/petVacAjax",
-			cache: false,
-			data: {
-				"pet_no": pet_no
-			},
-			dataType: "json"
-		})
-			.done(
-				function(data) {
-					let pet = data.pet;
-					$("#vac").empty();
-					var div = "";
-					if (pet == "") {
-						div += "<div class='list-group-item'><div style='line-height: 250px;text-align: center;'>접종 내역이 없습니다.</div></div>";
-					} else {
-						for (let i = 0; i < pet.length; i++) {
-							var vac_name = pet[i].vac_name;
-							var vacdata_date = pet[i].vacdata_date;
-							div += "<div class='list-group-item row'><div class='col-5 font-weight-bold float-left'>"
-								+ vac_name
-								+ "</div><div class='col-7 float-left'>"
-								+ vacdata_date + "</div></div>";
-						}
-					}
-					$("#vac").append(div);
-				}).fail(function(xhr, status, errorThrown) {
-					alert("실패");
-				});
-});*/

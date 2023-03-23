@@ -20,7 +20,7 @@
 		FROM
 		reservationview WHERE DATE_FORMAT(reservation_date,
 		"%Y-%m-%d") =
-		CURDATE();
+		CURDATE() AND reservation_yn = 'N';
 	</select>
 	<select id="recepCount" resultType="Integer">
 		SELECT COUNT(*) as recepCount
