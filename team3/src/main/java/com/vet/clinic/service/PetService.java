@@ -32,25 +32,13 @@ public class PetService {
 		return petDAO.petChart(petDTO);
 	}
 
-	public List<PetDTO> petExam(PetDTO petDTO) {
-		return petDAO.petExam(petDTO);
+	public List<PetDTO> petMedicalData(PetDTO petDTO) {
+		return petDAO.petMedicalData(petDTO);
 	}
 
-	public List<PetDTO> petDrug(PetDTO petDTO) {
-		return petDAO.petDrug(petDTO);
-	}
-
-	public List<PetDTO> petVac(PetDTO petDTO) {
-		return petDAO.petVac(petDTO);
-	}
 
 
 	
 	
-	
-
-
-
-
 
 }

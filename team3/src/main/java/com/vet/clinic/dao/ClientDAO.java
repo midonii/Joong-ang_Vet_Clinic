@@ -43,4 +43,9 @@ public interface ClientDAO {
 
 	public void fileSave(Map<String, Object> map);
 
+	public int fileUpdate(ClientDTO client);
+
+	public Map<String, Object> petUpdateinfo(Map<String, Object> map);
+
+
 }

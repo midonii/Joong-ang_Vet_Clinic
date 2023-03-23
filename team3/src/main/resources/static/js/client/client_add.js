@@ -376,6 +376,7 @@ $(function(){
 				var pet_Day= result.pDay
 				var pet_memo= result.pet_memo
 				var pet_death= result.pet_death
+				var filename = result.filename
 				
 				var now = new Date();
 				var now_year = now.getFullYear();
@@ -409,6 +410,11 @@ $(function(){
 				$("#petUpdateBirthDay").val(pet_Day).prop("selected",true);
 				$("#petUpdateComments").val(pet_memo);
 				$("#petDeath").val(pet_death);
+				$("#petUpdateSrc").attr("src","../resources/static/upFile/"+filename+"");
+				
+				var src = $("#petUpdateSrc").attr("src");
+				var petUsuImg = src.replace('../resources/static/upFile/', '');
+				
 				
 				
 				
@@ -481,8 +487,8 @@ $(function(){
 				let petUpdateBirthDay = $("select[name=petUpdateBirthDay]").val();
 				let petUpdateComments = $("#petUpdateComments").val();
 				let petDeath = $("#petDeath").val();
-				
-				//alert("견종 : " + petUpdateType);
+								
+				//let filename = $("#petUpdateImg").val();
 				
 				
 				//백으로 보내서 수정하게 하기
@@ -503,15 +509,57 @@ $(function(){
     			}).done(function(data){
     				//alert("정상소통" + data.result);
     				if(data.result == 1){
-    					alert("수정이 완료되었습니다.");
-    					location.href = "/client";
+    					alert("정보 수정 완료");
+						
+						//기존의 반려견 파일명 뽑아내기
+						var petUpdateinfo = data.petUpdateinfo;
+						var petUsuImg = petUpdateinfo.filename;
+						alert(petUsuImg);
+							
+	
+						//펫 수정시 이미지 파일 수정하기
+						var petImageUpdate = $("#petUpdateImg")[0].files[0];
+						
+						//alert(petImageUpdate);
+						var formData = new FormData();
+						formData.append("petUpdateImg", petImageUpdate);
+						formData.append("petNo",petNo);
+						formData.append("petUsuImg",petUsuImg);
+						
+						$.post({
+							url: "/petUpdateImg",
+							enctype: "multipart/form-data",
+							data: formData,
+							processData: false,
+							contentType: false,
+							cache: false,
+							dataType : "json"
+						}).done(function(data) {
+							if(data.result == 1){
+							alert("이미지가 저장되었습니다.");
+							location.href = "/client";
+							
+							}  else {
+    						alert("문제가 발생했습니다. \n다시 시도해주세요.");
+	    					}
+
+						}).fail(function() {
+							alert("문제가 발생했습니다.");
+						});
+						
+						
+						
+						location.href = "/client";
+						
     						
     				 } else {
     					alert("문제가 발생했습니다. \n다시 시도해주세요.");
     				}
     			}).fail(function(){
     				alert("문제가 발생했습니다.");
-    			});
+    			});			
+				
+				
 			}
 			
 		  });
@@ -581,7 +629,7 @@ $(function(){
 					if(result2[i].pet_memo != undefined){
 						pet_memo = result2[i].pet_memo;
 					}
-					table += "<tr class='petList' value="+pet_no+">";
+					table += "<tr class='petListModal' value="+pet_no+">";
 					table += "<td>"+pet_no+"</td>";
 					table += "<td>"+pet_name+"</td>";
 					table += "<td>"+type_name+"</td>";
@@ -594,8 +642,8 @@ $(function(){
 				$("#ajaxModalTable").append(table);
 				$("#ajaxModalTable").show();
 				
-				//변경된 반려견 테이블의 반려견 삭제 기능
-				$(document).off("click",".petList").on("click", ".petList", function(){
+				//보호자 상세보기 모달에서 반려견 리스트 클릭시
+				$(document).off("click",".petListModal").on("click", ".petListModal", function(){
 					
 				
 			//	$(".petList").off().click(function(){
@@ -603,7 +651,7 @@ $(function(){
 					//alert(petNo);
 					$(this).css("background-color", "#f4f4f4");
 					
-					$(".petList").not(this).each(function() {
+					$(".petListModal").not(this).each(function() {
 						$(this).css('background-color', '');
 					});
 					
@@ -614,7 +662,7 @@ $(function(){
 //					$(".cm_petUpdate").off().click(function(){
 						//alert(petNo);
 						//버튼 클릭 시 기존의 tr을 삭제하도록
-						$(".petList").hide();
+						$(".petListModal").hide();
 						
 						$.post({
 							url: "/petUpdateAjax",
@@ -676,7 +724,7 @@ $(function(){
 							
 							//X버튼 누를 경우 기존의 petlist 다시 띄우기
 							$("#petUpdateModalClose").click(function(){
-								$(".petList").show();
+								$(".petListModal").show();
 							});
 							
 							
@@ -806,7 +854,7 @@ $(function(){
 												if (result[i].pet_memo != undefined) {
 													pet_memo = result[i].pet_memo;
 												}
-												table += "<tr class='petList' value=" + pet_no + ">";
+												table += "<tr class='petListModal' value=" + pet_no + ">";
 												table += "<td>" + pet_no + "</td>";
 												table += "<td>" + pet_name + "</td>";
 												table += "<td>" + type_name + "</td>";

@@ -20,11 +20,7 @@ public interface PetDAO {
 
 	List<PetDTO> petChart(PetDTO petDTO);
 
-	List<PetDTO> petExam(PetDTO petDTO);
-
-	List<PetDTO> petDrug(PetDTO petDTO);
-
-	List<PetDTO> petVac(PetDTO petDTO);
+	List<PetDTO> petMedicalData(PetDTO petDTO);
 
 	
 

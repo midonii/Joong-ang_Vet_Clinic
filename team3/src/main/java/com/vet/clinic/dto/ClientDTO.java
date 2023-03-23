@@ -13,4 +13,7 @@ public class ClientDTO {
 	private int nno;
 	
 	private String clientUpdateNo, updateOwnerName, updateOwnerEmail, updateOwnerTel, updateOwnerAddr, updateOwnerSms, updateOwnerMemo;
+
+	private String filename;
+	private int u_no;
 }

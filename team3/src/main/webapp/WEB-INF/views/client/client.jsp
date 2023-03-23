@@ -38,7 +38,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
+<script src="js/client/client_add.js"></script>
 <script type="text/javascript">
+
 //검색 시 selec 선택 검사
 $(function(){
 	$("#search_btn").click(function(){
@@ -97,6 +99,25 @@ $(function(){
  
 });
 
+$(function(){
+	//이미지 파일 미리보기 (수정modal)
+	$("#petUpdateImg").change(function() {
+		 setImageFromFile(this,'#petUpdateSrc');
+	});
+	
+	 function setImageFromFile(input, expression){
+		if(input.files && input.files[0]){
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$(expression).attr('src',e.target.result);
+			}
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+ 
+ 
+});
+
  
 </script>
 <style type="text/css">
@@ -104,7 +125,7 @@ $(function(){
 	text-align: center;
 }
 </style>
-<script src="js/client/client_add.js"></script>
+
 </head>
 
 <body id="page-top">

@@ -264,6 +264,8 @@ public class ClientContoller {
 		  
 		  Map<String, Object> petUpdateShow = clientService.petUpdateAjax(map);
 		  
+		  
+		  
 		  json.put("result", petUpdateShow);
 		  //System.out.println(json.toString());
 		 
@@ -279,7 +281,7 @@ public class ClientContoller {
 	
 	@ResponseBody
 	@PostMapping(value="petUpdate", produces = "application/json;charset=UTF-8")
-	public String petUpdate(@RequestParam Map<String, Object> map) {
+	public String petUpdate(@RequestParam Map<String, Object> map){
 		
 		//System.out.println(map);
 		
@@ -289,18 +291,65 @@ public class ClientContoller {
 		String petBirthDay = (String) map.get("petUpdateBirthDay");
 		String petBirth = petBirthYear+"-"+petBirthMonth+"-"+petBirthDay;
 		map.put("petBirth", petBirth);
-				
+		
 		//System.out.println(map);
 		int petUpdate = clientService.petUpdate(map);
+		
+		Map<String, Object> petUpdateinfo = clientService.petUpdateinfo(map);
 		
 		//System.out.println(petUpdate);
 		
 		JSONObject json = new JSONObject();
 		json.put("result", petUpdate);
+		json.put("petUpdateinfo", petUpdateinfo);
 		
 		return json.toString();
 
 	}
+	
+	//반려견 이미지 수정
+	@PostMapping(value = "petUpdateImg", consumes = { "multipart/form-data" })
+	public String petUpdateImg(@RequestParam("petUpdateImg")MultipartFile petUpImg, HttpServletRequest request) throws IOException {
+//		System.err.println(petUpImg.getOriginalFilename());
+//		System.out.println(request.getParameter("petNo"));
+//		System.out.println(request.getParameter("petUsuImg"));
+		
+		JSONObject json = new JSONObject();
+		
+		
+		//반려견 이미지 올리기
+		if(!petUpImg.isEmpty()) {
+			
+			String realPath = context.getRealPath("resources/static/");
+			String fileName = fileup.fileSave(realPath+"upFile", petUpImg);
+			//System.err.println(realPath); 서버 저장된 경로
+			ClientDTO client = new ClientDTO();
+			client.setFilename(fileName);
+			client.setPetNo(request.getParameter("petNo"));
+			
+			
+			String fileUsuName = request.getParameter("petUsuImg");
+			File file1 = new File(realPath+fileUsuName);
+			//기존의 이미지 삭제 (서버)
+			if(file1.exists()) {
+			//System.err.println(file1);
+				file1.delete();
+				System.out.println("파일을 삭제하였습니다.");
+			} else {
+				System.out.println("파일이 존재하지 않습니다.");
+			}
+			//새로운 파일 저장
+			int fileUpdate = clientService.fileUpdate(client);
+			
+			
+			json.put("result", fileUpdate);
+			
+			
+		}
+		return json.toString();
+		
+	}
+	
 	
 
 	

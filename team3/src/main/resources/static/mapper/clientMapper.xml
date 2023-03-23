@@ -125,7 +125,7 @@
 	<insert id="fileSave" parameterType="HashMap">
 		INSERT INTO upfile
 		SET
-		pet_no = (SELECT pet_no FROM pet WHERE pet_name=#{petAddName}),
+		pet_no = (SELECT pet_no FROM pet WHERE pet_name=#{petAddName} AND owner_no=#{owner_noPAdd} AND pet_del = 1),
 		filename = #{fileName }
 	</insert>
 
@@ -152,4 +152,17 @@
 		</if>
    		WHERE pet_no=#{petNo }
 	</update>
+	
+	<update id="fileUpdate" parameterType="ClientDTO">
+	 UPDATE upfile SET
+	 filename = #{filename }
+	 WHERE pet_no = #{petNo }
+	</update>
+	
+	<select id="petUpdateinfo" parameterType="HashMap" resultType="HashMap">
+		SELECT *
+		FROM clientview2
+		WHERE pet_no=#{petNo }
+	</select>
+	
 </mapper>

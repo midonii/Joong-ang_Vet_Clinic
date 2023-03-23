@@ -8,7 +8,6 @@ import lombok.Data;
 @Data
 public class PetDTO {
 	private int owner_no, pet_no, pet_count, type_no;
-
 	private String owner_name, owner_tel, owner_addr, owner_email, owner_sms, owner_memo, pet_name, pet_birth, pet_death, pet_gender, pet_regdate,pet_memo,type_name, pet_Ym ;
 
 	private float pet_weight;
@@ -22,6 +21,8 @@ public class PetDTO {
 	private int staff_no, medical_no, receive_no, u_no;
 
 	private String chart_memo, chart_date , filename;
+	
+	private int medicaldata_no;
+	private String medical_category, medical_name;
 
-	private String heartworm, corona, rabies, swine_flu, dhppl, kennel_cough, antibody_test, ectoparasite, helminthic;
 }
