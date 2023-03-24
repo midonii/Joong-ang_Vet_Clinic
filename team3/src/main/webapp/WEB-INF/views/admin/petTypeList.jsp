@@ -4,8 +4,16 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ko">
+<%
+if (session.getAttribute("id") != null) {
+	if (!session.getAttribute("staff_grade").equals("admin")) {
+		response.sendRedirect("/index?error=1234");
+	}
+} else {
+	response.sendRedirect("/login?error=4321");
+}
+%>
 <head>
 
 <meta charset="utf-8">

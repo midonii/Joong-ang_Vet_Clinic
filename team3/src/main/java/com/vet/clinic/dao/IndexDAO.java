@@ -11,8 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface IndexDAO {
 	public List<Map<String, Object>> indexReserv();
 
-	public List<Map<String, Object>> receivepay();
-
 	public List<Map<String, Object>> indexNotice();
 
 	public List<Map<String, Object>> indexPet(Map<String, Object> map);
@@ -22,5 +20,9 @@ public interface IndexDAO {
 	public int recepCount();
 
 	public int diagCount();
+
+	public List<Map<String, Object>> indexpay();
+
+	public List<Map<String, Object>> indexreceive();
 
 }

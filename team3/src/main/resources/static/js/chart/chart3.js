@@ -19,7 +19,7 @@ $(function() {
 			}).done(function(data) {
 				if (confirm("차트를 저장하시겠습니까?")) {
 
-					if (data.result == 1 && data.stateUpdate == 1) {
+					if (data.result == 1 && data.stateUpdate == 1 && data.payAdd == 1) {
 						alert("차트가 저장되었습니다.");
 						location.href = "/chart";
 

@@ -63,8 +63,8 @@ if (session.getAttribute("id") == null) {
 								div += "<div style='height:300px;line-height: 300px;text-align: center;'>접종 내역이 없습니다.</div>";
 							} else {
 								for (let i = 0; i < pet.length; i++) {
-									var vac_name = pet[i].vac_name;
-									var vacdata_date = pet[i].vacdata_date;
+									var vac_name = pet[i].medical_name;
+									var vacdata_date = pet[i].chart_date;
 									div += "<div class='list-group-item row'><div class='col-7 font-weight-bold float-left text-center'>"
 											+ vac_name
 											+ "</div><div class='col-5 float-left text-center'>"
@@ -92,7 +92,7 @@ if (session.getAttribute("id") == null) {
 						function(data) {
 							let chart = data.chart;
 							$("#chart").empty();
-							var chartdiv = "";
+							var chartdiv = "<div class='accordion ' id='accordionExample' style='height:700px;' >"
 							if (data.chart == "") {
 								chartdiv += "<div class='text-center' style='height:705px; line-height:705px;'>진료 내역이 없습니다.</div>";
 							} else {
@@ -107,9 +107,9 @@ if (session.getAttribute("id") == null) {
 									var staff_name = chart[i].staff_name;
 									var staff_grade = chart[i].staff_grade;
 									$("#chart_no").val(chart[i].chart_no);
-									chartdiv += "<div class='accordion' id='accordionExample' >"
-									chartdiv += "<div class='accordion-item'><h2 class='accordion-header' id='"+chart_date+"'>"
-									chartdiv += "<button class='accordion-button collapsed pastChart' type='button' data-toggle='collapse' data-target='#A"
+
+									chartdiv += "<div class='accordion-item' ><h2 class='accordion-header' id='"+chart_date+"'>"
+									chartdiv += "<button class='accordion-button collapsed pastChart ' type='button' data-toggle='collapse' data-target='#A"
 											+ chart_no + "' "
 									chartdiv += "aria-expanded='";
 									chartdiv += i == 0 ? true : false + "'";
@@ -122,7 +122,7 @@ if (session.getAttribute("id") == null) {
 									chartdiv += "	<div class='ml-2'>"
 											+ chart_date + "</div>";
 									chartdiv += "	</button></h2>";
-									chartdiv += "<div id='A"+chart_no+"' class='accordion-collapse collapse' aria-labelledby='"+chart_date+"' data-bs-parent='#accordionExample'>";
+									chartdiv += "<div id='A"+chart_no+"' class='accordion-collapse collapse' aria-labelledby='"+chart_date+"' data-parent='#accordionExample'>";
 									chartdiv += "<div class='accordion-body' >"
 									chartdiv += "<div class='d-flex justify-content-end'><span>담당의 : </span><span class='font-weight-bold'>&nbsp;"
 											+ staff_name + "</span></div>";
@@ -155,8 +155,9 @@ if (session.getAttribute("id") == null) {
 									chartdiv += "</tbody></table></div></div></div></div></div></div></div>";
 
 								}
-
 							}
+
+							/* chartdiv += "</div>"; */
 							$("#chart").append(chartdiv);
 
 							$(document)
@@ -184,8 +185,10 @@ if (session.getAttribute("id") == null) {
 																	let petDrug = data.petDrug;
 																	let petVac = data.petVac;
 																	let petChart = data.chart;
-																	$("#memo").val(petChart[0].chart_memo);
-															
+																	$("#memo")
+																			.val(
+																					petChart[0].chart_memo);
+
 																})
 														.fail(
 																function() {
@@ -204,101 +207,49 @@ if (session.getAttribute("id") == null) {
 																})
 														.done(
 																function(data) {
-																	let petExam = data.petExam;
-																	let petDrug = data.petDrug;
-																	let petVac = data.petVac;
-
+																	let petMedicalData = data.petMedicalData;
 																	var table = "";
 																	$(
 																			'.chartList'
 																					+ chartNo)
 																			.hide();
-																	//상세보기 클릭 시 이전 기록 reset
 																	$(
 																			"#client-table"
 																					+ chartNo)
 																			.empty();
 
 																	// -- 검사
-																	for (let i = 0; petExam.length > i; i++) {
-																		var medical_category_Ex = petExam[i].medical_category;
-																		var medical_subcate_Ex = petExam[i].medical_subcate;
-																		var medical_name_Ex = petExam[i].medical_name;
-																		var staff_name_Ex = petExam[i].staff_name;
-																		var staff_grade_Ex = petExam[i].staff_grade;
-																		var examdata_ea = petExam[i].examdata_ea;
+																	for (let i = 0; petMedicalData.length > i; i++) {
+																		var medical_category = petMedicalData[i].medical_category;
+																		var medical_subcate = "";
+																		if (petMedicalData[i].medical_subcate != undefined) {
+																			medical_subcate = petMedicalData[i].medical_subcate;
+																		}
+																		var medical_name = petMedicalData[i].medical_name;
+																		var staff_name = petMedicalData[i].staff_name;
+																		var staff_grade = petMedicalData[i].staff_grade;
+																		var medicaldata_ea = petMedicalData[i].medicaldata_ea;
 
 																		table += "<tr class='chartList"+chartNo+"'>";
 																		table += "<td>"
-																				+ medical_category_Ex
+																				+ medical_category
 																				+ "</td>";
 																		table += "<td>"
-																				+ medical_subcate_Ex
+																				+ medical_subcate
 																				+ "</td>";
 																		table += "<td class='text-left'>"
-																				+ medical_name_Ex
+																				+ medical_name
 																				+ "</td>";
 																		table += "<td>"
-																				+ examdata_ea
+																				+ medicaldata_ea
 																				+ "</td>";
 																		table += "<td>"
-																				+ staff_name_Ex
+																				+ staff_name
 																				+ "</td>";
 																		table += "</tr>";
 
 																	}
 
-																	// -- 약처방
-																	for (let i = 0; petDrug.length > i; i++) {
-																		var medical_category_Dg = petDrug[i].medical_category;
-																		var medical_subcate_Dg = petDrug[i].medical_subcate;
-																		var medical_name_Dg = petDrug[i].medical_name;
-																		var staff_name_Dg = petDrug[i].staff_name;
-																		var staff_grade_Dg = petDrug[i].staff_grade;
-																		var drugdata_ea = petDrug[i].drugdata_ea;
-
-																		table += "<tr class='chartList"+chartNo+"'>";
-																		table += "<td>"
-																				+ medical_category_Dg
-																				+ "</td>";
-																		table += "<td>"
-																				+ medical_subcate_Dg
-																				+ "</td>";
-																		table += "<td class='text-left'>"
-																				+ medical_name_Dg
-																				+ "</td>";
-																		table += "<td>"
-																				+ drugdata_ea
-																				+ "</td>";
-																		table += "<td>"
-																				+ staff_name_Dg
-																				+ "</td>";
-																		table += "</tr>";
-
-																	}
-
-																	// -- 접종
-																	for (let i = 0; petVac.length > i; i++) {
-																		var vac_name = petVac[i].vac_name;
-																		var medical_category = petVac[i].medical_category;
-																		var staff_name_Vac = petVac[i].staff_name;
-																		var staff_grade_Vac = petVac[i].staff_grade;
-
-																		table += "<tr class='chartList"+chartNo+"'>";
-																		table += "<td>접종</td>";
-																		table += "<td>접종</td>";
-																		table += "<td class='text-left'>"
-																				+ vac_name
-																				+ "</td>";
-																		table += "<td>1</td>";
-																		table += "<td>"
-																				+ staff_name_Vac
-																				+ "</td>";
-																		table += "</tr>";
-
-																	}
-
-																	//$(this).children("#client-table").append(table);
 																	$(
 																			"#client-table"
 																					+ chartNo)

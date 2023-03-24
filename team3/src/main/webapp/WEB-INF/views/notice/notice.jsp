@@ -4,8 +4,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <%
+
 if (session.getAttribute("id") == null) {
-	response.sendRedirect("/login");
+	response.sendRedirect("/login?error=4321");
 }
 %>
 <head>
@@ -74,8 +75,8 @@ if (session.getAttribute("id") == null) {
 				return false;
 			}
 
-			if (searchValue == "" || searchValue.length < 2) {
-				alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
+			if (searchValue == "" || searchValue.length < 1) {
+				alert("검색어를 1글자 이상입력하세요.");
 				return false;
 			}
 			searchForm.submit();
@@ -273,7 +274,7 @@ if (session.getAttribute("id") == null) {
 												id="searchName"> <select
 												class="form-control col-md-3" name="search_name"
 												id="search_name" style="border-radius: 5px 0 0 5px">
-												<option value="" selected disabled="disabled">선택</option>
+												<option value="" selected="selected" disabled="disabled" >선택</option>
 												<option value="title">제목</option>
 												<option value="content">내용</option>
 											</select> <input type="text" name="search_value" id="search_value"

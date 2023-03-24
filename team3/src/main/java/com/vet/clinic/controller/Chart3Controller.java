@@ -1,5 +1,6 @@
 package com.vet.clinic.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,10 +35,19 @@ public class Chart3Controller {
 			map.put("staff_id", session.getAttribute("id"));
 			int result = chart3Service.chartAdd(map);
 			int stateUpdate = chart3Service.stateUpdate(map);
+
+			Map<String, Object> payMap = new HashMap<String, Object>();
+			String chartNo = chart3Service.chartNo(map);
+			payMap.put("chart_no", chartNo);
+			payMap.put("receive_no", map.get("receive_no"));
+			int payAdd = chart3Service.payAdd(payMap);
 			json.put("result", result);
 			json.put("stateUpdate", stateUpdate);
+			json.put("payAdd", payAdd);
 		} else {
 			json.put("result", 0);
+			json.put("stateUpdate", 0);
+			json.put("payAdd", 0);
 		}
 		return json.toString();
 	}
@@ -87,11 +97,11 @@ public class Chart3Controller {
 		petDTO.setChartNo(request.getParameter("chart_no"));
 		petDTO.setPetNo(request.getParameter("pet_no"));
 		List<PetDTO> petChart = chart3Service.petChart(petDTO);
-		
 		JSONArray petChartJ = new JSONArray(petChart);
-	
+		List<PetDTO> petMedicalData = petService.petMedicalData(petDTO);
+		JSONArray jsonA = new JSONArray(petMedicalData);
+		json.put("petMedicalData", petMedicalData);
 		json.put("chart", petChartJ);
-
 		return json.toString();
 	}
 
@@ -102,7 +112,9 @@ public class Chart3Controller {
 		PetDTO petDTO = new PetDTO();
 		petDTO.setPetNo(request.getParameter("pet_no"));
 		petDTO.setChartNo(request.getParameter("chart_no"));
-
+		List<PetDTO> petMedicalData = petService.petMedicalData(petDTO);
+		JSONArray jsonA = new JSONArray(petMedicalData);
+		json.put("petMedicalData", petMedicalData);
 		return json.toString();
 	}
 }
