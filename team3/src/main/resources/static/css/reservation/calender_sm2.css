@@ -1,0 +1,146 @@
+@charset "UTF-8";
+:root {
+  --numDays: 5;
+  --numHours: 18;
+  --timeHeight: 60px;
+  --calBgColor1: #ECF2FF;
+  --eventBorderColor: #f2d3d8;
+  --eventColor1: #ffd6d1;
+  --eventColor2: #fafaa3;
+  --eventColor3: #e2f8ff;
+  --eventColor4: #d1ffe6;
+}
+/* .events1 > * { */
+/*   height: var(--timeHeight); */
+/* } */
+.weekcalendar {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: auto 1fr;
+  margin: 1.5rem;
+}
+
+.timeline1 {
+  display: grid;
+  grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+}
+
+.days {
+  display: grid;
+  grid-column: 2;
+  gap: 5px;
+  grid-template-columns: repeat(auto-fit, 86px);
+}
+
+.events1 {/* 파란배경 */
+  display: grid;
+  grid-template-rows: repeat(var(--numHours), var(--timeHeight));
+  border-radius: 5px;
+  background: var(--calBgColor1);
+}
+
+/*Place on Timeline*/
+.start-10 {
+  grid-row-start: 2;
+}
+
+.start-12 {
+  grid-row-start: 4;
+}
+
+.start-1 {
+  grid-row-start: 5;
+}
+
+.start-2 {
+  grid-row-start: 6;
+}
+
+.end-12 {
+  grid-row-end: 4;
+}
+
+.end-1 {
+  grid-row-end: 5;
+}
+
+.end-3 {
+  grid-row-end: 7;
+}
+
+.end-4 {
+  grid-row-end: 8;
+}
+
+.end-5 {
+  grid-row-end: 9;
+}
+
+/*  Event */
+
+.title {  /* 예약일정(다 주석임) */
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.event1 { /* 예약일정(다 주석임) */
+  border: 1px solid var(--eventBorderColor);
+  border-radius: 5px;
+  padding: -0.5rem;
+/*   margin: 0 0.5rem; */
+  background: white;
+}
+
+.space,
+.date {
+  height: 60px
+}
+
+/* Global / Etc */
+
+/* body { */
+/*   font-family: system-ui, sans-serif; */
+/* } */
+
+.corp-fi {
+  background: var(--eventColor1);
+}
+
+.ent-law {
+  background: var(--eventColor2);
+}
+
+.writing {
+  background: var(--eventColor3);
+}
+
+.securities {
+  background: var(--eventColor4);
+}
+
+.date {
+  display: flex;
+  gap: 0.3em;
+  
+}
+
+.date-num {
+  font-size: 2rem;
+/*   font-weight: 600; */
+  display: inline;
+  
+}
+
+.date-day { /* 요일 */
+  display: inline;
+  font-weight: 200;
+  position: relative;
+  bottom:-15px;
+  font-size: 1rem;
+}
+
+
+.time-marker{
+	margin-bottom:40px;
+	
+}

@@ -7,9 +7,9 @@
 <html lang="en">
 <%
 if (session.getAttribute("id") == null) {
-   response.sendRedirect("/login?error=4321");
+	response.sendRedirect("/login");
 }
-%> 
+%>
 <head>
 
 <meta charset="utf-8">
@@ -20,10 +20,16 @@ if (session.getAttribute("id") == null) {
 <meta name="author" content="">
 
 <title>예약/접수</title>
+ 
+    
+    
+    
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+	
+	
 <link rel="stylesheet" href="https://kit.fontawesome.com/a31e2023c3.css"
 	crossorigin="anonymous">
 <script src="https://kit.fontawesome.com/a31e2023c3.js"
@@ -42,11 +48,21 @@ if (session.getAttribute("id") == null) {
 <!-- Favicon-->
 <link rel="icon" type="image/x-icon"
 	href="/resources/assets/favicon.ico" />
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<!-- <script -->
+<!-- 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script> -->
 <!-- bootstrap -->
-<script src="js/reservation/reserv.js"></script>
-<!-- js -->
+
+ <link rel="stylesheet" href="js/reservation/vendor_cal/css/fullcalendar.min.css" />
+    <link rel="stylesheet" href="js/reservation/vendor_cal/css/bootstrap.min.css">
+    <link rel="stylesheet" href='js/reservation/vendor_cal/css/select2.min.css' />
+    <link rel="stylesheet" href='js/reservation/vendor_cal/css/bootstrap-datetimepicker.min.css' />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,500,600">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link rel="stylesheet" href="css/reservatoin/css2/main.css"><!-- js -->
+   
+   
 <style type="text/css">
 </style>
 </head>
@@ -68,214 +84,152 @@ if (session.getAttribute("id") == null) {
 
 
 
-					<!-- 검색창 / 예약창 / 접수창 -->
-					<div class="row">
-						<!-- 검색 -->
-						<div class="col-xl-4">
-							<div class="card shadow mb-4">
-								<!--메뉴1 -->
-								<div
-									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">고객조회</h6>
+					
+					
+    <div class="container">
+
+        <!-- 일자 클릭시 메뉴오픈 -->
+         <div id="contextMenu" class="dropdown clearfix">
+            <ul class="dropdown-menu dropNewEvent" role="menu" aria-labelledby="dropdownMenu"
+                style="display:block;position:static;margin-bottom:5px;">
+                <li><a tabindex="-1" href="#">카테고리1</a></li>
+                <li><a tabindex="-1" href="#">카테고리2</a></li>
+                <li><a tabindex="-1" href="#">카테고리3</a></li>
+                <li><a tabindex="-1" href="#">카테고리4</a></li>
+                <li class="divider"></li>
+                <li><a tabindex="-1" href="#" data-role="close">Close</a></li>
+            </ul>
+        </div> 
+
+        <div id="wrapper">
+            <div id="loading"></div>
+            <div id="calendar"></div>
+        </div>
+
+
+
+
+
+
+
+
+        <!-- 일정 추가 MODAL -->
+        <div class="modal fade" id="eventModal"
+				tabindex="-1" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+<!-- 						<div class="modal-header"> -->
+<!-- 							<h1 class="modal-title fs-5" id="exampleModalLabel">예약하기</h1> -->
+<!-- 							<button type="button" class="btn-close" data-bs-dismiss="modal" -->
+<!-- 								aria-label="Close"></button> -->
+<!-- 						</div> -->
+
+						<div class="modal-body">
+<!-- 							<form class="row g-4 form"> -->
+								<div class="col-md-6">
+									<label for="owner_name" class="col-form-label">보호자 이름</label> <input
+										type="text" class="form-control" id="owner_name" value="없음"
+										readonly>
 								</div>
-								<div class="card-body p-3"
-									style="height: 660px; overflow: auto;">
-									<!-- 검색기능 -->
-									<div class="input-group mb-2">
-										<input type="text"
-											class="form-control form-control-sm border-gray col-md-12"
-											placeholder="이름 혹은 전화번호" aria-label="검색" name="search_value"
-											id="search_value">
-										<div class="input-group-append">
-											<button class="btn btn-primary btn-sm" type="button"
-												id="search_btn">
-												<i class="fas fa-search"></i>
-											</button>
-										</div>
-									</div>
-
-									<table class="table table-borderless"
-										style="color: gray; background-color: white;">
-										<tbody id="researchTable">
-											<c:forEach items="${boardlist}" var="s">
-												<tr class="search_result"
-													style="border-bottom: 1px solid gray; padding-bottom: 5px;">
-													<td style="font-size: 14px;">
-														<div>
-															<a style="text-decoration: none;"><b
-																style="font-size: 25px; color: black">${s.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${s.owner_name}
-														</div> <br> 
-														
-														<div><span>${s.type_name} | ${s.pet_birth} | ${s.pet_gender}</span>
-													</div>
-													
-													
-													
-													</td>
-													<td style="text-align: right; width: 140px;"><span></span><br>
-<%-- 													<input type="hidden" id="search_petNo" value="${s.pet_no}"> --%>
-														<br> 
-														<span>
-															<input type="hidden" id="search_ownerNo" class="search_ownerNo1" value="${s.owner_no}">
-															<button type="button" class="btn btn-sm reserv_btn"
-																value="${s.pet_no}"
-																style="border: 1px solid #0d6efd; color: #0d6efd;">예약</button>
-															<button type="button" id="search_receipt_btn"
-																class="btn btn-primary btn-sm search_receipt_btn"
-																value="${s.pet_no}" data-value="${s.owner_no}"
-																style="margin-left: 5px; border: none;">접수</button>
-														</span>
-													</td>
-												</tr>
-											</c:forEach>
-
-
-
-
-
-
-
-
-										</tbody>
-									</table>
+								<div class="col-md-6">
+									<label for="owne_tel" class="col-form-label">전화번호</label> <input
+										type="text" class="form-control" id="owner_tel"
+										placeholder="01012345678" value="없음" readonly>
 								</div>
-							</div>
-						</div>
-
-
-
-						<!-- 예약 -->
-						<div class="col-xl-4">
-							<div class="card shadow mb-4">
-								<!-- title -->
-								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">예약</h6>
+								<div class="col-md-6">
+									<label for="pet_name" class="col-form-label">반려견 이름</label> <input
+										type="text" class="form-control" id="pet_name" value="없음"
+										readonly>
 								</div>
-								<div class="card-body p-3"
-									style="height: 660px; overflow: auto;">
-
-									<table class="table table-borderless"
-										style="color: gray; background-color: white;">
-
-										<c:forEach items="${reservlist}" var="l">
-											<input type="hidden" id="age">
-											<tr
-												style="border-bottom: 1px solid gray; padding-bottom: 5px;">
-												<td style="font-size: 14px;">
-													<div style="">
-														<a style="text-decoration: none;"><b
-															style="font-size: 25px; color: black"> ${l.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${l.owner_name}&nbsp;
-														<a class="reservUpdate" value="${l.reservation_no}"
-															style="text-decoration: none;"> <i
-															class="xi-file-text-o"></i>
-														</a>
-
-
-													</div> <br>
-													<div>
-														<span>${l.type_name} | ${l.pet_birth} |
-															${l.pet_gender}</span>
-													</div> <span> ${l.reservation_memo} </span>
-												<td style="text-align: right;"><span><b><h5>${l.reserv_time}</h5></b></span><br>
-													<input type="hidden" id="petNo" value="${l.pet_no}">
-													<input type="hidden" id="ownerNo" value="${l.owner_no}">
-													<input type="hidden" id="reservation_Yn"
-													value="${l.reservation_yn}"> <span>
-														<button type="button"
-															class="btn btn-secondary btn-sm reserv_cancel" id=""
-															value="${l.reservation_no}"
-															style="background-color: #7f8c8d; border: none;">취소</button>
-														<button type="button"
-															class="btn btn-primary btn-sm receipt_btn"
-															value="${l.reservation_no}" style="border: none;">접수</button>
-												</span></td>
-
-
-
-											</tr>
-										</c:forEach>
-									</table>
-
+								<div class="col-md-6">
+									<label for="pet_gender" class="col-form-label">반려견 성별</label> <input
+										type="text" class="form-control" id="pet_gender" value="없음"
+										readonly>
 								</div>
-							</div>
-						</div>
-						<!-- 접수 -->
-						<div class="col-xl-4">
-							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">접수</h6>
+								<div class="col-md-6">
+									<label for="pet_birth" class="col-form-label">반려견 출생년도</label>
+									<input type="text" class="form-control" id="pet_birth"
+										value="없음" readonly>
 								</div>
-								<div class="card-body p-3"
-									style="height: 660px; overflow: auto;">
-									<table class="table table-borderless"
-										style="color: gray; background-color: white;">
+								<!-- 예약시간 -->
+								<p class="col-md-6">
+									<label for="reservation_date_day" class="col-form-label">예약날짜</label>
+									<input class="form-control" type="date" value="1000-01-10"
+										id="reservation_date_day" tabindex="-1">
+								</p>
 
-
-										<c:forEach items="${receplist}" var="r">
-
-											<input type="hidden" id="age">
-											<tr
-												style="border-bottom: 1px solid gray; padding-bottom: 5px;">
-												<td style="font-size: 14px;">
-													<div style="">
-														<a style="text-decoration: none;"><b
-															style="font-size: 25px; color: black">${r.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${r.owner_name}&nbsp;
-														<br>
-														<c:if test="${r.receive_state eq '1'}">
-															<input type="hidden" id="receive_petNo"
-																value="${r.pet_no}"> <span
-																class="badge bg-primary">대기중</span>&nbsp;
-														</c:if>
-														<c:if test="${r.receive_state eq '2'}">
-															<input type="hidden" id="receive_petNo"
-																value="${r.pet_no}"> <span
-																class="badge bg-danger">진료중</span>&nbsp;
-														</c:if>
-														<c:if test="${r.receive_state eq '3'}">
-															<input type="hidden" id="receive_petNo"
-																value="${r.pet_no}"> <span
-																class="badge bg-secondary">진료완료</span>&nbsp;
-														</c:if>
-															
-														<c:if test="${not empty r.reservation_no }">
-															<span class="badge"
-																style="background-color: white; color: #0d6efd; border: 1px solid #0d6efd;">예약</span>
-														</c:if>
-
-													</div> <br>
-
-													<div>
-														<span>${r.type_name} | ${r.pet_birth} |
-															${r.pet_gender}</span>
-
-													</div> 
-
-												</td>
-
-												<td style="text-align: right; width: 140px;"><span><h7>${r.receive_time}</h7></span><br>
-													<input type="hidden" id="reservNo"
-													value="${r.reservation_no}"> <br> <span
-													style="width: 200px;">
-													
-														
-														
-														<c:if test="${r.receive_state eq '1'}">
-															<button type="button"
-																class="btn btn-secondary btn-sm receipt_cancel" id=""
-																value="${r.receive_no}"
-																style="background-color: #7f8c8d; border: none;">접수취소</button>
-														</c:if>
-															<!-- <button type="button" class="btn btn-success btn-sm"
-																id="check_btn" style="border: none;">수납</button> -->
-												</span></td>
-											</tr>
-										</c:forEach>
-									</table>
+								<!-- 시간설정 -->
+								<div class="timeset" style="width: auto;"></div>
+									<!-- timeoption 부분-->								
+								<div class="mb-3">
+									<label for="reservation_memo" class="col-form-label">예약메모</label>
+									<textarea class="form-control" id="reservation_memo"></textarea>
 								</div>
-							</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal" id="cancel-button">취소</button>
+									<button type="button" class="btn btn-primary" id="ok-button"
+										name="" value="">예약하기</button>
+								</div>
+<!-- 							</form> -->
 						</div>
 
 					</div>
+				</div>
+			</div>
+			
+		
+
+
+        <!--  <d iv class="panel panel-default">
+
+            <div class="panel-heading">
+                <h3 class="panel-title">필터</h3>
+            </div>
+
+            <div class="panel-body">
+
+                <div class="col-lg-6">
+                    <label for="calendar_view">구분별</label>
+                    <div class="input-group">
+                        <select class="filter" id="type_filter" multiple="multiple">
+                            <option value="카테고리1">카테고리1</option>
+                            <option value="카테고리2">카테고리2</option>
+                            <option value="카테고리3">카테고리3</option>
+                            <option value="카테고리4">카테고리4</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <label for="calendar_view">등록자별</label>
+                    <div class="input-group">
+                        <label class="checkbox-inline"><input class='filter' type="checkbox" value="정연"
+                                checked>정연</label>
+                        <label class="checkbox-inline"><input class='filter' type="checkbox" value="다현"
+                                checked>다현</label>
+                        <label class="checkbox-inline"><input class='filter' type="checkbox" value="사나"
+                                checked>사나</label>
+                        <label class="checkbox-inline"><input class='filter' type="checkbox" value="나연"
+                                checked>나연</label>
+                        <label class="checkbox-inline"><input class='filter' type="checkbox" value="지효"
+                                checked>지효</label>
+                    </div>
+                </div>
+
+            </div>
+        </div> 
+        <!-- /.filter panel -->
+    </div>
+    <!-- /.container -->
+
+    
+					
+					
+					
+					
+					
+					
 					<!-- /.container-fluid -->
 
 				</div>
@@ -505,6 +459,23 @@ if (session.getAttribute("id") == null) {
 					</div>
 				</div>
 			</div>
+			
+			
+			
+			
+			<script src="js/reservation/vendor_cal/js/jquery.min.js"></script>
+    <script src="js/reservation/vendor_cal/js/bootstrap.min.js"></script>
+    <script src="js/reservation/vendor_cal/js/moment.min.js"></script>
+    <script src="js/reservation/vendor_cal/js/fullcalendar.min.js"></script>
+    <script src="js/reservation/vendor_cal/js/ko.js"></script>
+    <script src="js/reservation/vendor_cal/js/select2.min.js"></script>
+    <script src="js/reservation/vendor_cal/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="js/reservation/js/main.js"></script>
+    <script src="js/reservation/js/addEvent.js"></script>
+    <script src="js/reservation/js/editEvent.js"></script>
+    <script src="js/reservation/js/etcSetting.js"></script>
+			
+			
 			<!-- Bootstrap core JavaScript-->
 			<script src="vendor/jquery/jquery.min.js"></script>
 			<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -518,6 +489,9 @@ if (session.getAttribute("id") == null) {
 			<!-- bootstrap -->
 			<script
 				src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+	
 </body>
 </html>
 

@@ -284,5 +284,16 @@ public class ReservController {
 		return "/reservation/calender_sm";
 	}
 	
+	@GetMapping("/calender_sm2")
+	public String calender_sm2() {
+		
+		return "/reservation/calender_sm2";
+	}
+	@GetMapping("/calender_sm3")
+	public String calender_sm3() {
+		
+		return "/reservation/calender_sm3";
+	}
+	
 
 }
