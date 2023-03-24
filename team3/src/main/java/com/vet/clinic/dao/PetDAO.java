@@ -16,8 +16,6 @@ public interface PetDAO {
 
 	List<PetDTO> petVaccine(PetDTO petDTO);
 
-	List<PetDTO> excelList(PetDTO petDTO);
-
 	List<PetDTO> petChart(PetDTO petDTO);
 
 	List<PetDTO> petMedicalData(PetDTO petDTO);

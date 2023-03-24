@@ -4,10 +4,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
-<% if(session.getAttribute("id") == null){
-   response.sendRedirect("/login");
+<%
+if (session.getAttribute("id") == null) {
+   response.sendRedirect("/login?error=4321");
 }
-%>
+%> 
 <head>
 
 <meta charset="utf-8">
@@ -123,6 +124,10 @@ $(function(){
 <style type="text/css">
 .table{
 	text-align: center;
+}
+
+.g-border{
+ 	border-color: #d1d3e2;
 }
 </style>
 

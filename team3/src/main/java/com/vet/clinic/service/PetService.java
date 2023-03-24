@@ -24,9 +24,6 @@ public class PetService {
 		return petDAO.petVaccine(petDTO);
 	}
 
-	public List<PetDTO> excelList(PetDTO petDTO) {
-		return petDAO.excelList(petDTO);
-	}
 
 	public List<PetDTO> petChart(PetDTO petDTO) {
 		return petDAO.petChart(petDTO);

@@ -85,5 +85,13 @@ public class ClientService {
 		return clientDAO.petUpdateinfo(map);
 	}
 
+	public int fileNewInsert(ClientDTO client) {
+		return clientDAO.fileNewInsert(client);
+	}
+
+	public int fileImgDel(ClientDTO client) {
+		return clientDAO.fileImgDel(client);
+	}
+
 
 }

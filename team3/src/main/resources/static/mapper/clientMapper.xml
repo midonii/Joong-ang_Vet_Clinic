@@ -23,7 +23,7 @@
 	WHERE pet_del = 1
 	<if test="search_name != null">
 	<if test="search_name == 'pet'">
-	AND (pet_name  LIKE CONCAT('%',#{search_value },'%') or pet_birth LIKE CONCAT('%',#{search_value },'%'));
+	AND (pet_name  LIKE CONCAT('%',#{search_value },'%') or pet_birth LIKE CONCAT('%',#{search_value },'%'))
 	</if>
 	</if>
 	order by pet_no desc
@@ -164,5 +164,17 @@
 		FROM clientview2
 		WHERE pet_no=#{petNo }
 	</select>
+	
+	<insert id="fileNewInsert" parameterType="ClientDTO">
+		INSERT INTO upfile
+		SET
+		pet_no = #{petNo },
+		filename = #{filename }
+	</insert>
+	
+	<delete id="fileImgDel" parameterType="ClientDTO">
+		DELETE FROM upfile
+		WHERE pet_no=#{petNo }
+	</delete>
 	
 </mapper>

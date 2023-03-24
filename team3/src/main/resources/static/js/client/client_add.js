@@ -21,7 +21,7 @@ $(function(){
 			
 		//보호자 정보 삭제하기(그 아래의 반려견도 모두 삭제)
 		 $(".clientDelete").off().click(function(){
-			 alert("클릭한 부분의 clientNo : " + clientNo);
+			// alert("클릭한 부분의 clientNo : " + clientNo);
 			 if(confirm("삭제하시겠습니까?")){
  				location.href="clientDelete?clientNo="+clientNo;
  			}
@@ -185,7 +185,22 @@ $(function(){
 			
 			
 			$("#petAddModal").modal("show");
+			
+			
 		});
+		
+			//반려견 추가에서 이미지 등록 초기화
+			$(document).off("click", "#petImg-reset").on("click", "#petImg-reset", function() {
+				//alert("초기화");
+				//input file 초기화
+				$("#petImg").val("");
+					
+				//미리보기 화면 초기화
+				$("#petProfileImg").attr("src","../img/logoda.png");
+	
+					
+			});
+
 		
 		//몸무게 문자 제한 + 반려견 추가 정보 보내기
 		$("#petAddSave").off().click(function(){
@@ -240,7 +255,7 @@ $(function(){
 			
 		});
 				
-		
+		//반려견 추가 modal 닫을 경우 값 초기화
 		$('#petAddModal').on('hidden.bs.modal', function(e) {
 
 		    // 텍스트 인풋 초기화
@@ -254,6 +269,7 @@ $(function(){
 		    // 셀렉트 초기화
 		    //$('.select2').val(0).trigger('change.select2');
 		});
+		
 		
 		 
 	});
@@ -356,6 +372,19 @@ $(function(){
 		$(document).off("click",".petUpdate").on("click",".petUpdate",function(){
 			//alert(petNo);
 			
+			//반려견 수정 모달 끌 경우 값 초기화
+			$('#petUpdateModal').on('hidden.bs.modal', function(e) {
+
+		    // 텍스트 인풋 초기화
+		    if($(this).find('form').length >0){
+		    	$(this).find('form')[0].reset();
+		   		var inputValue = $(this).find('select:eq(0) option:eq(0)');
+		    }
+
+		    // 셀렉트 초기화
+		    //$('.select2').val(0).trigger('change.select2');
+			});
+			
 		
 
 			$.post({
@@ -367,16 +396,16 @@ $(function(){
 				let result = data.result;
 				alert(result.pet_name);
 				
-				var pet_name = result.pet_name
-				var pet_weight = result.pet_weight
-				var pet_type = result.type_no
-				var pet_gender = result.pet_gender
-				var pet_year= result.pYear
-				var pet_Month= result.pMonth
-				var pet_Day= result.pDay
-				var pet_memo= result.pet_memo
-				var pet_death= result.pet_death
-				var filename = result.filename
+				var pet_name = result.pet_name;
+				var pet_weight = result.pet_weight;
+				var pet_type = result.type_no;
+				var pet_gender = result.pet_gender;
+				var pet_year= result.pYear;
+				var pet_Month= result.pMonth;
+				var pet_Day= result.pDay;
+				var pet_memo= result.pet_memo;
+				var pet_death= result.pet_death;
+				var filename = result.filename;
 				
 				var now = new Date();
 				var now_year = now.getFullYear();
@@ -410,21 +439,69 @@ $(function(){
 				$("#petUpdateBirthDay").val(pet_Day).prop("selected",true);
 				$("#petUpdateComments").val(pet_memo);
 				$("#petDeath").val(pet_death);
-				$("#petUpdateSrc").attr("src","../resources/static/upFile/"+filename+"");
-				
-				var src = $("#petUpdateSrc").attr("src");
-				var petUsuImg = src.replace('../resources/static/upFile/', '');
-				
-				
-				
+				if(filename != undefined){
+					$("#petUpdateSrc").attr("src","../resources/static/upFile/"+filename+"");
+				} else {
+					$("#petUpdateSrc").attr("src","../img/logoda.png");
+				}
 				
 				
 
 				$("#petUpdateModal").modal("show");
 				
+				
+				//이미지 초기화 버튼 클릭시
+				$(document).off("click", "#petImg-reset").on("click", "#petImg-reset", function() {
+					//alert("초기화");
+					$("#petUpdateImg").val("");
+					
+					//미리보기 화면 초기화
+					if(filename != undefined){
+						$("#petUpdateSrc").attr("src","../resources/static/upFile/"+filename+"");
+					} else {
+						$("#petUpdateSrc").attr("src","../img/logoda.png");
+					}
+	
+					
+				});
+			
+			
+				//이미지 삭제 버튼 클릭시
+				$(document).off("click", "#petImg-delete").on("click", "#petImg-delete", function() {
+					//alert(filename);
+				if(confirm("삭제하시겠습니까?")){	
+						
+						$.post({
+							url: "/petDelImg",
+							data: {
+								"petNo":petNo,
+								"petDelName":filename
+							},
+							cache: false,
+							dataType : "json"
+						}).done(function(data) {
+							let fileImgDel = data.fileImgDel;
+							if(fileImgDel == "1"){							
+								alert("이미지가 삭제되었습니다.");
+								$("#petUpdateSrc").attr("src", "../img/logoda.png");
+							}
+							
+
+						});
+						
+				}
+					
+					
+				});
+				
+				
 			}).fail(function(xhr, status,errorThrown){
 				alert("문제가 발생했습니다.");
 			});
+			
+			
+			
+			
 			
 			
 		$("#petUpdateSave").off().click(function(){
@@ -508,13 +585,13 @@ $(function(){
     				dataType : "json"
     			}).done(function(data){
     				//alert("정상소통" + data.result);
-    				if(data.result == 1){
+    				if(data.result == "1"){
     					alert("정보 수정 완료");
 						
 						//기존의 반려견 파일명 뽑아내기
 						var petUpdateinfo = data.petUpdateinfo;
 						var petUsuImg = petUpdateinfo.filename;
-						alert(petUsuImg);
+						//alert(petUsuImg);
 							
 	
 						//펫 수정시 이미지 파일 수정하기
@@ -535,7 +612,7 @@ $(function(){
 							cache: false,
 							dataType : "json"
 						}).done(function(data) {
-							if(data.result == 1){
+							if(data.result == "1"){
 							alert("이미지가 저장되었습니다.");
 							location.href = "/client";
 							
@@ -544,7 +621,7 @@ $(function(){
 	    					}
 
 						}).fail(function() {
-							alert("문제가 발생했습니다.");
+							//alert("문제가 발생했습니다.");
 						});
 						
 						
@@ -658,6 +735,17 @@ $(function(){
 					
 					//보호자 상세보기 modal에서 반려견 수정하기
 					$(document).off("click",".cm_petUpdate").on("click", ".cm_petUpdate",function(){
+
+						//반려견 수정 모달 끌 경우 값 초기화
+						$('#petUpdateModal').on('hidden.bs.modal', function(e) {
+
+							// 텍스트 인풋 초기화
+							if ($(this).find('form').length > 0) {
+								$(this).find('form')[0].reset();
+								var inputValue = $(this).find('select:eq(0) option:eq(0)');
+							}
+
+						});
 						
 //					$(".cm_petUpdate").off().click(function(){
 						//alert(petNo);
@@ -673,15 +761,17 @@ $(function(){
 							let result = data.result;
 							alert(result.pet_name);
 
-							var pet_name = result.pet_name
-							var pet_weight = result.pet_weight
-							var pet_type = result.type_no
-							var pet_gender = result.pet_gender
-							var pet_year = result.pYear
-							var pet_Month = result.pMonth
-							var pet_Day = result.pDay
-							var pet_memo = result.pet_memo
-							var pet_death = result.pet_death
+							var pet_name = result.pet_name;
+							var pet_weight = result.pet_weight;
+							var pet_type = result.type_no;
+							var pet_gender = result.pet_gender;
+							var pet_year = result.pYear;
+							var pet_Month = result.pMonth;
+							var pet_Day = result.pDay;
+							var pet_memo = result.pet_memo;
+							var pet_death = result.pet_death;
+							var filename = result.filename;
+							
 
 							var now = new Date();
 							var now_year = now.getFullYear();
@@ -715,17 +805,66 @@ $(function(){
 							$("#petUpdateBirthDay").val(pet_Day).prop("selected", true);
 							$("#petUpdateComments").val(pet_memo);
 							$("#petDeath").val(pet_death);
-
-
-
+							if (filename != undefined) {
+								$("#petUpdateSrc").attr("src", "../resources/static/upFile/" + filename + "");
+							} else {
+								$("#petUpdateSrc").attr("src", "../img/logoda.png");
+							}
 
 
 							$("#petUpdateModal").modal("show");
 							
+							
+							//(보호자 modal)반려견 이미지 초기화 버튼 클릭시
+							$(document).off("click", "#petImg-reset").on("click", "#petImg-reset", function() {
+								//alert("초기화");
+								$("#petUpdateImg").val("");
+
+								//미리보기 화면 초기화
+								if (filename != undefined) {
+									$("#petUpdateSrc").attr("src", "../resources/static/upFile/" + filename + "");
+								} else {
+									$("#petUpdateSrc").attr("src", "../img/logoda.png");
+								}
+
+
+							});
+
+
+							//(보호자 modal)반려견 이미지 삭제 버튼 클릭시
+							$(document).off("click", "#petImg-delete").on("click", "#petImg-delete", function() {
+								//alert(filename);
+								if (confirm("삭제하시겠습니까?")) {
+
+									$.post({
+										url: "/petDelImg",
+										data: {
+											"petNo": petNo,
+											"petDelName": filename
+										},
+										cache: false,
+										dataType: "json"
+									}).done(function(data) {
+										let fileImgDel = data.fileImgDel;
+										if (fileImgDel == "1") {
+											alert("이미지가 삭제되었습니다.");
+											$("#petUpdateSrc").attr("src", "../img/logoda.png");
+										}
+
+
+									});
+
+								}
+
+
+							});
+				
 							//X버튼 누를 경우 기존의 petlist 다시 띄우기
 							$("#petUpdateModalClose").click(function(){
 								$(".petListModal").show();
 							});
+							
+							
 							
 							
 
@@ -828,8 +967,51 @@ $(function(){
 									dataType: "json"
 								}).done(function(data) {
 									//alert("정상소통" + data.result);
-									if (data.result == 1) {
+									if (data.result == "1") {
 										alert("수정이 완료되었습니다.");
+
+										//---------------- 파일 정보 수정 
+										
+										//기존의 반려견 파일명 뽑아내기
+										var petUpdateinfo = data.petUpdateinfo;
+										var	petUsuImg = petUpdateinfo.filename;
+										//alert(petUsuImg);
+
+
+										//펫 수정시 이미지 파일 수정하기
+										var petImageUpdate = $("#petUpdateImg")[0].files[0];
+
+										//alert(petImageUpdate);
+										var formData = new FormData();
+										formData.append("petUpdateImg", petImageUpdate);
+										formData.append("petNo", petNo);
+										formData.append("petUsuImg", petUsuImg);
+
+										$.post({
+											url: "/petUpdateImg",
+											enctype: "multipart/form-data",
+											data: formData,
+											processData: false,
+											contentType: false,
+											cache: false,
+											dataType: "json"
+										}).done(function(data) {
+											if (data.result == "1") {
+												alert("이미지가 저장되었습니다.");
+
+											} else {
+												alert("문제가 발생했습니다. \n다시 시도해주세요.");
+											}
+
+										}).fail(function() {
+											alert("문제가 발생했습니다.");
+										});
+										
+										
+										//---------------------- 수정된 반려견 정보 다시 불러오기
+										
+										
+										
 										$("#petUpdateModal").modal("hide");
 										//수정된 정보 보호자 상세보기 모달로 불러오기
 										$.post({
@@ -1023,7 +1205,7 @@ $(function(){
     				dataType : "json"
     			}).done(function(data){
     				//alert("정상소통" + data.result);
-    				if(data.result == 1){
+    				if(data.result == "1"){
     					alert("수정이 완료되었습니다.");
     					$("#clientUpdateModal").modal("hide");
     					
@@ -1077,7 +1259,19 @@ $(function(){
 			
 			
 			$("#petAddModal").modal("show");
+			
+			//X버튼 누를 경우 다시 보호자 모달 보이기
+			$("#petAddModalClose").click(function() {
+				$("#petAddModal").modal("hide");
+				$("#detailModal").modal("show");
+			});
+			
+			
+			
 		});
+		
+		
+		
 		
 		//보호자 상세보기 modal에서 몸무게 문자 제한 + 반려견 추가 정보 보내기
 		$("#petAddSave").off().click(function(){
@@ -1144,7 +1338,7 @@ $(function(){
 
 		});
 	
-		//모달 창 닫을 경우 남아있는 값 삭제
+		// 보호자 추가 modal 닫을 경우 남아있는 값 삭제
 		$('#clientAddModal').on('hidden.bs.modal', function(e) {
 
 		    // 텍스트 인풋 초기화
@@ -1210,7 +1404,7 @@ $(function(){
     				dataType : "json"
     			}).done(function(data){
     				//alert("정상소통" + data.result);
-    				if(data.result == 1){
+    				if(data.result == "1"){
     					alert("저장이 완료되었습니다.");
     						
     				 } else {

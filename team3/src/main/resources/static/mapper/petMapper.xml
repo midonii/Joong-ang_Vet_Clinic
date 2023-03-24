@@ -17,14 +17,6 @@
 	ORDER BY chart_date DESC
 </select>
 
-<select id="excelList" resultType="PetDTO">
-	SELECT pet_no , pet_name , medicaldata_no ,MAX(chart_date) as chart_date , chart_no , medical_no , medical_name
-	FROM vaccineview v
-	WHERE pet_no = #{petNo }
-	GROUP BY v.medical_no 
-	ORDER BY chart_date DESC
-</select>
-
 <select id="petChart" resultType="PastChartDTO">
 	SELECT *
 	FROM chartview

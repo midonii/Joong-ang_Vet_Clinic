@@ -47,5 +47,9 @@ public interface ClientDAO {
 
 	public Map<String, Object> petUpdateinfo(Map<String, Object> map);
 
+	public int fileNewInsert(ClientDTO client);
+
+	public int fileImgDel(ClientDTO client);
+
 
 }

@@ -308,10 +308,13 @@
 							<img src="../img/logoda.png" id="petProfileImg" class="img-thumbnail mb-3" onerror="imgAreaError()"
 								alt="이미지를 불러올 수 없습니다." style="width: 200px; height: 200px;">
 							</div>
-							<div class="mb-3">
+							<div class="mb-1">
 								<label for="petImg" class="form-label">반려견 img file</label>
 								<input class="form-control form-control-sm" accept="image/*"
 									id="petImg" name="petImg" onchange="previewImage(this,'View_area')" onclick="dataSubmit();" multiple type="file" style="width: 200px;">
+							</div>
+							<div class="btn-group btn-group-sm" role="group" aria-label="Small button group" style="width: 200px;">
+								<button type="button" class="btn btn-outline-dark g-border" id="petImg-reset">이미지 초기화</button>
 							</div>
 						</div>
 						<div class="col-8">
@@ -405,10 +408,14 @@
 						<div class="col-4">
 							<img src="../img/logoda.png" id="petUpdateSrc" class="img-thumbnail mb-3"
 								alt="이미지를 불러올 수 없습니다." style="width: 200px; height: 200px;">
-							<div class="mb-3">
+							<div class="mb-1">
 								<label for="formFileSm" class="form-label">반려견 img file</label>
 								<input class="form-control form-control-sm" accept="image/*"
 									id="petUpdateImg" name="petUpdateImg" type="file" style="width: 200px;">
+							</div>
+							<div class="btn-group btn-group-sm" role="group" aria-label="Small button group" style="width: 200px;">
+								<button type="button" class="btn btn-outline-dark g-border" id="petImg-reset">이미지 초기화</button>
+								<button type="button" class="btn btn-outline-dark g-border" id="petImg-delete">이미지 삭제</button>
 							</div>
 						</div>
 						<div class="col-8">
