@@ -40,4 +40,6 @@ public interface ReservDAO {
 
 	public List<ReservDTO> reservTimeCheck(ReservDTO reservDTO);
 
+	public List<ReservDTO> calender(ReservDTO reservDTO);
+
 }

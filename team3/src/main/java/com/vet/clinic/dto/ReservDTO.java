@@ -31,4 +31,11 @@ public class ReservDTO {
 	private String receive_time, receive_state,receive_no, reservNo, receive_petNo, receive_ownerNo;
 	private String search_ownerNo, search_petNo;
 	private String delete_receive_no;
+	
+	//캘린더
+//	private int calendarNo;
+//	private String calendarTitle;
+//	private String calendarMemo;
+//	private String calendarStart;
+//	private String calendarEnd;
 }

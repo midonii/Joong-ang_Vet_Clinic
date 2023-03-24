@@ -152,7 +152,7 @@
 	});
 
 	//예약창 닫았을때 text값 초기화
-	$('#exampleModal').on('hidden.bs.modal', function(e) {
+	$('#dialog').on('hidden.bs.modal', function(e) {
 		if ($(this).find('form').length > 0) {
 			$(this).find('form')[0].reset();
 			var inputValue = $(this).find('select:eq(0) option:eq(0)');

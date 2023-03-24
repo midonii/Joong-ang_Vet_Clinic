@@ -7,9 +7,9 @@
 <html lang="en">
 <%
 if (session.getAttribute("id") == null) {
-	response.sendRedirect("/login");
+   response.sendRedirect("/login?error=4321");
 }
-%>
+%> 
 <head>
 
 <meta charset="utf-8">
@@ -104,14 +104,19 @@ if (session.getAttribute("id") == null) {
 														<div>
 															<a style="text-decoration: none;"><b
 																style="font-size: 25px; color: black">${s.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${s.owner_name}
-														</div> <br> <span>${s.type_name} | ${s.pet_gender}<br>
-															${s.pet_birth}
-													</span><br>
+														</div> <br> 
+														
+														<div><span>${s.type_name} | ${s.pet_birth} | ${s.pet_gender}</span>
+													</div>
+													
+													
+													
 													</td>
-													<td style="text-align: right;"><span></span><br>
+													<td style="text-align: right; width: 140px;"><span></span><br>
 <%-- 													<input type="hidden" id="search_petNo" value="${s.pet_no}"> --%>
-														<br> <span>
-													<input type="hidden" id="search_ownerNo" class="search_ownerNo1" value="${s.owner_no}">
+														<br> 
+														<span>
+															<input type="hidden" id="search_ownerNo" class="search_ownerNo1" value="${s.owner_no}">
 															<button type="button" class="btn btn-sm reserv_btn"
 																value="${s.pet_no}"
 																style="border: 1px solid #0d6efd; color: #0d6efd;">예약</button>
@@ -119,7 +124,8 @@ if (session.getAttribute("id") == null) {
 																class="btn btn-primary btn-sm search_receipt_btn"
 																value="${s.pet_no}" data-value="${s.owner_no}"
 																style="margin-left: 5px; border: none;">접수</button>
-													</span></td>
+														</span>
+													</td>
 												</tr>
 											</c:forEach>
 
@@ -162,7 +168,7 @@ if (session.getAttribute("id") == null) {
 														<a class="reservUpdate" value="${l.reservation_no}"
 															style="text-decoration: none;"> <i
 															class="xi-file-text-o"></i>
-														</a>${l.pet_no}
+														</a>
 
 
 													</div> <br>
@@ -218,12 +224,17 @@ if (session.getAttribute("id") == null) {
 														<c:if test="${r.receive_state eq '1'}">
 															<input type="hidden" id="receive_petNo"
 																value="${r.pet_no}"> <span
-																class="badge bg-secondary">대기중</span>&nbsp;
+																class="badge bg-primary">대기중</span>&nbsp;
 														</c:if>
 														<c:if test="${r.receive_state eq '2'}">
 															<input type="hidden" id="receive_petNo"
 																value="${r.pet_no}"> <span
 																class="badge bg-danger">진료중</span>&nbsp;
+														</c:if>
+														<c:if test="${r.receive_state eq '3'}">
+															<input type="hidden" id="receive_petNo"
+																value="${r.pet_no}"> <span
+																class="badge bg-secondary">진료완료</span>&nbsp;
 														</c:if>
 															
 														<c:if test="${not empty r.reservation_no }">
@@ -254,8 +265,8 @@ if (session.getAttribute("id") == null) {
 																value="${r.receive_no}"
 																style="background-color: #7f8c8d; border: none;">접수취소</button>
 														</c:if>
-															<button type="button" class="btn btn-success btn-sm"
-																id="check_btn" style="border: none;">수납</button>
+															<!-- <button type="button" class="btn btn-success btn-sm"
+																id="check_btn" style="border: none;">수납</button> -->
 												</span></td>
 											</tr>
 										</c:forEach>
@@ -288,7 +299,7 @@ if (session.getAttribute("id") == null) {
 			<%@ include file="../bar/footer.jsp"%>
 			<%@ include file="../bar/logoutModal.jsp"%>
 
-
+</div></div>
 
 
 			<!-- 수정Modal -->
