@@ -31,4 +31,12 @@ public class Chart3Service {
 		return chart3DAO.chartUpdate(map);
 	}
 
+	public int payAdd(Map<String, Object> payMap) {
+		return chart3DAO.payAdd(payMap);
+	}
+
+	public String chartNo(Map<String, Object> map) {
+		return chart3DAO.chartNo(map);
+	}
+
 }

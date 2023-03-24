@@ -17,13 +17,12 @@ public class IndexService {
 	public List<Map<String, Object>> indexReserv() {
 		return indexDAO.indexReserv();
 	}
-	public List<Map<String, Object>> receivepay() {
-		return indexDAO.receivepay();
-	}
+
 	public List<Map<String, Object>> indexPet(Map<String, Object> map) {
 		return indexDAO.indexPet(map);
 
 	}
+
 	public List<Map<String, Object>> noticeList() {
 		return indexDAO.indexNotice();
 	}
@@ -31,10 +30,20 @@ public class IndexService {
 	public int reservCount() {
 		return indexDAO.reservCount();
 	}
+
 	public int recepCount() {
 		return indexDAO.recepCount();
 	}
+
 	public int diagCount() {
 		return indexDAO.diagCount();
+	}
+
+	public List<Map<String, Object>> indexpay() {
+		return indexDAO.indexpay();
+	}
+
+	public List<Map<String, Object>> indexreceive() {
+		return indexDAO.indexreceive();
 	}
 }

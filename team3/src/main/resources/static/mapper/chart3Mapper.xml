@@ -5,7 +5,18 @@
 		SELECT * FROM chartview WHERE
 		chart_no = #{chartNo};
 	</select>
-
+	<select id="chartNo" resultType="String">
+		SELECT chart_no FROM chart 
+		WHERE receive_no =#{receive_no};
+	</select>
+	
+ 	<insert id="payAdd" parameterType="HashMap">
+		INSERT INTO pay
+		SET
+		chart_no = #{chart_no},
+		pay_yn='N',
+		receive_no=#{receive_no}
+	</insert> 
 	<insert id="chartAdd" parameterType="HashMap">
 		INSERT INTO chart
 		SET

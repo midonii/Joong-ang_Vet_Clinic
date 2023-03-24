@@ -20,6 +20,10 @@ public interface Chart3DAO {
 
 	public int chartUpdate(Map<String, Object> map);
 
+	public int payAdd(Map<String, Object> payMap);
+
+	public String chartNo(Map<String, Object> map);
+
 
 
 }

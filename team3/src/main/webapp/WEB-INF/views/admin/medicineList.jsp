@@ -4,8 +4,16 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ko">
+<%
+if (session.getAttribute("id") != null) {
+	if (!session.getAttribute("staff_grade").equals("admin")) {
+		response.sendRedirect("/index?error=1234");
+	}
+} else {
+	response.sendRedirect("/login?error=4321");
+}
+%>
 <head>
 
 <meta charset="utf-8">
@@ -39,7 +47,7 @@
 	$(function() {
 		let searchName2 = $("#searchName").val();
 		$("#search_name").val(searchName2);
-		
+
 		$("#addBtn").click(function() {
 
 			var medical_name = $("#medical_name").val();
@@ -126,8 +134,7 @@
 			searchForm.submit();
 		});
 
-
-	$(".medicalDel").click(function() {
+		$(".medicalDel").click(function() {
 			var medical_no = $(this).attr("value");
 			$.post({
 				url : "/medicalDel",
@@ -154,8 +161,6 @@
 			});
 		});
 	});
-
-
 
 	function page(idx, search_name, search_value) {
 		var pagenum = idx;
@@ -234,7 +239,7 @@
 											name="medical_category">
 										<ul class="list-group list-group-flush">
 											<li class="list-group-item">
-								
+
 												<div class="row">
 													<div class="col-md-12 text-center font-weight-bold text-lg"
 														style="line-height: 38px;">약품데이터 추가</div>
@@ -267,7 +272,7 @@
 
 												</div>
 											</li>
-										
+
 
 										</ul>
 
