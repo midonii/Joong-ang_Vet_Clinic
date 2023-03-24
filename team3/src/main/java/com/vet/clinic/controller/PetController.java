@@ -107,7 +107,7 @@ public class PetController {
 		
 		
 			
-		List<PetDTO> list = petService.excelList(petDTO);
+		List<PetDTO> list = petService.petVaccine(petDTO);
 		
 		//System.err.println(list);
 		//System.out.println(list.size());

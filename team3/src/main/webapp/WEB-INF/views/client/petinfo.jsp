@@ -4,10 +4,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
-<% if(session.getAttribute("id") == null){
-   response.sendRedirect("/login");
+<%
+if (session.getAttribute("id") == null) {
+   response.sendRedirect("/login?error=4321");
 }
-%>
+%> 
 <head>
 
 <meta charset="utf-8">
@@ -143,6 +144,14 @@ $(function(){
 	text-align: right;
 }
 
+.imgSet{
+	width: 260px;
+	height: 260px;
+	border-radius: 12px;
+	border:outset;
+	border-width: 3px;
+	border-color: #9ec5fe;
+}
 </style>
 </head>
 
@@ -224,10 +233,10 @@ $(function(){
 							<div class="col-5">
 							<c:choose>
 								<c:when test="${fn:length(pi.filename) gt 0}">
-									<img src="../resources/static/upFile/${pi.filename }" class="img-thumbnail" style="width: 260px; height: 260px; border-radius: 12px;">								
+									<img src="../resources/static/upFile/${pi.filename }" class="img-thumbnail imgSet">								
 								</c:when>
 								<c:otherwise>
-									<img src="../img/logoda.png" class="rounded img-thumbnail" style="width: 260px; height: 260px;">
+									<img src="../img/logoda.png" class="rounded img-thumbnail imgSet">
 								</c:otherwise>
 							</c:choose>
 							</div>
@@ -313,7 +322,7 @@ $(function(){
 								<!-- 진료 내역 -->
 							<c:choose>
 							  <c:when test="${fn:length(petChart) gt 0}">
-								<div class="accordion" id="accordionExample">
+									<div class="accordion" id="accordionExample">
 								 <c:forEach items="${petChart }" var="ch" varStatus="status">
 									<div class="accordion-item">
 										<h2 class="accordion-header" id="${ch.chart_date }">
@@ -330,7 +339,7 @@ $(function(){
 												</button>
 										</h2>
 										<div id="A${ch.chart_no }" class="${status.index eq 0 ? 'accordion-collapse collapse':'accordion-collapse collapse'}"
-											aria-labelledby="${ch.chart_date }" data-bs-parent="#accordionExample">
+											aria-labelledby="${ch.chart_date }" data-parent="#accordionExample">
 											<div class="accordion-body">
 												<!-- 의사 소견 -->
 												<div class="mb-4">
@@ -398,9 +407,9 @@ $(function(){
 								
 										</div>
 									</div>
-							</c:forEach>
 <!-- 								</div> -->
 
+							</c:forEach>
 							</div>
 							</c:when>
 							<c:otherwise>

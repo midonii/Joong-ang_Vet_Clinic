@@ -2,9 +2,7 @@ package com.vet.clinic.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List; 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -15,15 +13,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vet.clinic.dto.ClientDTO;
@@ -117,7 +111,7 @@ public class ClientContoller {
 																						
 			json.put("result", detail);
 			json.put("result2", detail2);
-			System.out.println(json.toString());
+			//System.out.println(json.toString());
 		} else {
 			json.put("result", 0);
 			json.put("result2", 0);
@@ -143,7 +137,7 @@ public class ClientContoller {
 	//반려견 정보 삭제
 	@GetMapping("petDelete")
 	public String petDelete(HttpServletRequest request) {
-		System.out.println(request.getParameter("petNo"));
+		//System.out.println(request.getParameter("petNo"));
 		
 		ClientDTO client = new ClientDTO();
 		client.setPetNo(request.getParameter("petNo"));
@@ -308,6 +302,7 @@ public class ClientContoller {
 	}
 	
 	//반려견 이미지 수정
+	@ResponseBody
 	@PostMapping(value = "petUpdateImg", consumes = { "multipart/form-data" })
 	public String petUpdateImg(@RequestParam("petUpdateImg")MultipartFile petUpImg, HttpServletRequest request) throws IOException {
 //		System.err.println(petUpImg.getOriginalFilename());
@@ -323,30 +318,89 @@ public class ClientContoller {
 			String realPath = context.getRealPath("resources/static/");
 			String fileName = fileup.fileSave(realPath+"upFile", petUpImg);
 			//System.err.println(realPath); 서버 저장된 경로
+			
 			ClientDTO client = new ClientDTO();
 			client.setFilename(fileName);
 			client.setPetNo(request.getParameter("petNo"));
+			//System.out.println(fileName);
 			
 			
 			String fileUsuName = request.getParameter("petUsuImg");
-			File file1 = new File(realPath+fileUsuName);
-			//기존의 이미지 삭제 (서버)
-			if(file1.exists()) {
+			//System.out.println(fileUsuName);
+			
+
+			// ---- 기존 이미지가 없을 경우 insert , 있을 경우 update
+			if(fileUsuName.equals("undefined")) {
+
+				int fileNewInsert = clientService.fileNewInsert(client);
+				json.put("result", fileNewInsert);
+				System.out.println("파일이 신규 등록 되었습니다.");
+				
+			} else {
+				
+				int fileUpdate = clientService.fileUpdate(client);
+				json.put("result", fileUpdate);
+				System.out.println("파일이 업데이트 되었습니다.");
+				
+			}
+			
+			File file1 = new File(realPath+"upFile/"+fileUsuName);
 			//System.err.println(file1);
+			
+			
+			//기존의 이미지 삭제 -- (서버)
+			if(file1.exists()) {
+				file1.delete();
+				System.out.println("파일을 삭제하였습니다.");
+			} else {
+				System.out.println("삭제할 파일이 존재하지 않습니다.");
+			}
+			
+			
+			
+		}
+		return json.toString();
+		
+	}
+	
+	//반려견 이미지 삭제
+	@ResponseBody
+	@PostMapping("petDelImg")
+	public String petDelImg(HttpServletRequest request) {
+		
+			
+			ClientDTO client = new ClientDTO();
+			client.setPetNo(request.getParameter("petNo"));
+			//System.out.println(fileName);
+			
+			// --- 기존의 파일명
+			String fileUsuName = request.getParameter("petDelName");
+			//System.out.println(fileUsuName);
+			
+			String realPath = context.getRealPath("resources/static/");
+			File file1 = new File(realPath+"upFile/"+fileUsuName);
+			//System.err.println(file1);
+			
+			
+			//기존의 이미지 삭제 -- (서버)
+			if(file1.exists()) {
 				file1.delete();
 				System.out.println("파일을 삭제하였습니다.");
 			} else {
 				System.out.println("파일이 존재하지 않습니다.");
 			}
-			//새로운 파일 저장
-			int fileUpdate = clientService.fileUpdate(client);
+			
+			//기존의 이미지 삭제 -- DB
+			int fileImgDel = clientService.fileImgDel(client);
+			System.err.println("삭제 결과 : "+fileImgDel);
+			JSONObject json = new JSONObject();
+			
+			json.put("fileImgDel", fileImgDel);
 			
 			
-			json.put("result", fileUpdate);
 			
+			return json.toString();
 			
-		}
-		return json.toString();
 		
 	}
 	
