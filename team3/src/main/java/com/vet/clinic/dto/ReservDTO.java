@@ -32,6 +32,8 @@ public class ReservDTO {
 	private String search_ownerNo, search_petNo;
 	private String delete_receive_no;
 	
+	private String date1;
+	
 	//캘린더
 //	private int calendarNo;
 //	private String calendarTitle;

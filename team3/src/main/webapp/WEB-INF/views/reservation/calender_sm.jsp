@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <html lang="ko">
 <%
 if (session.getAttribute("id") == null) {
@@ -48,6 +50,7 @@ if (session.getAttribute("id") == null) {
 <!-- <link rel="stylesheet" href="style.css"> -->
 <link rel="stylesheet" href="css/reservation/calender_sm.css">
 <link rel="stylesheet" href="css/reservation/calender_sm2.css">
+<!-- <script src="js/reservation/calender_reserv.js"></script> -->
 
 <script type="text/javascript"
 	src="../js/reservation/calender_search.js"></script>
@@ -145,101 +148,6 @@ background-color: #4e73df;
 						
 						
 						
-<!-- 						<div class="events-container" style="float:none;">  -->
-<%-- 						<%@ include file="calender_sm2.jsp"%>	  </div> --%>
-<!-- 						<div class="events-container" style="float:none; margin-left:27px;"></div>  -->
-<!-- 						 일정이 없습니다.란 -->
-<!-- 						<div class="events-container" style="float:none; margin-left:27px;"></div> 
-							<div class="dialog2" id="dialog2" style="overflow: auto;">					
-<div class="weekcalendar">
-  <div class="timeline">
-    <div class="spacer" style="height:30px;"></div>
-    <div class="time-marker">9 AM</div>
-    <div class="time-marker">10 AM</div>
-    <div class="time-marker">11 AM</div>
-    <div class="time-marker">12 PM</div>
-    <div class="time-marker">1 PM</div>
-    <div class="time-marker">2 PM</div>
-    <div class="time-marker">3 PM</div>
-    <div class="time-marker">4 PM</div>
-    <div class="time-marker">5 PM</div>
-    <div class="time-marker">6 PM</div>
-  </div>
-  
-  <div class="days">
-    <div class="day mon">
-      <div class="date">
-        <p class="date-num">9</p>
-        <p class="date-day">Mon</p>
-      </div>
-      <div class="events">
-        <div class="event start-2 end-5 securities">
-          <p class="title" style="font-size:5px;">까미 (윤지혜)</p>
-        </div>
-      </div>
-    </div>
-    <div class="day tues">
-      <div class="date">
-        <p class="date-num">12</p>
-        <p class="date-day">Tues</p>
-      </div>
-      <div class="events">
-        <div class="event start-10 end-12 corp-fi">
-          <p class="title">Corporate Finance</p>
-          <p class="time">10 AM - 12 PM</p>
-        </div>
-        <div class="event start-1 end-4 ent-law">
-          <p class="title">Entertainment Law</p>
-          <p class="time">1PM - 4PM</p>
-        </div>
-      </div>
-    </div>
-    <div class="day wed">
-      <div class="date">
-        <p class="date-num">11</p>
-        <p class="date-day">Wed</p>
-      </div>
-      <div class="events">
-        <div class="event start-12 end-1 writing">
-          <p class="title">Writing Seminar</p>
-          <p class="time">11 AM - 12 PM</p>
-        </div>
-        <div class="event start-2 end-5 securities">
-          <p class="title">Securities Regulation</p>
-          <p class="time">2 PM - 5 PM</p>
-        </div>
-      </div>
-    </div>
-    <div class="day thurs">
-      <div class="date">
-        <p class="date-num">12</p>
-        <p class="date-day">Thurs</p>
-      </div>
-      <div class="events">
-        <div class="event start-10 end-12 corp-fi">
-          <p class="title">Corporate Finance</p>
-          <p class="time">10 AM - 12 PM</p>
-        </div>
-        <div class="event start-1 end-4 ent-law">
-          <p class="title">Entertainment Law</p>
-          <p class="time">1PM - 4PM</p>
-        </div>
-      </div>
-    </div>
-    <div class="day fri">
-      <div class="date">
-        <p class="date-num">13</p>
-        <p class="date-day">Fri</p>
-      </div>
-      <div class="events">
-      </div>
-    </div>
-  </div>
-</div>
-</div>	 -->
-						
-						
-						
 						
 						<!-- 주간캘린더 -->
 						<div class="dialog2" id="dialog2" style="overflow: auto;">
@@ -266,7 +174,6 @@ background-color: #4e73df;
 						    <div class="time-marker" data-value="17:00">5 PM</div>
 						    <div class="time-marker" data-value="17:30"></div>
 						  </div>
-						  
 						  <!-- 
 						  
 						  * 값 1개 가져올때
@@ -286,32 +193,44 @@ background-color: #4e73df;
 						  
 						  
 						    <div class="day_">
+						    <!-- 날짜/요일 -->
 						      <div class="date day0">
-<!-- 						        <p class="date-num">11</p> -->
-<!-- 						        <p class="date-day" id="date-day">월</p> -->
+						      	<!-- sm.js로 날짜,요일 넣기 -->
+<!-- 						    <p class="date-num">11</p> -->
+<!-- 						    <p class="date-day" id="date-day">월</p> -->
 						      </div>
-						      
-						      <%-- <c:foreach items="${resevlist}" var="r" varStatus="status">
-							 	 <div class="days">${r.reserv_no }</div>
-					 			
-<!-- 							// 반복해서 표시할 내용 혹은 반복할 구문 -->
-					 
-							  </c:foreach> --%>
-											      <div class="events1">
-						        <div class="event1 start-10 end-12 securities">
-						          <p class="title" style="font-size:5px;">까미 (윤지혜)</p>
-						        </div>
-						      </div>
-						      
-						      
+							  <!-- 예약내역 -->
+							  <div class="events1">
+								<div class="event1 start-9 securities">
+							      	<c:forEach items="${reservlist}" var="r">
+<%-- 								        <c:if test="${r.reserv_date == fulldate}"> --%>
+											    <p class="title" style="font-size:5px;">${r.reservation_no}</p>
+<%-- 								        </c:if> --%>
+								       
+									</c:forEach> 
+<!-- 							 	 <p class="title" style="font-size:5px;">헤헤</p> -->
+								</div>
+							  </div>
 						    </div>
+						      
+						      
+						      
+<%-- 								  	<c:choose>
+										<c:when test="${reserv_date== ${'.date-num.data-date()'}">
+												<input type="hidden" value="${r.reserv_time }">
+										        <div class="event1 start-9 securities">
+										          <p class="title" style="font-size:5px;">${r.pet_name } (${r.owner_name})</p>
+										    </div>
+										</c:when>
+									</c:choose> --%>
 						    
 						    
 						    
 						    <div class="day_">
 						      <div class="date day1">
-<!-- 						        <p class="date-num">12</p> -->
-<!-- 						        <p class="date-day">화</p> -->
+						      	<!-- js에서 append -->
+<!-- 						     <p class="date-num">12</p> -->
+<!-- 						     <p class="date-day">화</p> -->
 						      </div>
 						      <div class="events1">
 						<!--         <div class="event start-10 end-12 corp-fi"> -->

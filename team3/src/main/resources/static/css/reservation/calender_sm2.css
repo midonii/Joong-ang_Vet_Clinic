@@ -40,41 +40,61 @@
 }
 
 /*Place on Timeline*/
-.start-10 {
+.start-9 {
+  grid-row-start: 1;
+}
+.start-930 {
   grid-row-start: 2;
 }
-
-.start-12 {
+.start-10 {
+  grid-row-start: 3;
+}
+.start-1030 {
   grid-row-start: 4;
 }
-
-.start-1 {
+.start-11 {
   grid-row-start: 5;
 }
-
-.start-2 {
+.start-1130 {
   grid-row-start: 6;
 }
-
-.end-12 {
-  grid-row-end: 4;
+.start-12 {
+  grid-row-start: 7;
+}
+.start-1230 {
+  grid-row-start: 8;
+}
+.start-13 {
+  grid-row-start: 9;
+}
+.start-1330 {
+  grid-row-start: 10;
+}
+.start-14 {
+  grid-row-start: 11;
+}
+.start-1430 {
+  grid-row-start: 12;
+}
+.start-15 {
+  grid-row-start: 13;
+}
+.start-1530 {
+  grid-row-start: 14;
+}
+.start-16 {
+  grid-row-start: 15;
+}
+.start-1630 {
+  grid-row-start: 16;
+}
+.start-17 {
+  grid-row-start: 17;
+}
+.start-1730 {
+  grid-row-start: 18;
 }
 
-.end-1 {
-  grid-row-end: 5;
-}
-
-.end-3 {
-  grid-row-end: 7;
-}
-
-.end-4 {
-  grid-row-end: 8;
-}
-
-.end-5 {
-  grid-row-end: 9;
-}
 
 /*  Event */
 
@@ -87,7 +107,7 @@
   border: 1px solid var(--eventBorderColor);
   border-radius: 5px;
   padding: -0.5rem;
-/*   margin: 0 0.5rem; */
+  margin: 0.2rem 0.2rem; /* 예약박스 마진 */
   background: white;
 }
 

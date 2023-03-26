@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -89,14 +90,6 @@ public class ReservController {
 		json.put("result1", timeDetail);
 		//System.err.println(timeDetail);//
 		
-		
-		//캘린더 시간막기
-//		reservDTO.setS_reservation_date_day(request.getParameter("s_reservation_date_day"));
-//		System.err.println("s_reservation_date_day:" + request.getParameter("s_reservation_date_day"));
-//		List<ReservDTO> timeDetail2 = reservService.reservTimeCheck2(reservDTO);
-//		jsonA = new JSONArray(timeDetail2);
-//		json.put("result1", timeDetail2);
-
 		return json.toString();
 	}
 	
@@ -180,14 +173,8 @@ public class ReservController {
 	@ResponseBody
 	@PostMapping(value = "reservUpdateSaved", produces = "application/json;charset=UTF-8")
 	public String reservUpdateSaved(HttpServletRequest request) {
-		// System.out.println("controller"); //ok
-//			System.out.println(request.getParameter("update_reservation_date_time"));
-//			System.out.println(request.getParameter("update_reservation_memo"));
 
 		ReservDTO reservDTO = new ReservDTO();
-		// System.out.println(request.getParameter("reservation_no"));
-//		reservDTO.setUpdate_reservation_date_day(request.getParameter("update_reservation_date_day"));
-//		reservDTO.setUpdate_reservation_date_time(request.getParameter("update_reservation_date_time"));
 		reservDTO.setUpdate_reservation_date(request.getParameter("update_reservation_date"));
 		reservDTO.setUpdate_reservation_memo(request.getParameter("update_reservation_memo"));
 		reservDTO.setUpdate_reservation_no(request.getParameter("update_reservation_no"));
@@ -202,12 +189,10 @@ public class ReservController {
 	// 예약삭제
 	@GetMapping("reservDelete")
 	public String reservDelete(HttpServletRequest request) {
-		//System.out.println(request.getParameter("delete_reservation_no"));
 
 		ReservDTO reservDTO = new ReservDTO();
 		reservDTO.setDelete_reservation_no(request.getParameter("delete_reservation_no"));
 		int result = reservService.delete_reservation_no(reservDTO);
-		//System.out.println("처리결과는 : " + result);
 
 		return "redirect:reserv";
 	}
@@ -252,10 +237,6 @@ public class ReservController {
 
 		int result = reservService.search_receiveAdd(reservDTO);
 		json.put("result", result);
-		
-		
-		
-		
 		return json.toString();
 	}
 
@@ -269,31 +250,39 @@ public class ReservController {
 		reservDTO.setDelete_receive_no(request.getParameter("delete_receive_no"));
 		int result = reservService.receiveDelete(reservDTO);
 		System.out.println("삭제 처리결과는 : " + result);
-
 		return "redirect:reserv";
 	}
 
-	@GetMapping("/calender2")
-	public String calender2() {
-
-		return "/reservation/calender2";
+	
+	@GetMapping("/reservlist_calender")
+	@ResponseBody
+	public String getEvents(@RequestParam("date1") String date1) {
+		ReservDTO reservDTO = new ReservDTO();
+		JSONObject json = new JSONObject();
+	    // date를 기반으로 이벤트 정보를 가져오는 코드 작성
+		List<ReservDTO> events = reservService.reservlist_calender(reservDTO);
+		JSONArray jsonA = new JSONArray(events);
+		json.put("result", events);
+		System.out.println(events);
+//		return events;
+		return json.toString();
 	}
+	
 	@GetMapping("/calender_sm")
-	public String calender_sm() {
+	public ModelAndView calender_sm() {
+		ReservDTO reservDTO = new ReservDTO();
+		ModelAndView mv = new ModelAndView("reservation/calender_sm");
+		// 예약 리스트
+		List<ReservDTO> reservlist = reservService.reservlist_calender(reservDTO);
+		mv.addObject("reservlist", reservlist);
 		
-		return "/reservation/calender_sm";
+		return mv;
 	}
 	
-	@GetMapping("/calender_sm2")
-	public String calender_sm2() {
-		
-		return "/reservation/calender_sm2";
-	}
-	@GetMapping("/calender_sm3")
-	public String calender_sm3() {
-		
-		return "/reservation/calender_sm3";
-	}
-	
+//	@GetMapping("/calender_sm")
+//	public String calender_sm() {
+//		
+//		return "/reservation/calender_sm";
+//	}
 
 }

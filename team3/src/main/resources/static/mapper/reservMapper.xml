@@ -54,6 +54,13 @@
 		'')
 		ORDER BY reservation_date ASC
 	</select>
+	<!-- 캘린더 주간리스트 -->
+	<select id="reservlist_calender" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT *
+		FROM reservationview
+		WHERE reserv_date = #{date1} AND reservation_yn = 'N' OR reservation_yn =''
+	</select>
 
 	<select id="reservTimeCheck" parameterType="ReservDTO"
 		resultType="ReservDTO">

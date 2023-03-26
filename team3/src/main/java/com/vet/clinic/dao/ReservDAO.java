@@ -42,4 +42,6 @@ public interface ReservDAO {
 
 	public List<ReservDTO> calender(ReservDTO reservDTO);
 
+	public List<ReservDTO> reservlist_calender(ReservDTO reservDTO);
+
 }
