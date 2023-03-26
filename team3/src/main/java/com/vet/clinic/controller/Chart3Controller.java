@@ -32,7 +32,9 @@ public class Chart3Controller {
 	public String chartAdd(@RequestParam Map<String, Object> map, HttpSession session) {
 		JSONObject json = new JSONObject();
 		if (session.getAttribute("staff_grade").equals("doctor")) {
+			((String) map.get("chart_memo")).replaceAll("<br>","\r\n");
 			map.put("staff_id", session.getAttribute("id"));
+			System.out.println(map.get("chart_memo")); 
 			int result = chart3Service.chartAdd(map);
 			int stateUpdate = chart3Service.stateUpdate(map);
 
