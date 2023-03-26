@@ -76,7 +76,8 @@ public class ReservService {
 		return reservDAO.reservTimeCheck(reservDTO);
 	}
 
-//	public List<ReservDTO> calender(ReservDTO reservDTO) {
-//		return reservDAO.calender(reservDTO);
-//	}
+	public List<ReservDTO> reservlist_calender(ReservDTO reservDTO) {
+		return reservDAO.reservlist_calender(reservDTO);
+	}
+
 }
