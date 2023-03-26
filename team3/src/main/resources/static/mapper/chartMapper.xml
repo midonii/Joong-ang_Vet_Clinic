@@ -39,6 +39,7 @@
 		FROM
 		receptionview 
 		WHERE DATE_FORMAT(receive_time, "%Y-%m-%d") = CURDATE()
+		AND (receive_state =1 OR receive_state = 2) 
 		AND (reservation_yn = 'Y' OR reservation_yn IS NULL)
 		) r
 		ORDER BY receive_state DESC, receive_time;

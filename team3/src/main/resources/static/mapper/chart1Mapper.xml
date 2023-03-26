@@ -47,6 +47,17 @@
 		</foreach>
 	</select>
 	
+	<!-- 호출 버튼 클릭 1 > 2로 변경 -->
+	<update id="callClientAjax" parameterType="Integer">
+		UPDATE reception 
+		SET receive_state = 2
+		WHERE receive_no=#{receiveNo}
+	</update>
+	
+	
+	
+	
+	
 	
 	
 </mapper>

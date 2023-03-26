@@ -72,4 +72,33 @@ public class Chart1Controller {
 		  return json.toString();
 	  }
 	
+	  
+	  //접수 현황 호출버튼
+	  @ResponseBody
+	  @PostMapping(value="/callClientAjax", produces= "application/json;charset=UTF-8")
+	  public String callClientAjax(@RequestParam("receiveNo") int receiveNo) {
+		  //System.err.println(receiveNo);
+		  
+		  int result = chartService.callClientAjax(receiveNo);
+		  
+		  JSONObject json = new JSONObject();
+		  
+		  json.put("saveList", receiveNo);
+		  return json.toString(); 
+		 
+	  }
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
 }

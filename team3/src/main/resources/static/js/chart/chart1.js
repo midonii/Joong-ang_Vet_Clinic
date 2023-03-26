@@ -10,7 +10,7 @@ $(function() {
 	}).done(function(data) {
 		let receiveboard = data.receiveboard;
 	
-		var table = "<table class='table table-sm text-center' style='margin-top:-8px;'>";
+		var table = "<table class='table table-sm text-center' style='margin-top:-5px;'>";
 
 		for (let i = 0; i < receiveboard.length; i++) {
 			var bno = receiveboard[i].bno;
@@ -25,7 +25,7 @@ $(function() {
 			var type_name = receiveboard[i].type_name;
 
 
-			table += "<tr>";
+			table += "<tr id='deleteThree'>";
 			table += "<td class='col-1' style='vertical-align: middle' >" + bno + "</td>";
 			if (reservation_date != null) {
 				table += "<td class='col-2'><span class=' badge  rounded-pill bgtime1 '>접</span>&nbsp;" + receive_time;
@@ -33,29 +33,45 @@ $(function() {
 			} else {
 				table += "<td class='col-2' style='vertical-align : middle;'><span class=' badge  rounded-pill bgtime1'>접</span>&nbsp;" + receive_time;
 			}
-			table += "<td class='col-5'><a  style='text-decoration: none;' id='pet_name' value='" + receive_no + "' >";
+			table += "<td class='col-5 numTd'><a  class='receiveNo' style='text-decoration: none;' id='pet_name' value='" + receive_no + "' >";
 			table += "<b class='text-primary' style='cursor:pointer;'>" + pet_name + "&nbsp;(" + type_name + ")" + "</b></a><br>" + owner_name + "</td>";
 			if (receive_state == 1) {
 				table += "<td style='vertical-align: middle'><span class='badge text-bg-primary'>진료대기</span></td>";
+				table += "<td class='col-3 callTd'><button class='btn btn-sm btn-primary recbtn'>호출</button></td>";
+			
 			} else if(receive_state == 2) {
 				table += "<td style='vertical-align: middle'><span class='badge text-bg-danger'>진료중</span></td>";
-
-			} else if(receive_state == 3) {
-				table += "<td style='vertical-align: middle'><span class='badge text-bg-secondary'>진료완료</span></td>";
-
-			}
-			table += "<td class='col-3'><button class='btn btn-sm btn-primary recbtn'>호출</button></td>";
-
+				table += "<td class='col-3'><button class='btn btn-sm btn-primary disabled'>호출</button></td>";
+			
+			} 
 			table += "</tr>";
-
-
 		}
 		$("#receiveboard").append(table);
 
 	}).fail(function(){
 		alert("문제가 발생했습니다.");
 	});
-
+	
+	/* 호출 버튼 클릭시 */
+	$(document).on("click", ".recbtn", function() {
+		var non = $(this).closest(".callTd");
+		var non1 = non.siblings(".numTd");
+		var non3 = non1.find(".receiveNo");
+		var non4 = non3.attr("value"); //receive_no
+		
+		$.post({
+		url: "/callClientAjax",
+		dataType: "json",
+		data:({"receiveNo": non4})
+	
+		}).done(function(data) {
+		location.reload();
+	
+		}).fail(function(){
+		alert("문제가 발생했습니다.");
+		});
+		
+	});
 	
 	/*진료화면-접수현황 펫네임 클릭시*/
 	
@@ -300,7 +316,7 @@ $(function() {
 					
 					table += "<td class='col-1'><input type='checkbox' class='list_check' name='list_check' id='"+mno+"'></td>";
 					table += "<td class='col-2' id='cate'>"+mcategory+"</td>";
-					table += "<td class='col-6' id='mediname'>"+mname+"</td>";
+					table += "<td class='col-6' id='mediname'><label for='"+mno+"' style='margin :0;'>"+mname+"</label></td>";
 					table += "<td class='col-3' id='mediprice'>"+mprice+"원</td></tr>";
 					
 				}
@@ -361,7 +377,7 @@ $(function() {
 					
 					table += "<td class='col-1'><input type='checkbox' class='list_check' name='list_check' id='"+mno+"'></td>";
 					table += "<td class='col-2' id='cate'>"+mcategory+"</td>";
-					table += "<td class='col-6' id='mediname'>"+mname+"</td>";
+					table += "<td class='col-6' id='mediname'><label for='"+mno+"'style='margin :0;'>"+mname+"</label></td>";
 					table += "<td class='col-3' id='mediprice'>"+mprice+"원</td></tr>";
 				}
 				
@@ -399,7 +415,7 @@ $(function() {
 			var chtable ="<tr style='float:center;' class='trSelected'id='"+mno+"'>";
 			chtable +="<td class='col-1'><input type='checkbox' class='right_check' name='right_check' checked='checked' id='"+mno+"'></td>";
 			chtable += "<td class='col-2' id=''>"+cate+"</td>";
-			chtable += "<td class='col-6 mediname1' >"+mediname+"</td>";
+			chtable += "<td class='col-6 mediname1' ><label for='"+mno+"'style='margin :0;'>"+mediname+"</label></td>";
 			chtable += "<td class='col-3' id=''>"+mediprice+"</td></tr>";
 	
 		$(".checkedTable").append(chtable);
