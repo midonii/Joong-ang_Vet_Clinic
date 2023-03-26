@@ -15,7 +15,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Team 3</title>
+<title>중앙동물병원</title>
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -37,6 +37,12 @@ h6{
 }
 
 .photo{
+/* 	position: absolute; */
+/* 	display: inline-block; */
+/* 	margin-left:70%; */
+/* 	margin-top: 35px; */
+}
+.photo_div{
 	position: absolute;
 	display: inline-block;
 	margin-left:70%;
@@ -59,6 +65,12 @@ $(function(){
 		$("#pwCheckModal").modal("show");
 	});
 	
+	// pwCheckModal 띄워지고 비밀번호입력 input focus하기
+	$(".modal").on("shown.bs.modal", function () {		
+		$("#pwCheck").focus();
+	});
+	
+	
 	$(".close").click(function(){
 		$("#pwCheck").val('');
 	});
@@ -72,6 +84,7 @@ $(function(){
 			dataType : "json"
 		}).done(function(data){
 			if(data.result == "1"){
+				$("#pwCheckModal").modal("hide");
 				location.href="/editProfile";
 			} else {
 				alert("비밀번호가 올바르지 않습니다. 다시 입력해주세요.");
@@ -87,7 +100,7 @@ $(function(){
 
 </script>
 
-<body id="page-top" >
+<body id="page-top">
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
@@ -107,50 +120,60 @@ $(function(){
 				<div class=" container-fluid ">
 
 					<h1 class="h3 mt-5 mb-4 text-gray-800 text-center">
-						프로필 &nbsp; <i class="xi-pen-o edit" style="cursor:pointer;"></i>
+						프로필 &nbsp; <i class="xi-pen-o edit" style="cursor: pointer;"></i>
 					</h1>
-					<div class="mainbox card shadow mb-4" style="width:40%; margin-left:30%;">
-						<div class="card-body row mt-4">	
-							<div class="col-3 font-weight-bold text-primary" style="text-align:center;">아이디</div>
+					<div class="mainbox card shadow mb-4"
+						style="width: 40%; margin-left: 30%;">
+						<div class="card-body row mt-4">
+							<div class="col-3 font-weight-bold text-primary"
+								style="text-align: center;">아이디</div>
 							<div class="col-7">${profile.staff_id }</div>
 						</div>
-						<div class="card-body row">	
-							<div class="col-3 font-weight-bold text-primary" style="text-align:center;">이름</div>
+						<div class="card-body row">
+							<div class="col-3 font-weight-bold text-primary"
+								style="text-align: center;">이름</div>
 							<div class="col-7">${profile.staff_name }</div>
 						</div>
-						<div class="card-body row">	
-							<div class="col-3 font-weight-bold text-primary" style="text-align:center;">생년월일</div>
+						<div class="card-body row">
+							<div class="col-3 font-weight-bold text-primary"
+								style="text-align: center;">생년월일</div>
 							<div class="col-7">${profile.staff_birth }</div>
 						</div>
-						<div class="card-body row">	
-							<div class="col-3 font-weight-bold text-primary" style="text-align:center;">전화번호</div>
+						<div class="card-body row">
+							<div class="col-3 font-weight-bold text-primary"
+								style="text-align: center;">전화번호</div>
 							<div class="col-7">${profile.staff_tel }</div>
 						</div>
-						<div class="card-body row">	
-							<div class="col-3 font-weight-bold text-primary" style="text-align:center;">이메일</div>
+						<div class="card-body row">
+							<div class="col-3 font-weight-bold text-primary"
+								style="text-align: center;">이메일</div>
 							<div class="col-7">${profile.staff_email }</div>
 						</div>
-						<div class="card-body row">	
-							<div class="col-3 font-weight-bold text-primary" style="text-align:center;">주소</div>
+						<div class="card-body row">
+							<div class="col-3 font-weight-bold text-primary"
+								style="text-align: center;">주소</div>
 							<div class="col-7">${profile.staff_addr }</div>
 						</div>
-						<div class="card-body row mb-4">	
-							<div class="col-3 font-weight-bold text-primary"  style="text-align:center;">직책</div>
+						<div class="card-body row mb-4">
+							<div class="col-3 font-weight-bold text-primary"
+								style="text-align: center;">직책</div>
 							<div class="col-7">
 								<c:choose>
-									<c:when test="${profile.staff_grade eq 'admin' }" >
+									<c:when test="${profile.staff_grade eq 'admin' }">
 										관리자
-									</c:when> 
-									<c:when test="${profile.staff_grade eq 'doctor' }" >
+									</c:when>
+									<c:when test="${profile.staff_grade eq 'doctor' }">
 										의사
-									</c:when> 
+									</c:when>
 									<c:otherwise>
 										테크니션
 									</c:otherwise>
 								</c:choose>
 							</div>
 						</div>
-					<div class="photo card " style="width:150px; height:200px;"></div>
+						<div class="photo_div">
+							<div class="photo card " style="width: 150px; height: 200px;"></div>
+						</div>
 					</div>
 
 				</div>
@@ -158,48 +181,55 @@ $(function(){
 
 			</div>
 			<!-- End of Main Content -->
-			
+
 
 <!-- 비밀번호 입력 모달 -->
-		<div class="modal fade" id="pwCheckModal" data-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="staticBackdropLabel" ">프로필 수정 권한 확인</h5>
-						<button class="close" type="button" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">×</span>
-						</button>
-					</div>
-					<div class="modal-body" style="text-align: center;">
-						<br>비밀번호를 입력하세요.<br><br>
-						<div class="mt-3 mb-1 row">
-							<label for="inputPassword" class="col-sm-4 col-form-label" style="text-align: center;">비밀번호</label>
-							<div class="col-sm-8">
-								<input type="password" class="form-control" id="pwCheck">
+			<div class="modal fade" id="pwCheckModal" data-backdrop="static"
+				data-bs-keyboard="false" tabindex="-1"
+				aria-labelledby="staticBackdropLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticBackdropLabel"">프로필 수정 권한
+								확인</h5>
+							<button class="close" type="button" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+						</div>
+
+						<div class="modal-body" style="text-align: center;">
+							<br>비밀번호를 입력하세요.<br>
+							<br>
+							<div class="mt-3 mb-1 row">
+								<label for="inputPassword" class="col-sm-4 col-form-label"
+									style="text-align: center;">비밀번호</label>
+								<div class="col-sm-8">
+									<input type="password" class="form-control" id="pwCheck">
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="modal-footer">
-						<button class="btn btn-primary sm checkbtn">확인</button>
+
+						<div class="modal-footer">
+							<button class="btn btn-primary sm checkbtn">확인</button>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 
 
+			<%@ include file="../bar/footer.jsp"%>
 
-	<%@ include file="../bar/footer.jsp" %>
+			<!-- Bootstrap core JavaScript-->
+			<script src="vendor/jquery/jquery.min.js"></script>
+			<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-	<!-- Bootstrap core JavaScript-->
-	<script src="vendor/jquery/jquery.min.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+			<!-- Core plugin JavaScript-->
+			<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-	<!-- Core plugin JavaScript-->
-	<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-	<!-- Custom scripts for all pages-->
-	<script src="js/sb-admin-2.min.js"></script>
-
+			<!-- Custom scripts for all pages-->
+			<script src="js/sb-admin-2.min.js"></script>
 </body>
 
 </html>

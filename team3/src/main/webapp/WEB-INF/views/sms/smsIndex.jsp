@@ -442,19 +442,6 @@ $(function() {
  				form.append($("<input>",{type: 'hidden', name: 'content', value: sms_content}));
  				form.submit();
 				
-				/*
-				$.post({
-					url : "/sendSms",
-					data : {"receiver" : receiver , "content" : sms_content},
-					dataType : "json"
-				}).done(function(data){
-					alert("문자 전송 완료");
-					location.href="/smsIndex";
-				}).fail(function(xhr){
-					alert("실패");
-					location.href="/smsIndex";
-				});
-				*/
 			}
 			
 		}
@@ -485,7 +472,7 @@ $(function() {
 				let owner_tel = searchClient[i].owner_tel;
 				
 				var search_client = "<tr id='client_tr'>"
-									+"<td class='col-3' id='pet_name'>"+pet_name+" </td>"
+									+"<td class='col-3' id='pet_name'>"+pet_name+" </td>" /* 공백지우면안됨!! */
 									+"<td class='col-3' id='owner_name'>"+owner_name+"</td>"
 									+"<td class='col-4 owner_tel' id='owner_tel'>"+owner_tel+" </td>" /* 공백지우면안됨!! */
 									+"<td class='col-2'><i class='replusbtn xi-plus-circle-o xi-x' style='color: #4e73df; cursor: pointer;'></i></td>"
