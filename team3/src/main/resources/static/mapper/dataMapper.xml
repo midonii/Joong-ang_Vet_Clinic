@@ -53,13 +53,6 @@
 				</choose>
 			</if>
 		</if>
-		<if test='table == "vaccine"'>
-			<choose>
-				<when test="search_value != null">
-					WHERE vac_name LIKE CONCAT('%',#{search_value},'%')
-				</when>
-			</choose>
-		</if>
 		<if test='table == "petType"'>
 			<choose>
 				<when test="search_value != null">
@@ -69,26 +62,9 @@
 		</if>
 	</select>
 
-	<select id="vaccineList" resultType="MedicalDTO"
-		parameterType="HashMap">
-		SELECT ROW_NUMBER()
-		over(ORDER BY v.vac_no) AS
-		vno,v.*
-		FROM
-		(
-		SELECT * FROM
-		vaccine
-		<if test="search_value != null">
-			WHERE vac_name LIKE CONCAT('%', #{search_value},'%')
-		</if>
-		) v
-		ORDER BY
-		vno DESC
-		LIMIT #{pagenum}, #{contentnum};
-	</select>
 	<select id="petTypeList" resultType="petTypeDTO">
 		SELECT ROW_NUMBER()
-		over(ORDER BY t.type_no) AS
+		over(ORDER BY t.type_no DESC) AS
 		tno,t.*
 		FROM
 		(
@@ -110,26 +86,11 @@
 		SET
 		medical_name=#{medical_name},
 		medical_subcate=#{medical_subcate},
-		medical_category=#{medical_category};
-
-	</insert>
-	<insert id="vaccineAdd" parameterType="HashMap">
-
-		INSERT INTO vaccine
-		SET
-		vac_name=#{vac_name},
-		vac_price=#{vac_price},
-		vac_cycleY=#{vac_cycleY},
-		vac_cycleM=#{vac_cycleM},
-		vac_cycleW=#{vac_cycleW};
+		medical_category=#{medical_category},
+		medical_price=#{medical_price};
 
 	</insert>
 
-	<delete id="vaccineDel" parameterType="Integer">
-		DELETE FROM vaccine
-		WHERE
-		vac_no = #{vac_no};
-	</delete>
 
 	<insert id="petTypeAdd" parameterType="HashMap">
 		INSERT INTO petType
@@ -154,12 +115,7 @@
 		WHERE medical_no=#{medical_no};
 
 	</select>
-	<select id="vaccineDetail" parameterType="Integer"
-		resultType="HashMap">
-		SELECT * FROM vaccine
-		WHERE vac_no=#{vac_no};
 
-	</select>
 	<delete id="medicalDel" parameterType="Integer">
 		DELETE FROM medicalList
 		WHERE
@@ -167,18 +123,13 @@
 	</delete>
 	<update id="medicalUpdate" parameterType="HashMap">
 		UPDATE medicalList SET
-		medical_name=#{medical_name}, medical_subcate=#{medical_subcate}
+		medical_name=#{medical_name},medical_price=#{medical_price},
+		medical_subcate=#{medical_subcate}
 		WHERE
 		medical_no =#{medical_no};
 
 	</update>
-	<update id="vaccineUpdate" parameterType="HashMap">
-		UPDATE vaccine SET
-		vac_name=#{vac_name}, vac_price=#{vac_price},
-		vac_cycleY=#{vac_cycleY},vac_cycleM=#{vac_cycleM},vac_cycleW=#{vac_cycleW}
-		WHERE vac_no =#{vac_no};
 
-	</update>
 	<update id="petTypeUpdate" parameterType="HashMap">
 		UPDATE petType SET
 		type_name=#{type_name}

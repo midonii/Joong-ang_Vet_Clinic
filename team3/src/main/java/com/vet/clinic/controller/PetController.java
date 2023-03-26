@@ -75,25 +75,18 @@ public class PetController {
 				
 		if((String)request.getParameter("petNo") != null) {
 			
-			List<PetDTO> petExam = petService.petExam(petDTO);
-			List<PetDTO> petDrug = petService.petDrug(petDTO);
-			List<PetDTO> petVac = petService.petVac(petDTO);
+			List<PetDTO> petMedicalData = petService.petMedicalData(petDTO);
+
 			
 			//array json
-			JSONArray jsonA = new JSONArray(petExam);
-			JSONArray jsonB = new JSONArray(petDrug);
-			JSONArray jsonC = new JSONArray(petVac);
+			JSONArray jsonA = new JSONArray(petMedicalData);
 			
-			json.put("petExam", petExam);
-			json.put("petDrug", petDrug);
-			json.put("petVac", petVac);
+			json.put("petMedicalData", petMedicalData);
 			//System.out.println(json.toString());
 
 		
 		} else {
-			json.put("petExam", 0);
-			json.put("petDrug", 0);
-			json.put("petVac", 0);
+			json.put("petMedicalData", 0);
 			
 		}
 		
@@ -114,7 +107,7 @@ public class PetController {
 		
 		
 			
-		List<PetDTO> list = petService.excelList(petDTO);
+		List<PetDTO> list = petService.petVaccine(petDTO);
 		
 		//System.err.println(list);
 		//System.out.println(list.size());
@@ -243,12 +236,12 @@ public class PetController {
 		for(PetDTO dto : list) {
 			row = sheet.createRow(rownum++);
 			cell = row.createCell(0);
-			cell.setCellValue(dto.getVac_name());
+			cell.setCellValue(dto.getMedical_name());
 			cell.setCellStyle(style);
 			row.setHeight((short)350);
 			
 			cell = row.createCell(1);
-			cell.setCellValue(dto.getVacdata_date());
+			cell.setCellValue(dto.getChart_date());
 			cell.setCellStyle(style);
 			row.setHeight((short)350);
 		}

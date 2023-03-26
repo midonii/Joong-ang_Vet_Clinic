@@ -4,10 +4,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
-<% if(session.getAttribute("id") == null){
-   response.sendRedirect("/login");
+<%
+if (session.getAttribute("id") == null) {
+   response.sendRedirect("/login?error=4321");
 }
-%>
+%> 
 <head>
 
 <meta charset="utf-8">
@@ -71,9 +72,7 @@ $(function(){
 			dataType : "json"
 		}).done(function(data){
 			//alert("정상소통" + data.petExam);
-			let petExam = data.petExam;
-			let petDrug = data.petDrug;
-			let petVac = data.petVac;
+			let petMedicalData = data.petMedicalData;
 			//alert(petExam[0].medical_subcate);
 			var table = "";
 			$('.chartList'+chartNo).hide();
@@ -81,65 +80,28 @@ $(function(){
 			$("#client-table"+chartNo).empty();
 			
 			// -- 검사
-			for (let i = 0; petExam.length > i; i++) {
-				var medical_category_Ex = petExam[i].medical_category;
-				var medical_subcate_Ex = petExam[i].medical_subcate;
-				var medical_name_Ex = petExam[i].medical_name;
-				var staff_name_Ex = petExam[i].staff_name;
-				var staff_grade_Ex = petExam[i].staff_grade;
-				var examdata_ea = petExam[i].examdata_ea;
+			for (let i = 0; petMedicalData.length > i; i++) {
+				var medical_category = petMedicalData[i].medical_category;
+				var medical_subcate = "";
+				if(petMedicalData[i].medical_subcate != undefined){
+				    medical_subcate = petMedicalData[i].medical_subcate;
+				}
+				var medical_name = petMedicalData[i].medical_name;
+				var staff_name = petMedicalData[i].staff_name;
+				var staff_grade = petMedicalData[i].staff_grade;
+				var medicaldata_ea = petMedicalData[i].medicaldata_ea;
 				
 				table += "<tr class='chartList"+chartNo+"'>";
-				table += "<td>" + medical_category_Ex + "</td>";
-				table += "<td>" + medical_subcate_Ex + "</td>";
-				table += "<td class='text-left'>" + medical_name_Ex + "</td>";
-				table += "<td>" + staff_name_Ex + "</td>";
-				table += "<td>" + staff_grade_Ex + "</td>";
-				table += "<td>" + examdata_ea + "</td>";
+				table += "<td>" + medical_category + "</td>";
+				table += "<td>" + medical_subcate + "</td>";
+				table += "<td class='text-left'>" + medical_name + "</td>";
+				table += "<td>" + staff_name + "</td>";
+				table += "<td>" + staff_grade + "</td>";
+				table += "<td>" + medicaldata_ea + "</td>";
 				table += "</tr>";
 				
 			}
 			
-			// -- 약처방
-			for (let i = 0; petDrug.length > i; i++) {
-				var medical_category_Dg = petDrug[i].medical_category;
-				var medical_subcate_Dg = petDrug[i].medical_subcate;
-				var medical_name_Dg = petDrug[i].medical_name;
-				var staff_name_Dg = petDrug[i].staff_name;
-				var staff_grade_Dg = petDrug[i].staff_grade;
-				var drugdata_ea = petDrug[i].drugdata_ea;
-							
-				
-				table += "<tr class='chartList"+chartNo+"'>";
-				table += "<td>" + medical_category_Dg + "</td>";
-				table += "<td>" + medical_subcate_Dg + "</td>";
-				table += "<td class='text-left'>" + medical_name_Dg + "</td>";
-				table += "<td>" + staff_name_Dg + "</td>";
-				table += "<td>" + staff_grade_Dg + "</td>";
-				table += "<td>" + drugdata_ea + "</td>";
-				table += "</tr>";
-
-			}
-			
-			// -- 접종
-			for (let i = 0; petVac.length > i; i++) {
-				var vac_name = petVac[i].vac_name;
-				var medical_category = petVac[i].medical_category;
-				var staff_name_Vac = petVac[i].staff_name;
-				var staff_grade_Vac = petVac[i].staff_grade;
-				
-				
-				table += "<tr class='chartList"+chartNo+"'>";
-				table += "<td>접종</td>";
-				table += "<td>접종</td>";
-				table += "<td class='text-left'>" + vac_name + "</td>";
-				table += "<td>" + staff_name_Vac + "</td>";
-				table += "<td>" + staff_grade_Vac + "</td>";
-				table += "<td>1</td>";
-				table += "</tr>";
-
-				
-			}
 			
 			
 			//$(this).children("#client-table").append(table);
@@ -182,6 +144,14 @@ $(function(){
 	text-align: right;
 }
 
+.imgSet{
+	width: 260px;
+	height: 260px;
+	border-radius: 12px;
+	border:outset;
+	border-width: 3px;
+	border-color: #9ec5fe;
+}
 </style>
 </head>
 
@@ -263,10 +233,10 @@ $(function(){
 							<div class="col-5">
 							<c:choose>
 								<c:when test="${fn:length(pi.filename) gt 0}">
-									<img src="../resources/static/upFile/${pi.filename }" class="img-thumbnail" style="width: 260px; height: 260px; border-radius: 12px">								
+									<img src="../resources/static/upFile/${pi.filename }" class="img-thumbnail imgSet">								
 								</c:when>
 								<c:otherwise>
-									<img src="../img/logoda.png" class="rounded img-thumbnail" style="width: 260px; height: 260px;">
+									<img src="../img/logoda.png" class="rounded img-thumbnail imgSet">
 								</c:otherwise>
 							</c:choose>
 							</div>
@@ -320,8 +290,8 @@ $(function(){
 								<div class="list-group list-group-flush">
 								<c:forEach items="${petVaccine }" var="v">	
   								 <div class="list-group-item row">
-  									<div class="col-6 font-weight-bold float-left">${v.vac_name }</div>
-  									<div class="col-6 float-left">${v.vacdata_date }</div>
+  									<div class="col-6 font-weight-bold float-left">${v.medical_name }</div>
+  									<div class="col-6 float-left">${v.chart_date }</div>
   								 </div>	
 								</c:forEach>
 								</div>
@@ -352,7 +322,7 @@ $(function(){
 								<!-- 진료 내역 -->
 							<c:choose>
 							  <c:when test="${fn:length(petChart) gt 0}">
-								<div class="accordion" id="accordionExample">
+									<div class="accordion" id="accordionExample">
 								 <c:forEach items="${petChart }" var="ch" varStatus="status">
 									<div class="accordion-item">
 										<h2 class="accordion-header" id="${ch.chart_date }">
@@ -369,7 +339,7 @@ $(function(){
 												</button>
 										</h2>
 										<div id="A${ch.chart_no }" class="${status.index eq 0 ? 'accordion-collapse collapse':'accordion-collapse collapse'}"
-											aria-labelledby="${ch.chart_date }" data-bs-parent="#accordionExample">
+											aria-labelledby="${ch.chart_date }" data-parent="#accordionExample">
 											<div class="accordion-body">
 												<!-- 의사 소견 -->
 												<div class="mb-4">
@@ -437,9 +407,9 @@ $(function(){
 								
 										</div>
 									</div>
-							</c:forEach>
 <!-- 								</div> -->
 
+							</c:forEach>
 							</div>
 							</c:when>
 							<c:otherwise>

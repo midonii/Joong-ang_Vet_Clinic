@@ -24,33 +24,18 @@ public class PetService {
 		return petDAO.petVaccine(petDTO);
 	}
 
-	public List<PetDTO> excelList(PetDTO petDTO) {
-		return petDAO.excelList(petDTO);
-	}
 
 	public List<PetDTO> petChart(PetDTO petDTO) {
 		return petDAO.petChart(petDTO);
 	}
 
-	public List<PetDTO> petExam(PetDTO petDTO) {
-		return petDAO.petExam(petDTO);
+	public List<PetDTO> petMedicalData(PetDTO petDTO) {
+		return petDAO.petMedicalData(petDTO);
 	}
 
-	public List<PetDTO> petDrug(PetDTO petDTO) {
-		return petDAO.petDrug(petDTO);
-	}
-
-	public List<PetDTO> petVac(PetDTO petDTO) {
-		return petDAO.petVac(petDTO);
-	}
 
 
 	
 	
-	
-
-
-
-
 
 }

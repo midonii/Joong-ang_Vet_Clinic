@@ -77,4 +77,21 @@ public class ClientService {
 		clientDAO.fileSave(map);
 	}
 
+	public int fileUpdate(ClientDTO client) {
+		return clientDAO.fileUpdate(client);
+	}
+
+	public Map<String, Object> petUpdateinfo(Map<String, Object> map) {
+		return clientDAO.petUpdateinfo(map);
+	}
+
+	public int fileNewInsert(ClientDTO client) {
+		return clientDAO.fileNewInsert(client);
+	}
+
+	public int fileImgDel(ClientDTO client) {
+		return clientDAO.fileImgDel(client);
+	}
+
+
 }

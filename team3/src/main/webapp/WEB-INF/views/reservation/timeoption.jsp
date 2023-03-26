@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+					<div class="timeoption">
 					<label class="col-form-label" for="update_reservation_date_time">예약시간</label>
 					<div class="accordion" id="accordionExample">
 						<div class="accordion-item">
@@ -129,4 +130,5 @@
 								</div>
 							</div>
 						</div>
+					</div>
 					</div>

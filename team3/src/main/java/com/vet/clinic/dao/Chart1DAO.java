@@ -6,16 +6,21 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import com.vet.clinic.dto.SearchDTO;
+
 @Repository
 @Mapper
 public interface Chart1DAO {
 
 
-	Map<String, Object> petdetailAjax(String receiveno);
+	public Map<String, Object> petdetailAjax(String receiveno);
 
-	List<Map<String, Object>> prescAjax();
+	public List<Map<String, Object>> prescAjax(SearchDTO searchDTO);
 
-	List<Map<String, Object>> prescAjaxvac();
+	public List<Map<String, Object>> prescSaveAjax(Map<String, Object> rightno_map);
+
+	public int callClientAjax(int receiveNo);
+
 
 
 

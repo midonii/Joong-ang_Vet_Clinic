@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vet.clinic.dao.Chart3DAO">
+	<select id="petChart" resultType="PetDTO">
+		SELECT * FROM chartview WHERE
+		chart_no = #{chartNo};
+	</select>
+	<select id="chartNo" resultType="String">
+		SELECT chart_no FROM chart 
+		WHERE receive_no =#{receive_no};
+	</select>
+	
+ 	<insert id="payAdd" parameterType="HashMap">
+		INSERT INTO pay
+		SET
+		chart_no = #{chart_no},
+		pay_yn='N',
+		receive_no=#{receive_no}
+	</insert> 
+	<insert id="chartAdd" parameterType="HashMap">
+		INSERT INTO chart
+		SET
+		chart_no = CONCAT(DATE_FORMAT(NOW(),'%y%m%d'),'-',LPAD(#{pet_no},'3', '0'),'-',#{receive_no}),
+		chart_memo = #{chart_memo},
+		chart_date = NOW(),
+		staff_no = (SELECT
+		staff_no FROM staff WHERE staff_id=#{staff_id}),
+		receive_no=#{receive_no}
+	</insert>
+	<update id="stateUpdate" parameterType="HashMap">
+		UPDATE reception SET
+		receive_state=3
+		WHERE receive_no=#{receive_no}
+	</update>
+	<update id="chartUpdate" parameterType="HashMap">
+		UPDATE chart SET
+		chart_memo=#{chart_memo}
+		WHERE chart_no=#{chart_no}
+		AND staff_no = (SELECT staff_no FROM staff WHERE staff_id=#{staff_id})
+	</update>
+</mapper>

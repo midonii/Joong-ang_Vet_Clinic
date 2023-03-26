@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vet.clinic.dao.Chart1DAO;
+import com.vet.clinic.dto.SearchDTO;
 
 @Service
 public class Chart1Service {
@@ -19,14 +20,16 @@ public class Chart1Service {
 		return chartDAO.petdetailAjax(receiveno);
 	}
 
-
-	public List<Map<String, Object>> prescAjax() {
-		return chartDAO.prescAjax();
+	public List<Map<String, Object>> prescAjax(SearchDTO searchDTO) {
+		return chartDAO.prescAjax(searchDTO);
 	}
 
+	public List<Map<String, Object>> prescSaveAjax(Map<String, Object> rightno_map) {
+		return chartDAO.prescSaveAjax(rightno_map);
+	}
 
-	public List<Map<String, Object>> prescAjaxvac() {
-		return chartDAO.prescAjaxvac();
+	public int callClientAjax(int receiveNo) {
+		return chartDAO.callClientAjax(receiveNo);
 	}
 
 

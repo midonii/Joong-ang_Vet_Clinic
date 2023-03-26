@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.vet.clinic.dto.MedicalDTO;
 import com.vet.clinic.dto.SearchDTO;
 import com.vet.clinic.service.DataService;
 
@@ -64,13 +63,15 @@ public class DataController {
 	public ModelAndView vaccineList(ModelAndView mv,
 			@RequestParam(value = "pagenum", defaultValue = "1") String pagenum,
 			@RequestParam(value = "contentnum", defaultValue = "10") String contentnum,
-			@RequestParam(value = "table", defaultValue = "vaccine") String table, HttpServletRequest request) {
+			@RequestParam(value = "table", defaultValue = "medicalList") String table,
+			@RequestParam(value = "category", defaultValue = "접종") String category, HttpServletRequest request) {
 		mv = new ModelAndView("/admin/vaccineList");
 
 		SearchDTO searchDTO = new SearchDTO();
-		
 		searchDTO.setSearch_value(request.getParameter("search_value"));
+		searchDTO.setSearch_name(request.getParameter("search_name"));
 		searchDTO.setTable(table);
+		searchDTO.setCategory(category);
 		dataService.paging(mv, pagenum, contentnum, searchDTO);
 		return mv;
 	}
@@ -96,7 +97,6 @@ public class DataController {
 		return "redirect:/medicine";
 	}
 
-
 	@ResponseBody
 	@PostMapping(value = "/medicalDel", produces = "application/json;charset=UTF-8")
 	public String medicalDel(@RequestParam(name = "medical_no") int medical_no) {
@@ -105,9 +105,10 @@ public class DataController {
 		json.put("result", result);
 		return json.toString();
 	}
+
 	@ResponseBody
-	@PostMapping(value = "/medicineDetail", produces = "application/json;charset=UTF-8")
-	public String medicineDetail(@RequestParam(name = "medical_no") int medical_no) {
+	@PostMapping(value = "/medicalDetail", produces = "application/json;charset=UTF-8")
+	public String medicalDetail(@RequestParam(name = "medical_no") int medical_no) {
 		JSONObject json = new JSONObject();
 		Map<String, Object> detail = dataService.medicalDetail(medical_no);
 		json.put("result", detail);
@@ -115,8 +116,8 @@ public class DataController {
 	}
 
 	@ResponseBody
-	@PostMapping("/medicineUpdate")
-	public String medicineUpdate(@RequestParam Map<String, Object> map) {
+	@PostMapping("/medicalUpdate")
+	public String medicalUpdate(@RequestParam Map<String, Object> map) {
 		int result = dataService.medicalUpdate(map);
 		JSONObject json = new JSONObject();
 		json.put("result", result);
@@ -130,59 +131,10 @@ public class DataController {
 	}
 
 
-
-	@ResponseBody
-	@PostMapping(value = "/inspectionDetail", produces = "application/json;charset=UTF-8")
-	public String inspectionDetail(@RequestParam(name = "medical_no") int medical_no) {
-		JSONObject json = new JSONObject();
-		Map<String, Object> detail = dataService.medicalDetail(medical_no);
-		json.put("result", detail);
-		return json.toString();
-	}
-
-	@ResponseBody
-	@PostMapping("/inspectionUpdate")
-	public String inspectionUpdate(@RequestParam Map<String, Object> map) {
-		int result = dataService.medicalUpdate(map);
-		JSONObject json = new JSONObject();
-		json.put("result", result);
-		return json.toString();
-	}
-
-
-
-	@ResponseBody
-	@PostMapping(value = "/vaccineDel", produces = "application/json;charset=UTF-8")
-	public String vaccineDel(@RequestParam(name = "vac_no") int vac_no) {
-		JSONObject json = new JSONObject();
-		int result = dataService.vaccineDel(vac_no);
-		json.put("result", result);
-		return json.toString();
-	}
-	
-	@ResponseBody
-	@PostMapping(value = "/vaccineDetail", produces = "application/json;charset=UTF-8")
-	public String vaccineDetail(@RequestParam(name = "vac_no") int vac_no) {
-		JSONObject json = new JSONObject();
-		Map<String, Object> detail = dataService.vaccineDetail(vac_no);
-		json.put("result", detail);
-
-		return json.toString();
-	}
-
-	@ResponseBody
-	@PostMapping("/vaccineUpdate")
-	public String vaccineUpdate(@RequestParam Map<String, Object> map) {
-		int result = dataService.vaccineUpdate(map);
-		JSONObject json = new JSONObject();
-		json.put("result", result);
-		return json.toString();
-	}
-
 	@PostMapping("/vaccineAdd")
 	public String vaccineAdd(@RequestParam Map<String, Object> map) {
 
-		int result = dataService.vaccineAdd(map);
+		int result = dataService.mediAdd(map);
 
 		return "redirect:/vaccine";
 	}
@@ -195,7 +147,6 @@ public class DataController {
 		return "redirect:/petType";
 	}
 
-	
 	@ResponseBody
 	@PostMapping(value = "/petTypeDel", produces = "application/json;charset=UTF-8")
 	public String petTypeDel(@RequestParam(name = "type_no") int type_no) {
@@ -204,8 +155,6 @@ public class DataController {
 		json.put("result", result);
 		return json.toString();
 	}
-	
-
 
 	@ResponseBody
 	@PostMapping(value = "/petTypeDetail", produces = "application/json;charset=UTF-8")

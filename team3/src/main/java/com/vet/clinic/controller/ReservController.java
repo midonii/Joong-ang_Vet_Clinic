@@ -81,15 +81,29 @@ public class ReservController {
 //			System.out.println(jsonA.getJSONObject(0).getString("pet_name")); //ok
 		}
 
-		// 시간막기
+		//시간막기
 		reservDTO.setReservation_date_day(request.getParameter("reservation_date_day"));
-		System.err.println("reservation_date_day:" + request.getParameter("reservation_date_day"));
+		//System.err.println("reservation_date_day:" + request.getParameter("reservation_date_day"));//ok
 		List<ReservDTO> timeDetail = reservService.reservTimeCheck(reservDTO);
 		jsonA = new JSONArray(timeDetail);
 		json.put("result1", timeDetail);
+		//System.err.println(timeDetail);//
+		
+		
+		//캘린더 시간막기
+//		reservDTO.setS_reservation_date_day(request.getParameter("s_reservation_date_day"));
+//		System.err.println("s_reservation_date_day:" + request.getParameter("s_reservation_date_day"));
+//		List<ReservDTO> timeDetail2 = reservService.reservTimeCheck2(reservDTO);
+//		jsonA = new JSONArray(timeDetail2);
+//		json.put("result1", timeDetail2);
 
 		return json.toString();
 	}
+	
+	
+	
+	
+	
 
 	// 예약한 시간 막기
 	@ResponseBody
@@ -129,8 +143,8 @@ public class ReservController {
 		JSONObject json = new JSONObject();
 		int result = reservService.reservAdd(reservDTO);
 		json.put("result", result);
-		// System.out.println(json);
-		// System.out.println("result:"+result); //1
+		 System.out.println(json);
+		 System.out.println("result:"+result); //1
 
 		return json.toString();
 	}
@@ -259,10 +273,26 @@ public class ReservController {
 		return "redirect:reserv";
 	}
 
-	@GetMapping("/calender")
-	public String calender() {
+	@GetMapping("/calender2")
+	public String calender2() {
 
-		return "/reservation/calender";
+		return "/reservation/calender2";
+	}
+	@GetMapping("/calender_sm")
+	public String calender_sm() {
+		
+		return "/reservation/calender_sm";
+	}
+	
+	@GetMapping("/calender_sm2")
+	public String calender_sm2() {
+		
+		return "/reservation/calender_sm2";
+	}
+	@GetMapping("/calender_sm3")
+	public String calender_sm3() {
+		
+		return "/reservation/calender_sm3";
 	}
 	
 

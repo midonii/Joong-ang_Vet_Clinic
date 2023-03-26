@@ -57,17 +57,7 @@ public class DataService {
 		return dataDAO.medicalUpdate(map);
 	}
 
-	public int vaccineDel(int vac_no) {
-		return dataDAO.vaccineDel(vac_no);
-	}
 
-	public Map<String, Object> vaccineDetail(int vac_no) {
-		return dataDAO.vaccineDetail(vac_no);
-	}
-
-	public int vaccineUpdate(Map<String, Object> map) {
-		return dataDAO.vaccineUpdate(map);
-	}
 
 	public ModelAndView paging(ModelAndView mv, String pagenum, String contentnum, SearchDTO searchDTO) {
 
@@ -92,13 +82,10 @@ public class DataService {
 
 		List<MedicalDTO> medicalList = dataDAO.medicalList(pageDTO.getPagenum() * 10, pageDTO.getContentnum(),
 				searchDTO.getSearch_name(), searchDTO.getSearch_value(), searchDTO.getTable(), searchDTO.getCategory());
-		List<MedicalDTO> vaccineList = dataDAO.vaccineList(pageDTO.getPagenum() * 10, pageDTO.getContentnum(),
-				searchDTO.getSearch_value(), searchDTO.getTable(), searchDTO.getCategory());
 		List<PetTypeDTO> petTypeList = dataDAO.petTypeList(pageDTO.getPagenum() * 10, pageDTO.getContentnum(),
 				searchDTO.getSearch_value(), searchDTO.getTable(), searchDTO.getCategory());
 
 		mv.addObject("medicalList", medicalList);
-		mv.addObject("vaccineList", vaccineList);
 		mv.addObject("petTypeList", petTypeList);
 		mv.addObject("page", pageDTO);
 		mv.addObject("search", searchDTO);

@@ -7,14 +7,57 @@
 		WHERE receive_no = #{receiveno};
 	</select>
 	
-	<select id="prescAjax" resultType="Hashmap">
-		SELECT medical_category, medical_name, FORMAT(medical_price , 0) AS medical_price
+	<select id="prescAjax" resultType="Hashmap" parameterType="SearchDTO">
+		SELECT medical_no, medical_category, medical_name, FORMAT(medical_price , 0) AS medical_price
 		FROM medicalList
+		<if test="search_name !=null">
+			<choose>
+				<when test="search_name=='all'">
+					WHERE medical_name LIKE CONCAT('%',#{search_value},'%')			
+				</when>
+				<when test="search_name=='drug'">
+					WHERE medical_category = '약품'
+					<if test="search_value != null">
+					AND medical_name LIKE CONCAT('%',#{search_value},'%')
+					</if>			
+				</when>
+				<when test="search_name=='exam'">
+					WHERE medical_category = '진료'
+					<if test="search_value != null">
+					AND medical_name LIKE CONCAT('%',#{search_value},'%')
+					</if>			
+				</when>
+				<when test="search_name=='vac'">
+					WHERE medical_category = '접종'
+					<if test="search_value != null">
+					AND medical_name LIKE CONCAT('%',#{search_value},'%')
+					</if>			
+				</when>
+			</choose>
+		</if>
 		ORDER BY medical_category
 	</select>
-	<select id="prescAjaxvac" resultType="Hashmap">
-		SELECT vac_name, FORMAT(vac_price , 0) AS vac_price
-		FROM vaccine
+	
+	<select id="prescSaveAjax" parameterType="Hashmap" resultType="Hashmap">
+		SELECT medical_name, medical_category, medical_no, medical_price
+		FROM medicalList
+		WHERE medical_no IN
+		<foreach collection="rightno" item="rightno1" open="(" close=")" separator=",">
+			 #{rightno1}
+		</foreach>
 	</select>
+	
+	<!-- 호출 버튼 클릭 1 > 2로 변경 -->
+	<update id="callClientAjax" parameterType="Integer">
+		UPDATE reception 
+		SET receive_state = 2
+		WHERE receive_no=#{receiveNo}
+	</update>
+	
+	
+	
+	
+	
+	
 	
 </mapper>

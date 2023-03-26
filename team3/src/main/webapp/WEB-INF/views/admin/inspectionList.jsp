@@ -4,8 +4,16 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ko">
+<%
+if (session.getAttribute("id") != null) {
+	if (!session.getAttribute("staff_grade").equals("admin")) {
+		response.sendRedirect("/index?error=1234");
+	}
+} else {
+	response.sendRedirect("/login?error=4321");
+}
+%>
 <head>
 
 <meta charset="utf-8">
@@ -36,7 +44,6 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
 <script type="text/javascript">
-
 
 function page(idx,search_name, search_value) {
 	var pagenum = idx;
@@ -77,7 +84,7 @@ function page(idx,search_name, search_value) {
 		$(".inspectionUpdate").click(function() {
 			var medical_no = $(this).attr("value");
 			$.post({
-				url : "/inspectionDetail",
+				url : "/medicalDetail",
 				cache : false,
 				data : {
 					"medical_no" : medical_no
@@ -89,6 +96,7 @@ function page(idx,search_name, search_value) {
 
 					$("#inspection_noU").val(result.medical_no);
 					$("#inspection_nameU").val(result.medical_name);
+					$("#inspection_priceU").val(result.medical_price);
 					$("#medical_subcateU").val(result.medical_subcate);
 
 					$("#updateModal").modal("show"); //수정화면 모달 보기
@@ -101,13 +109,15 @@ function page(idx,search_name, search_value) {
 
 			let medical_no = $("#inspection_noU").val();
 			let medical_name = $("#inspection_nameU").val();
+			let medical_price = $("#inspection_priceU").val();
 			let medical_subcate = $("#medical_subcateU").val();
 
 			$.post({
-				url : "/inspectionUpdate",
+				url : "/medicalUpdate",
 				data : {
 					"medical_no" : medical_no,
 					"medical_name" : medical_name,
+					"medical_price" : medical_price,
 					"medical_subcate" : medical_subcate
 				},
 				dataType : "json"
@@ -117,7 +127,7 @@ function page(idx,search_name, search_value) {
 					$("#updateModal").modal("hide");
 					var pagenum = $("#pagenum").val();
 					let searchValue = $("#search_value").val();
-					page(pagenum, searchValue);
+					page(pagenum, searchName2, searchValue);
 				} else {
 					alert("문제가 발생했습니다. \n다시 시도해주세요.");
 				}
@@ -327,8 +337,8 @@ function page(idx,search_name, search_value) {
 											<thead>
 												<tr class="bg-gray-200">
 													<th class="col-1">번호</th>
-													<th class="col-3">이름</th>
 													<th class="col-2">분류</th>
+													<th class="col-3">이름</th>
 													<th class="col-2">처방가격</th>
 													<th class="col-1"></th>
 
@@ -339,8 +349,8 @@ function page(idx,search_name, search_value) {
 												<c:forEach items="${medicalList }" var="ml">
 													<tr>
 														<td>${ml.mno }</td>
-														<td>${ml.medical_name }</td>
 														<td>${ml.medical_subcate }</td>
+														<td>${ml.medical_name }</td>
 														<td><fmt:formatNumber value="${ml.medical_price }"
 															pattern="#,###" />원</td>
 														<td>
@@ -440,6 +450,15 @@ function page(idx,search_name, search_value) {
 										<div class="col-md-9">
 											<input type="text" class="form-control" id="inspection_nameU"
 												name="inspection_nameU">
+										</div>
+									</div>
+								</li>
+								<li class="list-group-item">
+									<div class="row">
+										<div class="col-md-3 text-center" style="line-height: 38px;">처방가격</div>
+										<div class="col-md-9">
+											<input type="text" class="form-control" id="inspection_priceU"
+												name="inspection_priceU">
 										</div>
 									</div>
 								</li>

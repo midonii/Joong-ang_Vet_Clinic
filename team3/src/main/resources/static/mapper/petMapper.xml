@@ -10,19 +10,11 @@
 </select>
 
 <select id="petVaccine" resultType="PetDTO">
-	SELECT pet_no , pet_name , vacdata_no ,MAX(vacdata_date) as vacdata_date , chart_no , vac_no , vac_name 
+	SELECT pet_no , pet_name , medicaldata_no ,MAX(chart_date) as chart_date , chart_no , medical_no , medical_name
 	FROM vaccineview v
 	WHERE pet_no = #{petNo }
-	GROUP BY v.vac_no
-	ORDER BY vacdata_date DESC
-</select>
-
-<select id="excelList" resultType="PetDTO">
-	SELECT pet_no , pet_name , vacdata_no ,MAX(vacdata_date) as vacdata_date , chart_no , vac_no , vac_name 
-	FROM vaccineview v
-	WHERE pet_no = #{petNo }
-	GROUP BY v.vac_no
-	ORDER BY vacdata_date DESC
+	GROUP BY v.medical_no 
+	ORDER BY chart_date DESC
 </select>
 
 <select id="petChart" resultType="PastChartDTO">
@@ -31,26 +23,12 @@
 	WHERE pet_no = #{petNo }
 </select>
 
-<select id="petExam" resultType="PastChartDTO">
+<select id="petMedicalData" resultType="PastChartDTO">
 	SELECT *
-	FROM chartexamview
+	FROM medicaldataview
 	WHERE pet_no = #{petNo }
 	AND chart_no = #{chartNo }
 </select>
 
-
-<select id="petDrug" resultType="PastChartDTO">
-	SELECT *
-	FROM chartdrugview
-	WHERE pet_no = #{petNo }
-	AND chart_no = #{chartNo }
-</select>
-	
-<select id="petVac" resultType="PastChartDTO" parameterType="PastChartDTO">
-	SELECT *
-	FROM chartvaccineview
-	WHERE pet_no = #{petNo }
-	AND chart_no = #{chartNo }
-</select>	
 	
 </mapper>

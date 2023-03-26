@@ -53,12 +53,21 @@ public class IndexController {
 	}
 
 	@ResponseBody
-	@PostMapping(value = "/receivepay", produces = "application/json;charset=UTF-8")
-	public String receivepay() {
+	@PostMapping(value = "/indexreceive", produces = "application/json;charset=UTF-8")
+	public String indexreceive() {
 		JSONObject json = new JSONObject();
-		List<Map<String, Object>> receivepay = indexService.receivepay();
-		JSONArray receivepayJ = new JSONArray(receivepay);
-		json.put("receivepay", receivepayJ);
+		List<Map<String, Object>> indexreceive = indexService.indexreceive();
+		JSONArray indexreceiveJ = new JSONArray(indexreceive);
+		json.put("indexreceive", indexreceiveJ);
+		return json.toString();
+	}
+	@ResponseBody
+	@PostMapping(value = "/indexpay", produces = "application/json;charset=UTF-8")
+	public String indexpay() {
+		JSONObject json = new JSONObject();
+		List<Map<String, Object>> indexpay = indexService.indexpay();
+		JSONArray indexpayJ = new JSONArray(indexpay);
+		json.put("indexpay", indexpayJ);
 		return json.toString();
 	}
 
