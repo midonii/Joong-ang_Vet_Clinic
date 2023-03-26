@@ -39,7 +39,7 @@
 	</select>
 	
 	<select id="prescSaveAjax" parameterType="Hashmap" resultType="Hashmap">
-		SELECT medical_name, medical_category, medical_no, FORMAT(medical_price , 0) as medical_price
+		SELECT medical_name, medical_category, medical_no, medical_price
 		FROM medicalList
 		WHERE medical_no IN
 		<foreach collection="rightno" item="rightno1" open="(" close=")" separator=",">
