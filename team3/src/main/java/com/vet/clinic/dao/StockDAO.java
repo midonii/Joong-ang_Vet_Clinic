@@ -12,13 +12,20 @@ import com.vet.clinic.dto.StockDTO;
 @Mapper
 public interface StockDAO {
 
-	List<StockDTO> stockList();
-
+	List<StockDTO> stockList(Map<String, Object> map);
+	
 	List<String> m_company();
 
 	List<String> m_subcate();
 
 	List<Map<String, Object>> stockSelect(Map<String, Object> paramMap);
+
+	int edit(Map<String, Object> paramMap);
+
+	int totalcount();
+
+
+
 
 
 }
