@@ -448,35 +448,58 @@ $(function() {
 				$(".saveTable1").empty();
 				var saveList = data.saveList;
 				let table ="<tr style='float:center;'>";
+				var totalPrice = 0;
 				for(let i=0; i<saveList.length; i++){
 					let cate = saveList[i].medical_category;
-					let price = saveList[i].medical_price;
+					var price = saveList[i].medical_price;
+					var priceAddc = price.toLocaleString(); //가격에 , 붙이기 ---> 잠시보류
 					let mname = saveList[i].medical_name;
 					let medino = saveList[i].medical_no;
 					table += "<td class='col-2'>"+cate+"</td>";
 					table += "<td class='col-5'>"+mname+"</td>";
 					table += "<td class='col-2 priceTd' ><input type='number' class='mediNum form-control form-control-sm' id='"+medino+"'name='mediNum' style=' text-align:right;' value='1' min='1' max='100'></td>";
-					table += "<td class='col-4 calPrice'>"+price+"원</td>";
+					table += "<td class='col-4 calPrice' id='"+price+"'>"+price+"원</td>";
 					table += "</tr>";
+					
+					totalPrice += price;
+					
 					
 				}
 				$(".saveTable1").append(table);
+				$(".totalPrice").empty();
+				var totalPriceAddc = totalPrice.toLocaleString(); //가격에 , 붙이기
+				$(".totalPrice").append(totalPriceAddc+"원"); //총 합계
+				
 				
 				/*수량을 변경할때*/
 				$(document).on("change",".mediNum",function(){
-					var eachmediNum =$(this).val();
-					var eachmediId =$(this).attr("id");
+					var eachmediNum =$(this).val(); // 수량 
+					var eachmediId =$(this).attr("id"); //수정된 체크박스의 id(medical_no)
 					
-					var change1 =$("tbody.saveTable1").find("#"+eachmediId);
-					var change2 = change1.closest(".priceTd");
-					var change3 = change2.siblings(".calPrice");
-					var a = change3.text();
-					var num = a.replace(/[^0-9]/g,'');//숫자만 추출
-					var b = num*eachmediNum; //int 형태
-					var c =b.toLocaleString(); //String 변환
-					var abc=change3.text(c+"원");			
+					var ckInput =$("tbody.saveTable1").find("#"+eachmediId); //수정된 체크박스의 id와 일치하는 인풋넘버태그찾기
+					var priceTd = ckInput.closest(".priceTd"); //인풋넘버태그 바로위 부모태그 td
+					var calprice = priceTd.siblings(".calPrice"); //아래 td (각 가격부분)
+					var priceId = calprice.attr("id"); // 가격의 id(1개의 단가);
+					var b = priceId*eachmediNum; //단가*변경된수량
+					//var changeTotal =b.toLocaleString(); //가격에 ,붙이기
+					calprice.text(b+"원");			
 					
-		
+					
+					var price12 = $(".calPrice").text();
+					var priceCut =  price12.split("원"); //원으로 나누기
+					var prices = new Array(); //배열생성 
+					prices = priceCut; //배열에 넣어주기
+				
+					var totalSum =0;
+					for(let l=0; l < (prices.length-1); l++){
+						var pr =parseInt(prices[l]);
+						totalSum += pr;
+					}
+					
+					var changeTotalPrice = totalSum.toLocaleString(); //가격에 , 붙이기
+					$(".totalPrice").empty(); //1개 단가의 총합계를 지운다 0
+					$(".totalPrice").append(changeTotalPrice+"원"); //총 합계
+
 				});
 				
 			},error: function(xhr, status, errorThrown){
