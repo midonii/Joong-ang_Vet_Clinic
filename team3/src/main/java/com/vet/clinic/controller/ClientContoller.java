@@ -215,6 +215,8 @@ public class ClientContoller {
 						@RequestParam(value = "petImg",required = false)MultipartFile petImg) throws IOException {
 
 		//System.out.println(map);
+		//System.err.println(map.get("owner_nameAdd"));
+		
 		
 		//생년월일 조합하기
 		String petBirthYear = (String) map.get("petBirthYear");
@@ -234,6 +236,7 @@ public class ClientContoller {
 		if(!petImg.isEmpty()) {
 			String realPath = context.getRealPath("resources/static/");
 			String fileName = fileup.fileSave(realPath+"upFile", petImg);
+			//System.err.println(fileName); 저장된 이름
 			//System.err.println(realPath); 서버 저장된 경로
 			map.put("fileName",fileName);
 			clientService.fileSave(map);

@@ -5,7 +5,7 @@
 
 
 <!-- 검색모달  -->
-<div class="modal fade" id="petSearchModal" tabindex="-1" role="dialog"
+<div class="modal fade" id="petSearchModal" tabindex="-1" role="dialog" data-bs-backdrop="static"
 	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
@@ -13,10 +13,7 @@
 				<h5 class="modal-title" id="exampleModalLabel">
 					<b>전체 검색</b>
 				</h5>
-				<button class="close" type="button" data-dismiss="modal"
-					aria-label="Close">
-					<span aria-hidden="true">×</span>
-				</button>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 

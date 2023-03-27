@@ -117,6 +117,33 @@ $(function(){
 	});
 });
 
+//검색 enter
+$(function(){
+	$("#pet_search").on("keyup",function(key){
+		if(key.keyCode==13){
+			$("#search_btn").click();
+		}
+		
+	});
+	
+	$("#pet_search2").on("keyup",function(key2){
+		if(key2.keyCode==13){
+			$("#search_btn2").click();
+		}
+	})
+});
+
+//파라미터 없는 petinfo 화면 설정
+$(function(){
+	$(document).ready(function(){
+	var params = window.location.search
+	//alert(params)
+ 	if(params == ''){			
+		$("#pet_search").focus();
+		$("#pet_search").addClass("is-invalid");
+	} 
+	});
+});
 </script>
 <script type="text/javascript" src="../js/client/petinfo_search.js"></script>
 <style type="text/css">
@@ -201,7 +228,7 @@ $(function(){
 						<div class="input-group d-flex justify-content-end">
 							<input type="text"
 								class="form-control border-gray col-12 pet_search"
-								placeholder="검색어를 입력하세요" aria-label="Search"
+								placeholder="차트를 확인할 반려견 정보를 입력해주세요." aria-label="Search"
 								aria-describedby="basic-addon2" id="pet_search" name="pet_search">
 							<div class="input-group-append">
 								<button class="btn btn-primary shadow-sm" id="search_btn"
