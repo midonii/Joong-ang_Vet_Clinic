@@ -6,8 +6,12 @@
 <!DOCTYPE html>
 <html lang="ko">
 <%
-if (session.getAttribute("id") == null) {
-	response.sendRedirect("/login");
+if (session.getAttribute("id") != null) {
+   if (!session.getAttribute("staff_grade").equals("admin")) {
+      response.sendRedirect("/index?error=1234");
+   }
+} else {
+   response.sendRedirect("/login?error=4321");
 }
 %>
 <head>

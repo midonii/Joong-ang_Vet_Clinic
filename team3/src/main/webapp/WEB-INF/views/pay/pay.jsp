@@ -7,9 +7,9 @@
 <html lang="en">
 <%
 if (session.getAttribute("id") == null) {
-	response.sendRedirect("/login");
+   response.sendRedirect("/login?error=4321");
 }
-%>
+%> 
 <head>
 
 <meta charset="utf-8">

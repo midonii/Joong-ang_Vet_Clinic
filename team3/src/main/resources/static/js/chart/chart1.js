@@ -503,7 +503,7 @@ $(function() {
 					
 					var price12 = $(".calPrice").text();
 					var priceCut =  price12.split("원"); //원으로 나누기
-					var prices = new Array(); //배열생성 
+					var prices = new Alsr19312112rray(); //배열생성 
 					prices = priceCut; //배열에 넣어주기
 				
 					var totalSum =0;
