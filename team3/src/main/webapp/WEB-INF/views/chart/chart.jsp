@@ -3,10 +3,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <%
 if (session.getAttribute("id") == null) {
-	response.sendRedirect("/login");
+	response.sendRedirect("/login?error=4321");
 }
 %>
 <head>

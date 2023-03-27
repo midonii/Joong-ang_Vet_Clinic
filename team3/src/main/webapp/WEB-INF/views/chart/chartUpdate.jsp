@@ -39,12 +39,68 @@ if (session.getAttribute("id") == null) {
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <link href="css/chart/chart1.css" rel="stylesheet">
-<script type="text/javascript" src="js/chart/chart1.js"></script>
+<!-- <script type="text/javascript" src="js/chart/chart1.js"></script> -->
 <script type="text/javascript" src="js/chart/chart3.js"></script>
 <script type="text/javascript">
 	$(function() {
+		// sidebar 접어서 창 열기
+		$(".sidebar").addClass("toggled");
+		
 		var pet_no = $("#pet_no").val();
+	
+		$.post({
+			url: "/receiveboard",
+			dataType: "json"
+		}).done(function(data) {
+			let receiveboard = data.receiveboard;
+		
+			var table = "<table class='table table-sm text-center' style='margin-top:-8px;'>";
 
+			for (let i = 0; i < receiveboard.length; i++) {
+				var bno = receiveboard[i].bno;
+				var pet_name = receiveboard[i].pet_name;
+				var type_name = receiveboard[i].type_name;
+				var pet_no = receiveboard[i].pet_no;
+				var owner_name = receiveboard[i].owner_name;
+				var receive_time = receiveboard[i].receive_time;
+				var receive_no = receiveboard[i].receive_no;
+				var receive_state = receiveboard[i].receive_state;
+				var reservation_date = receiveboard[i].reservation_date;
+				var type_name = receiveboard[i].type_name;
+
+
+				table += "<tr>";
+				table += "<td class='col-1' style='vertical-align: middle' >" + bno + "</td>";
+				if (reservation_date != null) {
+					table += "<td class='col-2'><span class=' badge  rounded-pill bgtime1 '>접</span>&nbsp;" + receive_time;
+					table += "<br><span class=' badge  rounded-pill bgtime2 '>예</span>&nbsp;" + reservation_date + "</td>";
+				} else {
+					table += "<td class='col-2' style='vertical-align : middle;'><span class=' badge  rounded-pill bgtime1'>접</span>&nbsp;" + receive_time;
+				}
+				table += "<td class='col-5'><a  style='text-decoration: none;' id='pet_name' value='" + receive_no + "' >";
+				table += "<b class='text-primary' style='cursor:pointer;'>" + pet_name + "&nbsp;(" + type_name + ")" + "</b></a><br>" + owner_name + "</td>";
+				if (receive_state == 1) {
+					table += "<td style='vertical-align: middle'><span class='badge text-bg-primary'>진료대기</span></td>";
+				} else if(receive_state == 2) {
+					table += "<td style='vertical-align: middle'><span class='badge text-bg-danger'>진료중</span></td>";
+
+				} else if(receive_state == 3) {
+					table += "<td style='vertical-align: middle'><span class='badge text-bg-secondary'>진료완료</span></td>";
+
+				}
+				table += "<td class='col-3'><button class='btn btn-sm btn-primary recbtn'>호출</button></td>";
+
+				table += "</tr>";
+
+
+			}
+			$("#receiveboard").append(table);
+
+		}).fail(function(){
+			alert("문제가 발생했습니다.");
+		});
+
+		
 		$
 				.post({
 					url : "/petVacAjax",
@@ -157,7 +213,6 @@ if (session.getAttribute("id") == null) {
 								}
 							}
 
-							/* chartdiv += "</div>"; */
 							$("#chart").append(chartdiv);
 
 							$(document)
@@ -312,8 +367,6 @@ if (session.getAttribute("id") == null) {
 			<div id="content">
 
 				<%@ include file="../bar/chartTop.jsp"%>
-				<%-- 				<%@ include file="../bar/chartTopBar.jsp"%> --%>
-
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">

@@ -4,7 +4,8 @@ $(function() {
 	$("#chartAdd").click(function() {
 		var pet_no = $("#pet_no").val();
 		var receive_no = $("#receive_no").val();
-		var chart_memo = $("#chart_memo").val();
+		var chart_memo = $("#chart_memo").val().replace(/\n/g,"<br>");
+		console.log(chart_memo);
 		if (pet_no == "") {
 			alert("동물을 선택해주세요.");
 		} else {
