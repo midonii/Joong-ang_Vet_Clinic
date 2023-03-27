@@ -57,16 +57,12 @@ public class StockService {
 		pageDTO.setCurrentBlockIdx(pagenum);
 		pageDTO.setStartPageInBlock(pagenum, contentnum);
 		pageDTO.setFirstnumInPage(contentnum);
-		System.out.println("시작페이지:" + pageDTO.getStartPageInBlock() + " / 마지막페이지:" + pageDTO.getLastPage());
+//		System.out.println("시작페이지:" + pageDTO.getStartPageInBlock() + " / 마지막페이지:" + pageDTO.getLastPage());
 		
 		mv.addObject("page", pageDTO);
 		
 		return mv;
 	}
-
-
-
-	
 	
 	
 }

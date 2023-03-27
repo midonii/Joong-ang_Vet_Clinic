@@ -5,6 +5,7 @@
 	<select id="smsclientlist" resultType="SMSDTO">
 		SELECT pet_name, owner_name, owner_tel
 		FROM smsview
+		ORDER BY pet_name
 	</select>
 	
 	<select id="smsFormName" resultType="String">

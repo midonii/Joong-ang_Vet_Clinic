@@ -192,7 +192,7 @@ $(function(){
 			dataType : "json"
 		}).done(function(data){
 			alert("수정완료");
-			location.href="/profile="+'${sessionScope.id }';
+			location.href="/userProfile="+'${sessionScope.id }';
 		}).fail(function(xhr){
 			alert("저장실패");
 		});

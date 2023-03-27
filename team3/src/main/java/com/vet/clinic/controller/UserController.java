@@ -1,9 +1,12 @@
 package com.vet.clinic.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
@@ -35,23 +38,13 @@ public class UserController {
 		return "/user/login";
 	}
 
-	@ResponseBody
 	@PostMapping("/login")
-	public String login(@RequestParam Map<String, Object> map, HttpServletRequest request) {
+	public String login(@RequestParam Map<String, Object> map, HttpServletRequest request) throws IOException {
 		
-		StaffDTO result = userService.login(map);	
-		JSONObject json = new JSONObject();
+		StaffDTO result = userService.login(map);
+		//System.out.println(result);
 		
 		if(result.getCount() == 1) {
-			
-			/* 로그인시도 보류
-			staffDTO.setStaff_logintry(0);
-			userService.logintry(staffDTO);
-			*/
-			
-			json.put("result", 1);
-			json.put("staff_name", result.getStaff_name());
-			
 			// 세션만들기
 			HttpSession session = request.getSession();
 			session.setAttribute("id", result.getStaff_id());
@@ -59,15 +52,16 @@ public class UserController {
 			session.setAttribute("username", result.getStaff_name());
 			session.setAttribute("staff_grade", result.getStaff_grade());
 			
-		} else {
-			json.put("result", 0);
+			return "/index";
+			
+		} else {	
+			return "redirect:/login?error=1111";
 		}
-		return json.toString();
 	}
 
 // 로그아웃
 	@GetMapping("/logout")
-	public String logout(HttpSession session) {
+	public String logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		session.invalidate();
 		return "redirect:/login";
 	}
@@ -85,7 +79,7 @@ public class UserController {
 		JSONObject json = new JSONObject();
 
 		// step1) 입력한 email이 DB에 있는지 확인
-		System.out.println("사용자가 입력한 email : " + email);
+		//System.out.println("사용자가 입력한 email : " + email);
 		int result = userService.findEmail(email);	// email DB에 있는지 확인하고 있다면 해당 email의 회원번호 반환.
 		
 		// email이 DB에 있다면
@@ -131,13 +125,13 @@ public class UserController {
 	public String checkTempnum(@RequestParam Map<String, String> map) {
 		
 		// 사용자가 입력한 인증번호 확인
-		System.out.println("사용자가 입력한 이메일 : " + map.get("email") + "\n || 사용자가 입력한 인증번호 : " + map.get("userTempnum"));
+		//System.out.println("사용자가 입력한 이메일 : " + map.get("email") + "\n || 사용자가 입력한 인증번호 : " + map.get("userTempnum"));
 		
 		JSONObject json = new JSONObject();
 		
 		// DB로 userTemppw 보내서 해당이메일 사용자의 temppw와 비교하여 result값 출력
 		int result = userService.checkTempnum(map);
-		System.out.println("인증번호 확인 결과 : " + result); // 비교결과 : 1
+		//System.out.println("인증번호 확인 결과 : " + result); // 비교결과 : 1
 		
 		// ajax 보내기
 		if(result == 1) {
@@ -158,7 +152,7 @@ public class UserController {
 		
 		// DB로 보내 비밀번호 새로 저장 & 저장된 tempnum 삭제(null)
 		int result = userService.newpwSet(map);
-		System.out.println("새비밀번호 저장결과 : " + result);
+		//System.out.println("새비밀번호 저장결과 : " + result);
 		
 		JSONObject json = new JSONObject();
 		
@@ -198,17 +192,36 @@ public class UserController {
 	}
 	
 	@ResponseBody
+	@PostMapping("/telCheck")
+	public String telCheck(@RequestParam(value="tel") String tel) {
+		int result = userService.telCheck(tel);
+		JSONObject json = new JSONObject();
+		json.put("result", result);
+		return json.toString();
+	}
+	
+	
+	@ResponseBody
 	@PostMapping("/join")
 	public String join(@RequestParam Map<String, String> map) {
 		
-		System.out.println(map);
+		//System.out.println(map);
+		
+		String addr = map.get("addr") + map.get("detailAddr") + map.get("extraAddr");
+		//System.out.println(addr);
+		map.put("addr", addr);
 		
 		int result = userService.join(map);
+		//System.out.println(result);
 		
-		JSONObject joinresult = new JSONObject();
-		joinresult.put("joinresult", result );
+		String message = "";
+		if(result == 1) {
+			message = "<script> alert('회원가입이 완료되었습니다. 로그인하여 주세요.'); location.href='/login';</script>";
+		} else {
+			message = "<script> alert('회원가입 실패');</script>";
+		}
 		
-		return joinresult.toString();
+		return message;
 	}
 	
 
@@ -216,7 +229,7 @@ public class UserController {
 	@GetMapping("/userProfile={id}")
 	public ModelAndView profile(@PathVariable("id") String id, HttpSession session) {
 		ModelAndView mv = new ModelAndView();
-		System.out.println(session.getAttribute("id"));
+		//System.out.println(session.getAttribute("id"));
 		Map<String, Object> map = new HashMap<String, Object>();
 		if(session.getAttribute("id") != null) {
 			map.put("sessionID", session.getAttribute("id"));
@@ -232,7 +245,7 @@ public class UserController {
 	
 	@PostMapping("/userProfile={id}")
 	public String profile(HttpSession session) {
-		return "redirect:/profile="+session.getAttribute("id");
+		return "redirect:/userprofile="+session.getAttribute("id");
 	}
 	
 // 프로필수정

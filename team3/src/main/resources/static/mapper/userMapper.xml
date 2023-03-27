@@ -11,20 +11,6 @@
 		OR
 		(staff_email = #{email } AND staff_pw = #{pw })
 	</select>
-	<!-- 
-	<update id="logintry" parameterType="StaffDTO">
-		UPDATE staff
-		SET
-		<choose>
-			<when test="staff_logintry == 0">
-				staff_logintry = 0
-			</when>
-			<otherwiese>
-				staff_logintry = #{member_logintry } + 1
-			</otherwiese>
-		</choose>
-	</update>
-	 -->
 	
 	<select id="findEmail" parameterType="String" resultType="Integer">
 		SELECT COUNT(*)
@@ -54,7 +40,7 @@
 	</update>
 		<!-- member_pw = HEX(AES_ENCRYPT((#{member_pw }), SHA2('apple', 256))), -->
 	
-	<insert id="join" parameterType="StaffDTO">
+	<insert id="join" parameterType="HashMap">
 		INSERT INTO staff
 		SET
 		staff_id = #{id },
@@ -77,6 +63,12 @@
 		SELECT COUNT(*)
 		FROM staff
 		WHERE staff_email = #{email }
+	</select>
+	
+	<select id="telCheck" parameterType="String" resultType="Integer">
+		SELECT COUNT(*)
+		FROM staff
+		WHERE staff_tel = #{tel }
 	</select>
 	
 	<select id="profile" parameterType="HashMap" resultType="HashMap">

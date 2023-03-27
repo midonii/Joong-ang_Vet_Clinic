@@ -24,8 +24,4 @@ public interface StockDAO {
 
 	int totalcount();
 
-
-
-
-
 }

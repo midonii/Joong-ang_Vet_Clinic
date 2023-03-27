@@ -47,4 +47,6 @@ public interface StaffDAO {
 	public int checkTempnum(Map<String, String> map);
 
 	public int newpwSet(Map<String, String> map);
+
+	public int telCheck(String tel);
 }

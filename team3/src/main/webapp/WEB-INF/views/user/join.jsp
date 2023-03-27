@@ -128,6 +128,10 @@ $(function(){
 	
 	$("#idCheck").click(function(){
 		let id = $("#id").val();
+		if(id == ""){
+			alert("올바른 아이디를 입력하세요.");
+			return false;
+		}
 		$.post({
 			url : "/idCheck",
 			data : {"id" : id },
@@ -135,7 +139,7 @@ $(function(){
 		}).done(function(data){
 			if(data.result == "0"){
 				alert("사용가능한 아이디입니다.");
-				$("#id").attr("disabled", true);
+				$("#id").attr("readonly", true);
 			} else {
 				alert("이미 존재하는 아이디입니다. 다시 입력해주세요.");
 				$("#id").val('');
@@ -147,7 +151,7 @@ $(function(){
 	});
 	
 	$("input[name='pw'], input[name='repw']").change(function(){
-		if(!$("input[name='id']").attr("disabled")){
+		if(!$("input[name='id']").attr("readonly")){
 			alert("아이디 중복확인을 해주세요.");
 			$("#pw").val("");
 			$("#id").focus();
@@ -168,6 +172,10 @@ $(function(){
 	
 	$("#emailCheck").click(function(){
 		let email = $("#email").val();
+		if(email == ""){
+			alert("올바른 이메일을 입력하세요.");
+			return false;
+		}
 		$.post({
 			url : "/emailCheck",
 			data : {"email": email },
@@ -175,17 +183,42 @@ $(function(){
 		}).done(function(data){
 			if(data.result == "0"){
 				alert("사용가능한 이메일입니다.");
-				$("#email").attr("disabled", true);
+				$("#email").attr("readonly", true);
 			} else {
 				alert("이미 존재하는 이메일입니다. 다시 입력해주세요.");
-				$("#id").val('');
-				$("#id").focus();
+				$("#email").val('');
+				$("#email").focus();
 			}
 		}).fail(function(){
 			alert("이메일확인실패");
 		});
 	});
-		
+	
+	$("#telCheck").click(function(){
+		let tel = $("#tel").val();
+		if(tel == ""){
+			alert("올바른 전화번호를 입력하세요.");
+			return false;
+		}
+		$.post({
+			url : "/telCheck",
+			data : {"tel": tel },
+			dataType : "json"
+		}).done(function(data){
+			if(data.result == "0"){
+				alert("가입가능한 전화번호입니다.");
+				$("#tel").attr("readonly", true);
+			} else {
+				alert("회원가입된 전화번호입니다.");
+				$("#tel").val('');
+				$("#tel").focus();
+			}
+		}).fail(function(){
+			alert("전화번호확인실패");
+		});
+	});
+	
+		/*
 	$(".joinbtn").click(function(){
 		
 		let id = $("#id").val();
@@ -199,28 +232,32 @@ $(function(){
 		let extraAddr = $("#sample6_extraAddress").val();
 		let grade = $("#grade option:selected").val();
 		let addr = address + detailAddr + extraAddr ;
-		//alert(id+" / "+pw+" / "+name+" / "+birth+" / "+tel+" / "+email+" / "+grade);
+		alert(id+" / "+pw+" / "+name+" / "+birth+" / "+tel+" / "+email+" / "+grade);
 		
 		if(pw == "" || name == "" || birth == "" || tel == "" || email == "" || address == ""){
 			alert("필수 입력사항을 모두 입력하세요.");
 			return false;
-		} else{
-	   	 	$.post({
-	   		 	url : "/join",
-		   	 	data : {"id" : id, "pw" : pw, "name" : name, 
-		   	 			"birth" : birth, "tel" : tel, "email" : email, "grade" : grade,
-		   	 			"addr" : addr},
-		   	 	dataType : "json"
-	   		}).done(function(data){
-	   			if(data.joinresult == "1"){
-	   				alert("회원가입이 완료되었습니다. 다시 로그인해 주세요.");
-	   				location.href="/login";
-	   			}
-	    	}).fail(function(xhr){
-	    		alert("실패");
-	    	});
 		}
+		/*
+	   	$.post({
+	   	 	url : "/join",
+		 	data : {"id" : id, "pw" : pw, "name" : name, 
+		 			"birth" : birth, "tel" : tel, "email" : email, "grade" : grade,
+	   	 			"addr" : addr},
+	   	 	dataType : "json"
+   		}).done(function(data){
+   			if(data.joinresult == "1"){
+   				alert("회원가입이 완료되었습니다. 다시 로그인해 주세요.");
+   				location.href="/login";
+   			} else {
+   				alert("회원가입실패");
+   			}
+    	}).fail(function(xhr){
+    		alert("실패");
+    	});
+		
 	});
+		*/
 });
 
 </script>
@@ -250,7 +287,7 @@ $(function(){
 										<h1 class="h4 text-gray-900 mb-4">회원가입</h1>
 									</div>
 									
-									<form class="user">
+									<form class="user" action="/join" method="post">
 										<div class="form-group row">
 											<input type="text" id="id" name="id" class="col-sm-8 form-control form-control-user"  placeholder="아이디">
 											<input type="button" id="idCheck" name="idCheck" class="col-4 btn btn-primary btn-user btn-block" value="중복확인">
@@ -267,22 +304,23 @@ $(function(){
 											<input type="text" id="birth" name="birth" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" class="col-sm-6 form-control form-control-user"  required minlength="8" maxlength="8" placeholder="생년월일(ex.19001230)">
 										</div>
 										<div class="form-group row">
-											<input type="text" id="tel" name="tel" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" class="col-sm-12 form-control form-control-user"  required minlength="11" maxlength="11" placeholder="전화번호(ex.01012345678)">
+											<input type="text" id="tel" name="tel" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" class="col-sm-8 form-control form-control-user"  required minlength="11" maxlength="11" placeholder="전화번호(ex.01012345678)">
+											<input type="button" id="telCheck" class="col-4 btn btn-primary btn-user btn-block" value="중복확인">
 										</div>
 										<div class="form-group row">
 											<input type="email" id="email" name="email" class="col-sm-8 form-control form-control-user"  placeholder="이메일">
 											<input type="button" id="emailCheck" class="col-4 btn btn-primary btn-user btn-block" value="중복확인">
 										</div>
 										<div class="form-group row">
-											<input type="text"  id="sample6_postcode" name="postcode" class="col-sm-4 form-control form-control-user" disabled placeholder="우편번호">
+											<input type="text"  id="sample6_postcode" name="postcode" class="col-sm-4 form-control form-control-user" readonly placeholder="우편번호">
 											<input type="button" class="col-3 btn btn-primary btn-user btn-block" onclick="sample6_execDaumPostcode()" value="주소찾기">
 										</div>
 										<div class="form-group row">
-											<input type="text" id="sample6_address" name="addr" class="col-sm-12 form-control form-control-user"  disabled placeholder="도로명주소">
+											<input type="text" id="sample6_address" name="addr" class="col-sm-12 form-control form-control-user"  readonly placeholder="도로명주소">
 										</div>
 										<div class="form-group row">
 											<input type="text" id="sample6_detailAddress" name="detailAddr" class="col-sm-6 form-control form-control-user"   placeholder="상세주소">
-											<input type="text" id="sample6_extraAddress" name="extraAddr" class="col-sm-6 form-control form-control-user"  disabled placeholder="참고항목">
+											<input type="text" id="sample6_extraAddress" name="extraAddr" class="col-sm-6 form-control form-control-user"  readonly placeholder="참고항목">
 										</div>
 										<hr>
 										<div class="form-group row ">
@@ -291,17 +329,17 @@ $(function(){
 											</div>
 											<div class="col-sm-6">
 												<select id="grade" name="grade" class="form-select-sm form-control form-control-sm" aria-label="Default select example">
-<!-- 													<option selected>직책선택</option> -->
 													<option value="doctor" >의사</option>
 													<option value="technician" >테크니션</option>
 												</select>
 											</div>
 										</div>
 										<hr>
-										<button class="btn btn-primary btn-user btn-block joinbtn"> 등록 </a>
+										<button class="btn btn-primary btn-user btn-block joinbtn" href="location.href='/login'"> 등록 </a>
 <!-- 										<button a href="login.html" class="btn btn-primary btn-user btn-block"> 등록 </a> -->
+										</button>
 									</form>
-									
+<!-- 									</div> -->
 								</div>
 							</div>
 						</div>
