@@ -2,14 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.vet.clinic.dao.StockDAO">
-<!-- 초기화면 -->
-	<!-- CAST(FORMAT(medical_price,'##,###,##0') AS INT) AS medical_price, CAST(FORMAT(medical_buying,'###,##0') AS INT) as medical_buying, -->
-	<select id="stockList" resultType="StockDTO">
+<!-- 초기화면 리스트 -->
+	<select id="stockList" resultType="StockDTO" parameterType="HashMap">
 		SELECT medical_subcate, medical_name,medical_price,medical_buying, medical_company, medical_buyEa
 		FROM medicalList
-		WHERE medical_category != '진료'
+		WHERE medical_category = '약품'
 		ORDER BY medical_name
+		LIMIT #{firstnumInPage }, #{contentnum }
 	</select>
+	<!-- 
+	<select id="stockListAjax" resultType="StockDTO" parameterType="HashMap">
+		SELECT medical_subcate, medical_name,medical_price,medical_buying, medical_company, medical_buyEa
+		FROM medicalList
+		WHERE medical_category = '약품'
+		ORDER BY medical_name
+		LIMIT ${firstnumInPage }, ${contentnum }
+	</select>
+	 -->
 	
 	<select id="m_company" resultType="String">
 		SELECT DISTINCT medical_company
@@ -21,18 +30,47 @@
 	<select id="m_subcate" resultType="String">
 		SELECT DISTINCT medical_subcate
 		FROM medicalList
-		WHERE medical_category != '진료'
+		WHERE medical_category = '약품'
 		ORDER BY medical_subcate
 	</select>
 
-<!-- 검색 -->
+<!-- 검색 리스트 -->
 	<select id="stockSelect" parameterType="HashMap" resultType="HashMap">
 		SELECT medical_subcate, medical_name, medical_price, medical_buying, medical_company, medical_buyEa
 		FROM medicalList
-		WHERE medical_category != '진료'
+		WHERE medical_category = '약품'
 		<if test="radioValue != '전체보기'">
 			AND medical_subcate = #{radioValue }
 		</if>
+		<if test='medicineName != null and !"".equals(medicineName)'>
+			AND (medical_name LIKE CONCAT('%',#{medicineName },'%'))
+		</if>
+		<choose>
+			<when test="purchasingOfficeOption != '직접입력'">
+				AND (medical_company LIKE CONCAT('%',#{purchasingOfficeOption },'%'))
+			</when>
+			<when test='purchasingOfficeOption == "직접입력" and purchasingOffice != null and !"".equals(purchasingOffice)'>
+				AND (medical_company LIKE CONCAT('%',#{purchasingOffice },'%'))
+			</when>
+		</choose>
+		ORDER BY medical_name
+	</select>
+	
+<!-- 수정저장 -->
+	<update id="edit" parameterType="HashMap">
+		UPDATE medicalList
+		SET 
+			medical_company = #{editCompany },
+			medical_buying = #{editBuyingPrice },
+			medical_price = #{editPresPrice }
+		WHERE medical_name = #{medicineName }
+	</update>
+	
+<!-- 페이징 - 데이터 총 개수 -->
+	<select id="totalcount" resultType="Integer">
+		SELECT COUNT(*)
+		FROM medicalList
+		WHERE medical_category = '약품'
 		ORDER BY medical_name
 	</select>
 

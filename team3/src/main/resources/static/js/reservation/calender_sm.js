@@ -1,45 +1,56 @@
 //달력초기화면 오늘날짜로 설정
 // Setup the calendar with the current date
 $(document).ready(function(){
-    var date = new Date();
+    var date = new Date(); //date : Wed Mar 01 2023 16:45:51 GMT+0900 (한국 표준시)
     var today = date.getDate();
+//	var strday = date.getDay(); //요일
     // Set click handlers for DOM elements
-    $(".right-button").click({date: date}, next_year);
+
+    $(".right-button").click({date: date}, next_year); //{date: date} = date속성에 "var date = new Date()"넣기
     $(".left-button").click({date: date}, prev_year);
     $(".month").click({date: date}, month_click);
     $("#add-button").click({date: date}, new_event);
     // Set current month as active
     $(".months-row").children().eq(date.getMonth()).addClass("active-month");
     init_calendar(date);
-    var events = check_events(today, date.getMonth()+1, date.getFullYear());
-    //show_events(events, months[date.getMonth()], today); 
+    //var events = check_events(today, date.getMonth()+1, date.getFullYear(), date.getDay());
+//	var strday = date.getDay();
 
+    //show_events(months[date.getMonth()], today, date.getFullYear(), date.getDay());  //생략가능?
 
-	//주간리스트
+//    show_events(events, months[date.getMonth()], today, strday);  //생략가능?
+	//alert("기본: "+date.getDay()); //3?
+
 	
 });
 
 // Initialize the calendar by appending the HTML dates
 //HTML로 데이트를 추가하면서 캘린더 초기화
-function init_calendar(date) {
+//캘린더 첫화면
+function init_calendar(date) { //date:오늘 날짜
     $(".tbody").empty(); //tbody 클래스를 가진 HTML 요소의 내용지우기
-    $(".events-container").empty(); 
+    $(".events-container").empty();
+	 
     var calendar_days = $(".tbody");
     var month = date.getMonth();
     var year = date.getFullYear();
     var day_count = days_in_month(month, year);
     var row = $("<tr class='table-row'></tr>");
     var today = date.getDate();
+	var strday = date.getDay();
+	//alert(year);//ok
 	//월의 첫번째 날을 찾기위해 date를 1로 설정
     // Set date to 1 to find the first day of the month
     date.setDate(1);
-    var first_day = date.getDay();
+    var first_day = date.getDay(); //1일의 요일
     // 35+firstDay is the number of date elements to be added to the dates table
     // 35 is from (7 days in a week) * (up to 5 rows of dates in a month)
     for(var i=0; i<35+first_day; i++) {
         // Since some of the elements will be blank, 
         // need to calculate actual date from index
         var day = i-first_day+1;
+		
+		
 		//일욜이면 새로운 row생성
         // If it is a sunday, make a new row
         if(i%7===0) {
@@ -53,17 +64,26 @@ function init_calendar(date) {
         }   
         else {
             var curr_date = $("<td class='table-date'>"+day+"</td>");
-            var events = check_events(day, month+1, year);
-            if(today===day && $(".active-date").length===0) {
+            //var events = check_events(day, month+1, year, strday);
+	
+			//오늘 날짜인 경우 && .active-date가 없는 경우
+            if(today===day && $(".active-date").length===0) { 
                 curr_date.addClass("active-date");
-                show_events(events, months[month], day);
+//				date.setDate(day);
+//				var strday = date.getDay(); //클릭한 날짜의 요일
+ 				
+				//alert("strday: "+strday);//ok 
+                show_events(months[month], day, year, strday);
+				//show_events(events, months[date.getMonth()], today, strday);
             }
+			//아무예약 없을때 .event-date 추가
             // If this date has any events, style it with .event-date
-            if(events.length!==0) {
-                curr_date.addClass("event-date");
-            }
+//            if(events.length!==0) {
+//                curr_date.addClass("event-date");
+//            }
+			//날짜 클릭시 date_click함수 실행 (events, month, day, year 인자값으로)
             // Set onClick handler for clicking a date
-            curr_date.click({events: events, month: months[month], day:day}, date_click);
+            curr_date.click({month: months[month], day:day, year:year, strday:strday}, date_click); //events:events
             row.append(curr_date);
         }
     }
@@ -81,18 +101,27 @@ function days_in_month(month, year) {
 
 //날짜 클릭했을때의 이벤트핸들러
 // Event handler for when a date is clicked
-function date_click(event) {
+function date_click(event) { //event: 클릭된 날짜 셀의 정보
 //    $(".events-container").show(250);
     //$("#dialog2").show(250);
+	//var strday = event.date.getDay(); //요일
+//	var date1 = event.data.day.toString().padStart(2,'0');
     $("#dialog").hide(250);
     $(".active-date").removeClass("active-date");
     $(this).addClass("active-date");
-    show_events(event.data.events, event.data.month, event.data.day);
+
+//	var strday = event.date.getDay();
+//	var day = parseInt($(".active-date").html());
+//	date.setDate(day);
+//	var strday = new Date(year, month, day).getDay();
+    show_events(event.data.month, event.data.day, event.data.year, event.data.strday);
 };
+
+
 //월 클릭했을때 이벤트핸들러
 // Event handler for when a month is clicked
 function month_click(event) {
-    $(".events-container").show(250);
+//    $(".events-container").show(250);
     $("#dialog").hide(250);
     var date = event.data.date;
     $(".active-month").removeClass("active-month");
@@ -100,6 +129,8 @@ function month_click(event) {
     var new_month = $(".month").index(this);
     date.setMonth(new_month);
     init_calendar(date);
+	show_events(month, day, year, strday);
+//	show_events();
 }
 //년 클릭했을때 이벤트핸들러
 // Event handler for when the year right-button is clicked
@@ -110,7 +141,8 @@ function next_year(event) {
     $("year").html(new_year);
     date.setFullYear(new_year);
     init_calendar(date);
-	show_events();
+	show_events(month, day, year, strday);
+//	show_events();
 }
 
 // Event handler for when the year left-button is clicked
@@ -121,7 +153,8 @@ function prev_year(event) {
     $("year").html(new_year);
     date.setFullYear(new_year);
     init_calendar(date);
-	show_events();
+	show_events(month, day, year, strday);
+	//	show_events();
 }
 
 
@@ -265,8 +298,6 @@ function new_event(event) {
 			location.reload(); //모달창 hide + 부모창새로고침
 		}
 
-		
-
         var time = $("#collapseOne").val();
 		var day = parseInt($(".active-date").html()); //선택된 날짜를 숫자로 변환
         //var count = parseInt($("#count").val().trim());
@@ -281,27 +312,105 @@ function new_event(event) {
 
 
 
-
-//해당 날짜 예약리스트 모두 띄우기
+//주간리스트 띄우기
+//해당 날짜 예약리스트 모두 띄우기(events -> 이걸로 안띄울거라 이 매개변수 안씀)
 // Display all events of the selected date in card views
-function show_events(events, month, day) {
+function show_events(month, day, year) { //매개변수: init_calendar 함수에서 date_click 함수를 호출할 때 전달됨
+
+	// 달의 마지막 날짜
+	var lastDate = new Date(year, month, 0).getDate();
+	// 그렇지 않으면 다음 달의 시작 날짜를 출력합니다.
+	var startDate = day <= lastDate ? day : 1;
+
+	var fulldate = year + "-" + month + "-" + day.toString().padStart(2,'0'); //2023-03-25
+	
+	//요일구하기..
+	var date_clicked = new Date(year, month-1, day); // -1을 해주어야 정확한 월(month) 값이 됩니다.
+	var strday = date_clicked.getDay();
+	var dayName = strdays[0][strday];//클릭한날의 요일
+	alert("dayName:"+dayName); //ok
+	
+	
 	$(".date").empty();
-	$("#dialog2").show(250);   
+	$("#dialog2").show(250); //주간리스트
 	
-	//왜 이건 안되고 아래는 되지?
-//	var date=""
-//	date += $("<p class='date-num'> "+$(day)+"</p>");
-//	date += $("<p class='date-day1' id='date-day1'> "+day+"</p>"); //요일
-//	$(".date").append(date);
-	
+	//누른날짜 기준으로 5일치 띄우기
 	for(var i=0; i<5; i++){
-		//alert(".day"+i);
-		var num = day+i;
-		var	date = $("<p class='date-num'>"+num+"</p>");
-			$(".day"+i).append(date);
+		//var num = day+i;
+		var num = startDate + i; //startDate: 오늘날짜(day)이거나 1이거나
+		var date;
+		
+		//fulldate, strday 값넣은 날짜 5개 찍기
+		//날짜가 마지막날짜보다 작거나 같으면
+		if(num <= lastDate) {
+        date = $("<p class='date-num' data-date='"+fulldate+"' data-strday='"+strday+"'>"+num+"</p>");
+	    } 
+		//마지막 날짜를 초과하면 다음달 찍기
+		//다음 달의 날짜 계산
+		else {
+		var nextMonthDate = new Date(year, month-1, lastDate+1);
+//		var fulldate = date.getFullyear() + "-" + date.getmonth() + "-" + date.getdate();
+	 	var nextMonthStrday = nextMonthDate.getDay();	
+		var yearStr = nextMonthDate.getFullYear();
+		var monthStr = (nextMonthDate.getMonth() + 1).toString().padStart(2, '0');
+		var dateStr = nextMonthDate.getDate().toString().padStart(2, '0');
+		var dateString = yearStr + "-" + monthStr + "-" + dateStr;
+        date = $("<p class='date-num' data-date='"+dateString+"' data-strday='"+nextMonthStrday+"'>"+(num-lastDate)+"</p>");
+	    }
+		
+		//요일찍기
+		dayName = strdays[0][(strday+i) % 7]
+	   	var dayEl = $("<p class='date-day'>" + dayName + "</p>");
+	    $(".day"+i).append(date);
+	    $(".day"+i).append(dayEl);
+
+
+//		$(".date-num").each(function() { //15-16번 실행됨
+//		  var date1 = $(this).data("date"); //date: date-num클래스의 data-date의 밸류
+//		  var events = getEvents(date1); // 이 함수는 해당 날짜에 있는 이벤트를 반환하는 함수입니다.
+//		  // 이벤트가 있다면 이벤트를 표시합니다.
+//		  if (events.length > 0) {
+//			alert("event있음:"+events.length);
+//		    var eventDiv = $("<div class='events'></div>");
+//		    
+//		    for (var i = 0; i < events.length; i++) {
+//		      var event = events[i];
+//		      var eventTime = event.time;
+//		      var eventTitle = event.title;
+//		      
+//		      var eventEl = $("<div class='event'></div>");
+//		      eventEl.append("<p class='time'>" + eventTime + "</p>");
+//		      eventEl.append("<p class='title'>" + eventTitle + "</p>");
+//		      
+//		      eventDiv.append(eventEl);
+//		    }
+//		    
+//		    $(this).append(eventDiv);
+//		  }
+//		});
+		
 		}
 	
-	
+}
+function getEvents(date1) {
+//  var events = [];
+  $.ajax({
+    url: "/reservlist_calender",
+    data: { "date1": date1 },
+    type: "get",
+    dataType: "json"
+	}).done(function(data){
+		let result = data.result;
+		for (var i = 0; i < result.length; i++) {
+			alert(result1[i].reserv_time);
+			}
+		
+	}).fail(function() {
+			alert("통신실패 : " + data.result);
+		});
+//  return events;
+}	
+
 	
 	
 //	alert(month); //ok
@@ -347,141 +456,166 @@ function show_events(events, month, day) {
 //            $(".events-container").append(event_card);
 //        }
 //    }
-}
 
+//new_event_json("지혜","까미"..)으로 값이 들어오면 
+//event = {"owner_name": "지혜", "pet_name": "까미"}로 값이 들어감
 
-function new_event_json(owner_name, pet_name, owner_tel, owner_addr, time, reservation_memo, date, day) {
-    var event = {
-        "owner_name": owner_name,
-        "pet_name": pet_name,
-        "owner_tel": owner_tel,
-        "owner_addr": owner_addr,
-        "time": time,
-        "reservation_memo": reservation_memo,
-        "year": date.getFullYear(),
-        "month": date.getMonth()+1,
-        "day": day
-    };
-    event_data["events"].push(event);
-}
+//function new_event_json(owner_name, pet_name, owner_tel, owner_addr, time, reservation_memo, year, month, day, strday) {
+//    var event = {
+//        "owner_name": owner_name,
+//        "pet_name": pet_name,
+//        "owner_tel": owner_tel,
+//        "owner_addr": owner_addr,
+//        "time": time,
+//        "reservation_memo": reservation_memo,
+//        "year": date.getFullYear(),
+//        "month": date.getMonth()+1,
+//        "day": day,
+//		"strday": date.getDay()
+//    };
+//    event_data["events"].push(event); //event_data 객체의 events 속성에 event 객체를 추가하는 것(제일 하단에 있음)
+//}
 
 
 //해당 날짜에 예약있는지 확인
 // Checks if a specific date has any events
-function check_events(day, month, year) {
-    var events = [];
-    for(var i=0; i<event_data["events"].length; i++) {
-        var event = event_data["events"][i];
-        if(event["day"]===day &&
-            event["month"]===month &&
-            event["year"]===year) {
-                events.push(event);
-            }
-    }
-    return events;
-}
+//function check_events(day, month, year) {
+//    var events = [];
+//    for(var i=0; i<event_data["events"].length; i++) {
+//        var event = event_data["events"][i];
+//        if(event["day"]===day &&
+//            event["month"]===month &&
+//            event["year"]===year) {
+//                events.push(event);
+//            }
+//    }
+//    return events;
+//}
 
 //예약 정보(json포맷)
 // Given data for events in JSON format
-var event_data = {
-    "events": [
-    {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2017,
-        "month": 5,
-        "day": 10,
-        "cancelled": true
-    },
-    {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2017,
-        "month": 5,
-        "day": 10,
-        "cancelled": true
-    },
-        {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2017,
-        "month": 5,
-        "day": 10,
-        "cancelled": true
-    },
-    {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2017,
-        "month": 5,
-        "day": 10
-    },
-        {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2017,
-        "month": 5,
-        "day": 10,
-        "cancelled": true
-    },
-    {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2017,
-        "month": 5,
-        "day": 10
-    },
-        {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2017,
-        "month": 5,
-        "day": 10,
-        "cancelled": true
-    },
-    {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2017,
-        "month": 5,
-        "day": 10
-    },
-        {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2017,
-        "month": 5,
-        "day": 10,
-        "cancelled": true
-    },
-    {
-        "occasion": " Repeated Test Event ",
-        "invited_count": 120,
-        "year": 2017,
-        "month": 5,
-        "day": 10
-    },
-    {
-        "occasion": " Test Event",
-        "invited_count": 120,
-        "year": 2017,
-        "month": 5,
-        "day": 11
-    }
-    ]
-};
-
+//var event_data = {
+//    "events": [
+//    {
+//        "occasion": " Repeated Test Event ",
+//        "invited_count": 120,
+//        "year": 2017,
+//        "month": 5,
+//        "day": 10,
+//        "cancelled": true
+//    },
+//    {
+//        "occasion": " Repeated Test Event ",
+//        "invited_count": 120,
+//        "year": 2017,
+//        "month": 5,
+//        "day": 10,
+//        "cancelled": true
+//    },
+//        {
+//        "occasion": " Repeated Test Event ",
+//        "invited_count": 120,
+//        "year": 2017,
+//        "month": 5,
+//        "day": 10,
+//        "cancelled": true
+//    },
+//    {
+//        "occasion": " Repeated Test Event ",
+//        "invited_count": 120,
+//        "year": 2017,
+//        "month": 5,
+//        "day": 10
+//    },
+//        {
+//        "occasion": " Repeated Test Event ",
+//        "invited_count": 120,
+//        "year": 2017,
+//        "month": 5,
+//        "day": 10,
+//        "cancelled": true
+//    },
+//    {
+//        "occasion": " Repeated Test Event ",
+//        "invited_count": 120,
+//        "year": 2017,
+//        "month": 5,
+//        "day": 10
+//    },
+//        {
+//        "occasion": " Repeated Test Event ",
+//        "invited_count": 120,
+//        "year": 2017,
+//        "month": 5,
+//        "day": 10,
+//        "cancelled": true
+//    },
+//    {
+//        "occasion": " Repeated Test Event ",
+//        "invited_count": 120,
+//        "year": 2017,
+//        "month": 5,
+//        "day": 10
+//    },
+//        {
+//        "occasion": " Repeated Test Event ",
+//        "invited_count": 120,
+//        "year": 2017,
+//        "month": 5,
+//        "day": 10,
+//        "cancelled": true
+//    },
+//    {
+//        "occasion": " Repeated Test Event ",
+//        "invited_count": 120,
+//        "year": 2017,
+//        "month": 5,
+//        "day": 10
+//    },
+//    {
+//        "occasion": " Test Event",
+//        "invited_count": 120,
+//        "year": 2017,
+//        "month": 5,
+//        "day": 11
+//    }
+//    ]
+//};
+const strdays = [
+	{
+	0:"일", 
+    1:"월", 
+    2:"화", 
+    3:"수", 
+    4:"목", 
+    5:"금", 
+    6:"토" 
+	}
+	
+];
 const months = [ 
-    "January", 
-    "February", 
-    "March", 
-    "April", 
-    "May", 
-    "June", 
-    "July", 
-    "August", 
-    "September", 
-    "October", 
-    "November", 
-    "December" 
+//    "January", 
+//    "February", 
+//    "March", 
+//    "April", 
+//    "May", 
+//    "June", 
+//    "July", 
+//    "August", 
+//    "September", 
+//    "October", 
+//    "November", 
+//    "December" 
+    "01", 
+    "02", 
+    "03", 
+    "04", 
+    "05", 
+    "06", 
+    "07", 
+    "08", 
+    "09", 
+    "10", 
+    "11", 
+    "12" 
 ];

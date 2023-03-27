@@ -16,7 +16,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Team 3</title>
+<title>중앙동물병원</title>
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -39,6 +39,12 @@ h6{
 }
 
 .photo{
+/* 	position: absolute; */
+/* 	display: inline-block; */
+/* 	margin-left:70%; */
+/* 	margin-top: 35px; */
+}
+.photo_div{
 	position: absolute;
 	display: inline-block;
 	margin-left:73%;
@@ -49,12 +55,33 @@ h6{
 	display: inline-block;
 }
 
+.file-upload-btn{
+ 	width:75px; 
+ 	height:30px; 
+ 	padding:7px 10px;
+ 	border: 1px;
+ 	border-radius: 4px;
+ 	font-size:13px; 
+ 	color:white; 
+ 	background-color:#4e73df; 
+ 	cursor:pointer;
+	
+}
+
+.file-name{
+	width:100px;
+	height:30px;
+}
+
 
 </style>
 </head>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> <!-- 주소api -->
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
+
+
+
  /*
  뒤로가기막기
 function CheckSession() {
@@ -267,7 +294,15 @@ $(function(){
 						<div class="card-body row mb-3 justify-content-md-center">
 							<button class="btn btn-primary editbtn">저장하기</button>
 						</div>
-					<div class="photo card " style="width:150px; height:200px;"></div>
+						<div class="photo_div">
+							<div class="photo card " style="width: 150px; height: 200px;"></div><br>
+							<input type="file" class="" style="width: 150px; height: 50px; border:1px;">
+							<div class="filebox">
+								<input class="form-control form-control-sm file-name" id="file-name" value="첨부파일" placeholder="첨부파일" readOnly style="background-color:white;">
+								<input type="file" id="fileUpload" name="fileUpload" style="display:none;">
+								<label class="file-upload-btn" for="fileUpload">사진선택</label> 
+							</div>
+						</div>
 					</div>
 
 				</div>
