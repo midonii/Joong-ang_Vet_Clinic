@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,11 +23,6 @@ public class StockController {
 	
 	@Autowired
 	private StockService stockService;
-
-	@GetMapping("/index2")
-	public String index2() {
-		return "index2";
-	}
 	
 	@GetMapping("/stockList")
 	public ModelAndView stockList(
@@ -114,4 +110,6 @@ public class StockController {
 		
 		return json.toString();
 	}
+
+	
 }

@@ -34,6 +34,10 @@ public class UserService {
 	public int emailCheck(String email) {
 		return staffDAO.emailCheck(email);
 	}
+	
+	public int telCheck(String tel) {
+		return staffDAO.telCheck(tel);
+	}
 
 	public Map<String, Object> profile(Map<String, Object> map) {
 		return staffDAO.profile(map);
@@ -61,6 +65,8 @@ public class UserService {
 	public int newpwSet(Map<String, String> map) {
 		return  staffDAO.newpwSet(map);
 	}
+
+
 
 
 }

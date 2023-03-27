@@ -117,29 +117,7 @@
 				deleteCookie("userID");
 				deleteCookie("setCookie");
 			}
-
-			$.post({
-				url : "/login",
-				data : {
-					"id" : id,
-					"email" : email,
-					"pw" : pw
-				},
-				dataType : "json"
-			}).done(function(data) {
-				if (data.result == "0") {
-					alert("확인되지 않는 사용자입니다. 다시 로그인하세요.");
-					$("#id").val("");
-					$("#email").val("");
-					$("#pw").val("");
-				} else {
-					alert(data.staff_name + "님 반갑습니다.");
-					location.href = "/index";
-				}
-			}).fail(function(xhr) {
-				alert("실패");
-			});
-
+			
 		});
 	});
 
@@ -213,7 +191,7 @@
 												로그인 </label>
 										</div>
 									</div>
-									<form class="user" method="post">
+									<form class="user" action="/login" method="post">
 										<div>
 											<input type="text " class="form-control form-control-user"
 												id="id" name="id" placeholder="아이디">
@@ -234,7 +212,7 @@
 													저장</label>
 											</div>
 										</div>
-										<button type="button"
+										<button type="submit"
 											class="btn btn-primary btn-user btn-block" id="login"
 											name="login">로그인</button>
 									</form>
@@ -265,6 +243,11 @@
 			alert("로그인 후 이용해주세요");		
 		</script>
 	</c:if>
+	<c:if test="${param.error eq 1111}">
+		<script>
+			alert("확인되지 않는 사용자입니다. 다시 로그인해주세요.");
+		</script>
+	</c:if>
 
 	<!-- Bootstrap core JavaScript-->
 	<script src="vendor/jquery/jquery.min.js"></script>
@@ -277,5 +260,6 @@
 	<script src="js/sb-admin-2.min.js"></script>
 
 </body>
+
 
 </html>

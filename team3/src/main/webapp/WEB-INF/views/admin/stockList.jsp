@@ -3,8 +3,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ko">
+<%
+if (session.getAttribute("id") != null) {
+	if (!session.getAttribute("staff_grade").equals("admin")) {
+		response.sendRedirect("/index?error=1234");
+	}
+} else {
+	response.sendRedirect("/login?error=4321");
+}
+%> 
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -76,27 +84,29 @@
 	text-align:center;
 }
 
-/* .list_table thead {
-  display: table; /* to take the same width as tr 
-  width: calc(100% - 17px); /* - 17px because of the scrollbar width 
+.list_table thead {
+  display: table; /* to take the same width as tr */
+  width: calc(100% - 17px); /* - 17px because of the scrollbar width */
 }
 
 .list_table tbody {
-  display: block; /* to enable vertical scrolling 
-  max-height: 427px; /* 스크롤시466px 
-  overflow-y: scroll; /* keeps the scrollbar even if it doesn't need it; display purpose 
+  display: block; /* to enable vertical scrolling */
+  max-height: 466px; /* 스크롤시466px / 페이징 427px */
+  overflow-y: scroll; /* keeps the scrollbar even if it doesn't need it; display purpose */
+  width:100%;
 }
+
 .list_th {
-  display: table; /* display purpose; th's border 
+  display: table; /* display purpose; th's border */
   width: 100%;
-  box-sizing: border-box; /* because of the border (Chrome needs this line, but not FF) 
+  box-sizing: border-box; /* because of the border (Chrome needs this line, but not FF) */
 }
 
 .list_th td {
   text-align: center;
   border-bottom: none;
   border-left: none;
-} */
+} 
 
 </style>
 </head>
@@ -330,6 +340,7 @@ $(function(){
 	});
 	
 // ---- 페이지번호누르기 ----
+/*
 	$(".pagenum").click(function(){
 		
 		let contentnum = 14;
@@ -346,17 +357,12 @@ $(function(){
 		}).done(function(data){
 			alert("성공");
 			
-			
-			
-			
-			
-			
 		}).fail(function(xhr){
 			alert("실패");
 		});
 		
 	});
-	
+*/	
 	
 });
 
@@ -479,37 +485,37 @@ $(function(){
 
 							<!----- 검색리스트 출력 ----->
 							<div class="card"
-								style="width: 100%; height: 477px; margin: 10px;"><!-- 스크롤시 height:505px -->
+								style="width: 100%; height: 505px; margin: 10px;"><!-- 스크롤시 height:505px / 페이징 height:477px; -->
 								<div class="border-radius" style="width: 100%">
 									<table class="list_table border table-sm table-bordered"
 										style="width: 100%; text-align: center; font-size: 14px;">
 										<thead>
 											<tr class="list_th" style="background-color: #f8f9fc;">
-												<th style="width: 3%">번호</th>
-												<th style="width: 5%">분류</th>
-												<th style="width: 10%">약품명</th>
-												<th style="width: 5%">재고수량(개)</th>
-												<th style="width: 10%">구매처</th>
-												<th style="width: 7%">매입가격(원)</th>
-												<th style="width: 5%">당월구매수량(개)</th>
-												<th style="width: 7%">처방가격(원)</th>
-												<th style="width: 5%">처방수량(개)</th>
-												<th style="width: 3%">수정/저장</th>
+												<th style="width: 3%;">번호</th>
+												<th style="width: 5%;">분류</th>
+												<th style="width: 10%;">약품명</th>
+												<th style="width: 5%;">재고수량(개)</th>
+												<th style="width: 10%;">구매처</th>
+												<th style="width: 7%;">매입가격(원)</th>
+												<th style="width: 5%;">당월구매수량(개)</th>
+												<th style="width: 7%;">처방가격(원)</th>
+												<th style="width: 5%;">처방수량(개)</th>
+												<th style="width: 3%;">수정/저장</th>
 											</tr>
 										</thead>
 										<tbody class="tbody1" value="1">
 											<c:forEach items="${stockList }" var="sL" varStatus="status">
 												<tr>
-													<td style="width: 3%">${status.count }</td>
-													<td style="width: 5%">${sL.medical_subcate }</td>
-													<td id="td_medicineName" style="width: 10%">${sL.medical_name }</td>
-													<td style="width: 5%">재고</td>
-													<td id="td_company" style="width: 10%">${sL.medical_company } </td>
-													<td id="td_buyingPrice" style="width: 7%"><fmt:formatNumber value="${sL.medical_buying}" pattern="#,###" /></td>
-													<td style="width: 5%">${sL.medical_buyEa }</td>
-													<td id="td_presPrice" style="width: 7%"><fmt:formatNumber value="${sL.medical_price}" pattern="#,###" /></td>
-													<td id="td_prescriptionEA" style="width: 5%">처방수량</td>
-													<td class="aa" id="td_editIcon" style="width: 3%">
+													<td style="width: 3%;">${status.count }</td>
+													<td style="width: 5%;">${sL.medical_subcate }</td>
+													<td id="td_medicineName" style="width: 10%;">${sL.medical_name }</td>
+													<td style="width: 5%;">재고</td>
+													<td id="td_company" style="width: 10%;">${sL.medical_company } </td>
+													<td id="td_buyingPrice" style="width: 7%;"><fmt:formatNumber value="${sL.medical_buying}" pattern="#,###" /></td>
+													<td style="width: 5%;">${sL.medical_buyEa }</td>
+													<td id="td_presPrice" style="width: 7%;"><fmt:formatNumber value="${sL.medical_price}" pattern="#,###" /></td>
+													<td id="td_prescriptionEA" style="width: 5%;">처방수량</td>
+													<td class="aa" id="td_editIcon" style="width: 3%;">
 														<i class="xi-border-color cursor editbtn" style="color: #4E73DF;"></i>
 													</td>
 												</tr>
@@ -520,7 +526,7 @@ $(function(){
 							</div>
 							
 		<!-- ------------------ 페이징 ------------------- -->
-							<div class="  " style="width: 100%; height: 40px; margin: 5px 0 -10px 0;">
+							<%--  <div class="  " style="width: 100%; height: 40px; margin: 5px 0 -10px 0;">
 								<div class="row row-margin0 d-flex justify-content-center">
 								<ul class="pagination pagination-sm">
 									<!-- <li class="page-item"><a class="page-link" href="#">이전</a></li> -->
@@ -530,9 +536,10 @@ $(function(){
 									<!-- <li class="page-item"><a class="page-link" href="#">다음</a></li> -->
 								</ul>
 								</div>
-							</div>
+							</div>  --%>
+							
+							
 						</div>
-						
 						<!-- card-body -->
 					</div>
 					<!-- card -->
