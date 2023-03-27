@@ -42,7 +42,7 @@
 	SELECT *
 	FROM clientview
 	WHERE owner_no=#{detailNo }
-	
+	AND pet_del = 1
 	</select>
 	
 	<select id="clientPetDetailAjax" parameterType="ClientDTO" resultType="ClientDTO">
@@ -125,7 +125,12 @@
 	<insert id="fileSave" parameterType="HashMap">
 		INSERT INTO upfile
 		SET
+		<if test="owner_noPAdd != '' ">
 		pet_no = (SELECT pet_no FROM pet WHERE pet_name=#{petAddName} AND owner_no=#{owner_noPAdd} AND pet_del = 1),
+		</if>
+		<if test="owner_nameAdd != '' ">
+		pet_no = (SELECT pet_no FROM pet WHERE pet_name=#{petAddName} AND owner_no=(SELECT owner_no FROM owner WHERE owner_name=#{owner_nameAdd }) AND pet_del = 1),
+		</if>
 		filename = #{fileName }
 	</insert>
 

@@ -5,8 +5,9 @@
 
 
 <!-- 보호자 상세보기 Modal -->
+
 <div class="modal fade" id="detailModal" tabindex="-1"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
 	<div class="modal-dialog modal-lg modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header"
@@ -15,6 +16,8 @@
 					없습니다.</h5>
 				<h5 class="modal-title font-weight-bold col-9"
 					style="position: absolute; margin-left: 67px">보호자님</h5>
+				<button type="button" class="btn-close" id="clientModalClose"
+					data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body" style="margin-left: 15px;">
 				<div class="row"
@@ -122,7 +125,7 @@
 												<button type="button"
 													class="btn btn-primary btn-sm cm_petUpdate">수정</button>
 												<button type="button"
-													class="btn btn-danger btn-sm petDelete">삭제</button>
+													class="btn btn-danger btn-sm cm_petDelete">삭제</button>
 											</span>
 										</div>
 									</div>
@@ -314,7 +317,7 @@
 									id="petImg" name="petImg" onchange="previewImage(this,'View_area')" onclick="dataSubmit();" multiple type="file" style="width: 200px;">
 							</div>
 							<div class="btn-group btn-group-sm" role="group" aria-label="Small button group" style="width: 200px;">
-								<button type="button" class="btn btn-outline-dark g-border" id="petImg-reset">이미지 초기화</button>
+								<button type="button" class="btn btn-outline-dark g-border petImg-reset-add" id="petImg-reset-add">이미지 초기화</button>
 							</div>
 						</div>
 						<div class="col-8">
@@ -414,7 +417,7 @@
 									id="petUpdateImg" name="petUpdateImg" type="file" style="width: 200px;">
 							</div>
 							<div class="btn-group btn-group-sm" role="group" aria-label="Small button group" style="width: 200px;">
-								<button type="button" class="btn btn-outline-dark g-border" id="petImg-reset">이미지 초기화</button>
+								<button type="button" class="btn btn-outline-dark g-border petImg-reset" id="petImg-reset">이미지 초기화</button>
 								<button type="button" class="btn btn-outline-dark g-border" id="petImg-delete">이미지 삭제</button>
 							</div>
 						</div>

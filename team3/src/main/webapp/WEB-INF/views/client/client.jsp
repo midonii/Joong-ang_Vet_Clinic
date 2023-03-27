@@ -119,7 +119,24 @@ $(function(){
  
 });
 
- 
+$(function(){
+ 	$(document).ready(function () 
+			{
+			    $("#petImg-delete").hover(function(){
+			        $(this).css('background-color','#e74a3b');
+			    }, function() {
+			        $(this).css('background-color','transparent');
+			    });
+			    
+			    $(".petImg-reset").hover(function(){
+			        $(this).css('background-color','#4e73df');
+			    }, function() {
+			        $(this).css('background-color','transparent');
+			    });
+			    
+			});
+	 
+});
 </script>
 <style type="text/css">
 .table{
@@ -128,6 +145,10 @@ $(function(){
 
 .g-border{
  	border-color: #d1d3e2;
+}
+
+#petImg-delete :hover {
+	background: red;
 }
 </style>
 
@@ -222,7 +243,7 @@ $(function(){
 															<td>
 																<button type="submit"
 																	class="btn btn-outline-primary btn-sm detail-btn"
-																	name="${cl.owner_no }" value="${cl.owner_no }">상세보기</button>
+																	name="${cl.owner_name }" value="${cl.owner_no }">상세보기</button>
 															</td>
 														</tr>
 													</c:forEach>
@@ -233,10 +254,10 @@ $(function(){
 
 										<!-- 버튼 -->
 										<div class="mt-4">
-											<a class="btn btn-danger btn-icon-split float-right ml-2">
+											<a class="btn btn-danger btn-icon-split float-right ml-2 clientDelete">
 												<span class="icon text-white-50"> <i
 													class="fas fa-trash"></i>
-											</span> <span class="text clientDelete">삭제</span>
+											</span> <span class="text">삭제</span>
 											</a> <a
 												class="btn btn-info btn-icon-split float-right ml-2 clientUpdate">
 												<span class="icon text-white-50"> <i
@@ -246,7 +267,7 @@ $(function(){
 												class="btn btn-primary btn-icon-split float-right ml-2 client-add">
 												<span class="icon text-white-50"> <i
 													class="fas fa-flag"></i>
-											</span> <span class="text">추가</span>
+											</span> <span class="text">보호자 추가</span>
 											</a> <a class="btn btn-success btn-icon-split  float-right"
 												id="plus-btn"> <span class="icon text-white-50">
 													<i class="fas fa-check"></i>
