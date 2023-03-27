@@ -2,9 +2,6 @@
 	pageEncoding="UTF-8"%>
 	
 <!-- 처방내역 -->
-<div class="card-body" style="height: 329px;">
-
- 
 <div class="card-body" style="height: 329px; padding:0;">
 	<div class="table-responsive" style="min-height: 300px; float:left;"> 
 	<div class="table-responsive" style="max-height: 300px; float:left;">
