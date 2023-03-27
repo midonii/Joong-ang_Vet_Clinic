@@ -28,6 +28,10 @@ public class Chart1Service {
 		return chartDAO.prescSaveAjax(rightno_map);
 	}
 
+	public int callClientAjax(int receiveNo) {
+		return chartDAO.callClientAjax(receiveNo);
+	}
+
 
 	
 	
