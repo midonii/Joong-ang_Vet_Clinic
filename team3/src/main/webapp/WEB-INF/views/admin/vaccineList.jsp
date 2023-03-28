@@ -23,7 +23,7 @@ if (session.getAttribute("id") != null) {
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Team 3</title>
+<title>중앙동물병원</title>
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -131,16 +131,16 @@ if (session.getAttribute("id") != null) {
 		});
 		$(".medicalDel").click(function() {
 			var medical_no = $(this).attr("value");
-			$.post({
-				url : "/medicalDel",
-				cache : false,
-				data : {
-					"medical_no" : medical_no
-				},
-				dataType : "json"
-			}).done(function(data) {
-				let result = data.result;
-				if (confirm("정말 삭제하시겠습니까?")) {
+			if (confirm("정말 삭제하시겠습니까?")) {
+				$.post({
+					url : "/medicalDel",
+					cache : false,
+					data : {
+						"medical_no" : medical_no
+					},
+					dataType : "json"
+				}).done(function(data) {
+					let result = data.result;
 					if (result == 1) {
 						alert("삭제가 완료되었습니다.");
 						var pagenum = $("#pagenum").val();
@@ -150,10 +150,11 @@ if (session.getAttribute("id") != null) {
 						alert("문제가 발생했습니다. \n다시 시도해주세요.");
 					}
 
-				}
-			}).fail(function(xhr, status, errorThrown) {
-				alert("실패");
-			});
+				}).fail(function(xhr, status, errorThrown) {
+					alert("실패");
+				});
+
+			}
 		});
 	});
 

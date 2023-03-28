@@ -37,15 +37,12 @@ if (session.getAttribute("id") == null) {
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 <link href="css/chart/chart1.css" rel="stylesheet">
 <!-- 시라 css  -->
-<script type="text/javascript"
-	src="cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <!-- JQUERY -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script type="text/javascript" src="../js/chart/chart1.js"></script>
 <!-- 시라 js  -->
-<script type="text/javascript" src="../js/chart/chart2.js"></script>
-<!-- 미선 js -->
 <script type="text/javascript" src="../js/chart/chart3.js"></script>
 <!-- 예지 js -->
 
@@ -161,8 +158,6 @@ if (session.getAttribute("id") == null) {
 
 
 
-			<!-- Bootstrap core JavaScript-->
-			<script src="js/reservation/calender/calender.js"></script>
 			<script src="vendor/jquery/jquery.min.js"></script>
 			<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 

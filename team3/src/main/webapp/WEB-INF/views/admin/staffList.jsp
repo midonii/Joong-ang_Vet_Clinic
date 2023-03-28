@@ -24,6 +24,7 @@ if (session.getAttribute("id") != null) {
 <meta name="author" content="">
 
 <title>중앙동물병원</title>
+<link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png" />
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -43,9 +44,14 @@ if (session.getAttribute("id") != null) {
 <script type="text/javascript">
 	$(function() {
 
-		let searchName2 = $("#searchName").val();
-		$("#search_name").val(searchName2);
-		
+ 		let searchName2 = $("#searchName").val();
+	
+ 		if(searchName2 == ""){
+ 			$("#search_name option[value='all']").attr('selected', 'selected');
+ 		}else{
+ 			$("#search_name").val(searchName2);
+ 		}
+ 		
 		$(".staffDetailModal").click(function() {
 			$("#staffDetailModal").modal("show");
 			var staff_no = $(this).attr("data-value");
@@ -135,7 +141,6 @@ if (session.getAttribute("id") != null) {
 					dataType : "json"
 				}).done(function(data) {
 					let result = data.result;
-					if (confirm("정말 삭제하시겠습니까?")) {
 						if (result == 1) {
 							$("#staffDetailModal").modal("hide");
 							alert("삭제가 완료되었습니다.");
@@ -145,8 +150,6 @@ if (session.getAttribute("id") != null) {
 						} else {
 							alert("문제가 발생했습니다. \n다시 시도해주세요.");
 						}
-
-					}
 				}).fail(function(xhr, status, errorThrown) {
 					alert("실패");
 				});
@@ -163,11 +166,12 @@ if (session.getAttribute("id") != null) {
 				return false;
 			}
 
-			if (searchValue == "" || searchValue.length < 2) {
-				alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
-				return false;
+			if (searchName == "all" && searchValue == "") {
+				location.href="/staffList";
 			}
+	
 			searchForm.submit();
+		
 		});
 	
 	});
@@ -232,7 +236,7 @@ if (session.getAttribute("id") != null) {
 												id="searchName"> <select
 												class="form-control col-md-4" name="search_name"
 												id="search_name" style="border-radius: 5px 0 0 5px">
-												<option value="" selected disabled="disabled">선택</option>
+												<option value="all" selected>전체</option>
 												<option value="name">이름</option>
 												<option value="id">아이디</option>
 												<option value="tel">전화번호</option>

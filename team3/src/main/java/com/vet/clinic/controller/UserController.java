@@ -37,6 +37,12 @@ public class UserController {
 		
 		return "/user/login";
 	}
+	
+	@GetMapping("/")
+	public String login2() {
+		
+		return "/user/login";
+	}
 
 	@PostMapping("/login")
 	public String login(@RequestParam Map<String, Object> map, HttpServletRequest request) throws IOException {

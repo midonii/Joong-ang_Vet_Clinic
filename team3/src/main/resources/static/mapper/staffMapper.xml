@@ -3,10 +3,11 @@
 
 <mapper namespace="com.vet.clinic.dao.StaffDAO">
 
-		<select id="staffList" resultType="StaffDTO"
+	<select id="staffList" resultType="StaffDTO"
 		parameterType="HashMap">
-		SELECT ROW_NUMBER() over(ORDER BY s.staff_no) AS sno, s.*,
-		REGEXP_REPLACE(s.staff_tel, '(02|.{3})(.+)(.{4})', '\\1-\\2-\\3') as s_Tel
+		SELECT ROW_NUMBER() over(ORDER BY s.staff_name) AS sno, s.*,
+		REGEXP_REPLACE(s.staff_tel, '(02|.{3})(.+)(.{4})', '\\1-\\2-\\3') as
+		s_Tel
 		FROM
 		(
 		SELECT *
@@ -14,34 +15,32 @@
 		staff
 		<if test="search_name != null">
 			<choose>
+				<when test="search_name == 'all'">
+					WHERE staff_name LIKE CONCAT('%',#{search_value},'%') OR
+					staff_id LIKE CONCAT('%',#{search_value},'%') OR
+					staff_tel LIKE CONCAT('%',#{search_value},'%') OR 
+					staff_email LIKE CONCAT('%',#{search_value},'%') OR
+					staff_grade LIKE CONCAT('%',#{search_value},'%')
+				</when>
 				<when test="search_name == 'name'">
-					WHERE staff_name LIKE CONCAT('%', #{search_value},
-					'%')
+					WHERE staff_name LIKE CONCAT('%', #{search_value},'%')
 				</when>
 				<when test="search_name =='id'">
-					WHERE staff_id LIKE CONCAT('%',
-					#{search_value}, '%')
+					WHERE staff_id LIKE CONCAT('%',#{search_value}, '%')
 				</when>
 				<when test="search_name =='tel'">
-					WHERE staff_tel LIKE CONCAT('%',
-					#{search_value},
-					'%')
+					WHERE staff_tel LIKE CONCAT('%',#{search_value},'%')
 				</when>
 				<when test="search_name =='email'">
-					WHERE staff_email LIKE CONCAT('%',
-					#{search_value},
-					'%')
+					WHERE staff_email LIKE CONCAT('%',#{search_value},'%')
 				</when>
 				<when test="search_name =='grade'">
-					WHERE staff_grade LIKE CONCAT('%',
-					#{search_value},
-					'%')
+					WHERE staff_grade LIKE CONCAT('%',#{search_value},'%')
 				</when>
 			</choose>
 		</if>
-
 		) s
-		ORDER BY sno DESC
+		ORDER BY sno
 		LIMIT #{pagenum}, #{contentnum};
 
 	</select>

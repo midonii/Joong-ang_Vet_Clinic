@@ -19,6 +19,7 @@ if (session.getAttribute("id") == null) {
 <title>중앙동물병원</title>
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+<link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png" />
 <!-- Custom fonts for this template-->
 <script src="https://kit.fontawesome.com/a31e2023c3.js"
 	crossorigin="anonymous"></script>
@@ -33,12 +34,11 @@ if (session.getAttribute("id") == null) {
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
-<script type="text/javascript"
-	src="cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- JQUERY -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <link rel="stylesheet" href="css/index.css">
+<script type="text/javascript" src="js/indexcal.js"></script>
 </head>
 <script type="text/javascript">
 	$(function() {
@@ -264,12 +264,13 @@ if (session.getAttribute("id") == null) {
 
 			for (let i = 0; pet.length > i; i++) {
 				var pet_no = pet[i].pet_no;
+				var pno = pet[i].pno;
 				var pet_name = pet[i].pet_name;
 				var owner_name = pet[i].owner_name;
 				var owner_tel = pet[i].owner_tel;
 
 				table += "<tr class='text-center' >";
-				table += "<td>" + pet_no + "</td>";
+				table += "<td>" + pno + "</td>";
 				table += "<td>" + pet_name + "</td>";
 				table += "<td>" + owner_name + "</td>";
 				table += "<td>" + owner_tel + "</td>";

@@ -1,11 +1,26 @@
 /* 예지 */
 $(function() {
-	$(".sidebar").addClass("toggled");
+	
 	$("#chartAdd").click(function() {
+		var trlength = $(".saveTable1 > tr").length;
+		var objArr = [];
+
+		for (i = 0; i < trlength; i++) {
+			objArr.push({ medical_no: $("[name='mediNum" + i + "']").attr('id'), medical_ea: $("[name='mediNum" + i + "']").val() });
+		}
+
+		var arr = new Array();
+		var arr2 = new Array();
+		for (let obj of objArr) {
+			arr.push(obj.medical_ea);
+			arr2.push(obj.medical_no);
+		}
+
 		var pet_no = $("#pet_no").val();
 		var receive_no = $("#receive_no").val();
-		var chart_memo = $("#chart_memo").val().replace(/\n/g,"<br>");
-		console.log(chart_memo);
+		var chart_memo = $("#chart_memo").val().replace(/\n/g, "<br>");
+		var totalprice = $(".totalPrice").attr("id");
+
 		if (pet_no == "") {
 			alert("동물을 선택해주세요.");
 		} else {
@@ -14,7 +29,10 @@ $(function() {
 				data: {
 					"pet_no": pet_no,
 					"chart_memo": chart_memo,
-					"receive_no": receive_no
+					"receive_no": receive_no,
+					"totalPrice": totalprice,
+					"arr": arr,
+					"arr2": arr2
 				},
 				dataType: "json"
 			}).done(function(data) {

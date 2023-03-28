@@ -24,6 +24,10 @@ public interface Chart3DAO {
 
 	public String chartNo(Map<String, Object> map);
 
+	public void dataAdd(Map<String, Object> dataMap);
+
+	public int dataDel(String string);
+
 
 
 }

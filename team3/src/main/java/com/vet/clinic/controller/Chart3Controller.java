@@ -29,20 +29,34 @@ public class Chart3Controller {
 
 	@ResponseBody
 	@PostMapping("/chartAdd")
-	public String chartAdd(@RequestParam Map<String, Object> map, HttpSession session) {
+	public String chartAdd(@RequestParam Map<String, Object> map, @RequestParam(value = "arr[]") int[] arr,
+			@RequestParam(value = "arr2[]") int[] arr2, HttpSession session) {
 		JSONObject json = new JSONObject();
 		if (session.getAttribute("staff_grade").equals("doctor")) {
-			((String) map.get("chart_memo")).replaceAll("<br>","\r\n");
+			((String) map.get("chart_memo")).replaceAll("<br>", "\r\n");
 			map.put("staff_id", session.getAttribute("id"));
-			System.out.println(map.get("chart_memo")); 
+			System.out.println(map.get("chart_memo"));
+
 			int result = chart3Service.chartAdd(map);
 			int stateUpdate = chart3Service.stateUpdate(map);
 
-			Map<String, Object> payMap = new HashMap<String, Object>();
 			String chartNo = chart3Service.chartNo(map);
+			/* 수납 데이터 쌓기 */
+			Map<String, Object> payMap = new HashMap<String, Object>();
 			payMap.put("chart_no", chartNo);
 			payMap.put("receive_no", map.get("receive_no"));
 			int payAdd = chart3Service.payAdd(payMap);
+
+			/* 처방 내역 데이터 쌓기 */
+			Map<String, Object> dataMap = new HashMap<String, Object>();
+			for (int i = 0; i < arr.length; i++) {
+				dataMap.put("chart_no", chartNo);
+				dataMap.put("medical_no", arr2[i]);
+				dataMap.put("medical_ea", arr[i]);
+				dataMap.put("pet_no", map.get("pet_no"));
+				chart3Service.dataAdd(dataMap);
+				
+			}
 			json.put("result", result);
 			json.put("stateUpdate", stateUpdate);
 			json.put("payAdd", payAdd);
@@ -53,12 +67,23 @@ public class Chart3Controller {
 		}
 		return json.toString();
 	}
+
 	@ResponseBody
 	@PostMapping("/chartUpdate")
-	public String chartUpdate(@RequestParam Map<String, Object> map, HttpSession session) {
+	public String chartUpdate(@RequestParam Map<String, Object> map, @RequestParam(value = "arr[]") int[] arr,
+			@RequestParam(value = "arr2[]") int[] arr2, HttpSession session) {
 		JSONObject json = new JSONObject();
 		if (session.getAttribute("staff_grade").equals("doctor")) {
 			map.put("staff_id", session.getAttribute("id"));
+			int delData = chart3Service.dataDel((String) map.get("chart_no"));
+			Map<String, Object> dataMap = new HashMap<String, Object>();
+			for (int i = 0; i < arr.length; i++) {
+				dataMap.put("chart_no", map.get("chart_no"));
+				dataMap.put("medical_no", arr2[i]);
+				dataMap.put("medical_ea", arr[i]);
+				dataMap.put("pet_no", map.get("pet_no"));
+				chart3Service.dataAdd(dataMap);
+			}
 			int result = chart3Service.chartUpdate(map);
 			json.put("result", result);
 		} else {

@@ -14,6 +14,10 @@
 		noticeview
 		<if test="search_name != null">
 			<choose>
+				<when test="search_name == 'all'">
+					WHERE notice_title LIKE CONCAT('%', #{search_value}, '%') OR
+					notice_content LIKE CONCAT('%', #{search_value}, '%')
+				</when>
 				<when test="search_name == 'title'">
 					WHERE notice_title LIKE CONCAT('%', #{search_value},
 					'%')

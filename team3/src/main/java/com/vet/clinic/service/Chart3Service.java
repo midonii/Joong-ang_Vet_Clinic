@@ -39,4 +39,12 @@ public class Chart3Service {
 		return chart3DAO.chartNo(map);
 	}
 
+	public void dataAdd(Map<String, Object> dataMap) {
+		chart3DAO.dataAdd(dataMap);
+	}
+
+	public int dataDel(String string) {
+		return chart3DAO.dataDel(string);
+	}
+
 }
