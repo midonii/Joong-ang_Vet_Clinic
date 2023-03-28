@@ -44,16 +44,19 @@ if (session.getAttribute("id") != null) {
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
 <script type="text/javascript">
+	function page(idx, search_name, search_value) {
+		var pagenum = idx;
+		let searchValue = search_value;
+		let searchName = search_name;
+		var contentnum = $("#contentnum").val();
+		location.href = "${pageContext.request.contextPath}/inspection?pagenum="
+				+ pagenum
+				+ "&contentnum="
+				+ contentnum
+				+ "&search_name="
+				+ searchName + "&search_value=" + searchValue;
 
-function page(idx,search_name, search_value) {
-	var pagenum = idx;
-	let searchValue = search_value;
-	let searchName = search_name;
-	var contentnum = $("#contentnum").val();
-	location.href = "${pageContext.request.contextPath}/inspection?pagenum="
-			+ pagenum + "&contentnum=" + contentnum+"&search_name=" + searchName +"&search_value=" + searchValue;
-
-}
+	}
 
 	$(function() {
 		$("#addBtn").click(function() {
@@ -80,7 +83,7 @@ function page(idx,search_name, search_value) {
 			}
 
 		});
-		
+
 		$(".inspectionUpdate").click(function() {
 			var medical_no = $(this).attr("value");
 			$.post({
@@ -136,8 +139,7 @@ function page(idx,search_name, search_value) {
 			});
 		});
 
-		
-	 	$("#search_btn").click(function() {
+		$("#search_btn").click(function() {
 			let searchValue = $("#search_value").val();
 			let searchName = $("#search_name").val();
 			if (searchName == "") {
@@ -150,23 +152,22 @@ function page(idx,search_name, search_value) {
 			}
 			searchForm.submit();
 		});
-	 	
-	 	let searchName2 = $("#searchName").val();
-	 	$("#search_name").val(searchName2);
 
-	 	
+		let searchName2 = $("#searchName").val();
+		$("#search_name").val(searchName2);
+
 		$(".medicalDel").click(function() {
 			var medical_no = $(this).attr("value");
-			$.post({
-				url : "/medicalDel",
-				cache : false,
-				data : {
-					"medical_no" : medical_no
-				},
-				dataType : "json"
-			}).done(function(data) {
-				let result = data.result;
-				if (confirm("정말 삭제하시겠습니까?")) {
+			if (confirm("정말 삭제하시겠습니까?")) {
+				$.post({
+					url : "/medicalDel",
+					cache : false,
+					data : {
+						"medical_no" : medical_no
+					},
+					dataType : "json"
+				}).done(function(data) {
+					let result = data.result;
 					if (result == 1) {
 						alert("삭제가 완료되었습니다.");
 						var pagenum = $("#pagenum").val();
@@ -176,14 +177,12 @@ function page(idx,search_name, search_value) {
 						alert("문제가 발생했습니다. \n다시 시도해주세요.");
 					}
 
-				}
-			}).fail(function(xhr, status, errorThrown) {
-				alert("실패");
-			});
+				}).fail(function(xhr, status, errorThrown) {
+					alert("실패");
+				});
+			}
 		});
 	});
-
-	
 </script>
 </head>
 
@@ -282,7 +281,7 @@ function page(idx,search_name, search_value) {
 
 												</div>
 											</li>
-												<li class="list-group-item mb-4">
+											<li class="list-group-item mb-4">
 												<div class="row">
 													<div class="col-md-3 text-center"
 														style="line-height: 38px;">처방가격</div>
@@ -352,7 +351,7 @@ function page(idx,search_name, search_value) {
 														<td>${ml.medical_subcate }</td>
 														<td>${ml.medical_name }</td>
 														<td><fmt:formatNumber value="${ml.medical_price }"
-															pattern="#,###" />원</td>
+																pattern="#,###" />원</td>
 														<td>
 															<button type="button"
 																class="btn btn-circle btn-sm btn-warning inspectionUpdate"
@@ -457,8 +456,8 @@ function page(idx,search_name, search_value) {
 									<div class="row">
 										<div class="col-md-3 text-center" style="line-height: 38px;">처방가격</div>
 										<div class="col-md-9">
-											<input type="text" class="form-control" id="inspection_priceU"
-												name="inspection_priceU">
+											<input type="text" class="form-control"
+												id="inspection_priceU" name="inspection_priceU">
 										</div>
 									</div>
 								</li>

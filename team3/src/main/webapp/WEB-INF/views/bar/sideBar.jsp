@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Sidebar -->
+<script>
+$(function(){
+	$(".sidebar").addClass("toggled");
+});
+</script>
 <ul
 	class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
 	id="accordionSidebar">

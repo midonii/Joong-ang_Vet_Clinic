@@ -41,316 +41,7 @@ if (session.getAttribute("id") == null) {
 <link href="css/chart/chart1.css" rel="stylesheet">
 <!-- <script type="text/javascript" src="js/chart/chart1.js"></script> -->
 <script type="text/javascript" src="js/chart/chart3.js"></script>
-<script type="text/javascript">
-	$(function() {
-		// sidebar 접어서 창 열기
-		$(".sidebar").addClass("toggled");
-		
-		var pet_no = $("#pet_no").val();
-	
-		$.post({
-			url: "/receiveboard",
-			dataType: "json"
-		}).done(function(data) {
-			let receiveboard = data.receiveboard;
-		
-			var table = "<table class='table table-sm text-center' style='margin-top:-8px;'>";
-
-			for (let i = 0; i < receiveboard.length; i++) {
-				var bno = receiveboard[i].bno;
-				var pet_name = receiveboard[i].pet_name;
-				var type_name = receiveboard[i].type_name;
-				var pet_no = receiveboard[i].pet_no;
-				var owner_name = receiveboard[i].owner_name;
-				var receive_time = receiveboard[i].receive_time;
-				var receive_no = receiveboard[i].receive_no;
-				var receive_state = receiveboard[i].receive_state;
-				var reservation_date = receiveboard[i].reservation_date;
-				var type_name = receiveboard[i].type_name;
-
-
-				table += "<tr>";
-				table += "<td class='col-1' style='vertical-align: middle' >" + bno + "</td>";
-				if (reservation_date != null) {
-					table += "<td class='col-2'><span class=' badge  rounded-pill bgtime1 '>접</span>&nbsp;" + receive_time;
-					table += "<br><span class=' badge  rounded-pill bgtime2 '>예</span>&nbsp;" + reservation_date + "</td>";
-				} else {
-					table += "<td class='col-2' style='vertical-align : middle;'><span class=' badge  rounded-pill bgtime1'>접</span>&nbsp;" + receive_time;
-				}
-				table += "<td class='col-5'><a  style='text-decoration: none;' id='pet_name' value='" + receive_no + "' >";
-				table += "<b class='text-primary' style='cursor:pointer;'>" + pet_name + "&nbsp;(" + type_name + ")" + "</b></a><br>" + owner_name + "</td>";
-				if (receive_state == 1) {
-					table += "<td style='vertical-align: middle'><span class='badge text-bg-primary'>진료대기</span></td>";
-				} else if(receive_state == 2) {
-					table += "<td style='vertical-align: middle'><span class='badge text-bg-danger'>진료중</span></td>";
-
-				} else if(receive_state == 3) {
-					table += "<td style='vertical-align: middle'><span class='badge text-bg-secondary'>진료완료</span></td>";
-
-				}
-				table += "<td class='col-3'><button class='btn btn-sm btn-primary recbtn'>호출</button></td>";
-
-				table += "</tr>";
-
-
-			}
-			$("#receiveboard").append(table);
-
-		}).fail(function(){
-			alert("문제가 발생했습니다.");
-		});
-
-		
-		$
-				.post({
-					url : "/petVacAjax",
-					cache : false,
-					data : {
-						"pet_no" : pet_no
-					},
-					dataType : "json"
-				})
-				.done(
-						function(data) {
-							let pet = data.pet;
-							$("#vac").empty();
-							var div = "";
-							if (pet == "") {
-								div += "<div style='height:300px;line-height: 300px;text-align: center;'>접종 내역이 없습니다.</div>";
-							} else {
-								for (let i = 0; i < pet.length; i++) {
-									var vac_name = pet[i].medical_name;
-									var vacdata_date = pet[i].chart_date;
-									div += "<div class='list-group-item row'><div class='col-7 font-weight-bold float-left text-center'>"
-											+ vac_name
-											+ "</div><div class='col-5 float-left text-center'>"
-											+ vacdata_date + "</div></div>";
-								}
-							}
-							$("#vac").append(div);
-						}).fail(function(xhr, status, errorThrown) {
-					alert("실패");
-				});
-	});
-
-	$(function() {
-		var pet_no = $("#pet_no").val();
-		$
-				.post({
-					url : "/chartAjax",
-					cache : false,
-					data : {
-						"pet_no" : pet_no
-					},
-					dataType : "json"
-				})
-				.done(
-						function(data) {
-							let chart = data.chart;
-							$("#chart").empty();
-							var chartdiv = "<div class='accordion ' id='accordionExample' style='height:700px;' >"
-							if (data.chart == "") {
-								chartdiv += "<div class='text-center' style='height:705px; line-height:705px;'>진료 내역이 없습니다.</div>";
-							} else {
-								for (let i = 0; i < chart.length; i++) {
-									var receieve_no = chart[i].receieve_no;
-									var pet_no = chart[i].pet_no;
-									var pet_name = chart[i].pet_name;
-									var chart_no = chart[i].chart_no;
-									var chart_memo = chart[i].chart_memo;
-									var chart_date = chart[i].chart_date;
-									var staff_no = chart[i].staff_no;
-									var staff_name = chart[i].staff_name;
-									var staff_grade = chart[i].staff_grade;
-									$("#chart_no").val(chart[i].chart_no);
-
-									chartdiv += "<div class='accordion-item' ><h2 class='accordion-header' id='"+chart_date+"'>"
-									chartdiv += "<button class='accordion-button collapsed pastChart ' type='button' data-toggle='collapse' data-target='#A"
-											+ chart_no + "' "
-									chartdiv += "aria-expanded='";
-									chartdiv += i == 0 ? true : false + "'";
-									chartdiv += " aria-controls='A" + chart_no
-											+ "' value='" + chart_no + "'>";
-									chartdiv += "	<div class='font-weight-bold'>차트번호 :</div>";
-									chartdiv += "	<div class='ml-2 font-weith'>"
-											+ chart_no + "</div>";
-									chartdiv += "	<div class='ml-5 font-weight-bold'>진료날짜 :</div>";
-									chartdiv += "	<div class='ml-2'>"
-											+ chart_date + "</div>";
-									chartdiv += "	</button></h2>";
-									chartdiv += "<div id='A"+chart_no+"' class='accordion-collapse collapse' aria-labelledby='"+chart_date+"' data-parent='#accordionExample'>";
-									chartdiv += "<div class='accordion-body' >"
-									chartdiv += "<div class='d-flex justify-content-end'><span>담당의 : </span><span class='font-weight-bold'>&nbsp;"
-											+ staff_name + "</span></div>";
-
-									chartdiv += "<div class='mb-4'> <div class='card h-100 py-2'> <div class='card-body'>";
-									chartdiv += "<div class='row no-gutters align-items-center'> <div class='col mr-2'>";
-									chartdiv += "<div class='text-sm font-weight-bold text-info text-uppercase mb-1'>의사소견 </div>";
-									chartdiv += "<div class='row no-gutters align-items-center'>"
-											+ chart_memo
-											+ "</div></div></div></div></div></div>";
-
-									chartdiv += "<div class='card mb-4'><div class='card-body'><div class='d-flex justify-content-center'>";
-									chartdiv += "<div class='text-sm font-weight-bold text-info text-uppercase mb-3 '>처방 상세 내역</div></div><div class='table-responsive' style='height:200px; overflow: auto;'><div id='clientScroll'>";
-									chartdiv += "<table class='table table-center table-sm table-bordered text-center'  id='dataTable' width='100%' cellspacing='0'>";
-									chartdiv += "<thead><tr>";
-									chartdiv += "<th class='col-md-2'>구분</th>";
-									chartdiv += "<th class='col-md-2'>분류</th>";
-									chartdiv += "<th class='col-md-4'>처방명</th>";
-									chartdiv += "<th class='col-md-2'>수량</th>";
-									chartdiv += "<th class='col-sm-2'>담당자</th></tr></thead>";
-
-									chartdiv += "<tbody id='client-table"+chart_no+"' data-spy='scroll' data-target='#list-example' data-offset='0' class='scrollspy-example'>";
-
-									chartdiv += "<tr class='chartList"+chart_no+"'>";
-									chartdiv += "<td>(카테고리)</td>";
-									chartdiv += "<td>(상세 카테고리)</td>";
-									chartdiv += "<td class='text-left'>(처방내역)</td>";
-									chartdiv += "<td>(수량)</td>";
-									chartdiv += "<td>(담당자)</td>";
-									chartdiv += "</tbody></table></div></div></div></div></div></div></div>";
-
-								}
-							}
-
-							$("#chart").append(chartdiv);
-
-							$(document)
-									.on(
-											"click",
-											".pastChart",
-											function() {
-												var chartNo = $(this).attr(
-														"value");
-												$("#chart_no").val(chartNo);
-												$("#memo").val("");
-												$
-														.post(
-																{
-																	url : "/CDetailAjax",
-																	data : {
-																		"chart_no" : chartNo,
-																		"pet_no" : pet_no
-																	},
-																	dataType : "json"
-																})
-														.done(
-																function(data) {
-																	let petExam = data.petExam;
-																	let petDrug = data.petDrug;
-																	let petVac = data.petVac;
-																	let petChart = data.chart;
-																	$("#memo")
-																			.val(
-																					petChart[0].chart_memo);
-
-																})
-														.fail(
-																function() {
-																	alert("문제가 발생했습니다.");
-																});
-
-												$
-														.post(
-																{
-																	url : "/preAjax",
-																	data : {
-																		"chart_no" : chartNo,
-																		"pet_no" : pet_no
-																	},
-																	dataType : "json"
-																})
-														.done(
-																function(data) {
-																	let petMedicalData = data.petMedicalData;
-																	var table = "";
-																	$(
-																			'.chartList'
-																					+ chartNo)
-																			.hide();
-																	$(
-																			"#client-table"
-																					+ chartNo)
-																			.empty();
-
-																	// -- 검사
-																	for (let i = 0; petMedicalData.length > i; i++) {
-																		var medical_category = petMedicalData[i].medical_category;
-																		var medical_subcate = "";
-																		if (petMedicalData[i].medical_subcate != undefined) {
-																			medical_subcate = petMedicalData[i].medical_subcate;
-																		}
-																		var medical_name = petMedicalData[i].medical_name;
-																		var staff_name = petMedicalData[i].staff_name;
-																		var staff_grade = petMedicalData[i].staff_grade;
-																		var medicaldata_ea = petMedicalData[i].medicaldata_ea;
-
-																		table += "<tr class='chartList"+chartNo+"'>";
-																		table += "<td>"
-																				+ medical_category
-																				+ "</td>";
-																		table += "<td>"
-																				+ medical_subcate
-																				+ "</td>";
-																		table += "<td class='text-left'>"
-																				+ medical_name
-																				+ "</td>";
-																		table += "<td>"
-																				+ medicaldata_ea
-																				+ "</td>";
-																		table += "<td>"
-																				+ staff_name
-																				+ "</td>";
-																		table += "</tr>";
-
-																	}
-
-																	$(
-																			"#client-table"
-																					+ chartNo)
-																			.append(
-																					table);
-																	$(
-																			"#client-table"
-																					+ chartNo)
-																			.show();
-
-																})
-														.fail(
-																function() {
-																	alert("문제가 발생했습니다.");
-																});
-
-											});
-						}).fail(function(xhr, status, errorThrown) {
-					alert("실패");
-				});
-
-		$("#chartUpdate").click(function() {
-			var chart_no = $("#chart_no").val();
-			var chart_memo = $("#memo").val();
-			$.post({
-				url : "/chartUpdate",
-				data : {
-					"chart_no" : chart_no,
-					"chart_memo" : chart_memo,
-				},
-				dataType : "json"
-			}).done(function(data) {
-				if (confirm("차트를 수정하시겠습니까?")) {
-					if (data.result == 1) {
-						alert("차트가 수정되었습니다.");
-						location.href = "/chartUpdate?pet_no=" + pet_no;
-					} else {
-						alert("권한이 없습니다.");
-					}
-				}
-			}).fail(function() {
-				alert("문제발생");
-			});
-		});
-	});
-</script>
+<script type="text/javascript" src="js/chart/chartUpdate.js"></script>
 
 </head>
 <body id="page-top">
@@ -453,11 +144,44 @@ if (session.getAttribute("id") == null) {
 								<div
 									class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
 									<h6 class="m-0 font-weight-bold text-primary">처방내역</h6>
-
+									<a class="text-primary"
+										style="font-size: 14px; text-decoration: none;cursor: pointer;" id="presc">
+										추가<i class="fa-regular fa-plus" style="margin-left: 2px;cursor: pointer; "></i>
+									</a>
 								</div>
 
 								<!-- Card Body -->
-								<div class="card-body" style="height: 329px;"></div>
+								<div class="card-body" style="height: 329px; padding: 0;">
+									<div class="table-responsive"
+										style="min-height: 300px; float: left;">
+										<div class="table-responsive"
+											style="max-height: 300px; float: left;">
+											<table class="table table-bordered table-sm" width="100%"
+												cellspacing="0"
+												style="text-align: center; overflow: auto; max-height: 280px;">
+												<thead>
+													<tr class="bg-gray-100" style="float: center;">
+														<th class="col-2">구분</th>
+														<th class="col-5">이름</th>
+														<th class="col-2">수량</th>
+														<th class="col-4">합계</th>
+													</tr>
+												</thead>
+												<tbody class="CBTable">
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div
+										style="width: 100%; border-top: 1px solid #ccc; float: left; height: 40px;">
+										<div
+											style="float: left; width: calc(100% - 150px); text-align: right;">
+											총 합계 :</div>
+										<div class="totalPrice"
+											style="float: left; width: 130px; text-align: right; margin-right: 10px;"></div>
+
+									</div>
+								</div>
 							</div>
 						</div>
 
@@ -470,7 +194,7 @@ if (session.getAttribute("id") == null) {
 								</div>
 
 								<!-- Card Body -->
-								<div class="card-body" style="height: 328px;">
+								<div class="card-body bg-gray-100" style="height: 328px;">
 									<div class="table-responsive" id="receiveboard"
 										style="overflow: auto; max-height: 280px;">
 
@@ -577,7 +301,7 @@ if (session.getAttribute("id") == null) {
 				</div>
 			</div>
 
-
+			<%@ include file="./chart_cheobangM.jsp"%>
 			<%@ include file="../bar/footer.jsp"%>
 			<%@ include file="../bar/logoutModal.jsp"%>
 

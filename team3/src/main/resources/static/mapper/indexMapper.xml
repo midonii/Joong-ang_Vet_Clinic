@@ -69,7 +69,7 @@
 	<select id="indexPet" resultType="HashMap"
 		parameterType="HashMap">
 		SELECT ROW_NUMBER()
-		over(ORDER BY p.pet_no) AS pno,
+		over(ORDER BY p.pet_name) AS pno,
 		p.*,REGEXP_REPLACE(p.owner_tel, '(02|.{3})(.+)(.{4})', '\\1-\\2-\\3')
 		as o_Tel
 		FROM
@@ -81,8 +81,7 @@
 			AND
 			pet_name LIKE CONCAT('%',#{search_value}, '%') OR
 			owner_name LIKE CONCAT('%',#{search_value}, '%') OR
-			owner_tel LIKE
-			CONCAT('%',#{search_value}, '%')
+			owner_tel LIKE CONCAT('%',#{search_value}, '%')
 		</if>
 		) p
 	</select>

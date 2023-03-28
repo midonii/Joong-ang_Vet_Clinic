@@ -136,6 +136,7 @@ if (session.getAttribute("id") != null) {
 
 		$(".medicalDel").click(function() {
 			var medical_no = $(this).attr("value");
+			if (confirm("정말 삭제하시겠습니까?")) {
 			$.post({
 				url : "/medicalDel",
 				cache : false,
@@ -145,7 +146,6 @@ if (session.getAttribute("id") != null) {
 				dataType : "json"
 			}).done(function(data) {
 				let result = data.result;
-				if (confirm("정말 삭제하시겠습니까?")) {
 					if (result == 1) {
 						alert("삭제가 완료되었습니다.");
 						var pagenum = $("#pagenum").val();
@@ -155,10 +155,11 @@ if (session.getAttribute("id") != null) {
 						alert("문제가 발생했습니다. \n다시 시도해주세요.");
 					}
 
-				}
+				
 			}).fail(function(xhr, status, errorThrown) {
-				alert("실패");
+				alert("삭제할 수 없습니다.");
 			});
+			}
 		});
 	});
 
@@ -393,81 +394,82 @@ if (session.getAttribute("id") != null) {
 							</div>
 						</div>
 					</div>
-
-
-
-					<!-- /.container-fluid -->
-
 				</div>
-				<!-- End of Main Content -->
-
-				<%@ include file="../bar/footer.jsp"%>
-
-				<%@ include file="../bar/logoutModal.jsp"%>
 
 
-				<!-- 약 데이터 수정 Modal-->
-				<div class="modal fade" id="updateModal" tabindex="-1" role="dialog"
-					aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">약품 데이터 수정</h5>
-								<button class="close" type="button" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true">×</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<input type="hidden" id="medical_noU" name="medical_noU">
 
-								<ul class="list-group list-group-flush">
-									<li class="list-group-item">
-										<div class="row">
-											<div class="col-md-3 text-center" style="line-height: 38px;">이름</div>
-											<div class="col-md-9">
-												<input type="text" class="form-control" id="medical_nameU"
-													name="medical_nameU">
-											</div>
+				<!-- /.container-fluid -->
+
+			</div>
+			<!-- End of Main Content -->
+
+			<%@ include file="../bar/footer.jsp"%>
+
+			<%@ include file="../bar/logoutModal.jsp"%>
+
+
+			<!-- 약 데이터 수정 Modal-->
+			<div class="modal fade" id="updateModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">약품 데이터 수정</h5>
+							<button class="close" type="button" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<input type="hidden" id="medical_noU" name="medical_noU">
+
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item">
+									<div class="row">
+										<div class="col-md-3 text-center" style="line-height: 38px;">이름</div>
+										<div class="col-md-9">
+											<input type="text" class="form-control" id="medical_nameU"
+												name="medical_nameU">
 										</div>
-									</li>
-									<li class="list-group-item mb-4">
-										<div class="row">
-											<div class="col-md-3 text-center" style="line-height: 40px;">분류</div>
-											<div class="col-md-9">
-												<select class="form-control" id="medical_subcateU"
-													name="medical_subcateU">
-													<option value="" selected disabled="disabled">선택</option>
-													<c:forEach items="${subcate}" var="sc">
-														<option value="${sc }">${sc }</option>
-													</c:forEach>
-												</select>
-											</div>
-
+									</div>
+								</li>
+								<li class="list-group-item mb-4">
+									<div class="row">
+										<div class="col-md-3 text-center" style="line-height: 40px;">분류</div>
+										<div class="col-md-9">
+											<select class="form-control" id="medical_subcateU"
+												name="medical_subcateU">
+												<option value="" selected disabled="disabled">선택</option>
+												<c:forEach items="${subcate}" var="sc">
+													<option value="${sc }">${sc }</option>
+												</c:forEach>
+											</select>
 										</div>
-									</li>
-								</ul>
-							</div>
-							<div class="modal-footer">
-								<button type="submit" class="btn btn-primary updateFrm">수정</button>
-							</div>
+
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary updateFrm">수정</button>
 						</div>
 					</div>
 				</div>
+			</div>
 
 
 
 
 
-				<!-- Bootstrap core JavaScript-->
-				<script src="vendor/jquery/jquery.min.js"></script>
-				<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+			<!-- Bootstrap core JavaScript-->
+			<script src="vendor/jquery/jquery.min.js"></script>
+			<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-				<!-- Core plugin JavaScript-->
-				<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+			<!-- Core plugin JavaScript-->
+			<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-				<!-- Custom scripts for all pages-->
-				<script src="js/sb-admin-2.min.js"></script>
+			<!-- Custom scripts for all pages-->
+			<script src="js/sb-admin-2.min.js"></script>
 </body>
 
 </html>

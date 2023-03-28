@@ -34,6 +34,12 @@ public class UserController {
 		
 		return "/user/login";
 	}
+	
+	@GetMapping("/")
+	public String login2() {
+		
+		return "/user/login";
+	}
 
 	@ResponseBody
 	@PostMapping("/login")

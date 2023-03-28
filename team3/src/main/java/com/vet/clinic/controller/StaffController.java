@@ -24,7 +24,8 @@ public class StaffController {
 
 	@GetMapping("/staffList")
 	public ModelAndView staffList(ModelAndView mv, @RequestParam(value = "pagenum", defaultValue = "1") String pagenum,
-			@RequestParam(value = "contentnum", defaultValue = "10") String contentnum, HttpServletRequest request) {
+			@RequestParam(value = "contentnum", defaultValue = "10") String contentnum,
+			HttpServletRequest request) {
 		mv = new ModelAndView("/admin/staffList");
 		SearchDTO searchDTO = new SearchDTO();
 		searchDTO.setSearch_name(request.getParameter("search_name"));

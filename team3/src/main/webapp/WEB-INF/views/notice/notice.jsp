@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <%
-
 if (session.getAttribute("id") == null) {
 	response.sendRedirect("/login?error=4321");
 }
@@ -18,9 +17,10 @@ if (session.getAttribute("id") == null) {
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Team 3</title>
+<title>중앙동물병원</title>
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+<link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png" />
 <!-- Custom fonts for this template-->
 <script src="https://kit.fontawesome.com/a31e2023c3.js"
 	crossorigin="anonymous"></script>
@@ -56,8 +56,11 @@ if (session.getAttribute("id") == null) {
 		});
 
 		let searchName2 = $("#searchName").val();
-		$("#search_name").val(searchName2);
-
+		if (searchName2 == "") {
+			$("#search_name option[value='all']").attr('selected', 'selected');
+		} else {
+			$("#search_name").val(searchName2);
+		}
 		$(".refresh").click(function() {
 
 			var pagenum = $("#pagenum").val();
@@ -68,17 +71,11 @@ if (session.getAttribute("id") == null) {
 		$("#search_btn").click(function() {
 			let searchName = $("#search_name").val();
 			let searchValue = $("#search_value").val();
-			// 		alert(searchName + " ::" +searchValue);
 
-			if (searchName == 0) {
-				alert("검색하시려는 항목을 선택하세요");
-				return false;
+			if (searchName == "all" && searchValue == "") {
+				location.href="/notoce";
 			}
-
-			if (searchValue == "" || searchValue.length < 1) {
-				alert("검색어를 1글자 이상입력하세요.");
-				return false;
-			}
+			
 			searchForm.submit();
 		});
 
@@ -274,7 +271,7 @@ if (session.getAttribute("id") == null) {
 												id="searchName"> <select
 												class="form-control col-md-3" name="search_name"
 												id="search_name" style="border-radius: 5px 0 0 5px">
-												<option value="" selected="selected" disabled="disabled" >선택</option>
+												<option value="all" selected>전체</option>
 												<option value="title">제목</option>
 												<option value="content">내용</option>
 											</select> <input type="text" name="search_value" id="search_value"
@@ -305,7 +302,7 @@ if (session.getAttribute("id") == null) {
 									<thead>
 										<tr class="bg-gray-200">
 											<th class="col-1">글번호</th>
-											<th class="col-6 text-left">제목</th>
+											<th class="col-6">제목</th>
 											<th class="col-1">글쓴이</th>
 											<th class="col-2">날짜</th>
 											<th class="col-1">조회수</th>

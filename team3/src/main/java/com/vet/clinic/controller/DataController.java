@@ -102,7 +102,11 @@ public class DataController {
 	public String medicalDel(@RequestParam(name = "medical_no") int medical_no) {
 		JSONObject json = new JSONObject();
 		int result = dataService.medicalDel(medical_no);
-		json.put("result", result);
+		if(result == 1) {
+			json.put("result", result);
+		}else {
+			json.put("result", 0);
+		}
 		return json.toString();
 	}
 
@@ -152,7 +156,11 @@ public class DataController {
 	public String petTypeDel(@RequestParam(name = "type_no") int type_no) {
 		JSONObject json = new JSONObject();
 		int result = dataService.petTypeDel(type_no);
-		json.put("result", result);
+		if(result == 1) {
+			json.put("result", result);
+		}else {
+			json.put("result", 0);
+		}
 		return json.toString();
 	}
 
