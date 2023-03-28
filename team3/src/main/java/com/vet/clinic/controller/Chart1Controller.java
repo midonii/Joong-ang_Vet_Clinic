@@ -31,7 +31,7 @@ public class Chart1Controller {
 	public String petdetailAjax(@RequestParam("receiveno") String receiveno){
 		JSONObject json = new JSONObject();
 		Map<String, Object> map = chartService.petdetailAjax(receiveno);
-		
+		// System.err.println(map);
 		json.put("result", map);
 		return json.toString();
 	}
@@ -76,14 +76,19 @@ public class Chart1Controller {
 	  //접수 현황 호출버튼
 	  @ResponseBody
 	  @PostMapping(value="/callClientAjax", produces= "application/json;charset=UTF-8")
-	  public String callClientAjax(@RequestParam("receiveNo") int receiveNo) {
+	  public String callClientAjax(@RequestParam("receiveNo") String receiveno) {
 		  //System.err.println(receiveNo);
 		  
-		  int result = chartService.callClientAjax(receiveNo);
+		  int result = chartService.callClientAjax(receiveno);
 		  
 		  JSONObject json = new JSONObject();
 		  
-		  json.put("saveList", receiveNo);
+		 // Map<String, Object> map = chartService.petdetailAjax(receiveno);
+			
+			
+		  //json.put("petDetail", map);
+		  
+		  json.put("saveList", receiveno);
 		  return json.toString(); 
 		 
 	  }

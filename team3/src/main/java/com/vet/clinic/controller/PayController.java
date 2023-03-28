@@ -23,8 +23,6 @@ public class PayController {
 	@Autowired
 	private PayService payService;
 	
-	
-	
 	@GetMapping("/pay")
 	public ModelAndView pay(ModelAndView mv, @RequestParam(value="pagenum",defaultValue = "1") String pagenum ,
 			@RequestParam(value = "contentnum", defaultValue = "10") String contentnum,HttpServletRequest request) {
@@ -51,7 +49,6 @@ public class PayController {
 		dto = payService.payDetail(payNo);
 		
 		List<PayDTO> map = payService.chartDetail(chartno);
-		System.err.println(map);
 		mv.addObject("detail", dto);
 		mv.addObject("chartdetail", map);
 		return mv;
