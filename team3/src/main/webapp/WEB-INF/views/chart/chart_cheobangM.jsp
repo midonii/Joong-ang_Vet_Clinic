@@ -9,7 +9,7 @@
 				<h5 class="modal-title" id="exampleModalLabel">
 					<b>처방</b>
 				</h5>
-				<button class="close" type="button" data-dismiss="modal"
+				<button class="close" type="button" data-dismiss="modal" id="closebtn"
 					aria-label="Close">
 					<span aria-hidden="true">×</span>
 				</button>

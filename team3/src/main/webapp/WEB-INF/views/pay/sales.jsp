@@ -82,7 +82,7 @@ function drawBasic() {
   data.addColumn('number', '매출액');
 
   data.addRows([
-	  <c:forEach items="${salesList2}" var="s2">['${s2.pay_date}', ${s2.totalprice}],
+	  <c:forEach items="${salesList2}" var="s2">['${s2.pay_date}', ${s2.totalPrice}],
       </c:forEach>
   ]);
 
@@ -177,7 +177,7 @@ function page(idx, fromDate, toDate) {
 													<tr>
 														<td>${s.rownum }</td>
 														<td>${s.pay_date }</td>
-														<td><fmt:formatNumber value="${s.totalprice }"
+														<td><fmt:formatNumber value="${s.totalPrice }"
 																pattern="#,###" />원</td>
 													</tr>
 												</c:forEach>

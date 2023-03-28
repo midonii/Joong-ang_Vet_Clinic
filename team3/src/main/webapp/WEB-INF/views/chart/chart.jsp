@@ -107,7 +107,7 @@ if (session.getAttribute("id") == null) {
 								<div
 									class="card-header py-2 d-flex flex-row align-items-center justify-content-between">
 									<h6 class="m-0 font-weight-bold text-primary">처방내역</h6>
-									<a class="text-primary" style=" font-size:14px; text-decoration: none; "id="presc" >
+									<a class="text-primary" style=" font-size:14px; text-decoration: none;cursor: pointer; "id="presc" >
 									추가<i class="fa-regular fa-plus" style="margin-left: 2px;"></i></a>
 
 								</div>

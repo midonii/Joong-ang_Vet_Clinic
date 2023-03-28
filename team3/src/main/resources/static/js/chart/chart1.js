@@ -3,6 +3,11 @@
  */
 
 $(function() {
+	/*닫기 버튼 클릭시*/
+	$("#closebtn").click(function(){
+		$("#search_value").val("");//검색어 지우기
+	});
+	
 	/*진료화면 - 접수현황*/
 	$.post({
 		url: "/receiveboard",
@@ -700,6 +705,7 @@ $(function() {
 	
 	/*모달 내 저장버튼*/
 	$(".save_btn").click(function(){
+			$("#search_value").val("");//검색어 지우기
 		/*우 리스트 id 배열로 받아오기*/
 		var size = $("input[name=right_check]").length;
 		var rightno = new Array(size);
@@ -707,6 +713,7 @@ $(function() {
 			rightno[i] = $("input[name=right_check]").eq(i).attr("id");
 	    }
 		$("#prescModal").modal("hide");
+		
 		$.ajax({
 			url : '/prescSaveAjax',
 			type :'POST',

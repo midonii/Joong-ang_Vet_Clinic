@@ -38,6 +38,7 @@ if (session.getAttribute("id") == null) {
 <script>
 	/* 수납대기 버튼 */
 	$(function() {
+ 		
 		$(".payBefore").click(function() {
 			let payno = $(this).attr("value");// 수납대기버튼의 value
 			$.post({
@@ -90,17 +91,19 @@ if (session.getAttribute("id") == null) {
 		}); 
 
 		//검색후 입력한 값 잡고있기
-		if ($("#hidden_search").val() != null) {
-			var searchname = $("#hidden_search").val();
-			$("#search_name").val(searchname);
-		}
+		 let searchName2 = $("#hidden_search").val();
+	 	if(searchName2 == ""){
+	 		$("#search_name option[value='all']").attr('selected', 'selected');
+	 	}else{
+	 		$("#search_name").val(searchName2);
+	 		} 
 
 		//당일 버튼 클릭시 오늘날짜 잡기
 		$("#todaybtn").click(function() {
 			$("#todayDate").val(today);
 		});
 		
-	
+		
 		
 	}); //func
 	/* 페이징 번호 버튼 누를시 보낼 값 */
@@ -115,6 +118,7 @@ if (session.getAttribute("id") == null) {
 				+ "&search_value=" + searchValue + "&todayDate=" + todayDate +"&pay_yn=" +pay_yn;
 
 	};
+	
 </script>
 <style type="text/css">
 
@@ -214,7 +218,7 @@ if (session.getAttribute("id") == null) {
 												id="hidden_search"> 
 											<select class="form-control form-control-sm col-md-3"
 												name="search_name" id="search_name" style="border-radius: 3px 0 0 3px;">
-												<option value="" selected disabled="disabled">선택</option>
+												<option value="all">전체</option>
 												<option value="petname">동물명</option>
 												<option value="ownername">보호자명</option>
 												<option value="chartno">차트번호</option>
@@ -289,7 +293,7 @@ if (session.getAttribute("id") == null) {
 																value="${pl.pay_no }">수납대기</button>
 														</td>
 													</c:if>
-													<td>${pl.pay_date }</td>
+													<td>${pl.listpay_date }</td>
 													<td><buttton type="submit" id="detailBtn" name="payNo"
 															class="btn btn-primary btn-sm" value="${pl.pay_no }"
 															onclick="location.href='/payDetail?payNo='+'${pl.pay_no }'+'&chart_no='+'${pl.chart_no }'">상세보기</buttton></td>

@@ -111,8 +111,10 @@ if (session.getAttribute("id") == null) {
 								&nbsp[&nbsp${detail.pay_date }&nbsp]<br>
 								&nbsp[&nbsp동물명&nbsp : &nbsp${detail.pet_name }&nbsp]<br>
 								&nbsp[&nbsp담당의&nbsp : &nbsp${chartdetail[0].staff_name }&nbsp]
-								<table class="table text-center">
-									<tr>
+								
+								<div class="table-responsive"  style="min-height: 500px;" >
+								<table class="table text-center"  >
+									<tr style="height:50px;">
 										<th class="col-2">구분</th>
 										<th class="col-2">세부구분</th>
 										<th class="col-3">이름</th>
@@ -121,7 +123,7 @@ if (session.getAttribute("id") == null) {
 										<th class="col-2">적용금액</th>
 									</tr>
 								 	<c:forEach var="first" items="${chartdetail}" varStatus="status">
-										<tr >
+										<tr style="height:50px;">
 											<td>${first.medical_category }</td>
 											<td>${first.medical_subcate }</td>
 											<td>${first.medical_name }</td>
@@ -133,15 +135,17 @@ if (session.getAttribute("id") == null) {
 											
 										</tr>
 									</c:forEach>
-								
-									
-									<tr>
-										<td colspan="4" class="text-right "></td>
-										<td class="text-center "><b>총 합계</b></td>
-										<td ><b><fmt:formatNumber value="${detail.totalPrice }"
-												pattern="#,###" />원</b></td>
-									</tr>
 								</table>
+								</div>
+								<div style="float:left;  width:100%; border-top:1px solid #ccc; height:40px;">
+								<div style="float:left; width:calc(100% - 400px); text-align:right; line-height: 40px;">
+								<b>총 합계</b>
+								</div>
+								<div style="float:left; font-size:18px; width:280px; text-align:right; margin-right:120px; line-height: 40px;">
+								<b><fmt:formatNumber value="${detail.totalPrice }"
+												pattern="#,###" />원</b>
+								</div>
+								</div>
 								<!--출력부분끝  -->
 
 								<button type="button" class="btn btn-primary pbtn" value="print"

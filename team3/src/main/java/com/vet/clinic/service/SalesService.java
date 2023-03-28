@@ -40,13 +40,14 @@ public class SalesService {
 		List<PayDTO> salesList = salesDAO.salesList(pageDTO);
 		
 		/* System.err.println(salesList); */
-		  int payTotalPrice = 0; //합계 구하기 
-		  for (int i = 0; i < salesList.size(); i++){
-		  payTotalPrice += salesList.get(i).getTotalPrice();
-		  
-		  }
+		/*
+		 * int payTotalPrice = 0; //합계 구하기 for (int i = 0; i < salesList.size(); i++){
+		 * payTotalPrice += salesList.get(i).getTotalprice();
+		 * 
+		 * }
+		 */
 		 
-		mv.addObject("payTotalPrice", payTotalPrice); 
+		//mv.addObject("payTotalPrice", payTotalPrice); 
 		mv.addObject("salesList", salesList);
 		mv.addObject("page", pageDTO);
 

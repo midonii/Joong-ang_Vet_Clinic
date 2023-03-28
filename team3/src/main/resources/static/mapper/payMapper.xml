@@ -5,16 +5,21 @@
 
 	<select id="payList" resultType="PayDTO" parameterType="PageDTO">
 		SELECT ROW_NUMBER()
-		OVER(ORDER BY pay_date DESC) AS rownum , pay_no,
-		DATE_FORMAT(pay_date, "%m-%d %T:%i") as pay_date,
-		pay_yn, totalPrice, chart_no, owner_name, pet_name
+		OVER(ORDER BY chart_no ) AS rownum , pay_no,
+		listpay_date, pay_yn, totalPrice, chart_no, owner_name, pet_name
 		FROM
 		paydetailview
-		<if
-			test="toDate !=null and !toDate.equals('') and fromDate !=null and !fromDate.equals('')">
+		<if test="toDate !=null and !toDate.equals('') and fromDate !=null and !fromDate.equals('')">
 			WHERE format_date BETWEEN #{fromDate} AND #{toDate}
 		</if>
 		<if test="search_name !=null  and !search_name.equals('')">
+			<choose>
+				<when test="search_name =='all'">
+						WHERE pet_name LIKE CONCAT('%',#{search_value},'%') OR
+						 owner_name LIKE CONCAT('%',#{search_value},'%') OR
+						chart_no LIKE CONCAT('%',#{search_value},'%') 
+				</when>
+			</choose>
 			<choose>
 				<when test="search_name == 'petname'">WHERE pet_name LIKE CONCAT('%',#{search_value},'%')
 				</when>
@@ -58,7 +63,7 @@
 	</select>
 	
 	<select id="chartDetail" parameterType="String" resultType="PayDTO">
-		SELECT *
+		SELECT medical_category, medical_subcate, medical_name, medicaldata_ea, medical_price, staff_name
 		FROM  medicaldataview
 		WHERE chart_no = #{chartno};
 

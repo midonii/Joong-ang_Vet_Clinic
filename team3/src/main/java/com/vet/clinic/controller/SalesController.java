@@ -32,7 +32,7 @@ public class SalesController {
 		int payTotalPrice2 = 0; // 합계 구하기 
 		for (int i = 0; i < list2.size(); i++) {
 		payTotalPrice2 +=
-		Integer.parseInt((String.valueOf(list2.get(i).get("totalprice")))); }
+		Integer.parseInt((String.valueOf(list2.get(i).get("totalPrice")))); }
 		  
 		mv.addObject("payTotalPrice2", payTotalPrice2);
 		mv.addObject("salesList2", list2);
