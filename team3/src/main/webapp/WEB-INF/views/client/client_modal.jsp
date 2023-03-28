@@ -179,7 +179,7 @@
 					</div>
 					<div class="form-floating mb-3">
 						<input type="text" class="form-control" name="floatingClientTel"
-							id="floatingClientTel" placeholder="01012345678" maxlength="12"> <label
+							id="floatingClientTel" placeholder="01012345678" maxlength="11"> <label
 							for="floatingTel">전화번호</label>
 					</div>
 					<div class="form-floating mb-3">
@@ -204,7 +204,7 @@
 						<div class="form-floating">
 							<textarea class="form-control" placeholder="Leave a comment here"
 								name="floatingClientComments" id="floatingClientComments"
-								style="height: 150px"></textarea>
+								style="height: 150px; resize: none;"></textarea>
 							<label for="floatingClientComments">Comments</label>
 						</div>
 					</div>
@@ -250,7 +250,7 @@
 					</div>
 					<div class="form-floating mb-3">
 						<input type="text" class="form-control" name="updateClientTel"
-							id="updateClientTel" placeholder="01012345678" maxlength="12"> <label
+							id="updateClientTel" placeholder="01012345678" maxlength="11"> <label
 							for="updateClientTel">전화번호</label>
 					</div>
 					<div class="form-floating mb-3">
@@ -276,7 +276,7 @@
 						<div class="form-floating">
 							<textarea class="form-control" placeholder="Leave a comment here"
 								name="updateClientComments" id="updateClientComments"
-								style="height: 150px"></textarea>
+								style="height: 150px; resize: none;"></textarea>
 							<label for="updateClientComments">Comments</label>
 						</div>
 					</div>
@@ -378,7 +378,7 @@
 								<div class="form-floating">
 									<textarea class="form-control"
 										placeholder="Leave a comment here" name="petAddComments"
-										id="petAddComments" style="height: 110px"></textarea>
+										id="petAddComments" style="height: 110px; resize: none;"></textarea>
 									<label for="petAddComments">Comments</label>
 								</div>
 							</div>
@@ -480,7 +480,7 @@
 								<div class="form-floating">
 									<textarea class="form-control"
 										placeholder="Leave a comment here" name="petUpdateComments"
-										id="petUpdateComments" style="height: 110px"></textarea>
+										id="petUpdateComments" style="height: 110px; resize: none;"></textarea>
 									<label for="petUpdateComments">Comments</label>
 								</div>
 							</div>

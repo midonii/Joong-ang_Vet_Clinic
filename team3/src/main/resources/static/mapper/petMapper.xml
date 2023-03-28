@@ -21,6 +21,7 @@
 	SELECT *
 	FROM chartview
 	WHERE pet_no = #{petNo }
+	ORDER BY chart_date DESC
 </select>
 
 <select id="petMedicalData" resultType="PastChartDTO">
