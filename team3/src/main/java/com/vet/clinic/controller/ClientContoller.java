@@ -48,8 +48,7 @@ public class ClientContoller {
 		
 		SearchDTO search = new SearchDTO();
 		search.setSearch_name(request.getParameter("search_name"));
-		search.setSearch_value(request.getParameter("search_value"));
-		
+		search.setSearch_value(request.getParameter("search_value"));		
 		
 		
 		List<ClientDTO> clientList = clientService.clientList(search);
@@ -153,12 +152,6 @@ public class ClientContoller {
 	//보호자 추가
 	@PostMapping("clientAdd")
 	public String clientAdd(HttpServletRequest request) {
-//		System.out.println(request.getParameter("floatingClientName"));
-//		System.out.println(request.getParameter("floatingClientEmail"));
-//		System.out.println(request.getParameter("floatingClientTel"));
-//		System.out.println(request.getParameter("floatingClientAddr"));
-//		System.out.println(request.getParameter("smsAgree"));
-//		System.out.println(request.getParameter("floatingClientComments"));
 		
 		ClientDTO client = new ClientDTO();
 		client.setFloatingClientName(request.getParameter("floatingClientName"));
@@ -183,12 +176,6 @@ public class ClientContoller {
 	@ResponseBody
 	@PostMapping(value="clientUpdate", produces = "application/json;charset=UTF-8")
 	public String clientUpdate(HttpServletRequest request) {
-//		System.out.println(request.getParameter("updateOwnerName"));
-//		System.out.println(request.getParameter("updateOwnerEmail"));
-//		System.out.println(request.getParameter("updateOwnerTel"));
-//		System.out.println(request.getParameter("updateOwnerAddr"));
-//		System.out.println(request.getParameter("updateOwnerSms"));
-//		System.out.println(request.getParameter("updateOwnerMemo"));
 		
 		ClientDTO client = new ClientDTO();
 		client.setUpdateOwnerName(request.getParameter("updateOwnerName"));
@@ -405,6 +392,25 @@ public class ClientContoller {
 			return json.toString();
 			
 		
+	}
+	
+	@ResponseBody
+	@PostMapping("/ownerCheck")
+	public String ownerCheck(@RequestParam("usuallyEmail") String usuallyEmail) {
+		//System.out.println(usuallyEmail);
+		JSONObject json = new JSONObject();
+		
+		ClientDTO client = new ClientDTO();
+		client.setUsuallyEmail(usuallyEmail);
+		
+		List<ClientDTO> ownerCheck = clientService.ownerCheck(client);
+		
+		JSONArray jsonA = new JSONArray(ownerCheck);
+		
+		json.put("ownerCheck", ownerCheck);
+
+		
+		return json.toString();
 	}
 	
 	

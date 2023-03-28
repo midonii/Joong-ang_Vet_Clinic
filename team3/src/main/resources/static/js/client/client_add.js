@@ -49,7 +49,7 @@ $(function(){
 					alert("반려견을 추가해 주세요.");
 					return false;
 				}
-				alert(result[0].owner_name);
+				//alert(result[0].owner_name);
 				
 				
 				var owner_name = result[0].owner_name
@@ -75,20 +75,19 @@ $(function(){
 
 				$("#clientUpdateModal").modal("show");
 				
-			}).fail(function(xhr, status,errorThrown){
-				alert("문제가 발생했습니다.");
-			});
-			
+				
 			//보호자 수정 정보 저장하기
 			$("#clientUpdateSave").off().click(function(){
+				
 				//alert(clientNo);
 				//정규식 검사(email형식이 맞는지)
 				var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 				//특수문자 검사 정규식(전화번호에 - 들어가는 거 방지)
 				var RegExp = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ]/gim;
 				 
-				if($("#updateClientName").val() == "" || $("#updateClientName").val().length < 1){
-					alert("이름은 1글자 이상 입력해주세요");
+				if($("#updateClientName").val() == "" || $("#updateClientName").val().length < 1 ||
+				RegExp.test($("#updateClientName").val())){
+					alert("이름은 공백 및 특수기호 없이 1글자 이상 입력해주세요");
 					$("#updateClientName").focus();
 					return false;
 				}
@@ -106,11 +105,36 @@ $(function(){
 					return false;
 				}
 				
+				
 				if($("#updateClientAddr").val() == "" || $("#updateClientAddr").val().length < 1){
 					alert("올바른 주소를 입력해 주세요.");
 					$("#updateClientAddr").focus();
 					return false;
 				}
+				
+				$.post({
+						url: "/ownerCheck",
+						data:{"usuallyEmail" : owner_email},
+						cache: false,
+						dataType: "json"
+					}).done(function(data) {
+						var result = data.ownerCheck;
+						//alert(datas.owner_tel[0]);
+						//alert(result[0].owner_email);
+						for(let i = 0; result.length > i; i++){
+							if($("#updateClientEmail").val() == result[i].owner_email){
+							alert("이미 등록되어있는 이메일입니다.");
+							$("#updateClientEmail").focus();
+							return false;
+							}
+							
+							if($("#updateClientTel").val() == result[i].owner_tel){
+							alert("이미 등록되어있는 전화번호입니다.");
+							$("#updateClientTel").focus();
+							return false;
+							}
+	
+						}
 				
 				
 				
@@ -154,8 +178,18 @@ $(function(){
     				alert("문제가 발생했습니다.");
     			});
 			}
+			
+			}).fail(function(xhr, status, errorThrown) {
+						alert("문제가 발생했습니다.");
+					});
 				
 			});
+			
+				
+			}).fail(function(xhr, status,errorThrown){
+				alert("문제가 발생했습니다.");
+			});
+			
 			
 		});
 
@@ -209,9 +243,11 @@ $(function(){
 		$("#petAddSave").off().click(function(){
 			//숫자와 .만 체크하는 정규식
 			var NumberExp = /[^0123456789.]/g;
+			var RegExp = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ]/gim;
+			
 			$("#owner_noPAdd").val(clientNo);
-			if($("#petAddName").val() == "" || $("#petAddName").val().length < 1){
-				alert("이름을 1글자 이상 입력해주세요.");
+			if($("#petAddName").val() == "" || $("#petAddName").val().length < 1 || (RegExp.test($("#petAddName").val()))){
+				alert("이름을 공백 및 특수기호 없이 1글자 이상 입력해주세요.");
 				$("#petAddName").focus();
 				return false; 
 			}
@@ -324,12 +360,13 @@ $(function(){
 				var type_name = result[i].type_name
 				var pet_gender = result[i].pet_gender;
 				var pet_birth = result[i].pet_birth;
+				var rownum = result[i].rownum;
 				var pet_memo = "";
 				if(result[i].pet_memo != undefined){
 					pet_memo = result[i].pet_memo;
 				}
 				table += "<tr class='petList' value="+pet_no+">";
-				table += "<td>"+pet_no+"</td>";
+				table += "<td>"+rownum+"</td>";
 				table += "<td>"+pet_name+"</td>";
 				table += "<td>"+type_name+"</td>";
 				table += "<td>"+pet_gender+"</td>";
@@ -410,7 +447,7 @@ $(function(){
 				dataType : "json"
 			}).done(function(data){
 				let result = data.result;
-				alert(result.pet_name);
+				//alert(result.pet_name);
 				
 				var pet_name = result.pet_name;
 				var pet_weight = result.pet_weight;
@@ -526,9 +563,11 @@ $(function(){
 			
 		$("#petUpdateSave").off().click(function(){
 			var NumberExp = /[^0123456789.]/g;
+			var RegExp = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ]/gim;
 
-			if($("#petUpdateName").val() == "" || $("#petUpdateName").val().length < 1){
-				alert("이름을 1글자 이상 입력해주세요.");
+			if($("#petUpdateName").val() == "" || $("#petUpdateName").val().length < 1 || 
+			(RegExp.test($("#petUpdateName").val()))){
+				alert("이름을 공백 및 특수기호 없이 1글자 이상 입력해주세요.");
 				$("#petUpdateName").focus();
 				return false; 
 			}
@@ -732,12 +771,13 @@ $(function(){
 					var type_name = result2[i].type_name
 					var pet_gender = result2[i].pet_gender;
 					var pet_birth = result2[i].pet_birth;
+					var pet_rownum = result2[i].rownum;
 					var pet_memo = "";
 					if(result2[i].pet_memo != undefined){
 						pet_memo = result2[i].pet_memo;
 					}
 					table += "<tr class='petListModal' value="+pet_no+">";
-					table += "<td>"+pet_no+"</td>";
+					table += "<td>"+pet_rownum+"</td>";
 					table += "<td>"+pet_name+"</td>";
 					table += "<td>"+type_name+"</td>";
 					table += "<td>"+pet_gender+"</td>";
@@ -790,7 +830,7 @@ $(function(){
 							dataType: "json"
 						}).done(function(data) {
 							let result = data.result;
-							alert(result.pet_name);
+							//alert(result.pet_name);
 
 							var pet_name = result.pet_name;
 							var pet_weight = result.pet_weight;
@@ -921,9 +961,10 @@ $(function(){
 						//반려견 정보 수정 후 저장 누르면 데이터로 전송
 						$("#petUpdateSave").off().click(function() {
 							var NumberExp = /[^0123456789.]/g;
+							var RegExp = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ]/gim;
 
-							if ($("#petUpdateName").val() == "" || $("#petUpdateName").val().length < 1) {
-								alert("이름을 1글자 이상 입력해주세요.");
+							if ($("#petUpdateName").val() == "" || $("#petUpdateName").val().length < 1 || (RegExp.test($("#petUpdateName").val()))) {
+								alert("이름을 공백 및 특수기호 없이 1글자 이상 입력해주세요.");
 								$("#petUpdateName").focus();
 								return false;
 							}
@@ -1056,7 +1097,7 @@ $(function(){
 											data: { "detailNo": detailNo },
 											dataType: "json"
 										}).done(function(data) {
-											let result = data.result
+											let result = data.result2
 											//alert(result[0].owner_name);
 											var table = "";
 											$('.petListModal').hide();
@@ -1068,12 +1109,13 @@ $(function(){
 												var type_name = result[i].type_name
 												var pet_gender = result[i].pet_gender;
 												var pet_birth = result[i].pet_birth;
+												var pet_rownum = result[i].rownum;
 												var pet_memo = "";
 												if (result[i].pet_memo != undefined) {
 													pet_memo = result[i].pet_memo;
 												}
 												table += "<tr class='petListModal' value=" + pet_no + ">";
-												table += "<td>" + pet_no + "</td>";
+												table += "<td>" + pet_rownum + "</td>";
 												table += "<td>" + pet_name + "</td>";
 												table += "<td>" + type_name + "</td>";
 												table += "<td>" + pet_gender + "</td>";
@@ -1176,10 +1218,7 @@ $(function(){
 					$("#clientUpdateModalClose").off().click(function(){
 						$("#detailModal").modal("show");
 					});
-				
-
-			});
-			
+					
 			//보호자 상세보기 Modal에서 수정 정보 저장하기
 			$("#clientUpdateSave").off().click(function(){
 				//alert(detailNo);
@@ -1188,8 +1227,9 @@ $(function(){
 				//특수문자 검사 정규식(전화번호에 - 들어가는 거 방지)
 				var RegExp = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ]/gim;
 				 
-				if($("#updateClientName").val() == "" || $("#updateClientName").val().length < 1){
-					alert("이름은 1글자 이상 입력해주세요");
+				if($("#updateClientName").val() == "" || $("#updateClientName").val().length < 1
+				|| (RegExp.test($("#updateClientName").val()) )){
+					alert("이름은 공백 및 특수기호 없이 1글자 이상 입력해주세요");
 					$("#updateClientName").focus();
 					return false;
 				}
@@ -1212,6 +1252,33 @@ $(function(){
 					$("#updateClientAddr").focus();
 					return false;
 				}
+				
+				
+				$.post({
+						url: "/ownerCheck",
+						data:{"usuallyEmail" : m_owner_email},
+						cache: false,
+						dataType: "json"
+					}).done(function(data) {
+						var result = data.ownerCheck;
+						//alert(datas.owner_tel[0]);
+						//alert(result[0].owner_email);
+						for(let i = 0; result.length > i; i++){
+							if($("#updateClientEmail").val() == result[i].owner_email){
+							alert("이미 등록되어있는 이메일입니다.");
+							$("#updateClientEmail").focus();
+							return false;
+							}
+							
+							if($("#updateClientTel").val() == result[i].owner_tel){
+							alert("이미 등록되어있는 전화번호입니다.");
+							$("#updateClientTel").focus();
+							return false;
+							}
+	
+						}
+				
+				
 				
 				if(confirm("보호자 수정 정보를 저장하시겠습니까?")){
 				//보호자 상세보기 modal 수정 유효성 검사
@@ -1266,8 +1333,15 @@ $(function(){
     				alert("문제가 발생했습니다.");
     			});
 			 }
+					}).fail(function() {
+						alert("문제가 발생했습니다.");
+					});
 				
 			});
+				
+
+			});
+			
 			
 			//보호자 상세보기 modal에서 반려견 추가
 			$(".petAdd").off().click(function(){
@@ -1317,9 +1391,12 @@ $(function(){
 		$("#petAddSave").off().click(function(){
 			//숫자와 .만 체크하는 정규식
 			var NumberExp = /[^0123456789.]/g;
+			var RegExp = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ]/gim;
 			$("#owner_noPAdd").val(detailNo);
-			if($("#petAddName").val() == "" || $("#petAddName").val().length < 1){
-				alert("이름을 1글자 이상 입력해주세요.");
+			
+			if($("#petAddName").val() == "" || $("#petAddName").val().length < 1 ||
+			(RegExp.test($("#petAddName").val()))){
+				alert("이름을 공백 및 특수기호 없이 1글자 이상 입력해주세요.");   
 				$("#petAddName").focus();
 				return false; 
 			}
@@ -1416,9 +1493,11 @@ $(function(){
 			var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 			//특수문자 검사 정규식(전화번호에 - 들어가는 거 방지)
 			var RegExp = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ]/gim;
+			
 			 
-			if($("#floatingClientName").val() == "" || $("#floatingClientName").val().length < 1){
-				alert("이름은 1글자 이상 입력해주세요");
+			if($("#floatingClientName").val() == "" || $("#floatingClientName").val().length < 1 || 
+			(RegExp.test($("#floatingClientName").val()) )){
+				alert("이름은 공백 및 특수기호 없이 1글자 이상 입력해주세요");
 				$("#floatingClientName").focus();
 				return false;
 			}
@@ -1441,6 +1520,32 @@ $(function(){
 				$("#floatingClientAddr").focus();
 				return false;
 			}
+			var usuallyEmail = "";
+			
+			// 보호자 추가 시 이메일,전화번호 중복 확인
+			$.post({
+						url: "/ownerCheck",
+						cache: false,
+						data : {"usuallyEmail" : usuallyEmail},
+						dataType: "json"
+					}).done(function(data) {
+						var result = data.ownerCheck;
+						//alert(datas.owner_tel[0]);
+						//alert(result[0].owner_email);
+						for(let i = 0; result.length > i; i++){
+							if($("#floatingClientEmail").val() == result[i].owner_email){
+							alert("이미 등록되어있는 이메일입니다.");
+							$("#floatingClientEmail").focus();
+							return false;
+							}
+							
+							if($("#floatingClientTel").val() == result[i].owner_tel){
+							alert("이미 등록되어있는 전화번호입니다.");
+							$("#floatingClientTel").focus();
+							return false;
+							}
+	
+						}
 			
 			
 			//통과했다면
@@ -1517,7 +1622,55 @@ $(function(){
 		
 						
 				$("#petAddModal").modal("show");
+				
+				
 					$("#petAddSave").off().click(function(){
+						var NumberExp = /[^0123456789.]/g;
+						var RegExp = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ]/gim;
+
+						if ($("#petAddName").val() == "" || $("#petAddName").val().length < 1 || (RegExp.test($("#petAddName").val()))) {
+							alert("이름을 공백 및 특수기호 없이 1글자 이상 입력해주세요.");
+							$("#petAddName").focus();
+							return false;
+						}
+
+						if ((NumberExp.test($("#petAddWeight").val())) || $("#petAddWeight").val() == "" ||
+							$("#petAddWeight").val().length < 1) {
+							alert("몸무게는 숫자와 소수점(.)만 입력 가능합니다.");
+							$("#petAddWeight").focus();
+							return false;
+						}
+
+
+						if ($("select[name=petAddType]").val() == "견종을 선택하세요") {
+							alert("견종을 선택해 주세요.");
+							$("#petAddType").focus();
+							return false;
+						}
+
+						if ($("select[name=petSex]").val() == "성별을 선택하세요") {
+							alert("성별을 선택해 주세요.");
+							$("#petSex").focus();
+							return false;
+						}
+
+						if ($("select[name=petBirthYear]").val() == "") {
+							alert("생년을 선택해 주세요.");
+							$("#petBirthYear").focus();
+							return false;
+						}
+						if ($("select[name=petBirthMonth]").val() == "") {
+							alert("생월을 선택해 주세요.");
+							$("#petBirthMonth").focus();
+							return false;
+						}
+						if ($("select[name=petBirthDay]").val() == "") {
+							alert("생일을 선택해 주세요.");
+							$("#petBirthDay").focus();
+							return false;
+						}
+
+			
 						if(confirm("반려견을 등록 하시겠습니까?")){
 							petAdd.submit();
 						} else {
@@ -1529,6 +1682,10 @@ $(function(){
 				}
 				
 			}
+			
+			}).fail(function(){
+    				alert("문제가 발생했습니다.");
+    		});
 	 });
 	 
 	

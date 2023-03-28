@@ -71,15 +71,6 @@ $(function(){
 	});
 });
 
-/* function readURL(input){
-	if(input.files && input.files[0]) {
-		var reader = new FileReader();
-		reader.onload = function(e){
-			$('#petProfileImg').attr('src',e.target.result);
-		}
-		reader.readAsDataURL(input.files[0]);
-	}
-} */
 
 $(function(){
 	//이미지 파일 미리보기
@@ -192,8 +183,8 @@ $(function(){
 								<input type="hidden" value="${search.getSearch_name() }" id="hidden_search">
 								<select class="form-control form-control-sm col-md-3" name="search_name" id="search_name" style="border-radius: 5px 0 0 5px;">
 									<option value="" selected disabled="disabled">선택</option>
-									<option value="owner">보호자명+전화번호</option>
-									<option value="pet">반려견명+생일</option>
+									<option value="owner">보호자</option>
+									<option value="pet">반려견</option>
 								</select> 
 								<input type="text" class="form-control form-control-sm border-gray col-md-9" 
 								placeholder="검색어를 입력하세요" value="${search.getSearch_value()}" name="search_value" id="search_value">
@@ -233,10 +224,10 @@ $(function(){
 												<tbody id="client-table" data-spy="scroll"
 													data-target="#list-example" data-offset="0"
 													class="scrollspy-example">
-													<c:forEach items="${clientList }" var="cl">
+													<c:forEach items="${clientList }" var="cl" varStatus="status">
 														<tr id="client-info" class="owner-tr"
 															value="${cl.owner_no }">
-															<td>${cl.owner_no }</td>
+															<td>${status.count} </td>
 															<td id="client-name" value="${cl.owner_name }">${cl.owner_name }</td>
 															<td>${cl.owner_tel }</td>
 															<td>${cl.owner_addr }</td>
@@ -308,10 +299,10 @@ $(function(){
 												</thead>
 												
 												
-												<c:forEach items="${petList }" var="pl">
+												<c:forEach items="${petList }" var="pl" varStatus="status">
 												<tbody id="ajaxTable" value="${pl.pet_no }">
 														<tr class="petList" value="${pl.pet_no }">
-															<td class="petNo">${pl.pet_no }</td>
+															<td class="petNo">${status.count}</td>
 															<td class="petName">${pl.pet_name }</td>
 															<td class="typeName">${pl.type_name }</td>
 															<td class="petGender">${pl.pet_gender }</td>

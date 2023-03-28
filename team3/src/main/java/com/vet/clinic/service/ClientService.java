@@ -93,5 +93,9 @@ public class ClientService {
 		return clientDAO.fileImgDel(client);
 	}
 
+	public List<ClientDTO> ownerCheck(ClientDTO client) {
+		return clientDAO.ownerCheck(client);
+	}
+
 
 }

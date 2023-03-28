@@ -51,5 +51,8 @@ public interface ClientDAO {
 
 	public int fileImgDel(ClientDTO client);
 
+	public List<ClientDTO> ownerCheck(ClientDTO client);
+
+
 
 }
