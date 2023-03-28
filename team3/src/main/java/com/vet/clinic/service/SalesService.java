@@ -42,7 +42,7 @@ public class SalesService {
 		/* System.err.println(salesList); */
 		  int payTotalPrice = 0; //합계 구하기 
 		  for (int i = 0; i < salesList.size(); i++){
-		  payTotalPrice += salesList.get(i).getTotalprice();
+		  payTotalPrice += salesList.get(i).getTotalPrice();
 		  
 		  }
 		 

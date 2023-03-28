@@ -5,14 +5,14 @@
 
 	<select id="payList" resultType="PayDTO" parameterType="PageDTO">
 		SELECT ROW_NUMBER()
-		OVER(ORDER BY pay_date) AS rownum , pay_no,
-		pay_date,
-		pay_yn, totalprice, chart_no, owner_name, pet_name
+		OVER(ORDER BY pay_date DESC) AS rownum , pay_no,
+		DATE_FORMAT(pay_date, "%m-%d %T:%i") as pay_date,
+		pay_yn, totalPrice, chart_no, owner_name, pet_name
 		FROM
 		paydetailview
 		<if
 			test="toDate !=null and !toDate.equals('') and fromDate !=null and !fromDate.equals('')">
-			WHERE pay_date BETWEEN #{fromDate} AND #{toDate}
+			WHERE format_date BETWEEN #{fromDate} AND #{toDate}
 		</if>
 		<if test="search_name !=null  and !search_name.equals('')">
 			<choose>
@@ -25,7 +25,7 @@
 			</choose>
 		</if>
 		<if test="todayDate !=null  and !todayDate.equals('')">
-			WHERE pay_date = #{todayDate}
+			WHERE format_date = #{todayDate}
 		</if>
 		<if test="pay_yn !=null  and !pay_yn.equals('')">
 			WHERE pay_yn = #{pay_yn}
@@ -37,7 +37,7 @@
 	<select id="contentTotal" resultType="Integer" parameterType="PageDTO">
         SELECT COUNT(*) FROM paydetailview
         <if test="toDate !=null and !toDate.equals('') and fromDate !=null and !fromDate.equals('')">
-		 WHERE pay_date BETWEEN #{fromDate} AND #{toDate}
+		 WHERE format_date BETWEEN #{fromDate} AND #{toDate}
 		</if>
 		<if test="search_name !=null  and !search_name.equals('')">
 		<choose>
@@ -47,25 +47,33 @@
 			</choose>
 		</if>
 		<if test="todayDate !=null  and !todayDate.equals('')">
-		WHERE pay_date = #{todayDate}
+		WHERE format_date = #{todayDate}
 		</if>
 	</select>
 
-	<select id="payDetail" parameterType="Integer"
-		resultType="PayDTO">
+	<select id="payDetail" parameterType="Integer" resultType="PayDTO">
 		SELECT p.*
 		FROM paydetailview p
 		WHERE pay_no =#{payNo};
 	</select>
+	
+	<select id="chartDetail" parameterType="String" resultType="PayDTO">
+		SELECT *
+		FROM  medicaldataview
+		WHERE chart_no = #{chartno};
+
+	</select>
 
 	<update id="payBefore" parameterType="Integer">
 		UPDATE pay SET
-		pay_yn ='Y'
+		pay_yn ='Y',
+		pay_date = NOW()
 		WHERE pay_no = #{payNo};
 	</update>
 	<update id="payCancel" parameterType="Integer">
 		UPDATE pay SET
-		pay_yn ='N'
+		pay_yn ='N',
+		pay_date = NULL
 		WHERE pay_no = #{payNo};
 	</update>
 </mapper>

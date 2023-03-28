@@ -19,6 +19,9 @@ public class PayService {
 	public PayDTO payDetail(int payNo) {
 		return payDAO.payDetail(payNo);
 	}
+	public List<PayDTO> chartDetail(String chartno) {
+		return payDAO.chartDetail(chartno);
+	}
 
 	public int payBefore(int payNo) {
 		return payDAO.payBefore(payNo);
@@ -51,5 +54,6 @@ public class PayService {
 
 		return mv;
 	}
+
 	
 }
