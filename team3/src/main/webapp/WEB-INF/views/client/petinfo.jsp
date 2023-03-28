@@ -172,12 +172,17 @@ $(function(){
 }
 
 .imgSet{
-	width: 260px;
-	height: 260px;
+	width: 320px;
+	height: 320px;
 	border-radius: 12px;
 	border:outset;
 	border-width: 3px;
 	border-color: #9ec5fe;
+}
+
+.infoSet{
+	margin-left: -20px;
+	margin-top: 10px;
 }
 </style>
 </head>
@@ -267,31 +272,31 @@ $(function(){
 								</c:otherwise>
 							</c:choose>
 							</div>
-							<div class="col-7">
+							<div class="col-7 infoSet">
 								<div class="list-group list-group-flush">
   								 <div class="list-group-item row">
-  									<div class="col-4 font-weight-bold float-left">이름</div>
-  									<div class="col-8 float-left">${pi.pet_name }</div>
+  									<div class="col-3 font-weight-bold float-left">이름</div>
+  									<div class="col-9 float-left">${pi.pet_name }</div>
   								 </div>	
   								 <div class="list-group-item row">
-  									<div class="col-4 font-weight-bold float-left">견종</div>
-  									<div class="col-8 float-left">${pi.type_name }</div>
+  									<div class="col-3 font-weight-bold float-left">견종</div>
+  									<div class="col-9 float-left">${pi.type_name }</div>
   								 </div>	
   								 <div class="list-group-item row">
-  									<div class="col-4 font-weight-bold float-left">생일</div>
-  									<div class="col-8 float-left">${pi.pet_birth } (${pi.pet_Ym })</div>
+  									<div class="col-3 font-weight-bold float-left">생일</div>
+  									<div class="col-9 float-left">${pi.pet_birth } (${pi.pet_Ym })</div>
   								 </div>	
   								 <div class="list-group-item row">
-  									<div class="col-4 font-weight-bold float-left">성별</div>
-  									<div class="col-8 float-left">${pi.pet_gender }</div>
+  									<div class="col-3 font-weight-bold float-left">성별</div>
+  									<div class="col-9 float-left">${pi.pet_gender }</div>
   								 </div>	
   								 <div class="list-group-item row">
-  									<div class="col-4 font-weight-bold float-left">몸무게</div>
-  									<div class="col-8 float-left">${pi.pet_weight }kg</div>
+  									<div class="col-3 font-weight-bold float-left">몸무게</div>
+  									<div class="col-9 float-left">${pi.pet_weight }kg</div>
   								 </div>	
   								 <div class="list-group-item row">
-  									<div class="col-4 font-weight-bold float-left">특이사항</div>
-  									<div class="col-8 float-left">${pi.pet_memo }</div>
+  									<div class="col-3 font-weight-bold float-left">특이사항</div>
+  									<div class="col-9 float-left">${pi.pet_memo }</div>
   								 </div>	
 								</div>
 							</div>

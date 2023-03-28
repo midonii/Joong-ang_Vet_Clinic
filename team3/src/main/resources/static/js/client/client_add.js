@@ -563,6 +563,7 @@ $(function(){
 			
 		$("#petUpdateSave").off().click(function(){
 			var NumberExp = /[^0123456789.]/g;
+			var DethExp = /[^0123456789-]/g;
 			var RegExp = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ]/gim;
 
 			if($("#petUpdateName").val() == "" || $("#petUpdateName").val().length < 1 || 
@@ -607,8 +608,8 @@ $(function(){
 				$("#petUpdateBirthDay").focus();
 				return false; 
 			}
-			if($("#petDeath").val().length > 11){
-				alert("사망날짜는 0000-00-00 형태로 입력해 주세요.");
+			if($("#petDeath").val().length > 11 || (DethExp.test($("#petDeath").val()))){
+				alert("사망날짜는 숫자와 -만 입력 가능합니다.\n0000-00-00 형태로 입력해 주세요.");
 				$("#petDeath").focus();
 				return false; 
 			}
@@ -961,6 +962,7 @@ $(function(){
 						//반려견 정보 수정 후 저장 누르면 데이터로 전송
 						$("#petUpdateSave").off().click(function() {
 							var NumberExp = /[^0123456789.]/g;
+							var DethExp = /[^0123456789-]/g;
 							var RegExp = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ]/gim;
 
 							if ($("#petUpdateName").val() == "" || $("#petUpdateName").val().length < 1 || (RegExp.test($("#petUpdateName").val()))) {
@@ -1004,8 +1006,8 @@ $(function(){
 								$("#petUpdateBirthDay").focus();
 								return false;
 							}
-							if ($("#petDeath").val().length > 11) {
-								alert("사망날짜는 0000-00-00 형태로 입력해 주세요.");
+							if ($("#petDeath").val().length > 11 || (DethExp.test($("#petDeath").val()))) {
+								alert("사망날짜는 숫자와 -만 입력 가능합니다.\n0000-00-00 형태로 입력해 주세요.");
 								$("#petDeath").focus();
 								return false;
 							}
