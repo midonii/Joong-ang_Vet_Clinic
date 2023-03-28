@@ -1,6 +1,6 @@
 /* 예지 */
 $(function() {
-	
+
 	$("#chartAdd").click(function() {
 		var trlength = $(".saveTable1 > tr").length;
 		var objArr = [];
@@ -24,19 +24,19 @@ $(function() {
 		if (pet_no == "") {
 			alert("동물을 선택해주세요.");
 		} else {
-			$.post({
-				url: "/chartAdd",
-				data: {
-					"pet_no": pet_no,
-					"chart_memo": chart_memo,
-					"receive_no": receive_no,
-					"totalPrice": totalprice,
-					"arr": arr,
-					"arr2": arr2
-				},
-				dataType: "json"
-			}).done(function(data) {
-				if (confirm("차트를 저장하시겠습니까?")) {
+			if (confirm("차트를 저장하시겠습니까?")) {
+				$.post({
+					url: "/chartAdd",
+					data: {
+						"pet_no": pet_no,
+						"chart_memo": chart_memo,
+						"receive_no": receive_no,
+						"totalPrice": totalprice,
+						"arr": arr,
+						"arr2": arr2
+					},
+					dataType: "json"
+				}).done(function(data) {
 
 					if (data.result == 1 && data.stateUpdate == 1 && data.payAdd == 1) {
 						alert("차트가 저장되었습니다.");
@@ -45,10 +45,10 @@ $(function() {
 					} else {
 						alert("권한이 없습니다.");
 					}
-				}
-			}).fail(function() {
-				alert("문제발생");
-			});
+				}).fail(function() {
+					alert("문제발생");
+				});
+			}
 		}
 
 

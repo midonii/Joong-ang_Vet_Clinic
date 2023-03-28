@@ -31,8 +31,6 @@ if (session.getAttribute("id") == null) {
 <!-- Custom styles for this template-->
 
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
-<script type="text/javascript"
-	src="cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- JQUERY -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
@@ -73,7 +71,12 @@ if (session.getAttribute("id") == null) {
 			let searchValue = $("#search_value").val();
 
 			if (searchName == "all" && searchValue == "") {
-				location.href="/notoce";
+				location.href="/notice";
+			}
+			
+			if((searchName == "title" || searchName == "content") && searchValue == "" ){
+				alert("검색어를 입력하세요.");
+				return false;
 			}
 			
 			searchForm.submit();
@@ -81,7 +84,7 @@ if (session.getAttribute("id") == null) {
 
 		$(".noticeWrite").click(function() {
 			let notice_title = $("#notice_title").val();
-			let notice_content = $("#notice_content").val();
+			let notice_content = $("#notice_content").val().replace(/\n/g, "<br>");
 
 			$.post({
 				url : "/noticeWrite",
@@ -120,7 +123,7 @@ if (session.getAttribute("id") == null) {
 				if (read == 1) {
 					$("#D_no").val(result.notice_no);
 					$("#D_title").text(result.notice_title);
-					$("#D_content").text(result.notice_content);
+					$("#D_content").append(result.notice_content);
 					$("#D_date").text(result.listdate);
 					$("#D_read").text(result.notice_read);
 					$("#D_name").text(result.staff_name);
@@ -170,7 +173,7 @@ if (session.getAttribute("id") == null) {
 				if (confirm("수정하시겠습니까?")) {
 					$("#noU").val(result.notice_no);
 					$("#titleU").val(result.notice_title);
-					$("#contentU").val(result.notice_content);
+					$("#contentU").val(result.notice_content.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n'));
 					$("#noticeDetailModal").modal("hide");
 					$("#noticeUpdateModal").modal("show");
 				}
@@ -183,7 +186,7 @@ if (session.getAttribute("id") == null) {
 		$("#noticeUpdate").click(function() {
 			var notice_no = $("#noU").val();
 			var notice_title = $("#titleU").val();
-			var notice_content = $("#contentU").val();
+			var notice_content = $("#contentU").val().replace(/\n/g, "<br>");
 
 			$.post({
 				url : "/noticeUpdate",
@@ -200,7 +203,7 @@ if (session.getAttribute("id") == null) {
 					$("#noticeUpdateModal").modal("hide");
 					$("#D_no").val(result.notice_no);
 					$("#D_title").text(result.notice_title);
-					$("#D_content").text(result.notice_content);
+					$("#D_content").append(result.notice_content);
 					$("#D_date").text(result.listdate);
 					$("#D_read").text(result.notice_read);
 					$("#D_name").text(result.staff_name);
@@ -438,7 +441,7 @@ if (session.getAttribute("id") == null) {
 						</div>
 						<div class="modal-body">
 							<input type="hidden" id="D_no" name="D_no">
-							<ul class="list-group list-group-flush">
+							<ul class="list-group list-group-flush Detail">
 								<li class="list-group-item">
 									<div class="row">
 										<div
@@ -487,7 +490,7 @@ if (session.getAttribute("id") == null) {
 					role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">공지사항 글쓰기</h5>
+							<h5 class="modal-title" id="exampleModalLabel">공지사항  수정</h5>
 							<button class="close refresh" type="button" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">×</span>

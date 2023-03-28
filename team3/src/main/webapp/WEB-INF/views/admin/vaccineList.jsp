@@ -48,8 +48,10 @@ if (session.getAttribute("id") != null) {
 		let searchName2 = $("#search_name").val();
 		$("#addBtn").click(function() {
 
-			var medical_name = $("#medical_name").val();
-			var medical_price = $("#medical_price").val();
+			var medical_name = $.trim($("#medical_name").val());
+			$("#medical_name").val(medical_name);
+			var medical_price = $.trim($("#medical_price").val());
+			$("#medical_price").val(medical_price);
 
 			if (medical_name == "") {
 				alert("접종명을 입력해주세요.");
@@ -63,7 +65,6 @@ if (session.getAttribute("id") != null) {
 				return false;
 			}
 
-			// 			medicalAddFrm.submit();
 
 		});
 
@@ -93,8 +94,8 @@ if (session.getAttribute("id") != null) {
 		$(".updateFrm").click(function() {
 
 			let medical_no = $("#medical_noU").val();
-			let medical_name = $("#medical_nameU").val();
-			let medical_price = $("#medical_priceU").val();
+			let medical_name = $.trim($("#medical_nameU").val());
+			let medical_price = $.trim($("#medical_priceU").val());
 
 			$.post({
 				url : "/medicalUpdate",
@@ -123,8 +124,8 @@ if (session.getAttribute("id") != null) {
 		$("#search_btn").click(function() {
 			let searchValue = $("#search_value").val();
 
-			if (searchValue == "" || searchValue.length < 2) {
-				alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
+			if (searchValue == "") {
+				alert("검색어를 입력하세요.");
 				return false;
 			}
 			searchForm.submit();

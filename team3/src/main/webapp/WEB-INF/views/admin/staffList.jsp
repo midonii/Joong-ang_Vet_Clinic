@@ -44,50 +44,65 @@ if (session.getAttribute("id") != null) {
 <script type="text/javascript">
 	$(function() {
 
- 		let searchName2 = $("#searchName").val();
-	
- 		if(searchName2 == ""){
- 			$("#search_name option[value='all']").attr('selected', 'selected');
- 		}else{
- 			$("#search_name").val(searchName2);
- 		}
- 		
-		$(".staffDetailModal").click(function() {
-			$("#staffDetailModal").modal("show");
-			var staff_no = $(this).attr("data-value");
+		let searchName2 = $("#searchName").val();
 
-			$.post({
-				url : "/staffDetail",
-				cache : false,
-				data : {
-					"staff_no" : staff_no
-				},
-				dataType : "json"
-			}).done(function(data) {
-				let result = data.result;
-				$("#staff_no").val(result.staff_no);
-				$("#staff_name").text(result.staff_name);
-				$("#staff_id").text(result.staff_id);
-				var staff_tel = result.staff_tel
-				var staff_telH = staff_tel.replace(
-				/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
-				$("#staff_tel").text(staff_telH);
-				$("#staff_birth").text(result.staff_birth);
-				$("#staff_addr").text(result.staff_addr);
-				$("#staff_email").text(result.staff_email);
-				$("#staff_grade").val(result.staff_grade);
+		if (searchName2 == "") {
+			$("#search_name option[value='all']").attr('selected', 'selected');
+		} else {
+			$("#search_name").val(searchName2);
+		}
 
-			}).fail(function(xhr, status, errorThrown) {
-				alert("실패");
-			});
-		});
+		$(".staffDetailModal")
+				.click(
+						function() {
+							$("#staffDetailModal").modal("show");
+							var staff_no = $(this).attr("data-value");
+
+							$
+									.post({
+										url : "/staffDetail",
+										cache : false,
+										data : {
+											"staff_no" : staff_no
+										},
+										dataType : "json"
+									})
+									.done(
+											function(data) {
+												let result = data.result;
+												$("#staff_no").val(
+														result.staff_no);
+												$("#staff_name").text(
+														result.staff_name);
+												$("#staff_id").text(
+														result.staff_id);
+												var staff_tel = result.staff_tel
+												var staff_telH = staff_tel
+														.replace(
+																/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,
+																"$1-$2-$3");
+												$("#staff_tel")
+														.text(staff_telH);
+												$("#staff_birth").text(
+														result.staff_birth);
+												$("#staff_addr").text(
+														result.staff_addr);
+												$("#staff_email").text(
+														result.staff_email);
+												$("#staff_grade").val(
+														result.staff_grade);
+
+											}).fail(
+											function(xhr, status, errorThrown) {
+												alert("실패");
+											});
+						});
 
 		$(".refresh").click(function() {
 			var pagenum = $("#pagenum").val();
 			let searchValue = $("#search_value").val();
 			page(pagenum, searchName2, searchValue);
 		});
-	
 
 		$(".gradeUpdate").click(function() {
 
@@ -105,7 +120,7 @@ if (session.getAttribute("id") != null) {
 				if (data.result2 == 1) {
 					alert("권한 수정이 완료되었습니다.");
 					let result = data.result;
-					
+
 					$("#staff_no").val(result.staff_no);
 					$("#staff_name").text(result.staff_name);
 					$("#staff_id").text(result.staff_id);
@@ -115,11 +130,10 @@ if (session.getAttribute("id") != null) {
 					$("#staff_email").text(result.staff_email);
 					$("#staff_grade").val(result.staff_grade)
 					$("#staffDetailModal").modal("hide");
-					
+
 					var pagenum = $("#pagenum").val();
 					let searchValue = $("#search_value").val();
 					page(pagenum, searchName2, searchValue);
-		
 
 				} else {
 					alert("문제가 발생했습니다. \n다시 시도해주세요.");
@@ -141,41 +155,38 @@ if (session.getAttribute("id") != null) {
 					dataType : "json"
 				}).done(function(data) {
 					let result = data.result;
-						if (result == 1) {
-							$("#staffDetailModal").modal("hide");
-							alert("삭제가 완료되었습니다.");
-							var pagenum = $("#pagenum").val();
-							let searchValue = $("#search_value").val();
-							page(pagenum, searchName2, searchValue);
-						} else {
-							alert("문제가 발생했습니다. \n다시 시도해주세요.");
-						}
+					if (result == 1) {
+						$("#staffDetailModal").modal("hide");
+						alert("삭제가 완료되었습니다.");
+						var pagenum = $("#pagenum").val();
+						let searchValue = $("#search_value").val();
+						page(pagenum, searchName2, searchValue);
+					} else {
+						alert("문제가 발생했습니다. \n다시 시도해주세요.");
+					}
 				}).fail(function(xhr, status, errorThrown) {
 					alert("실패");
 				});
 			}
 		});
 
-
 		$("#search_btn").click(function() {
 			let searchName = $("#search_name").val();
 			let searchValue = $("#search_value").val();
 
-			if (searchName == 0) {
-				alert("검색하시려는 항목을 선택하세요");
+			if (searchName == "all" && searchValue == "") {
+				location.href = "/staffList";
+			}
+
+			if((searchName == "id" || searchName == "tel"|| searchName == "name"|| searchName == "email") && searchValue == "" ){
+				alert("검색어를 입력하세요.");
 				return false;
 			}
-
-			if (searchName == "all" && searchValue == "") {
-				location.href="/staffList";
-			}
-	
 			searchForm.submit();
-		
-		});
-	
-	});
 
+		});
+
+	});
 
 	function page(idx, search_name, search_value) {
 		var pagenum = idx;
@@ -223,7 +234,7 @@ if (session.getAttribute("id") != null) {
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 
-						<div class="card-body">
+						<div class="card-body" style="height: 725px;">
 							<div class="d-flex justify-content-end"
 								style="margin-top: -10px;">
 								<form action="/staffList" name="searchForm"
@@ -241,7 +252,6 @@ if (session.getAttribute("id") != null) {
 												<option value="id">아이디</option>
 												<option value="tel">전화번호</option>
 												<option value="email">이메일</option>
-												<option value="grade">직책</option>
 											</select> <input type="text" name="search_value" id="search_value"
 												value="${search.getSearch_value() }"
 												class="form-control border-gray col-md-8"
@@ -257,8 +267,8 @@ if (session.getAttribute("id") != null) {
 								</form>
 							</div>
 							<div class="table-responsive">
-								<table class="table table-bordered text-center"
-									id="dataTable" width="100%" cellspacing="0">
+								<table class="table table-bordered text-center" id="dataTable"
+									width="100%" cellspacing="0">
 									<thead>
 										<tr class="bg-gray-200">
 											<th class="col-1">번호</th>
@@ -266,7 +276,33 @@ if (session.getAttribute("id") != null) {
 											<th class="col-2">ID</th>
 											<th class="col-3">전화번호</th>
 											<th class="col-3">이메일</th>
-											<th class="col-1">직책</th>
+											<th class="col-1">
+												<form action="/staffList" method="get">
+													<input type="hidden" value="${search.getSearch_name() }"
+														 name="search_name">
+													<input type="hidden" value="${search.getSearch_value() }"
+														name="search_value">
+													<div class="dropdown">
+														<button class="btn btn-sm dropdown-toggle" type="button"
+															data-bs-toggle="dropdown" aria-expanded="false"
+															style="font-size: 16px; font-weight: bold;">직책</button>
+														<ul class="dropdown-menu">
+															<li>
+																<button type="submit" class="dropdown-item btn btn-sm "
+																	name="staff_grade" value="doctor" id="sortbtn">의사</button>
+															</li>
+															<li>
+																<button type="submit" class="dropdown-item btn btn-sm "
+																	name="staff_grade" value="technician">테크니션</button>
+															</li>
+															<li>
+																<button type="submit" class="dropdown-item btn btn-sm "
+																	name="staff_grade" value="admin">관리자</button>
+															</li>
+														</ul>
+													</div>
+												</form>
+											</th>
 										</tr>
 									</thead>
 
@@ -441,6 +477,16 @@ if (session.getAttribute("id") != null) {
 
 			<!-- Custom scripts for all pages-->
 			<script src="js/sb-admin-2.min.js"></script>
+
+			<!-- 수납현황 목록 드롭다운 -->
+			<script
+				src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+				integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+				crossorigin="anonymous"></script>
+			<script
+				src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+				integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+				crossorigin="anonymous"></script>
 </body>
 
 </html>

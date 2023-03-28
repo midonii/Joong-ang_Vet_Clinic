@@ -30,6 +30,7 @@ public class StaffController {
 		SearchDTO searchDTO = new SearchDTO();
 		searchDTO.setSearch_name(request.getParameter("search_name"));
 		searchDTO.setSearch_value(request.getParameter("search_value"));
+		searchDTO.setStaff_grade(request.getParameter("staff_grade"));
 		staffService.paging(mv, pagenum, contentnum, searchDTO);
 		return mv;
 	}
