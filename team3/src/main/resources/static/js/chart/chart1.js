@@ -473,7 +473,7 @@ $(function() {
 					let medino = saveList[i].medical_no;
 					table += "<td class='col-2'>"+cate+"</td>";
 					table += "<td class='col-5'>"+mname+"</td>";
-					table += "<td class='col-2 priceTd' ><input type='number' class='mediNum form-control form-control-sm' id='"+medino+"'name='mediNum' style=' text-align:right;' value='1' min='1' max='100'></td>";
+					table += "<td class='col-2 priceTd' ><input type='number' class='mediNum form-control form-control-sm' id='"+medino+"'name='mediNum"+i+"' style=' text-align:right;' value='1' min='1' max='100'></td>";
 					table += "<td class='col-4 calPrice' id='"+price+"'>"+price+"원</td>";
 					table += "</tr>";
 					
@@ -481,6 +481,7 @@ $(function() {
 					
 					
 				}
+				$(".totalPrice").attr("id",totalPrice);
 				$(".saveTable1").append(table);
 				$(".totalPrice").empty();
 				var totalPriceAddc = totalPrice.toLocaleString(); //가격에 , 붙이기
@@ -512,6 +513,7 @@ $(function() {
 						totalSum += pr;
 					}
 					
+					$(".totalPrice").attr("id",totalSum);
 					var changeTotalPrice = totalSum.toLocaleString(); //가격에 , 붙이기
 					$(".totalPrice").empty(); //1개 단가의 총합계를 지운다 0
 					$(".totalPrice").append(changeTotalPrice+"원"); //총 합계

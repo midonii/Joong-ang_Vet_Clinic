@@ -1,5 +1,8 @@
 package com.vet.clinic.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONObject;
@@ -41,12 +44,16 @@ public class PayController {
 	}
 
 	@GetMapping("/payDetail")
-	public ModelAndView payDetail(@RequestParam("payNo") int payNo) {
+	public ModelAndView payDetail(@RequestParam("payNo") int payNo, @RequestParam("chart_no") String chartno) {
 		ModelAndView mv = new ModelAndView("/pay/payDetail");
 		PayDTO dto = new PayDTO();
 		dto.setPay_no(payNo);
 		dto = payService.payDetail(payNo);
+		
+		List<PayDTO> map = payService.chartDetail(chartno);
+		System.err.println(map);
 		mv.addObject("detail", dto);
+		mv.addObject("chartdetail", map);
 		return mv;
 	}
 	

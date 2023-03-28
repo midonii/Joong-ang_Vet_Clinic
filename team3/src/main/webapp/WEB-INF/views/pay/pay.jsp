@@ -237,7 +237,6 @@ if (session.getAttribute("id") == null) {
 									<thead>
 										<tr class="bg-gray-100" style="height: 55px;">
 											<th>번호</th>
-											<th>방문일</th>
 											<th>차트번호</th>
 											<th>동물명</th>
 											<th>보호자명</th>
@@ -251,6 +250,9 @@ if (session.getAttribute("id") == null) {
 													<ul class="dropdown-menu">
 														<li>
 														<button type="submit"  class="dropdown-item btn btn-sm " name="pay_yn"
+																value="" id="sortbtn">전체보기</button></li>
+														<li>
+														<button type="submit"  class="dropdown-item btn btn-sm " name="pay_yn"
 																value="N" id="sortbtn">수납대기</button></li>
 														<li>
 														<button type="submit" class="dropdown-item btn btn-sm " name="pay_yn"
@@ -259,6 +261,7 @@ if (session.getAttribute("id") == null) {
 												</div>
 											</form>
 											</th>
+											<th>수납시간</th>
 											<th>상세보기</th>
 										</tr>
 									</thead>
@@ -267,11 +270,10 @@ if (session.getAttribute("id") == null) {
 											<c:forEach items="${payList }" var="pl">
 												<tr>
 													<td>${pl.rownum}</td>
-													<td>${pl.pay_date }</td>
 													<td>${pl.chart_no }</td>
 													<td>${pl.pet_name }</td>
 													<td>${pl.owner_name }</td>
-													<td><fmt:formatNumber value="${pl.totalprice }"
+													<td><fmt:formatNumber value="${pl.totalPrice }"
 															pattern="#,###" />원</td>
 													<c:if test="${pl.pay_yn eq 'Y'}">
 														<td calss="btn btn-secondary">
@@ -287,9 +289,10 @@ if (session.getAttribute("id") == null) {
 																value="${pl.pay_no }">수납대기</button>
 														</td>
 													</c:if>
+													<td>${pl.pay_date }</td>
 													<td><buttton type="submit" id="detailBtn" name="payNo"
 															class="btn btn-primary btn-sm" value="${pl.pay_no }"
-															onclick="location.href='/payDetail?payNo='+'${pl.pay_no }'">상세보기</buttton></td>
+															onclick="location.href='/payDetail?payNo='+'${pl.pay_no }'+'&chart_no='+'${pl.chart_no }'">상세보기</buttton></td>
 												</tr>
 											</c:forEach>
 										</form>

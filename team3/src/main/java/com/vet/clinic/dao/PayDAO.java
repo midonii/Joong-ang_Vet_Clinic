@@ -23,6 +23,8 @@ public interface PayDAO {
 
 	public List<PayDTO> payList(PageDTO pageDTO);
 
+	public List<PayDTO> chartDetail(String chartno);
+
 	
 
 }

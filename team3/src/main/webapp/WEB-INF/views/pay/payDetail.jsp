@@ -7,9 +7,9 @@
 <html lang="en">
 <%
 if (session.getAttribute("id") == null) {
-   response.sendRedirect("/login?error=4321");
+	response.sendRedirect("/login?error=4321");
 }
-%> 
+%>
 <head>
 
 <meta charset="utf-8">
@@ -42,14 +42,15 @@ if (session.getAttribute("id") == null) {
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script>
-/* 전화번호 정규식  */
-$(document).ready( 
-	function() {
-		var test = "${detail.owner_tel}";
-		var testDate = test.replace(
-		/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3");
-			$("#telnum").text(testDate);
-		});
+	/* 전화번호 정규식  */
+	$(document).ready(
+			function() {
+				var test = "${detail.owner_tel}";
+				var testDate = test.replace(
+						/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,
+						"$1-$2-$3");
+				$("#telnum").text(testDate);
+			});
 </script>
 </head>
 <body id="page-top">
@@ -70,7 +71,7 @@ $(document).ready(
 							<h6 class="m-0 font-weight-bold text-primary">수납</h6>
 						</div>
 						<div class="card-body">
-							<div class="detailHead">
+							<div class="detailHead" style="width: 100%">
 
 								<div class="addr">
 									<div>중앙동물병원</div>
@@ -105,24 +106,40 @@ $(document).ready(
 								</tr>
 							</table>
 							<hr>
-							<div class="detailBody">
+							<div class="detailBody" style="width: 100%">
 								<div class="db1">청구서</div>
 								&nbsp[&nbsp${detail.pay_date }&nbsp]<br>
-								&nbsp[&nbsp동물명&nbsp : &nbsp${detail.pet_name }&nbsp]
-								<table class="table">
+								&nbsp[&nbsp동물명&nbsp : &nbsp${detail.pet_name }&nbsp]<br>
+								&nbsp[&nbsp담당의&nbsp : &nbsp${chartdetail[0].staff_name }&nbsp]
+								<table class="table text-center">
 									<tr>
-										<th class="col-7">내용</th>
+										<th class="col-2">구분</th>
+										<th class="col-2">세부구분</th>
+										<th class="col-3">이름</th>
 										<th class="col-1">수량</th>
 										<th class="col-2">금액</th>
 										<th class="col-2">적용금액</th>
 									</tr>
+								 	<c:forEach var="first" items="${chartdetail}" varStatus="status">
+										<tr >
+											<td>${first.medical_category }</td>
+											<td>${first.medical_subcate }</td>
+											<td>${first.medical_name }</td>
+											<td>${first.medicaldata_ea }</td>
+											<td><fmt:formatNumber value="${first.medical_price }"
+												pattern="#,###" />원</td>
+										<td><fmt:formatNumber value="${first.medical_price *first.medicaldata_ea }"
+												pattern="#,###" />원</td>
+											
+										</tr>
+									</c:forEach>
+								
+									
 									<tr>
-										<td>${detail.chart_memo }</td>
-										<td>수량</td>
-										<td><fmt:formatNumber value="${detail.totalprice }"
-												pattern="#,###" />원</td>
-										<td><fmt:formatNumber value="${detail.totalprice }"
-												pattern="#,###" />원</td>
+										<td colspan="4" class="text-right "></td>
+										<td class="text-center "><b>총 합계</b></td>
+										<td ><b><fmt:formatNumber value="${detail.totalPrice }"
+												pattern="#,###" />원</b></td>
 									</tr>
 								</table>
 								<!--출력부분끝  -->
