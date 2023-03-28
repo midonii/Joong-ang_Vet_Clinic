@@ -46,21 +46,25 @@ if (session.getAttribute("id") != null) {
 <script type="text/javascript">
 	$(function() {
 		let searchName2 = $("#searchName").val();
-		$("#search_name").val(searchName2);
-
+		if (searchName2 == "") {
+			$("#search_name option[value='all']").attr('selected', 'selected');
+		} else {
+			$("#search_name").val(searchName2);
+		}
 		$("#addBtn").click(function() {
 
-			var medical_name = $("#medical_name").val();
+			var medical_name = $.trim($("#medical_name").val());
+			$("#medical_name").val(medical_name);
 			var medical_subcate = $("#medical_subcate").val();
 			var medical_category = $("#medical_category").val();
 
 			if (medical_name == "") {
-				alert("이름을 입력해주세요.");
+				alert("약품명을 입력해주세요.");
 				$("#medical_name").focus();
 				return false;
 			}
 
-			if (medical_price == "") {
+			if (medical_subcate == null) {
 				alert("분류항목을 선택해주세요.");
 				$("#medical_subcate").focus();
 				return false;
@@ -94,7 +98,7 @@ if (session.getAttribute("id") != null) {
 		$(".updateFrm").click(function() {
 
 			let medical_no = $("#medical_noU").val();
-			let medical_name = $("#medical_nameU").val();
+			let medical_name = $.trim($("#medical_nameU").val());
 			let medical_subcate = $("#medical_subcateU").val();
 
 			$.post({
@@ -123,14 +127,16 @@ if (session.getAttribute("id") != null) {
 		$("#search_btn").click(function() {
 			let searchValue = $("#search_value").val();
 			let searchName = $("#search_name").val();
-			if (searchName == 0) {
-				alert("검색하시려는 항목을 선택하세요");
+			
+			if (searchName == "all" && searchValue == "") {
+				location.href="/medicine";
+			}
+			
+			if((searchName == "name" || searchName == "category") && searchValue == "" ){
+				alert("검색어를 입력하세요.");
 				return false;
 			}
-			if (searchValue == "" || searchValue.length < 2) {
-				alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
-				return false;
-			}
+			
 			searchForm.submit();
 		});
 
@@ -250,7 +256,7 @@ if (session.getAttribute("id") != null) {
 											<li class="list-group-item">
 												<div class="row">
 													<div class="col-md-3 text-center"
-														style="line-height: 38px;">이름</div>
+														style="line-height: 38px;">약품명</div>
 													<div class="col-md-9">
 														<input type="text" class="form-control" id="medical_name"
 															name="medical_name">
@@ -264,7 +270,7 @@ if (session.getAttribute("id") != null) {
 													<div class="col-md-9">
 														<select class="form-control" id="medical_subcate"
 															name="medical_subcate">
-															<option value="" selected disabled="disabled">선택</option>
+															<option selected disabled="disabled">선택</option>
 															<c:forEach items="${subcate}" var="sc">
 																<option value="${sc }">${sc }</option>
 															</c:forEach>
@@ -297,7 +303,7 @@ if (session.getAttribute("id") != null) {
 												id="searchName"> <select
 												class="form-control col-md-3" name="search_name"
 												id="search_name" style="border-radius: 5px 0 0 5px">
-												<option value="" selected disabled="disabled">선택</option>
+												<option value="all" selected>전체</option>
 												<option value="name">약품명</option>
 												<option value="category">분류</option>
 											</select> <input type="text" class="form-control border-gray col-md-9"
@@ -319,7 +325,7 @@ if (session.getAttribute("id") != null) {
 												<tr class="bg-gray-200">
 													<th class="col-1">번호</th>
 													<th class="col-2">분류</th>
-													<th class="col-3">이름</th>
+													<th class="col-3">약품명</th>
 													<th class="col-1"></th>
 
 												</tr>
@@ -426,7 +432,7 @@ if (session.getAttribute("id") != null) {
 							<ul class="list-group list-group-flush">
 								<li class="list-group-item">
 									<div class="row">
-										<div class="col-md-3 text-center" style="line-height: 38px;">이름</div>
+										<div class="col-md-3 text-center" style="line-height: 38px;"></div>
 										<div class="col-md-9">
 											<input type="text" class="form-control" id="medical_nameU"
 												name="medical_nameU">
@@ -439,7 +445,6 @@ if (session.getAttribute("id") != null) {
 										<div class="col-md-9">
 											<select class="form-control" id="medical_subcateU"
 												name="medical_subcateU">
-												<option value="" selected disabled="disabled">선택</option>
 												<c:forEach items="${subcate}" var="sc">
 													<option value="${sc }">${sc }</option>
 												</c:forEach>

@@ -54,7 +54,8 @@ if (session.getAttribute("id") != null) {
 	$(function() {
 		$("#addBtn").click(function() {
 
-			var type_name = $("#type_name").val();
+			var type_name = $.trim($("#type_name").val());
+			$("#type_name").val(type_name);
 			if (type_name == "") {
 				alert("이름을 입력해주세요.");
 				$("#type_name").focus();
@@ -93,7 +94,7 @@ if (session.getAttribute("id") != null) {
 		$(".updateFrm").click(function() {
 
 			let type_no = $("#type_noU").val();
-			let type_name = $("#type_nameU").val();
+			let type_name = $.trim($("#type_nameU").val());
 
 			$.post({
 				url : "/petTypeUpdate",
@@ -120,8 +121,8 @@ if (session.getAttribute("id") != null) {
 		$("#search_btn").click(function() {
 			let searchValue = $("#search_value").val();
 
-			if (searchValue == "" || searchValue.length < 2) {
-				alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
+			if (searchValue == "") {
+				alert("검색어를 입력하세요.");
 				return false;
 			}
 			searchForm.submit();

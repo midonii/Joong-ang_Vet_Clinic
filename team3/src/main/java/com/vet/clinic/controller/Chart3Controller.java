@@ -55,7 +55,6 @@ public class Chart3Controller {
 				dataMap.put("medical_ea", arr[i]);
 				dataMap.put("pet_no", map.get("pet_no"));
 				chart3Service.dataAdd(dataMap);
-				
 			}
 			json.put("result", result);
 			json.put("stateUpdate", stateUpdate);

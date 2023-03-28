@@ -14,9 +14,9 @@ import com.vet.clinic.dto.StaffDTO;
 public interface StaffDAO {
 
 	public List<StaffDTO> staffList(@Param("pagenum") int pagenum, @Param("contentnum") int contentnum,
-			@Param("search_name") String search_name, @Param("search_value") String search_value);
+			@Param("search_name") String search_name, @Param("search_value") String search_value, @Param("staff_grade") String staff_grade);
 
-	public int contentTotal(@Param("search_name") String search_name, @Param("search_value") String search_value);
+	public int contentTotal(@Param("search_name") String search_name, @Param("search_value") String search_value, @Param("staff_grade") String staff_grade);
 
 	public StaffDTO login(Map<String, Object> map);
 

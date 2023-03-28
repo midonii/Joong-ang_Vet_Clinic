@@ -38,7 +38,7 @@ public ModelAndView paging(ModelAndView mv, String pagenum, String contentnum, S
 		int ccontentnum = Integer.parseInt(contentnum);
 
 		PageDTO pageDTO = new PageDTO();
-		pageDTO.setTotalcount(staffDAO.contentTotal(searchDTO.getSearch_name(), searchDTO.getSearch_value())); 
+		pageDTO.setTotalcount(staffDAO.contentTotal(searchDTO.getSearch_name(), searchDTO.getSearch_value(),searchDTO.getStaff_grade())); 
 		pageDTO.setPagenum(cpagenum - 1); // 현재 페이지를 페이지 객체에 지정한다 -1 을 해야 쿼리에서 사용할수 있다
 		pageDTO.setContentnum(ccontentnum); // 한 페이지에 몇개씩 게시글을 보여줄지 지정한다.
 		pageDTO.setCurrentblock(cpagenum); // 현재 페이지 블록이 몇번인지 현재 페이지 번호를 통해서 지정한다.
@@ -50,7 +50,7 @@ public ModelAndView paging(ModelAndView mv, String pagenum, String contentnum, S
 		// 마지막 페이지를 마지막 페이지 블록과 현재 페이지 블록 번호로 정한다.
 
 		List<StaffDTO> staffList = staffDAO.staffList(pageDTO.getPagenum() * 10, pageDTO.getContentnum(),
-				searchDTO.getSearch_name(), searchDTO.getSearch_value());
+				searchDTO.getSearch_name(), searchDTO.getSearch_value(),searchDTO.getStaff_grade());
 		mv.addObject("staffList", staffList);
 		mv.addObject("page", pageDTO);
 		mv.addObject("search", searchDTO);

@@ -40,7 +40,7 @@ $(function() {
 							+ receive_time;
 					}
 					table += "<td class='col-5'><a  style='text-decoration: none;' id='pet_name' value='" + receive_no + "' >";
-					table += "<b class='text-primary' style='cursor:pointer;'>"
+					table += "<b class='text-primary'>"
 						+ pet_name
 						+ "&nbsp;("
 						+ type_name
@@ -115,7 +115,7 @@ $(function() {
 			function(data) {
 				let chart = data.chart;
 				$("#chart").empty();
-				var chartdiv = "<div class='accordion ' id='accordionExample' style='height:700px;' >"
+				var chartdiv = "<div class='accordion ' id='accordionExample' >"
 				if (data.chart == "") {
 					chartdiv += "<div class='text-center' style='height:705px; line-height:705px;'>진료 내역이 없습니다.</div>";
 				} else {
@@ -182,13 +182,15 @@ $(function() {
 
 				$("#chart").append(chartdiv);
 
+
 				$(document)
 					.on(
 						"click",
 						".pastChart",
 						function() {
-							var chartNo = $(this).attr(
-								"value");
+							var chartNo = $(this).attr("value");
+
+
 							$("#chart_no").val(chartNo);
 							$("#memo").val("");
 
@@ -203,7 +205,9 @@ $(function() {
 								function(data) {
 
 									let petChart = data.chart;
-									$("#memo").val(petChart[0].chart_memo);
+									$("#chartDate").val(petChart[0].chart_date);
+									var replace_result = petChart[0].chart_memo.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
+									$("#memo").val(replace_result);
 
 									$(".CBTable").empty();
 									let petMedicalData = data.petMedicalData;
@@ -352,12 +356,18 @@ $(function() {
 				alert("실패");
 			});
 
+	function getTodayDate() {
+		var date = new Date();
+		return date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
+	}
+
 
 
 	$("#chartUpdate").click(function() {
-		
+		var chartDate = $("#chartDate").val();
+		var today = getTodayDate();
 		var chart_no = $("#chart_no").val();
-		var chart_memo = $("#memo").val();
+		var chart_memo = $("#memo").val().replace(/\n/g, "<br>");
 		var totalprice = $(".totalPrice").attr("id");
 		var trlength = $(".CBTable > tr").length;
 		var objArr = [];
@@ -372,29 +382,34 @@ $(function() {
 			arr.push(obj.medical_ea);
 			arr2.push(obj.medical_no);
 		}
-		$.post({
-			url: "/chartUpdate",
-			data: {
-				"chart_no": chart_no,
-				"chart_memo": chart_memo,
-				"arr": arr,
-				"arr2": arr2,
-				"pet_no": pet_no
-			},
-			dataType: "json"
-		}).done(function(data) {
+		if (chartDate == today) {
 			if (confirm("차트를 수정하시겠습니까?")) {
-				if (data.result == 1) {
-					alert("차트가 수정되었습니다.");
-					location.href = "/chartUpdate?pet_no=" + pet_no;
-				} else {
-					alert("권한이 없습니다.");
-				}
+				$.post({
+					url: "/chartUpdate",
+					data: {
+						"chart_no": chart_no,
+						"chart_memo": chart_memo,
+						"arr": arr,
+						"arr2": arr2,
+						"pet_no": pet_no
+					},
+					dataType: "json"
+				}).done(function(data) {
+					if (data.result == 1) {
+						alert("차트가 수정되었습니다.");
+						location.href = "/chartUpdate?pet_no=" + pet_no;
+					} else {
+						alert("권한이 없습니다.");
+					}
+				}).fail(function() {
+					alert("문제발생");
+				});
 			}
-		}).fail(function() {
-			alert("문제발생");
-		});
+		} else {
+			alert("금일 작성된 차트가 아닙니다.");
+		}
 	});
+
 });
 
 

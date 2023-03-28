@@ -61,9 +61,12 @@ if (session.getAttribute("id") != null) {
 	$(function() {
 		$("#addBtn").click(function() {
 
-			var medical_name = $("#medical_name").val();
-			var medical_price = $("#medical_price").val();
+			var medical_name = $.trim($("#medical_name").val());
+			$("#medical_name").val(medical_name);
+			var medical_price = $.trim($("#medical_price").val());
+			$("#medical_price").val(medical_price);
 			var medical_category = $("#medical_category").val();
+			var medical_subcate = $("#medical_subcate").val();
 
 			if (medical_name == "") {
 				alert("이름을 입력해주세요.");
@@ -71,7 +74,7 @@ if (session.getAttribute("id") != null) {
 				return false;
 			}
 
-			if (medical_subcate == "") {
+			if (medical_subcate == null) {
 				alert("분류항목을 선택해주세요.");
 				$("#medical_subcate").focus();
 				return false;
@@ -111,8 +114,8 @@ if (session.getAttribute("id") != null) {
 		$(".updateFrm").click(function() {
 
 			let medical_no = $("#inspection_noU").val();
-			let medical_name = $("#inspection_nameU").val();
-			let medical_price = $("#inspection_priceU").val();
+			let medical_name = $.trim($("#inspection_nameU").val());
+			let medical_price = $.trim($("#inspection_priceU").val());
 			let medical_subcate = $("#medical_subcateU").val();
 
 			$.post({
@@ -142,19 +145,24 @@ if (session.getAttribute("id") != null) {
 		$("#search_btn").click(function() {
 			let searchValue = $("#search_value").val();
 			let searchName = $("#search_name").val();
-			if (searchName == "") {
-				alert("검색하시려는 항목을 선택하세요");
+			if (searchName == "all" && searchValue == "") {
+				location.href="/inspection";
+			}
+			
+			if((searchName == "name" || searchName == "category") && searchValue == "" ){
+				alert("검색어를 입력하세요.");
 				return false;
 			}
-			if (searchValue == "" || searchValue.length < 2) {
-				alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
-				return false;
-			}
+			
 			searchForm.submit();
 		});
 
 		let searchName2 = $("#searchName").val();
-		$("#search_name").val(searchName2);
+		if (searchName2 == "") {
+			$("#search_name option[value='all']").attr('selected', 'selected');
+		} else {
+			$("#search_name").val(searchName2);
+		}
 
 		$(".medicalDel").click(function() {
 			var medical_no = $(this).attr("value");
@@ -272,7 +280,7 @@ if (session.getAttribute("id") != null) {
 													<div class="col-md-9">
 														<select class="form-control" id="medical_subcate"
 															name="medical_subcate">
-															<option value="" selected disabled="disabled">선택</option>
+															<option selected disabled="disabled">선택</option>
 															<c:forEach items="${subcate}" var="sc">
 																<option value="${sc }">${sc }</option>
 															</c:forEach>
@@ -314,7 +322,7 @@ if (session.getAttribute("id") != null) {
 												id="searchName"> <select
 												class="form-control col-md-3" name="search_name"
 												id="search_name" style="border-radius: 5px 0 0 5px">
-												<option value="" selected disabled="disabled">선택</option>
+												<option value="all" selected>전체</option>
 												<option value="name">진료명</option>
 												<option value="category">분류</option>
 											</select> <input type="text"

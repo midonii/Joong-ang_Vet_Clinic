@@ -43,6 +43,9 @@ if (session.getAttribute("id") == null) {
 <script type="text/javascript">
 	$(function() {
 		$(".sidebar").addClass("toggled");
+		$(".refresh").click(function() {
+			location.reload();
+		});
 		$
 				.post({
 					url : "/noticeAjax",
@@ -84,6 +87,7 @@ if (session.getAttribute("id") == null) {
 		$(document).on("click", ".noticeDetailModal", function() {
 			$("#noticeDetailModal").modal("show");
 			var notice_no = $(this).attr("data-value");
+			$("#D_content").text("");
 			$.post({
 				url : "/noticeDetail",
 				cache : false,
@@ -97,7 +101,7 @@ if (session.getAttribute("id") == null) {
 				if (read == 1) {
 					$("#D_no").val(result.notice_no);
 					$("#D_title").text(result.notice_title);
-					$("#D_content").text(result.notice_content);
+					$("#D_content").append(result.notice_content);
 					$("#D_date").text(result.listdate);
 					$("#D_read").text(result.notice_read);
 					$("#D_name").text(result.staff_name);
@@ -197,7 +201,7 @@ if (session.getAttribute("id") == null) {
 
 								table += "<tbody>";
 								table += "<tr class='text-center'>";
-								table += "<td colspan='4' style='line-height:200px;'>접수 사항이 없습니다.</td>";
+								table += "<td colspan='4' style='line-height:200px;'>접수 내역이 없습니다.</td>";
 								table += "</tr>";
 							}
 							$("#indexreceive").append(table);
@@ -245,7 +249,7 @@ if (session.getAttribute("id") == null) {
 
 								table += "<tbody>";
 								table += "<tr class='text-center'>";
-								table += "<td colspan='4' style='line-height:200px;'>수납 사항이 없습니다.</td>";
+								table += "<td colspan='4' style='line-height:200px;'>수납 내역이 없습니다.</td>";
 								table += "</tr>";
 							}
 							$("#indexpay").append(table);
@@ -596,7 +600,7 @@ if (session.getAttribute("id") == null) {
 											id="D_title"></div>
 									</div>
 								</li>
-								<li class="list-group-item">
+								<li class="list-group-item text-gray-700">
 									<div class="row">
 										<div class="col-md-7">
 											<i class="fa-solid fa-user"></i>&nbsp;&nbsp;<span id="D_name"></span>

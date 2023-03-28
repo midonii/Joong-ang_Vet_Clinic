@@ -33,8 +33,7 @@ if (session.getAttribute("id") == null) {
 	integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
 	crossorigin="anonymous">
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
-<script type="text/javascript"
-	src="cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <!-- JQUERY -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
@@ -76,6 +75,7 @@ if (session.getAttribute("id") == null) {
 											<input type="hidden" id="pet_no" name="pet_no"
 												value="${param.pet_no }">
 											<input type="hidden" id="chart_no" name="chart_no">
+											<input type="hidden" id="chartDate">
 											<tr>
 												<td>보호자명 :<b class="text-gray-800">
 														${profile.owner_name}</b>&nbsp;
@@ -308,7 +308,6 @@ if (session.getAttribute("id") == null) {
 
 
 			<!-- Bootstrap core JavaScript-->
-			<script src="js/reservation/calender/calender.js"></script>
 			<script src="vendor/jquery/jquery.min.js"></script>
 			<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
