@@ -19,7 +19,7 @@ public interface Chart1DAO {
 
 	public List<Map<String, Object>> prescSaveAjax(Map<String, Object> rightno_map);
 
-	public int callClientAjax(int receiveNo);
+	public int callClientAjax(String receiveno);
 
 
 

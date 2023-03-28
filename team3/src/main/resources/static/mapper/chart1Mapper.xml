@@ -48,10 +48,10 @@
 	</select>
 	
 	<!-- 호출 버튼 클릭 1 > 2로 변경 -->
-	<update id="callClientAjax" parameterType="Integer">
+	<update id="callClientAjax" parameterType="String">
 		UPDATE reception 
 		SET receive_state = 2
-		WHERE receive_no=#{receiveNo}
+		WHERE receive_no=#{receiveno}
 	</update>
 	
 	
