@@ -24,7 +24,7 @@ if (session.getAttribute("id") == null) {
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
 <!-- 	type="text/css"> -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
-<link rel="stylesheet" href="https://kit.fontawesome.com/a31e2023c3.css" crossorigin="anonymous">
+
 <script src="https://kit.fontawesome.com/a31e2023c3.js" crossorigin="anonymous"></script>
 <link
 	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -34,6 +34,7 @@ if (session.getAttribute("id") == null) {
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <!-- Custom styles for this template-->
 <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
@@ -149,7 +150,7 @@ $(function(){
 
 	<!-- Page Wrapper -->
 	<div id="wrapper">
-		<%@ include file="../bar/sideBar.jsp"%>
+			<%@ include file="../bar/sideBar.jsp"%>
 
 
 		<!-- Content Wrapper -->
@@ -165,19 +166,17 @@ $(function(){
 				<div class="container-fluid">
 
 				 <div class="row">
-				 	 <!-- Page Heading -->
-					<div style="line-height: 40px; font-size: 13px; position: absolute;">
+					<form action="/client" method="get" name="searchForm">
+					
+					<!-- Page Heading -->
+					<div class="col-7" style="font-size: 13px; margin-bottom: -30px;">
 						<a href="/index" style="text-decoration: none;"
 							class="text-gray-600"><i class="fa-solid fa-house-chimney"></i></a>&nbsp;&nbsp;<i
-							class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp; <a
-							href="/client" style="text-decoration: none;"
-							class="text-gray-700">회원정보</a>
+							class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp;
+							<a href="/client" style="text-decoration: none;" class="text-gray-700">회원정보</a>
 					</div>		
-				 
-				 
-				<!-- 회원 검색 -->
-				 
-					<form action="/client" method="get" name="searchForm">
+					
+						<!-- 회원 검색 -->
 						<div class="mb-2 mt-1 float-right col-5">
 							<div class="input-group">
 								<input type="hidden" value="${search.getSearch_name() }" id="hidden_search">
@@ -340,7 +339,7 @@ $(function(){
                     </div>
      
 				
-			<%@ include file="./client_modal.jsp"%>
+					<%@ include file="./client_modal.jsp"%>
 
 					
 

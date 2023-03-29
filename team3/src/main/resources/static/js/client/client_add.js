@@ -336,12 +336,13 @@ $(function(){
 	    // 셀렉트 초기화
 	    //$('.select2').val(0).trigger('change.select2');
 	});
+	var petClick = false;
 	
-	$(document).on("dblclick",".owner-tr",function(){ 
-	//$(".owner-tr").dblclick (function (){
+	$(document).off("dblclick",".owner-tr").on("dblclick",".owner-tr",function(){
+	//$(".owner-tr").off("dblclick").on("dblclick",function (){
 		//보호자 행 더블 클릭시 해당 보호자의 반려견 띄우기
 		let clientNno = $(this).attr("value");
-		
+		petClick = false;
 		 $.post({
 			url : "/profileMap",
 			cache : false,
@@ -378,6 +379,7 @@ $(function(){
 			$("#ajaxTable").append(table);
 			$("#ajaxTable").show();
 			
+			
 			//반려견 상세보기 기능
 			$(".petdetail-btn").click(function() {
 				let petNo = $(this).attr("value");
@@ -388,6 +390,7 @@ $(function(){
 			
 			$(this).css("background-color", "#f4f4f4");
 			
+			
 		}).fail(function(xhr, status,errorThrown){
 			alert("문제가 발생했습니다.");
 			
@@ -396,9 +399,11 @@ $(function(){
 		
 	});
 	
+	
 	$(document).off("click",".petList").on("click",".petList",function(){
 	//$(".petList").off().click(function(){
 		//반려견 테이블 행 클릭시 동작
+		petClick = true;
 		var petNo = $(this).attr("value");
 		let mpName = $(this).children().eq(1).text();
 		//alert("petNo : " + petNo);		
@@ -410,20 +415,29 @@ $(function(){
 				});
 		
 		//alert("petNo : " + petNo);
-		//$(document).off("click",".petDelete").on("click",".petDelete",function(){
-		$(".petDelete").off().click(function(){
+		$(document).off("click",".petDelete").on("click",".petDelete",function(){
+		//$(".petDelete").off().click(function(){
 			//반려견 행 클릭 후 삭제 버튼 누를 경우 삭제되게
 			//alert(petNo);
 			 if(confirm(mpName+"을(를) 삭제하시겠습니까?")){
 	 				location.href="petDelete?petNo="+petNo;
-	 			}
+	 			} else {
+					$(document).off("click",".petDelete");
+					$(document).off("click",".petUpdate");
+					$(".petList").css("background-color",'');
+					petClick = false;
+		}                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 			
 		});
 		
 		//반려견 수정 Modal 띄우기
-		$(".petUpdate").off().click(function(){
-		//$(document).off("click",".petUpdate").on("click",".petUpdate",function(){
+		//$(".petUpdate").off().click(function(){
+		$(document).off("click",".petUpdate").on("click",".petUpdate",function(){
 			//alert(petNo);
+			petClick = false;
+			$(document).off("click",".petUpdate");
+			$(document).off("click",".petDelete");
+			$(".petList").css("background-color",'');
 			
 			//반려견 수정 모달 끌 경우 값 초기화
 			$('#petUpdateModal').on('hidden.bs.modal', function(e) {
@@ -722,12 +736,17 @@ $(function(){
 	});
 	
 	//반려견 행 선택 없이 버튼 눌렀을 경우 alert
-	$(".petDelete").off().click(function(){
-		alert("삭제 할 반려견을 선택해주세요.");
+	
+	$(".petDelete").off("click").on("click",function(){
+		if(petClick == false){
+		alert("삭제할 반려견을 선택해 주세요.");
+		}
 	});
 	
-	$(".petUpdate").off().click(function(){
-		alert("수정 할 반려견을 선택해주세요.");
+	$(".petUpdate").off("click").on("click",function(){
+		if(petClick == false){
+		alert("수정할 반려견을 선택해주세요.");
+		}
 	});
 		
 	
@@ -791,11 +810,15 @@ $(function(){
 				$("#ajaxModalTable").show();
 				
 				
+				var clickNo = false;
+				
 				//보호자 상세보기 모달에서 반려견 리스트 클릭시
 				$(document).off("click",".petListModal").on("click", ".petListModal", function(){
-					
+					clickNo = true;
+					//alert(clickNo);
 				
-			//	$(".petList").off().click(function(){
+				
+				//$(".petListModal").off().click(function(){
 					let petNo = $(this).attr("value");
 					let petListName = $(this).children().eq(1).text();
 					//alert(petNo);
@@ -807,8 +830,10 @@ $(function(){
 					
 					
 					//보호자 상세보기 modal에서 반려견 수정하기
-					//$(document).off("click",".cm_petUpdate").on("click", ".cm_petUpdate",function(){
-					$(".cm_petUpdate").off().click(function(){
+					$(document).off("click",".cm_petUpdate").on("click", ".cm_petUpdate",function(){
+					//$(".cm_petUpdate").off().click(function(){
+						
+						clickNo = false;
 						//반려견 수정 모달 끌 경우 값 초기화
 						$('#petUpdateModal').on('hidden.bs.modal', function(e) {
 
@@ -819,6 +844,8 @@ $(function(){
 							}
 
 						});
+						
+						$("#detailModal").modal("hide");
 						
 						//alert(petNo);
 						//버튼 클릭 시 기존의 tr을 삭제하도록
@@ -937,6 +964,8 @@ $(function(){
 							//X버튼 누를 경우 기존의 petlist 다시 띄우기
 							$("#petUpdateModalClose").click(function(){
 								$(".petListModal").show();
+								$(".petListModal").css("background-color", '');
+								$("#detailModal").modal("show");
 							});
 							
 							
@@ -1029,6 +1058,7 @@ $(function(){
 								//백으로 보내서 수정하게 하기
 								$.post({
 									url: "/petUpdate",
+									cache : false,
 									data: {
 										"petNo": petNo,
 										"petUpdateName": petUpdateName,
@@ -1092,6 +1122,9 @@ $(function(){
 										
 										
 										$("#petUpdateModal").modal("hide");
+
+
+										
 										//수정된 정보 보호자 상세보기 모달로 불러오기
 										$.post({
 											url: "/clientDetailAjax",
@@ -1103,7 +1136,7 @@ $(function(){
 											//alert(result[0].owner_name);
 											var table = "";
 											$('.petListModal').hide();
-											//상세보기 클릭 시 이전 기록 reset
+											//이전 기록 reset
 											$("#ajaxModalTable").empty();
 											for (let i = 0; result.length > i; i++) {
 												var pet_no = result[i].pet_no;
@@ -1125,15 +1158,14 @@ $(function(){
 												table += "<td>" + pet_memo + "</td>";
 												table += "</tr>";
 											}
+											
 
 											$("#ajaxModalTable").append(table);
 											$("#ajaxModalTable").show();
 											
 											
-											
-											
-											
 										});
+										
 										
 										$("#detailModal").modal("show");
 										
@@ -1157,21 +1189,46 @@ $(function(){
 						
 					});
 					
-					$(".cm_petDelete").off().click(function(){
+					
+					
+					//$(".cm_petDelete").off().click(function(){
+					$(document).off("click",".cm_petDelete").on("click", ".cm_petDelete", function(){
+						clickNo = false;
 						//반려견 행 클릭 후 삭제 버튼 누를 경우 삭제되게
 						//alert(petListName);
 						 if(confirm(petListName+"을(를) 삭제하시겠습니까?")){
 				 				location.href="petDelete?petNo="+petNo;
-				 			}
+				 			} else{
+								clickNo = true;
+							}
 						
 					});
 					
+
+
 					
 				});
+				
+						$(".cm_petUpdate").off("click").on("click",function(){
+							if(clickNo == false){
+								alert("수정 할 반려견을 선택해 주세요.");
+							}
+							
+						});
+						
+						$(".cm_petDelete").off("click").on("click",function(){
+							if(clickNo == false){
+								alert("삭제 할 반려견을 선택해 주세요.");
+							}
+						});
+	
+				
 				
 				$(this).css("background-color", "#f4f4f4");
 				
 				$("#detailModal").modal("show");
+				
+				
 				
 				
 
@@ -1445,20 +1502,22 @@ $(function(){
 			
 		});
 		
-		//보호자 상세보기 모달에서 반려견 행 클릭 없이 수정, 삭제 버튼 누를경우 alert
-				$(".cm_petUpdate").off().click(function() {
-					alert("수정 할 반려견을 선택해 주세요.");
-				});
-				
-				$(".cm_petDelete").off().click(function() {
-					alert("삭제 할 반려견을 선택해 주세요.");
-				});
-		
 			
 	 });
+
+	
+
 	
 	//보호자 상세보기 모달 X버튼 눌러서 꺼질 때, 반려견 부분 값 초기화
 	$('#detailModal').on('hidden.bs.modal', function(e) {
+
+		//$(document).off("click",".petListModal");
+		$(document).off("click",".cm_petUpdate");
+		$(document).off("click",".cm_petDelete");
+
+	});
+	
+	$('#detailModal').on('hide.bs.modal',function(e) {
 
 		//$(document).off("click",".petListModal");
 		$(document).off("click",".cm_petUpdate");
