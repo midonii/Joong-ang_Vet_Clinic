@@ -15,9 +15,9 @@
 /* } */
 .weekcalendar {
   display: grid;
-  gap: 10px;
+  gap: 20px;
   grid-template-columns: auto 1fr;
-  margin: 1.5rem;
+  margin: 2rem;
 }
 
 .timeline1 {
@@ -28,8 +28,8 @@
 .days {
   display: grid;
   grid-column: 2;
-  gap: 5px;
-  grid-template-columns: repeat(auto-fit, 86px);
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, 113px);
 }
 
 .events1 {/* 파란배경 */

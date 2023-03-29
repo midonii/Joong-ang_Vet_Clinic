@@ -1,11 +1,176 @@
+//달력초기화면 오늘날짜로 설정
+$(document).ready(function(){
+    var date = new Date(); //date : Wed Mar 01 2023 16:45:51 GMT+0900 (한국 표준시)
+    var today = date.getDate();
+    $(".right-button").click({date: date}, next_year); //{date: date} = date속성에 "var date = new Date()"넣기
+    $(".left-button").click({date: date}, prev_year);
+    $(".month").click({date: date}, month_click);
+    $(".months-row").children().eq(date.getMonth()).addClass("active-month");
+    init_calendar(date);
+});
 
-$(function() {
-	//전역변수
+function days_in_month(month, year) {
+    var monthStart = new Date(year, month, 1);
+    var monthEnd = new Date(year, month + 1, 1);
+    return (monthEnd - monthStart) / (1000 * 60 * 60 * 24);    
+}
+
+//월 클릭했을때 이벤트핸들러
+function month_click(event) {
+    $("#dialog").hide(250);
+    var date = event.data.date;
+    $(".active-month").removeClass("active-month");
+    $(this).addClass("active-month");
+    var new_month = $(".month").index(this);
+    date.setMonth(new_month);
+    init_calendar(date);
+	show_events(month, day, year, strday);
+}
+//년 클릭했을때 이벤트핸들러
+function next_year(event) {
+    $("#dialog").hide(250);
+    var date = event.data.date;
+    var new_year = date.getFullYear()+1;
+    $("year").html(new_year);
+    date.setFullYear(new_year);
+    init_calendar(date);
+	show_events(month, day, year, strday);
+}
+
+function prev_year(event) {
+    $("#dialog").hide(250);
+    var date = event.data.date;
+    var new_year = date.getFullYear()-1;
+    $("year").html(new_year);
+    date.setFullYear(new_year);
+    init_calendar(date);
+	show_events(month, day, year, strday);
+}
+
+//캘린더 첫화면
+function init_calendar(date) { //date:오늘 날짜
+    $(".tbody").empty(); //tbody 클래스를 가진 HTML 요소의 내용지우기
+    $(".events-container").empty();
+	 
+    var calendar_days = $(".tbody");
+    var month = date.getMonth();
+    var year = date.getFullYear();
+    var day_count = days_in_month(month, year);
+    var row = $("<tr class='table-row'></tr>");
+    var today = date.getDate();
+	var strday = date.getDay();
+	//월의 첫번째 날을 찾기위해 date를 1로 설정
+    date.setDate(1);
+    var first_day = date.getDay(); //1일의 요일
+    for(var i=0; i<35+first_day; i++) {
+        var day = i-first_day+1;
+		
+		//일욜이면 새로운 row생성
+        if(i%7===0) {
+            calendar_days.append(row);
+            row = $("<tr class='table-row'></tr>");
+        }
+        if(i < first_day || day > day_count) {
+            var curr_date = $("<td class='table-date nil'>"+"</td>");
+            row.append(curr_date);
+        }   
+        else {
+            var curr_date = $("<td class='table-date'>"+day+"</td>");
+			//오늘 날짜인 경우 && .active-date가 없는 경우
+            if(today===day && $(".active-date").length===0) { 
+                curr_date.addClass("active-date");
+               show_events(months[month], day, year);
+            }
+            curr_date.click({month: months[month], day:day, year:year, strday:strday}, date_click); //events:events
+            row.append(curr_date);
+        }
+    }
+    calendar_days.append(row);
+    $(".year").text(year);
+}
+
+//날짜 클릭했을때의 이벤트핸들러
+function date_click(event) { //event: 클릭된 날짜 셀의 정보
+    $("#dialog").hide(250);
+    $(".active-date").removeClass("active-date");
+    $(this).addClass("active-date");
+    show_events(event.data.month, event.data.day, event.data.year);
+	
+	//오늘날짜
 	var today = new Date();
 	var todayYear = today.getFullYear();
 	var todayMonth = ('0' + (today.getMonth() + 1)).slice(-2);
 	var todayDate = ('0' + today.getDate()).slice(-2);
-	var reservationdateday = todayYear + '-' + todayMonth + '-' + todayDate;
+	var todayDate_f = todayYear + '-' + todayMonth + '-' + todayDate;
+	
+	//에약리스트
+	var year = event.data.year;
+	var month = event.data.month;
+	var day = event.data.day;
+	var fulldate = "";
+	fulldate = year + "-" + month + "-" + day.toString().padStart(2,'0'); //2023-03-25
+	if(todayDate_f > fulldate){
+	} else if(todayDate_f < fulldate){
+	}
+			$.ajax({
+				url: "/calender_reserv_ajax",
+				type: "GET",
+				data: {
+					"fulldate": fulldate
+				}, //key, value
+				dataType: "json",
+				cache: false
+			}).done(function(data) { //controller다녀온후 mapper조회값으로 done실행
+				let result = data.result; //result: result안에 pet_birth, owner_name등 정보가 다 있음. 
+				$("#reservTable").empty();
+				let table = '';
+				if (result == "noReserv") {
+					table += "<tr class='text-center'> <td colspan='4'>예약내역이 존재하지 않습니다.</td></tr>";
+				} else {
+					//예약 리스트 띄우기
+					for (let i = 0; i < result.length; i++) {
+						table += '<tr style="border-bottom: 1px solid gray; padding-bottom: 5px;">';
+						table += '<td style="font-size: 14px;">';
+						table += '<div style="">';
+						table += '<a style="text-decoration: none;">';
+						table += '<b style="font-size: 25px; color: black">' + result[i].pet_name + '</b></a>&nbsp;&nbsp;&nbsp;' + result[i].owner_name + '&nbsp;';
+						table += '<a class="reservUpdate" value="' + result[i].reservation_no + '" style="text-decoration: none;">';
+						table += '<i class="xi-file-text-o"></i></a>';
+						table += '</div><br>';
+						table += '<div>';
+						table += '<span>' + result[i].type_name + ' | ' + result[i].pet_birth + ' | ' + result[i].pet_gender + '</span>';
+						table += '</div><span>' + result[i].reservation_memo + '</span>';
+						table += '</td>';
+						table += '<td style="text-align: right;">';
+						table += '<span><b><h5>' + result[i].reserv_time + '</h5></b></span><br>';
+						table += '<input type="hidden" id="petNo" value="' + result[i].pet_no + '">';
+						table += '<input type="hidden" id="ownerNo" value="' + result[i].owner_no + '">';
+						table += '<input type="hidden" id="reservation_Yn" value="' + result[i].reservation_yn + '">';
+						table += '<span>';
+						if(todayDate_f <= fulldate){ //오늘날짜 이후라면
+						table += '<button type="button" class="btn btn-secondary btn-sm reserv_cancel" style="margin-right:5px;" id="" value="' + result[i].reservation_no + '" style="background-color: #7f8c8d; border: none;">취소</button>';
+						}
+						if(todayDate_f == fulldate){ //오늘날짜라면
+						table += '<button type="button" class="btn btn-primary btn-sm receipt_btn"  style="margin-left:5px;" value="' + result[i].reservation_no + '" style="border: none;">접수</button>';
+						}
+						table += '</span></td>';
+						table += '</tr>';
+					}
+				}
+			$("#reservTable").append(table);
+			$("#reservTable").show();
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				alert("POST request failed: " + errorThrown);
+			}); //예약리스트 끝
+};
+
+function show_events(month, day, year) { //매개변수: init_calendar 함수에서 date_click 함수를 호출할 때 전달됨
+	var fulldate = "";
+	fulldate = year + "-" + month + "-" + day.toString().padStart(2,'0'); //2023-03-25
+	$(".date").empty();
+	$("#dialog2").show(250); 
+	var reservationdateday = fulldate;
+//	location.href = "calender_sm2?clickDate=" + reservationdateday;
 
 	//검색
 	$('#search_btn').click(function() {
@@ -23,8 +188,10 @@ $(function() {
 				$("#researchTable").empty();
 				let table = '';
 				if (result == "") {
+
 					table += "<tr class='text-center'> <td colspan='4'>존재하지 않습니다.<br><br>";
 					table += "<button class='btn btn-sm btn-primary' id='reg_btn'>신규등록</button></td></tr>";
+
 				} else {
 					var today = new Date();
 					//검색 리스트 띄우기
@@ -35,7 +202,7 @@ $(function() {
 						table += '<tr class="search_result" style="border-bottom: 1px solid gray; padding-bottom: 5px;">';
 						table += '<td style="font-size: 14px; ">';
 						table += '<div><a href="#" style="text-decoration: none;">';
-						table += '<b style="font-size: 25px; color: black; cursor:default;">' + result[i].pet_name + '</b></a>&nbsp;&nbsp;&nbsp;' + result[i].owner_name + '</div><br>';
+						table += '<b style="font-size: 25px; color: black">' + result[i].pet_name + '</b></a>&nbsp;&nbsp;&nbsp;' + result[i].owner_name + '</div><br>';
 						table += '<span>' + result[i].type_name + ' | ' + result[i].pet_gender + '<br>';
 						table += result[i].pet_birth + '</span><br></td>';
 						table += '<input type="hidden" id="search_petNo" value="' + result[i].pet_no + '">';
@@ -50,38 +217,29 @@ $(function() {
 			}).fail(function(jqXHR, textStatus, errorThrown) {
 				alert("POST request failed: " + errorThrown);
 			});
-	});
-					
-				//검색에서 접수버튼
-					$(document).on("click", ".search_receipt_btn", function() {
-					if (confirm("접수 하시겠습니까?")) {
-						var search_petNo = $(this).attr("value");
-						var search_ownerNo = $(this).attr("data-value");
-						$.ajax({
-							url: "/search_receiveAdd",
-							type: "POST",
-							data: {
-								"search_petNo": search_petNo,
-								"search_ownerNo": search_ownerNo
-							},
-							dataType: "json",
-							cache: false
-						}).done(function(data) {
-							if (data.result == "exist") {
-						     alert("이미 접수중 입니다.");
-						    } else {
-							alert("접수 등록이 되었습니다.");
-							location.reload(); //모달창 hide + 부모창새로고침
-						    }
-						}).fail(function() {
-							alert("통신실패 : " + data.result);
-						});
-					}
-				});
 
+	}); //검색끝
+	
+
+	
+	//검색에서 예약버튼
 	//예약모달창 + 시간막기 구현
-	$(document).on("click", ".reserv_btn", function() {
+	$(document).off().on("click", ".reserv_btn", function() { //off()를 써야 중복함수 실행안됨!!
+	var today = new Date();
+	var todayYear = today.getFullYear();
+	var todayMonth = ('0' + (today.getMonth() + 1)).slice(-2);
+	var todayDate = ('0' + today.getDate()).slice(-2);
+	var todayDate_f = todayYear + '-' + todayMonth + '-' + todayDate;
+		
+		//선택날짜가 오늘날짜보다 이전이면 오늘날짜로 설정
+		if(reservationdateday < todayDate_f){
+			$('#reservation_date_day').val(todayDate_f);
+		}
+		//아니면 선택날짜로 설정 
+		else{
 		$('#reservation_date_day').val(reservationdateday);
+		}
+		
 		//필수(모달띄우기 위함), owner_no로 하면 안됨!!!!
 		//controller에서 owner_no에 값을 넣어주기때문(owner_no관련 정보 전체다 출력됨.)reservDTO.setDetail_no(request.getParameter("detail_no"));
 		let detail_no = $(this).attr("value"); //pet_no정보 (button의 value값)
@@ -120,6 +278,7 @@ $(function() {
 			});
 	}); //예약버튼 끝
 
+
 	// 예약모달_날짜변경시 
 	$('#reservation_date_day').change(function() {
 		$("input[name='reserv_time']").attr("disabled", false); //다른 날짜 선택했을때 disabled초기화
@@ -149,41 +308,16 @@ $(function() {
 		});
 	});
 
-	// 수정모달_날짜변경시 
-	$('#update_reservation_date_day').change(function() {
-		$("input[name='reserv_time']").attr("disabled", false); //다른 날짜 선택했을때 disabled초기화
-		var reservation_date_day_input = $(this).val();
-
-		var reservation_date_day_parts = reservation_date_day_input.split('-');
-		var reservation_date_day = reservation_date_day_parts[0] + '-' + reservation_date_day_parts[1] + '-' + reservation_date_day_parts[2];
-		$('#reservation_date_day').val(reservation_date_day);
-		reservation_date_day = $('#reservation_date_day').val();
-		$.ajax({
-			url: "/reservAjax",
-			type: "POST",
-			data: { "reservation_date_day": reservation_date_day }, //button클릭하면 받아오는 pet_no정보를 컨트롤러(서버)에 보냄 //search_no기준으로 나머지 정보가져옴
-			dataType: "json",
-			cache: false
-		}).done(function(data) {
-			let result1 = data.result1;
-			for (var i = 0; i < result1.length; i++) {
-				let disabled_time = result1[i].reserv_time;
-				let time = $("input[name='reserv_time'][value='" + disabled_time + "']").siblings('label').text();
-				if (disabled_time == time) {
-					$("input[name='reserv_time'][value='" + disabled_time + "']").attr("disabled", true);
-				}
-			}
-		});
-	});
-
+	//예약시간
 	//예약완료 버튼
-	$("#ok-button").click(function() {
+	$("#ok-button").off().click(function() {
+		var reservationdateday = $('#reservation_date_day').val();
+		
 		if (confirm("예약 하시겠습니까?")) {
 			var reservation_date_time = $("input[name='reserv_time']:checked").siblings('label').text(); //시간
-			if (reservation_date_day !== '' && ('input:radio[name="reserv_time"]:checked').length > 0) {
+			if (reservationdateday !== '' && ('input:radio[name="reserv_time"]:checked').length > 0) {
 				//최종날짜+최종시간
-				var reservationdate = ($('#reservation_date_day').val() + ' ' + reservation_date_time + ':00');
-				$('#reservation_date').val(reservationdate);
+				var reservation_date = ( reservationdateday + ' ' + reservation_date_time + ':00');
 			}
 			let petNo = $(this).attr("value"); //button안의 pet_no값 //ok
 			if ($('input:radio[name="reserv_time"]:checked').length < 1) {
@@ -191,11 +325,12 @@ $(function() {
 				return false;
 			}
 			var reservation_memo = $('#reservation_memo').val();
-			var reservation_date = $('#reservation_date').val();
 
+			//선택된 radio값 구별
 			var reservation_date1 = new Date($('#reservation_date').val());
 			let reserv_time = reservation_date1.getHours() + ':' + reservation_date1.getMinutes();
 
+			//백으로 보내서 삽입
 			$.post({
 				url: "/reservAdd",
 				data: {
@@ -213,6 +348,38 @@ $(function() {
 		}
 
 	});
+	
+	// 수정모달_날짜변경시 
+	$('#update_reservation_date_day').change(function() {
+		$("input[name='reserv_time']").attr("disabled", false); //다른 날짜 선택했을때 disabled초기화
+		var reservation_date_day_input = $(this).val();
+
+		//변경된 날짜를 '-'기준으로 자르기' (yyyy,mm,dd)
+		var reservation_date_day_parts = reservation_date_day_input.split('-');
+		//(yy-mm-dd) 형식으로 바꾸기
+		var reservation_date_day = reservation_date_day_parts[0] + '-' + reservation_date_day_parts[1] + '-' + reservation_date_day_parts[2];
+		$('#reservation_date_day').val(reservation_date_day);
+		reservation_date_day = $('#reservation_date_day').val();
+		$.ajax({
+			url: "/reservAjax",
+			type: "POST",
+			data: { "reservation_date_day": reservation_date_day }, //button클릭하면 받아오는 pet_no정보를 컨트롤러(서버)에 보냄 //search_no기준으로 나머지 정보가져옴
+			dataType: "json",
+			cache: false
+		}).done(function(data) {
+			let result1 = data.result1;
+
+			for (var i = 0; i < result1.length; i++) {
+				let disabled_time = result1[i].reserv_time;
+				let time = $("input[name='reserv_time'][value='" + disabled_time + "']").siblings('label').text();
+				if (disabled_time == time) {
+					$("input[name='reserv_time'][value='" + disabled_time + "']").attr("disabled", true);
+				}
+			}
+		});
+	});
+
+
 
 	//예약창 닫았을때 text값 초기화
 	$('#exampleModal').on('hidden.bs.modal', function(e) {
@@ -228,6 +395,7 @@ $(function() {
 	//예약수정
 	$(document).on("click", ".reservUpdate", function(e) {
 		$('#reservation_date_day').val(reservationdateday);
+
 		let reservation_no = $(this).attr("value"); //reservation_no정보 (button의 value값)
 		var reservation_date_day_input = $('#reservation_date_day').val();
 		var reservation_date_day_parts = reservation_date_day_input.split('-');
@@ -262,16 +430,20 @@ $(function() {
 			$('#update_reservation_date_day').val(result[0].reserv_date); //ok
 			$('#update_reservation_date_time').val(update_reservation_date_time);
 			$('#update_reservation_memo').val(result[0].reservation_memo);
+			//reservation_no 값을 수정완료 버튼 value에 넣기
 			$('#update_ok-button').val(result[0].reservation_no); //dto에 값넣기
+
 			$('.timeoption').appendTo('.updatetimeset'); //시간html 추가
 		})
 			.fail(function(jqXHR, textStatus, errorThrown) {
 				alert("get request failed: " + errorThrown);
 			});
+
+
 	});
-	
 	//수정완료 버튼
-	$("#update_ok-button").click(function() {
+	$(document).on("click", "#update_ok-button", function() { //얘도 ajax로 생겨나는 애여서 
+//	$("#update_ok-button").click(function() {
 		if (confirm("수정 하시겠습니까?")) {
 			let update_reservation_no = $(this).attr("value"); //reservation_no
 			var update_reservation_date_time = $("input[name='reserv_time']:checked").siblings('label').text();
@@ -291,7 +463,8 @@ $(function() {
 				dataType: "json"
 			}).done(function(data) {
 				let result = data.result;
-				if (data.result == 1) {
+
+				if (result == 1) {
 					alert("수정이 완료되었습니다.");
 				} else {
 					alert("문제가 발생했습니다. \n다시 시도해주세요.");
@@ -303,8 +476,7 @@ $(function() {
 		}
 	});
 
-
-	//수정창 닫았을때 text값 초기화
+	//수정창 닫았을때 text값 초기화  (ok)
 	$('#updateModal').on('hidden.bs.modal', function(e) {
 		$(this).find('form')[0].reset();
 		var inputValue = $(this).find('select:eq(0) option:eq(0)');
@@ -313,15 +485,14 @@ $(function() {
 	});
 
 	//예약취소 버튼
-	$(".reserv_cancel").click(function() {
+	$(document).on("click", ".reserv_cancel", function() { //얘는 ajax로 생겨나는 버튼이기때문에 document로 해줘야함
 		let delete_reservation_no = $(this).attr("value"); //reservation_no
 		if (confirm("예약을 취소 하시겠습니까?")) {
-			location.href = "reservDelete?delete_reservation_no=" + delete_reservation_no;
+			location.href = "calender_reservDelete?delete_reservation_no=" + delete_reservation_no;
 		}
 	});
 
-
-	//접수 버튼 -> 접수테이블에 데이터 넣기
+	//예약에서 접수 버튼 -> 접수테이블에 데이터 넣기
 	$(".receipt_btn").click(function() {
 		if (confirm("접수 하시겠습니까?")) {
 			let reservNo = $(this).attr("value"); //reservation_no
@@ -334,23 +505,60 @@ $(function() {
 					"receive_petNo": receive_petNo,
 					"receive_ownerNo": receive_ownerNo
 				},
+				cache: false,
 				dataType: "json"
 			}).done(function(data) {
+				if (data.result == "exist") {
+			     alert("이미 접수중 입니다.");
+			    } else {
+				alert("접수 등록이 되었습니다.");
+				location.reload(); //모달창 hide + 부모창새로고침
+			    }
 			}).fail(function() {
 				alert("통신실패 : " + data.result);
 			});
-			alert("접수 등록이 되었습니다.");
-			location.reload(); //모달창 hide + 부모창새로고침
+		}
+	});
+		//검색에서 접수버튼
+		$(document).on("click", ".search_receipt_btn", function() {
+		if (confirm("접수 하시겠습니까?")) {
+			var search_petNo = $(this).attr("value");
+			var search_ownerNo = $(this).attr("data-value");
+			$.ajax({
+				url: "/search_receiveAdd",
+				type: "POST",
+				data: {
+					"search_petNo": search_petNo,
+					"search_ownerNo": search_ownerNo
+				},
+				dataType: "json",
+				cache: false
+			}).done(function(data) {
+				if (data.result == "exist") {
+			     alert("이미 접수중 입니다.");
+			    } else {
+				alert("접수 등록이 되었습니다.");
+				location.reload(); //모달창 hide + 부모창새로고침
+			    }
+			}).fail(function() {
+				alert("통신실패 : " + data.result);
+			});
 		}
 	});
 
-	//접수취소 버튼
-	$(".receipt_cancel").click(function() {
-		let delete_receive_no = $(this).attr("value"); //receive_no
-		if (confirm("접수를 취소 하시겠습니까?")) { //ok
-			location.href = "receiveDelete?delete_receive_no=" + delete_receive_no;
-		}
-	});
-});
+}
 
-
+const months = [ 
+    "01", 
+    "02", 
+    "03", 
+    "04", 
+    "05", 
+    "06", 
+    "07", 
+    "08", 
+    "09", 
+    "10", 
+    "11", 
+    "12" 
+];

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!-- 예약하기 modal -->
 			<div class="modal fade" id="exampleModal" tabindex="-1"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -39,9 +41,13 @@
 										value="없음" readonly>
 								</div>
 								<!-- 예약시간 -->
+								<c:set var="now" value="<%=new java.util.Date()%>" />
+								<c:set var="minDate">
+									<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" />
+								</c:set> 
 								<p class="col-md-6">
 									<label for="reservation_date_day" class="col-form-label">예약날짜</label>
-									<input class="form-control" type="date" value="1000-01-10"
+									<input class="form-control" type="date" value="1000-01-10" min="<c:out value="${minDate}"/>"
 										id="reservation_date_day" tabindex="-1">
 								</p>
 

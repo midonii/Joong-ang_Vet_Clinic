@@ -5,7 +5,9 @@
 
 	<select id="boardlist" parameterType="ReservDTO"
 		resultType="ReservDTO">
-		SELECT * FROM clientview
+		SELECT * FROM clientview c
+		WHERE c.pet_del = 1
+		ORDER BY c.pet_name
 	</select>
 
 
@@ -22,6 +24,7 @@
 			OR owner_tel
 			LIKE CONCAT('%', #{search_value}, '%')
 		</if>
+		ORDER BY pet_name
 	</select>
 
 	<select id="reservAjax" parameterType="ReservDTO"
@@ -42,7 +45,6 @@
 		staff_no = (SELECT
 		staff_no FROM staff WHERE staff_id = #{staff_id} ),
 		pet_no = #{petNo};
-
 	</insert>
 
 	<!-- 예약리스트 -->
@@ -53,13 +55,6 @@
 		WHERE reserv_date = CURDATE() AND (reservation_yn = 'N' OR reservation_yn =
 		'')
 		ORDER BY reservation_date ASC
-	</select>
-	<!-- 캘린더 주간리스트 -->
-	<select id="reservlist_calender" parameterType="ReservDTO"
-		resultType="ReservDTO">
-		SELECT *
-		FROM reservationview
-		WHERE reserv_date = #{date1} AND reservation_yn = 'N' OR reservation_yn =''
 	</select>
 
 	<select id="reservTimeCheck" parameterType="ReservDTO"
@@ -106,7 +101,13 @@
 		SELECT *
 		FROM receptionview
 		WHERE date_format(receive_time, '%Y-%m-%d') = CURDATE()
-		ORDER BY receive_time ASC
+		ORDER BY 
+		(CASE
+		when receive_state = 2 then 1
+		when receive_state = 1 then 2
+		when receive_state = 3 then 3
+		END), receive_time ASC
+		
 	</select>
 
 	<select id="reservUpdate" parameterType="ReservDTO"
@@ -147,9 +148,21 @@
 
 	</select>
 
-<!-- 	<select id="calendarList" parameterType="ReservDTO" -->
-<!-- 		resultType="ReservDTO"> -->
-<!-- 		SELECT * FROM calendar -->
-<!-- 	</select> -->
+
+	<select id="checkPetNoExists" parameterType="ReservDTO" resultType="boolean">
+ 		SELECT COUNT(*) FROM reception 
+	 	WHERE pet_no = #{search_petNo}
+	  	AND date_format(receive_time, '%Y-%m-%d') = CURDATE()
+	  	AND (receive_state = '1' OR receive_state = '2')
+	</select>
+
+	<select id="reservlist2" parameterType="ReservDTO"
+		resultType="ReservDTO">
+		SELECT *
+		FROM reservationview
+		WHERE reserv_date = #{fulldate} AND (reservation_yn = 'N' OR reservation_yn =
+		'')
+		ORDER BY reservation_date ASC
+	</select>
 
 </mapper>

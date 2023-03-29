@@ -1,3 +1,5 @@
+	//예약창
+	
 	//전역변수
 	//예약날짜(today)
 	var today = new Date();
