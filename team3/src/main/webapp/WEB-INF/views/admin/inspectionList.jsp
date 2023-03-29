@@ -24,6 +24,7 @@ if (session.getAttribute("id") != null) {
 <meta name="author" content="">
 
 <title>중앙동물병원</title>
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -69,7 +70,7 @@ if (session.getAttribute("id") != null) {
 			var medical_subcate = $("#medical_subcate").val();
 
 			if (medical_name == "") {
-				alert("이름을 입력해주세요.");
+				alert("진료명을 입력해주세요.");
 				$("#medical_name").focus();
 				return false;
 			}
@@ -266,7 +267,7 @@ if (session.getAttribute("id") != null) {
 											<li class="list-group-item">
 												<div class="row">
 													<div class="col-md-3 text-center"
-														style="line-height: 38px;">이름</div>
+														style="line-height: 38px;">진료명</div>
 													<div class="col-md-9">
 														<input type="text" class="form-control" id="medical_name"
 															name="medical_name">
@@ -345,7 +346,7 @@ if (session.getAttribute("id") != null) {
 												<tr class="bg-gray-200">
 													<th class="col-1">번호</th>
 													<th class="col-2">분류</th>
-													<th class="col-3">이름</th>
+													<th class="col-3">진료명</th>
 													<th class="col-2">처방가격</th>
 													<th class="col-1"></th>
 
@@ -453,7 +454,7 @@ if (session.getAttribute("id") != null) {
 							<ul class="list-group list-group-flush">
 								<li class="list-group-item">
 									<div class="row">
-										<div class="col-md-3 text-center" style="line-height: 38px;">이름</div>
+										<div class="col-md-3 text-center" style="line-height: 38px;">진료명</div>
 										<div class="col-md-9">
 											<input type="text" class="form-control" id="inspection_nameU"
 												name="inspection_nameU">

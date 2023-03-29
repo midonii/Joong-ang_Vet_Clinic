@@ -47,4 +47,8 @@ public class Chart3Service {
 		return chart3DAO.dataDel(string);
 	}
 
+	public void stockUpdate(Map<String, Object> dataMap) {
+		chart3DAO.stockUpdate(dataMap);
+	}
+
 }

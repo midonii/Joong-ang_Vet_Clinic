@@ -13,36 +13,36 @@
 		SELECT *
 		from
 		staff
+		WHERE 1=1
 		<if test="search_name != null">
 			<choose>
 				<when test="search_name == 'all'">
-					WHERE staff_name LIKE
+					AND (staff_name LIKE
 					CONCAT('%',#{search_value},'%') OR
 					staff_id LIKE
 					CONCAT('%',#{search_value},'%') OR
 					staff_tel LIKE
 					CONCAT('%',#{search_value},'%') OR
-					staff_email LIKE CONCAT('%',#{search_value},'%')
+					staff_email LIKE CONCAT('%',#{search_value},'%'))
 				</when>
 				<when test="search_name == 'name'">
-					WHERE staff_name LIKE CONCAT('%',
+					AND staff_name LIKE CONCAT('%',
 					#{search_value},'%')
 				</when>
 				<when test="search_name =='id'">
-					WHERE staff_id LIKE CONCAT('%',#{search_value}, '%')
+					AND staff_id LIKE CONCAT('%',#{search_value}, '%')
 				</when>
 				<when test="search_name =='tel'">
-					WHERE staff_tel LIKE CONCAT('%',#{search_value},'%')
+					AND staff_tel LIKE CONCAT('%',#{search_value},'%')
 				</when>
 				<when test="search_name =='email'">
-					WHERE staff_email LIKE
+					AND staff_email LIKE
 					CONCAT('%',#{search_value},'%')
 				</when>
-				
 			</choose>
 		</if>
 		<if test="staff_grade !=null  and !staff_grade.equals('')">
-			WHERE staff_grade = #{staff_grade}
+			AND staff_grade = #{staff_grade}
 		</if>
 		) s
 		ORDER BY sno
@@ -54,30 +54,36 @@
 	<select id="contentTotal" resultType="Integer"
 		parameterType="HashMap">
 		SELECT COUNT(*) FROM staff
+		WHERE 1=1
 		<if test="search_name != null">
 			<choose>
+				<when test="search_name == 'all'">
+					AND (staff_name LIKE
+					CONCAT('%',#{search_value},'%') OR
+					staff_id LIKE
+					CONCAT('%',#{search_value},'%') OR
+					staff_tel LIKE
+					CONCAT('%',#{search_value},'%') OR
+					staff_email LIKE CONCAT('%',#{search_value},'%'))
+				</when>
 				<when test="search_name == 'name'">
-					WHERE staff_name LIKE CONCAT('%', #{search_value},
-					'%')
+					AND staff_name LIKE CONCAT('%',
+					#{search_value},'%')
 				</when>
 				<when test="search_name =='id'">
-					WHERE staff_id LIKE CONCAT('%',
-					#{search_value}, '%')
+					AND staff_id LIKE CONCAT('%',#{search_value}, '%')
 				</when>
 				<when test="search_name =='tel'">
-					WHERE staff_tel LIKE CONCAT('%',
-					#{search_value},
-					'%')
+					AND staff_tel LIKE CONCAT('%',#{search_value},'%')
 				</when>
 				<when test="search_name =='email'">
-					WHERE staff_email LIKE CONCAT('%',
-					#{search_value},
-					'%')
+					AND staff_email LIKE
+					CONCAT('%',#{search_value},'%')
 				</when>
 			</choose>
 		</if>
 		<if test="staff_grade !=null  and !staff_grade.equals('')">
-			WHERE staff_grade = #{staff_grade}
+			AND staff_grade = #{staff_grade}
 		</if>
 	</select>
 

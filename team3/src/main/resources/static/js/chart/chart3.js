@@ -37,7 +37,6 @@ $(function() {
 					},
 					dataType: "json"
 				}).done(function(data) {
-
 					if (data.result == 1 && data.stateUpdate == 1 && data.payAdd == 1) {
 						alert("차트가 저장되었습니다.");
 						location.href = "/chart";
