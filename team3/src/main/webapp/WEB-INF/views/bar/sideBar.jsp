@@ -2,13 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 <!-- Sidebar -->
-<script>
-$(function(){
-	$(".sidebar").addClass("toggled");
-});
-</script>
+
 <ul
-	class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+	class="navbar-nav bg-gradient-primary sidebar toggled sidebar-dark accordion"
 	id="accordionSidebar">
 
 	<!-- Sidebar - Brand -->

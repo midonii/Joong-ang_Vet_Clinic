@@ -11,7 +11,7 @@
 		(SELECT *
 		FROM
 		reservationview WHERE DATE_FORMAT(reservation_date, "%Y-%m-%d") =
-		CURDATE()) r
+		CURDATE() AND reservation_yn = 'N') r
 		ORDER BY rno
 	</select>
 	<select id="reservCount" resultType="Integer">

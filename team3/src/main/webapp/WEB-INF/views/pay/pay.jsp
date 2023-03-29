@@ -32,7 +32,8 @@ if (session.getAttribute("id") == null) {
 <!-- Custom styles for this template-->
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-
+<script src="https://kit.fontawesome.com/a31e2023c3.js"
+	crossorigin="anonymous"></script>
 <script>
 	/* 수납대기 버튼 */
 	$(function() {
