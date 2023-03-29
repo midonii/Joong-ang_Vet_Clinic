@@ -59,8 +59,9 @@ $(function() {
 	
 	/* 호출 버튼 클릭시 */
 	$(document).on("click", ".recbtn", function() {
-		//$("#receiveboard").hide();
-		$("#receiveReload").remove();
+		$(".saveTable1").empty(); // 처방내역
+		$(".totalPrice").empty(); // 총 합계
+		$("#receiveReload").remove(); //이전 접수현황 지우고 새로 불러오기
 		var non = $(this).closest(".callTd");
 		var non1 = non.siblings(".numTd");
 		var non3 = non1.find(".receiveNo");
@@ -332,6 +333,8 @@ $(function() {
 	/*진료화면-접수현황 펫네임 클릭시*/
 	
    $(document).on("click", "#pet_name", function() {
+	$(".saveTable1").empty(); // 처방내역
+	$(".totalPrice").empty(); // 총 합계
       let receiveno = $(this).attr("value");
       $("#receive_no").val(receiveno);
       $("#chart_memo").val("");
@@ -535,7 +538,6 @@ $(function() {
 
 	
 	
-	//여기!!!!
 	/*처방내역 리스트(모달로) 불러오기*/
 	$("#presc").click(function(){
 		var searchValue = $("#search_value").val();
@@ -578,13 +580,12 @@ $(function() {
 				}
 				
 				$(".precTable").append(table);
-				
 				/*우 리스트 배열 풀어서 동일한 id의 좌 리스트에 체크하기((rightno)-위의 배열변수명)*/
         		var list_size = rightno.length;
 				for(var i=0; i<list_size; i++){                          
 				  var id_no = $(rightno).get(i);
 				  var left_chk = $("table.first_table").find("#"+id_no);
-				  left_chk.prop("checked", true);
+				  	left_chk.prop("checked", true);
 		   	 	}
 				
 			}, error : function(xhr, status, errorThrown){
@@ -664,13 +665,14 @@ $(function() {
 	$(document).on("change", ".list_check", function(){
 		
 		if($(this).is(':checked')){
+			$(".save_btn").attr("disabled",false); //저장버튼 활성화
 			var mno = $(this).attr("id");    
 			var mediname = $(this).parent().siblings("#mediname").text();
 			var cate = $(this).parent().siblings("#cate").text();
 			var mediprice = $(this).parent().siblings("#mediprice").text();
 			var chtable ="<tr style='float:center;' class='trSelected'id='"+mno+"'>";
 			chtable +="<td class='col-1'><input type='checkbox' class='right_check' name='right_check' checked='checked' id='"+mno+"'></td>";
-			chtable += "<td class='col-2' id=''>"+cate+"</td>";
+			chtable += "<td class='col-2' id='test1'>"+cate+"</td>";
 			chtable += "<td class='col-6 mediname1' ><label for='"+mno+"'style='margin :0;'>"+mediname+"</label></td>";
 			chtable += "<td class='col-3' id=''>"+mediprice+"</td></tr>";
 	
@@ -683,6 +685,11 @@ $(function() {
 			var right_tr = right_chk.closest(".trSelected");
 	    	right_tr.remove();
 		}
+		//좌 리스트 체크된게 없으면 저장버튼 비활성화
+		var leftckNum =$('input:checkbox[name=list_check]:checked').length;
+		if(leftckNum==0){
+			$(".save_btn").attr("disabled",true);
+		}
 	}); 
 	
 	//우 리스트 클릭(좌측 체크 없애기)
@@ -691,27 +698,29 @@ $(function() {
 		var left_chk = $("table.first_table").find("#"+right_id);
 			left_chk.prop("checked", false);
 	    $(this).parents(".trSelected").remove(); 
-
+	
 	}); //리스트에서 클릭
-
 
 	/*초기화 버튼(좌리스트 -체크해제, 우리스트 -삭제)*/
 	$(document).on("click", ".reset_btn", function(){
+		$(".save_btn").attr("disabled",true); //저장버튼 비활성화
 		$("table.first_table").find(".list_check").prop("checked", false);
 		$("table.second_table").find(".trSelected").remove();
+		$(".saveTable1").empty();
+		$(".totalPrice").empty(); // 총 합계
 		
 	}); //초기화버튼 클릭
 	
 	
 	/*모달 내 저장버튼*/
 	$(".save_btn").click(function(){
-			$("#search_value").val("");//검색어 지우기
+		$("#search_value").val("");//검색어 지우기
 		/*우 리스트 id 배열로 받아오기*/
 		var size = $("input[name=right_check]").length;
 		var rightno = new Array(size);
-		for(var i=0; i<size; i++){                          
+			for(var i=0; i<size; i++){                          
 			rightno[i] = $("input[name=right_check]").eq(i).attr("id");
-	    }
+		  }
 		$("#prescModal").modal("hide");
 		
 		$.ajax({
@@ -719,6 +728,7 @@ $(function() {
 			type :'POST',
 			data :{"rightno" : rightno,},
 			success : function(data){
+				
 				$(".saveTable1").empty();
 				var saveList = data.saveList;
 				let table ="<tr style='float:center;'>";

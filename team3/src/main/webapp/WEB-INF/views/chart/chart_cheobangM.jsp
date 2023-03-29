@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!-- 처방모달  -->
 <div class="modal fade" id="prescModal" tabindex="-1" role="dialog"
-	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
 	<div class="modal-dialog modal-xl" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -84,7 +84,7 @@
 
 				<div class="modal-footer">
 						<button class="btn btn-primary btn-sm  reset_btn" type="button" style="float: right;">초기화</button>
-						<button class="btn btn-primary btn-sm  save_btn" type="button" style="float: right;">저장</button>
+						<button class="btn btn-primary btn-sm  save_btn" disabled="" type="button" style="float: right;">저장</button>
 				</div>
 			</div>
 		</div>
