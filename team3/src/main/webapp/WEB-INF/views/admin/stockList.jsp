@@ -32,6 +32,7 @@ if (session.getAttribute("id") != null) {
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 
 <script src="https://kit.fontawesome.com/a31e2023c3.js"
 	crossorigin="anonymous"></script>
@@ -113,10 +114,26 @@ if (session.getAttribute("id") != null) {
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
 $(function(){
-
+	
+// ---- 처방기간조회 날짜 오늘로 설정 -----	
+ 	let date = new Date();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    
+    if(month < 10){
+    	month = "0" + month;
+    }
+    if(day < 10){
+    	day = "0" + day;
+    }
+    
+    let today = date.getFullYear() +'-' + month + '-' + day;
+//     $(".datepicker, .datepicker2").val(today);
+ 	
 // ----- datepicker -------
 	$( ".datepicker" ).datepicker({
 		dateFormat: 'yy-mm-dd',
+		setDate: date,
 	  	  prevText: '이전 달',
 	  	  nextText: '다음 달',
 	  	  monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
@@ -200,48 +217,77 @@ $(function(){
 		
 	// 처방기간조회
 		var fromDate = $("#fromDate").val();
-	 	var toDate = $("#fromDate").val();
-	  
+	 	var toDate = $("#toDate").val();
 	  	//alert(fromDate + " / " + toDate);
-		
+	
+	 	if(fromDate != "" && toDate != ""){
+			$("#th_today").text("처방수량(개)");
+		}
+	  	
+	// 조회 후 리스트 출력
 		$.post({
 			url : "/stockSelect",
 			data : {
 				"radioValue" : radioValue,
 				"medicineName" : medicineName,
 				"purchasingOfficeOption" : purchasingOfficeOption,
-				"purchasingOffice" : purchasingOffice
+				"purchasingOffice" : purchasingOffice,
+				"fromDate" : fromDate,
+				"toDate" : toDate
 			},
 			dataType : "json"
 		}).done(function(data){
-			//alert(data.searchList[0].medical_name);
+			//alert("성공");
+			
+// 			alert(data.searchList[0].medical_stock);
 			$("tbody").empty();
 			
-			var searchList = data.searchList ;
 			
-			for(let i = 1 ; i <= searchList.length; i++){
-				
-				let medical_subcate = data.searchList[i-1].medical_subcate;
-				let medical_name = data.searchList[i-1].medical_name;
-				let medical_buyEa = data.searchList[i-1].medical_buyEa;
-				let medical_company = data.searchList[i-1].medical_company;
-				let medical_buying = (data.searchList[i-1].medical_buying).toLocaleString();
-				let medical_price = (data.searchList[i-1].medical_price).toLocaleString();
-				
-				var tr = "<tr class='list_th'>"
-							+"<td style='width: 3%'>"+i+"</td>"
-							+"<td style='width: 5%'>"+medical_subcate+"</td>"
-							+"<td id='td_medicineName' style='width: 10%'>"+medical_name+"</td>"
-							+"<td style='width: 5%'>"+"30"+"</td>"
-							+"<td id='td_company' style='width: 10%'>"+medical_company+"</td>"
-							+"<td id='td_buyingPrice' style='width: 7%'>"+medical_buying+"</td>"
-							+"<td style='width: 5%'>"+medical_buyEa+"</td>"
-							+"<td id='td_presPrice' style='width: 7%'>"+medical_price+"</td>"
-							+"<td style='width: 5%'>25</td>"
-							+"<td style='width: 3%'><i class='xi-border-color cursor editbtn' style='color: #4E73DF;'></i></td>";
-						+"</tr>"
-						
-				$(".tbody1").append(tr);
+			var searchList = data.searchList ;
+			//alert(searchList.length);
+			
+			if(searchList.length == '0'){
+				$(".tbody1").append("<br><br>검색내용에 해당하는 약품이 없습니다.<br><br><br>");
+			} else {
+	 			for(let i = 1 ; i <= searchList.length; i++){
+					
+					let medical_subcate = data.searchList[i-1].medical_subcate;
+					let medical_name = data.searchList[i-1].medical_name;
+					
+					let medical_company = data.searchList[i-1].medical_company;
+					let medical_buying = data.searchList[i-1].medical_buying;
+	 				let medical_price = data.searchList[i-1].medical_price;
+	 				let medicaldata_sum = data.searchList[i-1].medicaldata_sum;
+	 				let medical_stock = data.searchList[i-1].medical_stock;
+	 				
+	 				if(medicaldata_sum == undefined){
+	 					medicaldata_sum = "-";
+	 				} 
+	 				
+	 				if(medical_company == undefined || medical_buying == undefined || medical_price == undefined ){
+	 					medical_company = "-";
+	 					medical_buying = "-";
+	 					medical_price = "-";
+	 					medical_stock = "-";
+	 				} else {
+						medical_buying = medical_buying.toLocaleString();
+	 					medical_price = medical_price.toLocaleString();
+	 				}
+					
+					var tr = "<tr class='list_th'>"
+								+"<td style='width: 3%'>"+i+"</td>"
+								+"<td style='width: 5%'>"+medical_subcate+"</td>"
+								+"<td id='td_company' style='width: 10%'>"+medical_company+"</td>"
+								+"<td id='td_medicineName' style='width: 15%'>"+medical_name+"</td>"
+								+"<td id='td_buyingPrice' style='width: 7%'>"+medical_buying+"</td>"
+								+"<td id='td_presPrice' style='width: 7%'>"+medical_price+"</td>"
+								+"<td style='width: 5%'>"+medical_stock+"</td>"
+								+"<td id='td_stock' style='width: 5%'>"+medicaldata_sum+"</td>"
+								+"<td style='width: 3%'><i class='xi-border-color cursor editbtn' style='color: #4E73DF;'></i></td>";
+							+"</tr>"
+							
+					$(".tbody1").append(tr);
+				}
 			}
 			
 		}).fail(function(xhr){
@@ -257,17 +303,20 @@ $(function(){
 		let td_company = $(this).parent().siblings("#td_company");
 		let td_buyingPrice = $(this).parent().siblings("#td_buyingPrice");
 		let td_presPrice = $(this).parent().siblings("#td_presPrice");
+		let td_stock = $(this).parent().siblings("#td_stock");
 		let td_icon = $(this).parent();
 		
 		//--- 구매처, 매입가, 처방가 text 받아오기(수정시 input창에 해당 값 표시)
 		let company = td_company.text();
 		let buyingPrice = (td_buyingPrice.text()).replace(",","");
 		let presPrice = (td_presPrice.text()).replace(",","");
-		//alert(list_company_txt + " / " + list_buyingPrice_txt + " / " + list_presPrice_txt);
+		let stock = td_stock.text();
+		//alert(company + " / " + buyingPrice  + " / " + presPrice + " / " + stock);
 		
 		//--- td 하위요소 지우기
 		td_company.empty();
 		td_buyingPrice.empty();
+		td_stock.empty();
 		td_presPrice.empty();
 		td_icon.empty();
 		
@@ -275,18 +324,20 @@ $(function(){
 		let InputCompany = "<input type='text' id='editCompany' class='form-control-sm form-control editInputCSS' value='"+company+"'>";
 		let InputBuyingPrice = "<input type='text' id='editBuyingPrice' class='form-control-sm form-control editInputCSS'  value='"+buyingPrice+"'>";
 		let InputPresPrice = "<input type='text' id='editPresPrice' class='form-control-sm form-control editInputCSS'  value='"+presPrice+"'>";
+		let InputStock = "<input type='text' id='editStock' class='form-control-sm form-control editInputCSS'  value='"+stock+"'>";
 		let saveIcon = "<i class='xi-save xi-x cursor savebtn' style='color: #4E73DF;'></i>";
 		
 		td_company.append(InputCompany);
 		td_buyingPrice.append(InputBuyingPrice);
+		td_stock.append(InputStock);
 		td_presPrice.append(InputPresPrice);
  		td_icon.append(saveIcon);
  		
 		
 	});
 	
-	//--- 매입가, 처방가 숫자입력막기
-	$(document).on('keyup', "#editBuyingPrice, #editPresPrice", function(){
+	//--- 매입가, 처방가 문자입력막기
+	$(document).on('keyup', "#editBuyingPrice, #editPresPrice, #editStock", function(){
 		$(this).val($(this).val().replace(/[^0-9]/g, ""));
 	});
 	
@@ -297,12 +348,14 @@ $(function(){
 		let td_company = $(this).parent().siblings("#td_company") ;
 		let td_buyingPrice = $(this).parent().siblings("#td_buyingPrice") ;
 		let td_presPrice = $(this).parent().siblings("#td_presPrice");
+		let td_stock = $(this).parent().siblings("#td_stock") ;
 		let td_icon = $(this).parent();
 		
 		let editCompany = td_company.children("#editCompany").val() ;
 		let editBuyingPrice = td_buyingPrice.children("#editBuyingPrice").val() ;
 		let editPresPrice = td_presPrice.children("#editPresPrice").val() ;
-		//alert(medicineName + " / " + editCompany + " / " + editBuyingPrice + " / " + editPresPrice);
+		let editStock = td_stock.children("#editStock").val() ;
+		//alert(medicineName + " / " + editCompany + " / " + editBuyingPrice + " / " + editPresPrice + " / " + editStock);
 		
 		$.post({
 			url : "/edit",
@@ -310,6 +363,7 @@ $(function(){
 				"medicineName" : medicineName,
 				"editCompany" : editCompany,
 				"editBuyingPrice" : editBuyingPrice,
+				"editStock" : editStock,
 				"editPresPrice" : editPresPrice
 			},
 			dataType : "json"
@@ -319,16 +373,20 @@ $(function(){
 				
 				td_company.empty();
 				td_buyingPrice.empty();
+				td_stock.empty();
 				td_presPrice.empty();
 				td_icon.empty();
 				
 				editBuyingPrice = (parseInt(editBuyingPrice).toLocaleString());
 				editPresPrice = (parseInt(editPresPrice)).toLocaleString();
+				editStock = (parseInt(editStock)).toLocaleString();
 				
 				td_company.text(editCompany);
 				td_buyingPrice.text(editBuyingPrice);
 				td_presPrice.text(editPresPrice);
+				td_stock.text(editStock);
 				td_icon.append("<i class='xi-border-color cursor editbtn' style='color: #4E73DF;'></i>");
+				
 			} else {
 				alert("변경사항 저장에 실패했습니다.");
 			}
@@ -403,7 +461,7 @@ $(function(){
 								<!----- 검색첫째줄 ----->
 								<div class=" row row-margin0 "
 									style="width: 100%; height: 40px;">
-									<div class="card search_criteria" style="width: 9.8%;">
+									<div class="card search_criteria" style="width: 10%;">
 										카테고리</div>
 									<div class="row row-margin0 align-middle"
 										style="vertical-align: middle; padding-left: 10px;">
@@ -424,19 +482,10 @@ $(function(){
 								</div>
 								<!----- 검색둘째줄 ----->
 								<div class="row row-margin0" style="width: 100%; height: 40px;">
-									<!-- 약 -->
-									<div class="row row-margin0 "
-										style="width: 25%; margin-right: 10px;">
-										<div class="card search_criteria" style="width: 39%;">약&nbsp;&nbsp;품&nbsp;&nbsp;명</div>
-										<!-- 약명 입력 id="medicineName" -->
-										<div class="card" style="width: 57%; height: 35px; margin: 0 0 5px 10px;">
-											<input type="text" class="form-control" id="medicineName" style="height: 33px; border: 0">
-										</div>
-									</div>
 									<!-- 구매처 -->
 									<div class="row row-margin0"
-										style="width: 33%; margin-right: 10px;">
-										<div class="card search_criteria" style="width: 32%;">구매처명</div>
+										style="width: 33%; ">
+										<div class="card search_criteria" style="width: 30.3%;">구매처명</div>
 										<!-- 구매처선택 -->
 										<div class=""
 											style="width: 30%; height: 35px; margin: 0 0 5px 10px;">
@@ -453,6 +502,15 @@ $(function(){
 											<input type="text" class="form-control" id="purchasingOffice" style="height: 33px; border: 0">
 										</div>
 									</div>
+									<!-- 약 -->
+									<div class="row row-margin0 "
+										style="width: 25%; margin-right: 10px;">
+										<div class="card search_criteria" style="width: 39%;">약&nbsp;&nbsp;품&nbsp;&nbsp;명</div>
+										<!-- 약명 입력 id="medicineName" -->
+										<div class="card" style="width: 57%; height: 35px; margin: 0 0 5px 10px;">
+											<input type="text" class="form-control" id="medicineName" style="height: 33px; border: 0">
+										</div>
+									</div>
 									<!-- 기간조회 -->
 									<div class="row row-margin0"
 										style="flex-grow: 1; line-height: 35px;">
@@ -461,13 +519,13 @@ $(function(){
 											<div class="card"
 												style="width: 45%; height: 35px; margin: 0 10px 5px 10px;">
 												<input class="form-control datepicker cursor" id="fromDate" readOnly 
-													style="width: 100%; height: 33px; border: 0; background-color:white;">
+													style="width: 100%; height: 33px; border: 0; background-color:white; text-align:center;">
 											</div>
 											~
 											<div class="card"
 												style="width: 45%; height: 35px; margin: 0 0 5px 10px;">
 												<input class="form-control datepicker2 cursor" id="toDate" readOnly
-													style="width: 100%; height: 33px; border: 0; background-color:white;">
+													style="width: 100%; height: 33px; border: 0; background-color:white; text-align:center;">
 											</div>
 										</div>
 									</div>
@@ -493,13 +551,12 @@ $(function(){
 											<tr class="list_th" style="background-color: #f8f9fc;">
 												<th style="width: 3%;">번호</th>
 												<th style="width: 5%;">분류</th>
-												<th style="width: 10%;">약품명</th>
-												<th style="width: 5%;">재고수량(개)</th>
 												<th style="width: 10%;">구매처</th>
+												<th style="width: 15%;">약품명</th>
 												<th style="width: 7%;">매입가격(원)</th>
-												<th style="width: 5%;">당월구매수량(개)</th>
 												<th style="width: 7%;">처방가격(원)</th>
-												<th style="width: 5%;">처방수량(개)</th>
+												<th style="width: 5%;">재고현황(개)</th>
+												<th id="th_today" style="width: 5%;">당일처방수량(개)</th>
 												<th style="width: 3%;">수정/저장</th>
 											</tr>
 										</thead>
@@ -508,13 +565,19 @@ $(function(){
 												<tr>
 													<td style="width: 3%;">${status.count }</td>
 													<td style="width: 5%;">${sL.medical_subcate }</td>
-													<td id="td_medicineName" style="width: 10%;">${sL.medical_name }</td>
-													<td style="width: 5%;">재고</td>
 													<td id="td_company" style="width: 10%;">${sL.medical_company } </td>
+													<td id="td_medicineName" style="width: 15%;">${sL.medical_name }</td>
 													<td id="td_buyingPrice" style="width: 7%;"><fmt:formatNumber value="${sL.medical_buying}" pattern="#,###" /></td>
-													<td style="width: 5%;">${sL.medical_buyEa }</td>
 													<td id="td_presPrice" style="width: 7%;"><fmt:formatNumber value="${sL.medical_price}" pattern="#,###" /></td>
-													<td id="td_prescriptionEA" style="width: 5%;">처방수량</td>
+													<td id="td_stock" style="width: 5%;">${sL.medical_stock }</td>
+													<c:choose>
+														<c:when test="${sL.medicaldata_today eq 0 }">
+															<td id="td_prescriptionEA" style="width: 5%;">-</td>
+														</c:when>
+														<c:otherwise>
+															<td id="td_prescriptionEA" style="width: 5%;">${sL.medicaldata_today }</td>
+														</c:otherwise>
+													</c:choose>
 													<td class="aa" id="td_editIcon" style="width: 3%;">
 														<i class="xi-border-color cursor editbtn" style="color: #4E73DF;"></i>
 													</td>
@@ -543,6 +606,7 @@ $(function(){
 						<!-- card-body -->
 					</div>
 					<!-- card -->
+				</div>
 				</div>
 				
 				<!-- /.container-fluid -->

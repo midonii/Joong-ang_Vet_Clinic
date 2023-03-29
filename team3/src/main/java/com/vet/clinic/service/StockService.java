@@ -36,6 +36,11 @@ public class StockService {
 	public List<Map<String, Object>> stockSelect(Map<String, Object> paramMap) {
 		return stockDAO.stockSelect(paramMap);
 	}
+	
+
+	public List<Map<String, Object>> stockDateSelect(Map<String, Object> paramMap) {
+		return stockDAO.stockDateSelect(paramMap);
+	}
 
 	public int edit(Map<String, Object> paramMap) {
 		return stockDAO.edit(paramMap);
@@ -63,6 +68,7 @@ public class StockService {
 		
 		return mv;
 	}
+
 	
 	
 }

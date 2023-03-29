@@ -22,7 +22,7 @@ if (session.getAttribute("id") == null) {
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
-
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 <script src="https://kit.fontawesome.com/a31e2023c3.js"
 	crossorigin="anonymous"></script>
 <link
@@ -518,8 +518,8 @@ $(function() {
 				
 						<div class="card-header py-2">
 							<ul class="nav nav-pills">
-								<li class="nav-item"><a class="nav-link active"
-									aria-current="page" href="#">일반문자</a></li>
+								<li class="nav-item"><a class="nav-link"
+									aria-current="page" href="#" >일반문자</a></li>
 								<!-- 
 								<li class="nav-item"><a class="nav-link" href="#">예약문자</a></li>
 								<li class="nav-item"><a class="nav-link" href="#">전송내역</a></li>
