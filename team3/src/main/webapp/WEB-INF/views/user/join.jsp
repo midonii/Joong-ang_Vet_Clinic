@@ -23,7 +23,7 @@
 <link
 	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
 	rel="stylesheet">
-
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 <!-- Custom styles for this template-->
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 <style type="text/css">
@@ -218,7 +218,7 @@ $(function(){
 		});
 	});
 	
-		/*
+		
 	$(".joinbtn").click(function(){
 		
 		let id = $("#id").val();
@@ -238,26 +238,10 @@ $(function(){
 			alert("필수 입력사항을 모두 입력하세요.");
 			return false;
 		}
-		/*
-	   	$.post({
-	   	 	url : "/join",
-		 	data : {"id" : id, "pw" : pw, "name" : name, 
-		 			"birth" : birth, "tel" : tel, "email" : email, "grade" : grade,
-	   	 			"addr" : addr},
-	   	 	dataType : "json"
-   		}).done(function(data){
-   			if(data.joinresult == "1"){
-   				alert("회원가입이 완료되었습니다. 다시 로그인해 주세요.");
-   				location.href="/login";
-   			} else {
-   				alert("회원가입실패");
-   			}
-    	}).fail(function(xhr){
-    		alert("실패");
-    	});
+		
 		
 	});
-		*/
+		
 });
 
 </script>
@@ -288,38 +272,38 @@ $(function(){
 									</div>
 									
 									<form class="user" action="/join" method="post">
-										<div class="form-group row">
-											<input type="text" id="id" name="id" class="col-sm-8 form-control form-control-user"  placeholder="아이디">
-											<input type="button" id="idCheck" name="idCheck" class="col-4 btn btn-primary btn-user btn-block" value="중복확인">
+										<div class="form-group row" ">
+											<input type="text" id="id" name="id" class="form-control-sm col-7 form-control form-control-user"  placeholder="아이디" style="margin-right:10px;">
+											<input type="button" id="idCheck" name="idCheck" class="col-sm-4 btn btn-sm btn-primary btn-user btn-block" value="중복확인">
 										</div>
 										<div class="form-group row">
-											<input type="password" id="pw" name="pw" class="pw col-sm-6 form-control form-control-user"  placeholder="비밀번호">
+											<input type="password" id="pw" name="pw" class="pw col-sm-5 form-control form-control-user"  placeholder="비밀번호" style="margin-right:10px;">
 											<input type="password" id="repw" name="repw" class="col-sm-6 form-control form-control-user"  placeholder="비밀번호 확인">
 										</div>
 										<div class="form-group row">
 											<p class="col-sm" id="pwCheck" style="font-size:12px; text-align:1rem; margin-top:-10px; margin-bottom:-10px;"></p>
 										</div>
 										<div class="form-group row" style="marging-top:-30px;">
-											<input type="text" id="name" name="name"  class="col-sm-6 form-control form-control-user" placeholder="이름">
+											<input type="text" id="name" name="name"  class="col-sm-5 form-control form-control-user" placeholder="이름" style="margin-right:10px;">
 											<input type="text" id="birth" name="birth" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" class="col-sm-6 form-control form-control-user"  required minlength="8" maxlength="8" placeholder="생년월일(ex.19001230)">
 										</div>
 										<div class="form-group row">
-											<input type="text" id="tel" name="tel" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" class="col-sm-8 form-control form-control-user"  required minlength="11" maxlength="11" placeholder="전화번호(ex.01012345678)">
+											<input type="text" id="tel" name="tel" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" class="col-sm-7 form-control form-control-user"  required minlength="11" maxlength="11" placeholder="전화번호(ex.01012345678)" style="margin-right:10px;">
 											<input type="button" id="telCheck" class="col-4 btn btn-primary btn-user btn-block" value="중복확인">
 										</div>
 										<div class="form-group row">
-											<input type="email" id="email" name="email" class="col-sm-8 form-control form-control-user"  placeholder="이메일">
+											<input type="email" id="email" name="email" class="col-sm-7 form-control form-control-user"  placeholder="이메일" style="margin-right:10px;">
 											<input type="button" id="emailCheck" class="col-4 btn btn-primary btn-user btn-block" value="중복확인">
 										</div>
 										<div class="form-group row">
-											<input type="text"  id="sample6_postcode" name="postcode" class="col-sm-4 form-control form-control-user" readonly placeholder="우편번호">
+											<input type="text"  id="sample6_postcode" name="postcode" class="col-sm-4 form-control form-control-user" readonly placeholder="우편번호" style="margin-right:10px;">
 											<input type="button" class="col-3 btn btn-primary btn-user btn-block" onclick="sample6_execDaumPostcode()" value="주소찾기">
 										</div>
 										<div class="form-group row">
-											<input type="text" id="sample6_address" name="addr" class="col-sm-12 form-control form-control-user"  readonly placeholder="도로명주소">
+											<input type="text" id="sample6_address" name="addr" class="col-sm-11 form-control form-control-user"  readonly placeholder="도로명주소">
 										</div>
 										<div class="form-group row">
-											<input type="text" id="sample6_detailAddress" name="detailAddr" class="col-sm-6 form-control form-control-user"   placeholder="상세주소">
+											<input type="text" id="sample6_detailAddress" name="detailAddr" class="col-sm-5 form-control form-control-user"   placeholder="상세주소" style="margin-right:5px;">
 											<input type="text" id="sample6_extraAddress" name="extraAddr" class="col-sm-6 form-control form-control-user"  readonly placeholder="참고항목">
 										</div>
 										<hr>

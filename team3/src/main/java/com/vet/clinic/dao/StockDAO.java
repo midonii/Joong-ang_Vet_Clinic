@@ -24,4 +24,6 @@ public interface StockDAO {
 
 	int totalcount();
 
+	List<Map<String, Object>> stockDateSelect(Map<String, Object> paramMap);
+
 }

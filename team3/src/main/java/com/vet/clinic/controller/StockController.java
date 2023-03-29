@@ -38,7 +38,7 @@ public class StockController {
 		
 	// 전체리스트
 		List<StockDTO> stockList = stockService.stockList(map);
-		//System.out.println(stockList);
+		// System.out.println(stockList);
 		mv.addObject("stockList", stockList);
 		
 	// 카테고리radio리스트
@@ -91,17 +91,26 @@ public class StockController {
 		JSONObject json = new JSONObject();
 		
 	// 검색 리스트
-		// raioValue / medicineName / 
-		List<Map<String, Object>> searchList = stockService.stockSelect(paramMap);
-		//System.out.println(searchList);
-		json.put("searchList", searchList);
+		if(paramMap.get("fromDate") == "" || paramMap.get("toDate") == "") {
+			List<Map<String, Object>> searchList = stockService.stockSelect(paramMap);
+			//System.out.println(searchList);
+			json.put("searchList", searchList);
+			return json.toString();
+		} else {
+			List<Map<String, Object>> searchList = stockService.stockDateSelect(paramMap);
+			//System.out.println(searchList);
+			json.put("searchList", searchList);
+			return json.toString();
+		}
 		
-		return json.toString();
+		
 	}
 	
 	@ResponseBody
 	@PostMapping("/edit")
 	public String edit(@RequestParam Map<String, Object> paramMap) {
+		System.out.println(paramMap);
+		
 		JSONObject json = new JSONObject();
 		
 		int saveResult = stockService.edit(paramMap);
