@@ -3,6 +3,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
+<% if(session.getAttribute("id") != null){
+	response.sendRedirect("/index");
+}
+%>
 <head>
 
 <meta charset="utf-8">
@@ -41,13 +45,6 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
 <script type="text/javascript">
-	// 엔터키 미완성......
-	function enterkey() {
-		if (window.event.keyCode == 13) {
-			document.getElementById("login").click();
-		}
-	}
-
 	$(function() {
 
 		$("#email").hide();

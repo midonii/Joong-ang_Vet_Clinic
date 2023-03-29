@@ -268,9 +268,9 @@ $(function() {
 	
 // 번호추가시 받는사람으로
  	$(document).on("click", ".sms_numplus", function(){
- 		let pet_name = $("#sms_newdog").val();
- 		let owner_name = $("#sms_newowner").val();
- 		let owner_tel = $("#sms_newnum").val();
+ 		let pet_name = $.trim($("#sms_newdog").val());
+ 		let owner_name = $.trim($("#sms_newowner").val());
+ 		let owner_tel = $.trim($("#sms_newnum").val());
  		//alert(pet_name + " / " + owner_name + " / " + owner_tel);
  		
  		if(owner_tel == ""){
@@ -451,10 +451,10 @@ $(function() {
 // 고객검색 & 검색해서 추가한 사람은 재검색시 출력안되게
 	$("#search_btn").click(function(){
 		
-		let search_client = $("#search_client").val();
-		
+		let search_client = $.trim($("#search_client").val());
 		let pet_names = $(".smsTo2 #pet_name").text();
 		//alert(pet_names);
+		$("#search_client").val(search_client);
 		
 		
 		$.post({
