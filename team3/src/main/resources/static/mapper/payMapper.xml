@@ -5,7 +5,7 @@
 
 	<select id="payList" resultType="PayDTO" parameterType="PageDTO">
 		SELECT ROW_NUMBER()
-		OVER(ORDER BY chart_no ) AS rownum , pay_no,
+		OVER(ORDER BY chart_date ) AS rownum , pay_no,
 		listpay_date, pay_yn, totalPrice, chart_no, owner_name, pet_name
 		FROM
 		paydetailview
@@ -45,6 +45,13 @@
 		 WHERE format_date BETWEEN #{fromDate} AND #{toDate}
 		</if>
 		<if test="search_name !=null  and !search_name.equals('')">
+			<choose>
+				<when test="search_name =='all'">
+						WHERE pet_name LIKE CONCAT('%',#{search_value},'%') OR
+						 owner_name LIKE CONCAT('%',#{search_value},'%') OR
+						chart_no LIKE CONCAT('%',#{search_value},'%') 
+				</when>
+			</choose>
 		<choose>
 				<when test="search_name == 'petname'">WHERE pet_name LIKE CONCAT('%',#{search_value},'%') </when>
 				<when test="search_name == 'ownername'">WHERE owner_name LIKE CONCAT('%',#{search_value},'%')</when>

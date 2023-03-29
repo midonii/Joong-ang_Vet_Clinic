@@ -20,6 +20,7 @@ if (session.getAttribute("id") == null) {
 <meta name="author" content="">
 
 <title>수납</title>
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -114,7 +115,7 @@ if (session.getAttribute("id") == null) {
 								
 								<div class="table-responsive"  style="min-height: 500px;" >
 								<table class="table text-center"  >
-									<tr style="height:50px;">
+									<tr style="height:50px; font-size: 16px;">
 										<th class="col-2">구분</th>
 										<th class="col-2">세부구분</th>
 										<th class="col-3">이름</th>

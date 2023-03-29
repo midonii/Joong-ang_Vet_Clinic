@@ -22,6 +22,7 @@ if (session.getAttribute("id") != null) {
 <meta name="description" content="">
 <meta name="author" content="">
 <title>중앙동물병원</title>
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
