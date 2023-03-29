@@ -7,11 +7,11 @@
 <html lang="ko">
 <%
 if (session.getAttribute("id") != null) {
-   if (!session.getAttribute("staff_grade").equals("admin")) {
-      response.sendRedirect("/index?error=1234");
-   }
+	if (!session.getAttribute("staff_grade").equals("admin")) {
+		response.sendRedirect("/index?error=1234");
+	}
 } else {
-   response.sendRedirect("/login?error=4321");
+	response.sendRedirect("/login?error=4321");
 }
 %>
 <head>
@@ -134,6 +134,15 @@ function page(idx, fromDate, toDate) {
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
+					<!-- Page Heading -->
+					<div class="mb-1"
+						style="font-size: 13px; margin-top: -10px; padding-left: 8px;">
+						<a href="/index" style="text-decoration: none;"
+							class="text-gray-600"> <i class="fa-solid fa-house-chimney"></i>
+						</a>&nbsp;&nbsp; <i class="fa-sharp fa-solid fa-chevron-right"></i>&nbsp;
+						<a href="/sales" style="text-decoration: none;"
+							class="text-gray-700">관리자(매출 관리)</a>
+					</div>
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
@@ -182,18 +191,17 @@ function page(idx, fromDate, toDate) {
 																pattern="#,###" />원</td>
 													</tr>
 												</c:forEach>
-											<table table class="table table-bordered" id="dataTable"
-											width="100%" cellspacing="0" style="text-align: center">
-												<tr>
-													<th style="width: 200px" class="bg-gray-100">합계</th>
-													<td style="width: 300px">
-													<c:if test="${not empty param.toDate }">
-															<fmt:formatNumber value="${payTotalPrice2}"
-																pattern="#,###" />원
+												<table table class="table table-bordered" id="dataTable"
+													width="100%" cellspacing="0" style="text-align: center">
+													<tr>
+														<th style="width: 200px" class="bg-gray-100">합계</th>
+														<td style="width: 300px"><c:if
+																test="${not empty param.toDate }">
+																<fmt:formatNumber value="${payTotalPrice2}"
+																	pattern="#,###" />원
 												
-													</c:if>
-												</td>
-												</tr>
+													</c:if></td>
+													</tr>
 												</table>
 											</tbody>
 										</table>

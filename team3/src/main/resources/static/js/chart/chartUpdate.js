@@ -253,7 +253,12 @@ $(function() {
 										var b = priceId * eachmediNum; //단가*변경된수량
 										//var changeTotal =b.toLocaleString(); //가격에 ,붙이기
 										calprice.text(b + "원");
-
+										//수량 0 입력시 1로 대체
+										if (eachmediNum == 0) {
+											$(this).val(1);
+											calprice.empty();
+											calprice.append(priceId + "원");
+										}
 
 										var price12 = $(".calPrice").text();
 										var priceCut = price12.split("원"); //원으로 나누기
@@ -541,6 +546,7 @@ $(function() {
 	$(document).on("change", ".list_check", function() {
 
 		if ($(this).is(':checked')) {
+			$(".save_btn").attr("disabled", false); //저장버튼 활성화
 			var mno = $(this).attr("id");
 			var mediname = $(this).parent().siblings("#mediname").text();
 			var cate = $(this).parent().siblings("#cate").text();
@@ -560,6 +566,11 @@ $(function() {
 			var right_tr = right_chk.closest(".trSelected");
 			right_tr.remove();
 		}
+		//좌 리스트 체크된게 없으면 저장버튼 비활성화
+		var leftckNum = $('input:checkbox[name=list_check]:checked').length;
+		if (leftckNum == 0) {
+			$(".save_btn").attr("disabled", true);
+		}
 	});
 
 	//우 리스트 클릭(좌측 체크 없애기)
@@ -574,6 +585,7 @@ $(function() {
 
 	/*초기화 버튼(좌리스트 -체크해제, 우리스트 -삭제)*/
 	$(document).on("click", ".reset_btn", function() {
+		$(".save_btn").attr("disabled", true); //저장버튼 비활성화
 		$("table.first_table").find(".list_check").prop("checked", false);
 		$("table.second_table").find(".trSelected").remove();
 
@@ -633,6 +645,12 @@ $(function() {
 					var b = priceId * eachmediNum; //단가*변경된수량
 					//var changeTotal =b.toLocaleString(); //가격에 ,붙이기
 					calprice.text(b + "원");
+					//수량 0 입력시 1로 대체
+					if (eachmediNum == 0) {
+						$(this).val(1);
+						calprice.empty();
+						calprice.append(priceId + "원");
+					}
 
 
 					var price12 = $(".calPrice").text();

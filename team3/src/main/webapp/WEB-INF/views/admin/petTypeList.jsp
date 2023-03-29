@@ -120,8 +120,9 @@ if (session.getAttribute("id") != null) {
 		});
 
 		$("#search_btn").click(function() {
-			let searchValue = $("#search_value").val();
-
+			let searchValue = $.trim($("#search_value").val());
+			$("#search_value").val(searchValue);
+			
 			if (searchValue == "") {
 				location.reload();
 			}
