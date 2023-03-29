@@ -2,6 +2,10 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+<% if(session.getAttribute("id") != null){
+	response.sendRedirect("/index");
+}
+%>
 <head>
 
     <meta charset="utf-8">

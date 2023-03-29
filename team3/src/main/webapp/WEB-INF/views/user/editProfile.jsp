@@ -3,8 +3,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
-<% if(session.getAttribute("id") == null){
-	response.sendRedirect("/login");
+<%
+if (session.getAttribute("id") == null) {
+	response.sendRedirect("/login?error=4321");
 }
 %>
 <head>

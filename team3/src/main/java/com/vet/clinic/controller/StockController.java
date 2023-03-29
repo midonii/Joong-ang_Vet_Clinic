@@ -109,7 +109,7 @@ public class StockController {
 	@ResponseBody
 	@PostMapping("/edit")
 	public String edit(@RequestParam Map<String, Object> paramMap) {
-		System.out.println(paramMap);
+		//System.out.println(paramMap);
 		
 		JSONObject json = new JSONObject();
 		

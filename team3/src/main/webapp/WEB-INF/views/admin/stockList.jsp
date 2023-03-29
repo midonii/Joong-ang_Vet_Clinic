@@ -22,6 +22,7 @@ if (session.getAttribute("id") != null) {
 <meta name="author" content="">
 
 <title>중앙동물병원</title>
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 
 <!-- datepicker -->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
@@ -32,7 +33,6 @@ if (session.getAttribute("id") != null) {
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
-<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 
 <script src="https://kit.fontawesome.com/a31e2023c3.js"
 	crossorigin="anonymous"></script>
@@ -56,6 +56,7 @@ if (session.getAttribute("id") != null) {
 	border: 1px solid #e3e6f0;
 	border-radius: 0.35rem;
 }
+
 .search_criteria{
 /* 	min-width:150px;  */
 	height:35px; 
@@ -91,23 +92,26 @@ if (session.getAttribute("id") != null) {
 }
 
 .list_table tbody {
-  display: block; /* to enable vertical scrolling */
-  max-height: 466px; /* 스크롤시466px / 페이징 427px */
-  overflow-y: scroll; /* keeps the scrollbar even if it doesn't need it; display purpose */
   width:100%;
+  display: block; /* to enable vertical scrolling */
+  max-height: 467px; /* 스크롤시466px / 페이징 427px */
+  overflow-y: scroll; /* keeps the scrollbar even if it doesn't need it; display purpose */
 }
 
-.list_th {
+
+.list_tr {
   display: table; /* display purpose; th's border */
   width: 100%;
   box-sizing: border-box; /* because of the border (Chrome needs this line, but not FF) */
 }
 
-.list_th td {
+.list_tr td {
+	width:100%;
   text-align: center;
   border-bottom: none;
   border-left: none;
 } 
+
 
 </style>
 </head>
@@ -128,7 +132,6 @@ $(function(){
     }
     
     let today = date.getFullYear() +'-' + month + '-' + day;
-//     $(".datepicker, .datepicker2").val(today);
  	
 // ----- datepicker -------
 	$( ".datepicker" ).datepicker({
@@ -206,14 +209,15 @@ $(function(){
 		//alert(radioValue);
 		
 	// 약명
-		var medicineName = $("#medicineName").val();
+		var medicineName = $.trim($("#medicineName").val());
 		//alert(medicineName);
+		$("#medicineName").val(medicineName);
 		
 	// 구매처명
 		var purchasingOfficeOption = $("#purchasingOfficeSelect option:selected").text();
-		//alert(purchasingOfficeOption);
-		var purchasingOffice = $("#purchasingOffice").val();
-		//alert(purchasingOffice);
+		var purchasingOffice = $.trim($("#purchasingOffice").val());
+		//alert(purchasingOfficeOption + purchasingOffice);
+		$("#purchasingOffice").val(purchasingOffice);
 		
 	// 처방기간조회
 		var fromDate = $("#fromDate").val();
@@ -274,7 +278,7 @@ $(function(){
 	 					medical_price = medical_price.toLocaleString();
 	 				}
 					
-					var tr = "<tr class='list_th'>"
+					var tr = "<tr class='list_tr'>"
 								+"<td style='width: 3%'>"+i+"</td>"
 								+"<td style='width: 5%'>"+medical_subcate+"</td>"
 								+"<td id='td_company' style='width: 10%'>"+medical_company+"</td>"
@@ -499,7 +503,7 @@ $(function(){
 										<!-- 구매처 직접입력 id="purchasingOffice" -->
 										<div class="card"
 											style="width: 33%; height: 35px; margin: 0 0 5px 10px;">
-											<input type="text" class="form-control" id="purchasingOffice" style="height: 33px; border: 0">
+											<input type="text" class="form-control" id="purchasingOffice" style="height: 33px; border: 0; font-size:14px;">
 										</div>
 									</div>
 									<!-- 약 -->
@@ -508,7 +512,7 @@ $(function(){
 										<div class="card search_criteria" style="width: 39%;">약&nbsp;&nbsp;품&nbsp;&nbsp;명</div>
 										<!-- 약명 입력 id="medicineName" -->
 										<div class="card" style="width: 57%; height: 35px; margin: 0 0 5px 10px;">
-											<input type="text" class="form-control" id="medicineName" style="height: 33px; border: 0">
+											<input type="text" class="form-control" id="medicineName" style="height: 33px; border: 0; font-size:14px;">
 										</div>
 									</div>
 									<!-- 기간조회 -->
@@ -545,10 +549,10 @@ $(function(){
 							<div class="card"
 								style="width: 100%; height: 505px; margin: 10px;"><!-- 스크롤시 height:505px / 페이징 height:477px; -->
 								<div class="border-radius" style="width: 100%">
-									<table class="list_table border table-sm table-bordered"
+									<table class="list_table table-sm table-bordered "
 										style="width: 100%; text-align: center; font-size: 14px;">
 										<thead>
-											<tr class="list_th" style="background-color: #f8f9fc;">
+											<tr class="list_tr" style="background-color: #f8f9fc;">
 												<th style="width: 3%;">번호</th>
 												<th style="width: 5%;">분류</th>
 												<th style="width: 10%;">구매처</th>
@@ -560,9 +564,9 @@ $(function(){
 												<th style="width: 3%;">수정/저장</th>
 											</tr>
 										</thead>
-										<tbody class="tbody1" value="1">
+										<tbody class="tbody1"  style="width:100%;">
 											<c:forEach items="${stockList }" var="sL" varStatus="status">
-												<tr>
+												<tr class="list_tr">
 													<td style="width: 3%;">${status.count }</td>
 													<td style="width: 5%;">${sL.medical_subcate }</td>
 													<td id="td_company" style="width: 10%;">${sL.medical_company } </td>
@@ -624,11 +628,11 @@ $(function(){
 				<script src="js/sb-admin-2.min.js"></script>
 
 				<!-- Page level plugins -->
-				<script src="vendor/datatables/jquery.dataTables.min.js"></script>
-				<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+				<!-- <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+				<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script> -->
 
 				<!-- Page level custom scripts -->
-				<script src="js/demo/datatables-demo.js"></script>
+			<!-- 	<script src="js/demo/datatables-demo.js"></script> -->
 
 
 				<!-- datepicker -->
