@@ -24,6 +24,7 @@ if (session.getAttribute("id") != null) {
 <meta name="author" content="">
 
 <title>중앙동물병원</title>
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -125,8 +126,7 @@ if (session.getAttribute("id") != null) {
 			let searchValue = $("#search_value").val();
 
 			if (searchValue == "") {
-				alert("검색어를 입력하세요.");
-				return false;
+				location.reload();
 			}
 			searchForm.submit();
 		});
@@ -243,7 +243,7 @@ if (session.getAttribute("id") != null) {
 											<li class="list-group-item">
 												<div class="row">
 													<div class="col-md-3 text-center"
-														style="line-height: 38px;">이름</div>
+														style="line-height: 38px;">접종명</div>
 													<div class="col-md-9">
 														<input type="text" class="form-control" id="medical_name"
 															name="medical_name">
@@ -253,7 +253,7 @@ if (session.getAttribute("id") != null) {
 											<li class="list-group-item mb-4">
 												<div class="row">
 													<div class="col-md-3 text-center"
-														style="line-height: 40px;">가격</div>
+														style="line-height: 40px;">처방가격</div>
 													<div class="col-md-9">
 														<input type="text" class="form-control" id="medical_price"
 															name="medical_price">
@@ -297,8 +297,8 @@ if (session.getAttribute("id") != null) {
 											<thead>
 												<tr class="bg-gray-200">
 													<th class="col-1">번호</th>
-													<th class="col-4">이름</th>
-													<th class="col-2">가격</th>
+													<th class="col-4">접종명</th>
+													<th class="col-2">처방가격</th>
 													<th class="col-2"></th>
 
 												</tr>
@@ -394,7 +394,7 @@ if (session.getAttribute("id") != null) {
 								<ul class="list-group list-group-flush">
 									<li class="list-group-item">
 										<div class="row">
-											<div class="col-md-3" style="line-height: 38px;">이름</div>
+											<div class="col-md-3" style="line-height: 38px;">접종명</div>
 											<div class="col-md-9">
 												<input type="text" class="form-control" id="medical_nameU"
 													name="medical_nameU">

@@ -20,7 +20,7 @@ if (session.getAttribute("id") == null) {
 <title>중앙동물병원</title>
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-<link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png" />
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 <!-- Custom fonts for this template-->
 <script src="https://kit.fontawesome.com/a31e2023c3.js"
 	crossorigin="anonymous"></script>
@@ -413,7 +413,7 @@ if (session.getAttribute("id") == null) {
 								<li class="list-group-item">
 									<div class="row">
 										<textarea class="form-control" rows="18" id="notice_content"
-											name="notice_content"></textarea>
+											name="notice_content" style="resize: none;"></textarea>
 									</div>
 								</li>
 							</ul>
@@ -464,7 +464,7 @@ if (session.getAttribute("id") == null) {
 								</li>
 								<li class="list-group-item">
 									<div class="row">
-										<div id="D_content"></div>
+										<div id="D_content" style="height: 400px; width:100%;overflow: auto;"></div>
 									</div>
 								</li>
 
@@ -508,7 +508,7 @@ if (session.getAttribute("id") == null) {
 								<li class="list-group-item">
 									<div class="row">
 										<textarea class="form-control" rows="18" id="contentU"
-											name="contentU"></textarea>
+											name="contentU" style="resize: none;"></textarea>
 									</div>
 								</li>
 							</ul>

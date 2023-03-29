@@ -28,6 +28,8 @@ public interface Chart3DAO {
 
 	public int dataDel(String string);
 
+	public void stockUpdate(Map<String, Object> dataMap);
+
 
 
 }

@@ -19,6 +19,11 @@
 		pay_yn='N',
 		receive_no=#{receive_no}
 	</insert>
+	<update id="stockUpdate" parameterType="HashMap">
+		UPDATE medicalList SET
+		medical_stock= medical_stock - #{medical_ea}
+		WHERE medical_no = #{medical_no} AND medical_category='약품'
+	</update>
 	<insert id="dataAdd" parameterType="HashMap">
 		INSERT INTO medicalData
 		SET

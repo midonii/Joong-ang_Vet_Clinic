@@ -24,6 +24,7 @@ if (session.getAttribute("id") != null) {
 <meta name="author" content="">
 
 <title>중앙동물병원</title>
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -432,7 +433,7 @@ if (session.getAttribute("id") != null) {
 							<ul class="list-group list-group-flush">
 								<li class="list-group-item">
 									<div class="row">
-										<div class="col-md-3 text-center" style="line-height: 38px;"></div>
+										<div class="col-md-3 text-center" style="line-height: 38px;">약품명</div>
 										<div class="col-md-9">
 											<input type="text" class="form-control" id="medical_nameU"
 												name="medical_nameU">

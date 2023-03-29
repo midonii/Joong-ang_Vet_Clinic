@@ -17,6 +17,7 @@ if (session.getAttribute("id") == null) {
 <meta name="author" content="">
 
 <title>중앙동물병원</title>
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -38,7 +39,6 @@ if (session.getAttribute("id") == null) {
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <link href="css/chart/chart1.css" rel="stylesheet">
-<!-- <script type="text/javascript" src="js/chart/chart1.js"></script> -->
 <script type="text/javascript" src="js/chart/chart3.js"></script>
 <script type="text/javascript" src="js/chart/chartUpdate.js"></script>
 

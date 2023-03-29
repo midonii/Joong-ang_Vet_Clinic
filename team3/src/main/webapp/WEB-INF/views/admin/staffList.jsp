@@ -24,6 +24,7 @@ if (session.getAttribute("id") != null) {
 <meta name="author" content="">
 
 <title>중앙동물병원</title>
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png" />
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
@@ -186,6 +187,11 @@ if (session.getAttribute("id") != null) {
 
 		});
 
+		
+		
+		
+		
+		
 	});
 
 	function page(idx, search_name, search_value) {
@@ -243,6 +249,8 @@ if (session.getAttribute("id") != null) {
 										<input type="hidden" name="contentnum" id="contentnum"
 											value="${page.getContentnum()}">
 										<div class="input-group">
+											<input type="hidden" value="${search.getStaff_grade() }"
+														name="staff_grade">
 											<input type="hidden" value="${search.getSearch_name() }"
 												id="searchName"> <select
 												class="form-control col-md-4" name="search_name"
@@ -283,9 +291,9 @@ if (session.getAttribute("id") != null) {
 													<input type="hidden" value="${search.getSearch_value() }"
 														name="search_value">
 													<div class="dropdown">
-														<button class="btn btn-sm dropdown-toggle" type="button"
+														<button class="btn dropdown-toggle" type="button"
 															data-bs-toggle="dropdown" aria-expanded="false"
-															style="font-size: 16px; font-weight: bold;">직책</button>
+															style="font-size: 16px; font-weight: bold;height:20px; vertical-align:-1px;line-height:1px;">직책</button>
 														<ul class="dropdown-menu">
 															<li>
 																<button type="submit" class="dropdown-item btn btn-sm "
@@ -306,7 +314,7 @@ if (session.getAttribute("id") != null) {
 										</tr>
 									</thead>
 
-									<tbody>
+									<tbody id="tbody1">
 										<c:forEach items="${staffList }" var="sl">
 											<tr>
 												<td>${sl.sno }</td>

@@ -24,6 +24,7 @@ if (session.getAttribute("id") != null) {
 <meta name="author" content="">
 
 <title>중앙동물병원</title>
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <!-- Custom fonts for this template-->
@@ -122,8 +123,7 @@ if (session.getAttribute("id") != null) {
 			let searchValue = $("#search_value").val();
 
 			if (searchValue == "") {
-				alert("검색어를 입력하세요.");
-				return false;
+				location.reload();
 			}
 			searchForm.submit();
 		});
