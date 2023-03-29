@@ -1,5 +1,6 @@
 package com.vet.clinic.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -75,11 +76,9 @@ public class ReservController {
 		JSONArray jsonA = new JSONArray();
 		reservDTO.setDetail_no(request.getParameter("detail_no"));
 		if ((String) request.getParameter("detail_no") != null) {
-//			if ((String)request.getParameter("searchValue") != null) {
 			List<ReservDTO> searchDetail = reservService.reservAjax(reservDTO); // reservationview에서 가져옴
 			jsonA = new JSONArray(searchDetail);
 			json.put("result", searchDetail);
-//			System.out.println(jsonA.getJSONObject(0).getString("pet_name")); //ok
 		}
 
 		//시간막기
@@ -203,21 +202,28 @@ public class ReservController {
 	public String receiveAdd(HttpServletRequest request) {
 		ReservDTO reservDTO = new ReservDTO();
 		String reservNo = request.getParameter("reservNo"); // reservation_date 변수에 매개변수 값 할당
+		JSONObject json = new JSONObject();
 
 		HttpSession session = request.getSession();
 		reservDTO.setStaff_id((String) session.getAttribute("id"));
-
 		reservDTO.setReservNo(reservNo); // dto의 속성 값 설정
 		reservDTO.setReceive_petNo(request.getParameter("receive_petNo"));
 		reservDTO.setReceive_ownerNo(request.getParameter("receive_ownerNo"));
-//		reservDTO.setReservation_Yn(request.getParameter("reservation_Yn"));
-		JSONObject json = new JSONObject();
-
+		
+		//접수막기
+		String search_petNo = request.getParameter("receive_petNo");
+		reservDTO.setSearch_petNo(search_petNo);
+		boolean petNoExists = reservService.checkPetNoExists(reservDTO);
+		 if (petNoExists){
+			  System.err.println(petNoExists);
+				json.put("result", "exist");
+				return json.toString();
+		  } else {
 		int result = reservService.receiveAdd(reservDTO);
 		result = reservService.receiveAdd_reservYn(reservDTO);
 		json.put("result", result);
-
 		return json.toString();
+		}
 	}
 
 	// 검색에서 접수버튼 (접수테이블에 저장)
@@ -225,19 +231,25 @@ public class ReservController {
 	@PostMapping("search_receiveAdd")
 	public String search_receiveAdd(HttpServletRequest request) {
 		ReservDTO reservDTO = new ReservDTO();
+		JSONObject json = new JSONObject();
 
 		HttpSession session = request.getSession();
 		reservDTO.setStaff_id((String) session.getAttribute("id"));
-
-		JSONObject json = new JSONObject();
-		
 		reservDTO.setSearch_petNo(request.getParameter("search_petNo"));
 		reservDTO.setSearch_ownerNo(request.getParameter("search_ownerNo"));
-		System.err.println(request.getParameter("search_ownerNo")); //안들어옴
-
-		int result = reservService.search_receiveAdd(reservDTO);
-		json.put("result", result);
-		return json.toString();
+		
+		 // search_petNo가 이미 존재하는지 검사
+		boolean petNoExists = reservService.checkPetNoExists(reservDTO);
+		  if (petNoExists){
+			  System.err.println(petNoExists);
+				json.put("result", "exist");
+				return json.toString();
+		  }
+		  else {
+			int result = reservService.search_receiveAdd(reservDTO);
+			json.put("result", result);
+			return json.toString();
+		  }
 	}
 
 	// 접수삭제
@@ -252,37 +264,64 @@ public class ReservController {
 		System.out.println("삭제 처리결과는 : " + result);
 		return "redirect:reserv";
 	}
+	//캘린더
+	// 전체리스트, 예약리스트
+	@GetMapping("/calender_sm2")
+	public ModelAndView calender_sm2(HttpServletRequest request) {
 
-	
-	@GetMapping("/reservlist_calender")
-	@ResponseBody
-	public String getEvents(@RequestParam("date1") String date1) {
 		ReservDTO reservDTO = new ReservDTO();
-		JSONObject json = new JSONObject();
-	    // date를 기반으로 이벤트 정보를 가져오는 코드 작성
-		List<ReservDTO> events = reservService.reservlist_calender(reservDTO);
-		JSONArray jsonA = new JSONArray(events);
-		json.put("result", events);
-		System.out.println(events);
-//		return events;
-		return json.toString();
-	}
-	
-	@GetMapping("/calender_sm")
-	public ModelAndView calender_sm() {
-		ReservDTO reservDTO = new ReservDTO();
-		ModelAndView mv = new ModelAndView("reservation/calender_sm");
+		ModelAndView mv = new ModelAndView("reservation/calender_sm2");
+
+		// 전체리스트
+		List<ReservDTO> boardlist = reservService.boardlist(reservDTO);
+		mv.addObject("boardlist", boardlist);
+
 		// 예약 리스트
-		List<ReservDTO> reservlist = reservService.reservlist_calender(reservDTO);
+		List<ReservDTO> reservlist = reservService.reservlist(reservDTO);
 		mv.addObject("reservlist", reservlist);
-		
+
 		return mv;
 	}
 	
-//	@GetMapping("/calender_sm")
-//	public String calender_sm() {
-//		
-//		return "/reservation/calender_sm";
-//	}
+	// 캘린더 날짜별(예약리스트)
+	@ResponseBody
+	@GetMapping("/calender_reserv_ajax") 
+	public String calender_reserv_ajax(HttpServletRequest request) {
+		ReservDTO reservDTO = new ReservDTO();
+		reservDTO.setFulldate(request.getParameter("fulldate")); // searchValue: script의 data의 key 명!,data: { "searchValue"}
+		JSONObject json = new JSONObject();
+		
+		HttpSession session = request.getSession();
+		reservDTO.setStaff_id((String) session.getAttribute("id"));
+
+		List<ReservDTO> reservlist2 = reservService.reservlist2(reservDTO);
+		JSONArray jsonA = new JSONArray(reservlist2); // json어레이로 감싸기
+		
+		List<ReservDTO> result = reservService.reservlist2(reservDTO);
+		
+		if(result.size() > 0) {
+			json.put("result", reservlist2);
+			System.out.println(jsonA.getJSONObject(0).getString("pet_name"));
+			return json.toString();
+		} else {
+			json.put("result", "noReserv");
+			System.err.println("결과없음");
+			return json.toString();
+		}
+	}
+	
+	
+	
+	
+	
+	// 캘린더에서 예약삭제
+	@GetMapping("calender_reservDelete")
+	public String calender_reservDelete(HttpServletRequest request) {
+		ReservDTO reservDTO = new ReservDTO();
+		reservDTO.setDelete_reservation_no(request.getParameter("delete_reservation_no"));
+		int result = reservService.delete_reservation_no(reservDTO); //필수
+
+		return "redirect:calender_sm2";
+	}
 
 }

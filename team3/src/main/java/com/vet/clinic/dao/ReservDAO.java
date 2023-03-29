@@ -44,4 +44,8 @@ public interface ReservDAO {
 
 	public List<ReservDTO> reservlist_calender(ReservDTO reservDTO);
 
+	public boolean checkPetNoExists(ReservDTO reservDTO);
+
+	public List<ReservDTO> reservlist2(ReservDTO reservDTO);
+
 }

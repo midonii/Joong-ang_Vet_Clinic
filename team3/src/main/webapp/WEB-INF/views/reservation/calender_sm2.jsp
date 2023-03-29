@@ -19,6 +19,7 @@ if (session.getAttribute("id") == null) {
 <meta name="author" content="">
 
 <title>캘린더</title>
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 <link rel="stylesheet" href="css/reservation/calender_sm2.css">
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
@@ -52,8 +53,6 @@ if (session.getAttribute("id") == null) {
 <link rel="stylesheet" href="css/reservation/calender_sm2.css">
 <!-- <script src="js/reservation/calender_reserv.js"></script> -->
 
-<script type="text/javascript"
-	src="../js/reservation/calender_search.js"></script>
 </head>
 <script type="text/javascript">
 
@@ -95,7 +94,7 @@ background-color: #4e73df;
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
-					<div class="content" style="height:580px;">
+					<div class="content" style="padding-right:-20px;">
 						<div class="calendar-container" style="border-right: 1px #d1d3e2 solid;">
 							<div class="calendar">
 								<div class="year-header">
@@ -138,9 +137,9 @@ background-color: #4e73df;
 										</tbody>
 									</table>
 								</div>
-								<button class="btn" id="add-button" style="border: 2px solid #4e73df; color: #4e73df;"
+							<!-- 	<button class="btn" id="add-button" style="border: 2px solid #4e73df; color: #4e73df;"
 								onMouseOver="this.style.color='white';" onMouseOut="this.style.color='#0d6efd'"
-								>예약추가</button>
+								>예약추가</button> -->
 							</div>
 						</div>
 						
@@ -149,224 +148,148 @@ background-color: #4e73df;
 						
 						
 						
-						<!-- 주간캘린더 -->
-						<div class="dialog2" id="dialog2" style="overflow: auto;">
-<%-- 						<%@ include file="calender_sm2.jsp"%> --%>
-						<div class="weekcalendar">
-						 <div class="timeline1">
-						    <div class="spacer"></div>
-						    <div class="time-marker" data-value="09:00">9 AM</div> 
-						    <div class="time-marker" data-value="09:30"></div>
-						    <div class="time-marker" data-value="10:00">10 AM</div>
-						    <div class="time-marker" data-value="10:30"></div>
-						    <div class="time-marker" data-value="11:00">11 AM</div>
-						    <div class="time-marker" data-value="11:30"></div>
-						    <div class="time-marker" data-value="12:00">12 PM</div>
-						    <div class="time-marker" data-value="12:30"></div>
-						    <div class="time-marker" data-value="13:00">1 PM</div>
-						    <div class="time-marker" data-value="13:30"></div>
-						    <div class="time-marker" data-value="14:00">2 PM</div>
-						    <div class="time-marker" data-value="14:30"></div>
-						    <div class="time-marker" data-value="15:00">3 PM</div>
-						    <div class="time-marker" data-value="15:30"></div>
-						    <div class="time-marker" data-value="16:00">4 PM</div>
-						    <div class="time-marker" data-value="16:30"></div>
-						    <div class="time-marker" data-value="17:00">5 PM</div>
-						    <div class="time-marker" data-value="17:30"></div>
-						  </div>
-						  <!-- 
-						  
-						  * 값 1개 가져올때
-						  var value = $(".time-marker").data("value");
-						  
-						  * 값 여러개 가져올때
-						  $(".time-marker").each(function() {
-							  var value = $(this).data("value");
-							  // value 값을 사용하여 작업 수행
-							});
-													  
-						   -->
-						  
-						  
-						  <div class="days">
-						  
-						  
-						  
-						    <div class="day_">
-						    <!-- 날짜/요일 -->
-						      <div class="date day0">
-						      	<!-- sm.js로 날짜,요일 넣기 -->
-<!-- 						    <p class="date-num">11</p> -->
-<!-- 						    <p class="date-day" id="date-day">월</p> -->
-						      </div>
-							  <!-- 예약내역 -->
-							  <div class="events1">
-								<div class="event1 start-9 securities">
-							      	<c:forEach items="${reservlist}" var="r">
-<%-- 								        <c:if test="${r.reserv_date == fulldate}"> --%>
-											    <p class="title" style="font-size:5px;">${r.reservation_no}</p>
-<%-- 								        </c:if> --%>
-								       
-									</c:forEach> 
-<!-- 							 	 <p class="title" style="font-size:5px;">헤헤</p> -->
+				<!-- 리스트 띄우기 -->
+				<div class="dialog2" id="dialog2" style="overflow: auto;">
+						
+				<!-- 검색 -->
+				<!-- 검색창 / 예약창 / 접수창 -->
+					<div class="row">
+						<!-- 검색 -->
+						<div class="col-xl-6" style="margin-right:-12px; ">
+							<div class="card mb-4">
+								<!--메뉴1 -->
+								<div
+									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+									<h6 class="m-0 font-weight-bold text-primary">고객조회</h6>
 								</div>
-							  </div>
-						    </div>
-						      
-						      
-						      
-<%-- 								  	<c:choose>
-										<c:when test="${reserv_date== ${'.date-num.data-date()'}">
-												<input type="hidden" value="${r.reserv_time }">
-										        <div class="event1 start-9 securities">
-										          <p class="title" style="font-size:5px;">${r.pet_name } (${r.owner_name})</p>
-										    </div>
-										</c:when>
-									</c:choose> --%>
-						    
-						    
-						    
-						    <div class="day_">
-						      <div class="date day1">
-						      	<!-- js에서 append -->
-<!-- 						     <p class="date-num">12</p> -->
-<!-- 						     <p class="date-day">화</p> -->
-						      </div>
-						      <div class="events1">
-						<!--         <div class="event start-10 end-12 corp-fi"> -->
-						<!--           <p class="title">Corporate Finance</p> -->
-						<!--           <p class="time">10 AM - 12 PM</p> -->
-						<!--         </div> -->
-						<!--         <div class="event start-1 end-4 ent-law"> -->
-						<!--           <p class="title">Entertainment Law</p> -->
-						<!--           <p class="time">1PM - 4PM</p> -->
-						<!--         </div> -->
-						      </div>
-						    </div>
-						    <div class="day_">
-						      <div class="date day2">
-<!-- 						        <p class="date-num">11</p> -->
-<!-- 						        <p class="date-day">수</p> -->
-						      </div>
-						      <div class="events1">
-						
-						
-						
-						      </div>
-						    </div>
-						    
-						    
-						    <div class="day_">
-						      <div class="date day3">
-<!-- 						        <p class="date-num">12</p> -->
-<!-- 						        <p class="date-day">목</p> -->
-						      </div>
-						      <div class="events1">
-						
-						
-						
-						      </div>
-						    </div>
-						    <div class="day_">
-						      <div class="date day4">
-<!-- 						        <p class="date-num">13</p> -->
-<!-- 						        <p class="date-day">금</p> -->
-						      </div>
-						      <div class="events1">
-						      </div>
-						    </div>
-						  </div>
-						</div>
-						</div>
-						
-						
-						
-						
-						
-						<!-- 예약창 -->
-						<div class="dialog" id="dialog" style="overflow: auto;">
-							<!-- 검색기능 -->
-							<div style="width:450px; margin-left:22px;">
-							<div class="input-group mt-4 mb-4" style="text-align: center; border-radius:5px;
-							box-shadow: 5px 5px 9px -5px #666;">
-								<input type="text"
-									class="form-control form-contorl-sm boarder-gray col-md-12 h-25 pet_search"
-									placeholder="고객 조회하기" aria-label="Search"
-									aria-describedby="basic-addon2" id="pet_search"
-									name="pet_search">
-								<div class="input-group-append">
-									<button class="btn btn-primary shadow-sm" id="search_btn"
-										type="button">
-										<i class="fas fa-search fa-sm"></i>
-									</button>
-								</div>
-							</div>
-							</div>
-							
-							<div class="container">
-							<form class="row g-2 form justify-content-md-center">
-								<div class="col-md-6">
-									<label for="owner_name" class="col-form-label">보호자 이름</label> <input
-										type="text" class="form-control" id="owner_name" value="없음"
-										readonly>
-								</div>
-								<div class="col-md-6">
-									<label for="owne_tel" class="col-form-label">전화번호</label> <input
-										type="text" class="form-control" id="owner_tel"
-										placeholder="" value="없음" readonly>
-								</div>
-								<div class="col-md-6">
-									<label for="pet_name" class="col-form-label">반려견 이름</label> <input
-										type="text" class="form-control" id="pet_name" value="없음"
-										readonly>
-								</div>
-								<div class="col-md-6">
-									<label for="pet_gender" class="col-form-label">반려견 성별</label> <input
-										type="text" class="form-control" id="pet_gender" value="없음"
-										readonly>
-								</div>
-								<div class="col-md-6 mb-0">
-									<label for="pet_birth" class="col-form-label">반려견 출생년도</label>
-									<input type="text" class="form-control" id="pet_birth"
-										value="없음" readonly>
-								</div>
-								<!-- 예약날짜 -->
-								<p class="col-md-6 mb-0">
-									<label for="s_reservation_date_day" class="col-form-label">예약날짜</label>
-									<input class="form-control" style="width:94%;" type="date" value="년-월-일"
-										id="s_reservation_date_day" tabindex="-1" readonly>
-								</p>
+								<div class="card-body p-3"
+									style="height: 660px; overflow: auto;">
+									<!-- 검색기능 -->
+									<div class="input-group mb-2">
+										<input type="text"
+											class="form-control form-control-sm border-gray col-md-12"
+											placeholder="이름 혹은 전화번호" aria-label="검색" name="search_value"
+											id="search_value">
+										<div class="input-group-append">
+											<button class="btn btn-primary btn-sm" type="button"
+												id="search_btn">
+												<i class="fas fa-search"></i>
+											</button>
+										</div>
+									</div>
 
-								<!-- 시간설정 -->
-								<div class="timeset" style="width: auto;">
-									<!-- timeoption 부분-->	
-<%-- 									<%@ include file="timeoption.jsp"%>		 --%>
-								</div>					
-								<div style="margin-left:10px;">
-									<label for="reservation_memo" class="col-form-label">예약메모</label>
-									<textarea class="form-control" style="width:476px; border:1px solid #d1d3e2;" id="reservation_memo"></textarea>
+									<table class="table table-borderless"
+										style="color: gray; background-color: white;">
+										<tbody id="researchTable">
+											<c:forEach items="${boardlist}" var="s">
+												<tr class="search_result"
+													style="border-bottom: 1px solid gray; padding-bottom: 5px;">
+													<td style="font-size: 14px;">
+														<div>
+															<a style="text-decoration: none;"><b
+																style="font-size: 25px; color: black">${s.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${s.owner_name}
+														</div> <br> 
+														
+														<div><span>${s.type_name} | ${s.pet_birth} | ${s.pet_gender}</span>
+													</div>
+													
+													
+													
+													</td>
+													<td style="text-align: right; width: 140px;"><span></span><br>
+<%-- 													<input type="hidden" id="search_petNo" value="${s.pet_no}"> --%>
+														<br> 
+														<span>
+															<input type="hidden" id="search_ownerNo" class="search_ownerNo1" value="${s.owner_no}">
+															<button type="button" class="btn btn-sm reserv_btn"
+																value="${s.pet_no}"
+																style="border: 1px solid #0d6efd; color: #0d6efd;">예약</button>
+															<button type="button" id="search_receipt_btn"
+																class="btn btn-primary btn-sm search_receipt_btn"
+																value="${s.pet_no}" data-value="${s.owner_no}"
+																style="margin-left: 5px; border: none;">접수</button>
+														</span>
+													</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
 								</div>
-								<input type="hidden" id="petNo" value="">
-								<input type="hidden" id="reservation_date" name="reservation_date">
-								<div class="modal-footer" style="border-top:none; padding:0;">
-									<button type="button" class="btn btn-secondary" style="background-color: #7f8c8d; border: none;"
-										data-bs-dismiss="modal" id="cancel-button">취소</button>
-									<button type="button" class="btn btn-primary" id="s_ok-button"
-										name="" value="">예약하기</button>
-								</div>
-							</form>
 							</div>
 						</div>
 						
+						<!-- 예약 -->
+						<div class="col-xl-6" style="margin-left:-12px; margin-right:-12px;">
+							<div class="card mb-4">
+								<!-- title -->
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">예약</h6>
+								</div>
+								<div class="card-body p-3"
+									style="height: 660px; overflow: auto;">
+
+									<table class="table table-borderless"
+										style="color: gray; background-color: white;">
+									<tbody id="reservTable">
+										<c:choose>
+											<c:when test="${fn:length(reservlist) eq 0}" >
+												<tr class='text-center'> <td colspan='4'>예약내역이 존재하지 않습니다.</td></tr>
+											</c:when>
+										<c:otherwise>
+										
+										<c:forEach items="${reservlist}" var="l">
+											<input type="hidden" id="age">
+											<tr
+												style="border-bottom: 1px solid gray; padding-bottom: 5px;">
+												<td style="font-size: 14px;">
+													<div style="">
+														<a style="text-decoration: none;"><b
+															style="font-size: 25px; color: black"> ${l.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${l.owner_name}&nbsp;
+														<a class="reservUpdate" value="${l.reservation_no}"
+															style="text-decoration: none;"> <i
+															class="xi-file-text-o"></i>
+														</a>
+
+
+													</div> <br>
+													<div>
+														<span>${l.type_name} | ${l.pet_birth} |
+															${l.pet_gender}</span>
+													</div> <span> ${l.reservation_memo} </span>
+												<td style="text-align: right;"><span><b><h5>${l.reserv_time}</h5></b></span><br>
+													<input type="hidden" id="petNo" value="${l.pet_no}">
+													<input type="hidden" id="ownerNo" value="${l.owner_no}">
+													<input type="hidden" id="reservation_Yn"
+													value="${l.reservation_yn}"> <span>
+														<button type="button"
+															class="btn btn-secondary btn-sm reserv_cancel" id=""
+															value="${l.reservation_no}"
+															style="background-color: #7f8c8d; border: none;">취소</button>
+														<button type="button"
+															class="btn btn-primary btn-sm receipt_btn"
+															value="${l.reservation_no}" style="border: none;">접수</button>
+												</span></td>
+											</tr>
+										</c:forEach>
+										</c:otherwise>
+										</c:choose>
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+						</div>
+
+					</div><!-- row끝 -->
+				</div> <!-- dialog 끝 -->
 						
-					</div>
-				</div>
-</div>
+			</div>
+		</div>
+	</div>
 
 <%@ include file="../bar/footer.jsp"%>
 <%@ include file="../bar/logoutModal.jsp"%>
-
-<%-- <%@ include file="../reservation/calender_sm2.jsp"%> --%>
+<%@ include file="reservation_modal.jsp"%>
 
 </div></div>
 
@@ -376,9 +299,9 @@ background-color: #4e73df;
 				<div class="timeoption">
 					<label class="col-form-label" for="update_reservation_date_time">예약시간</label>
 					<div class="accordion" id="accordionExample">
-						<div class="accordion-item">
+						<div class="accordion-item" style="width: 457px;">
 							<button class="accordion-button collapsed"
-								style="width: 476px; height: 38px;" type="button" id="accordion"
+								style="height: 38px; width:455px; border:1px solid #d1d3e2;" type="button" id="accordion" 
 								data-bs-toggle="collapse" data-bs-target="#collapseOne"
 								aria-expanded="false" aria-controls="collapseOne">시간선택</button>
 							<div id="collapseOne" class="accordion-collapse collapse"
@@ -510,62 +433,70 @@ background-color: #4e73df;
 
 
 
-
-				<!-- 검색 modal  -->
-				<div class="modal fade" id="petSearchModal" tabindex="-1"
-					role="dialog" aria-labelledby="exampleModalLabel"
-					aria-hidden="true">
-					<div class="modal-dialog modal-lg" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">
-									<b>전체 검색</b>
-								</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal"
-									aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-
-								<form action="/petType" name="searchForm"
-									onsubmit="return false" method="get">
-									<div class="input-group mt-2 mb-3">
-										<input type="text"
-											class="form-control border-gray col-md-12 pet_search2"
-											placeholder="검색어을 입력하세요" name="pet_search2" id="pet_search2">
-										<div class="input-group-append">
-											<button class="btn btn-primary" type="button"
-												id="search_btn2">
-												<i class="fas fa-search"></i>
-											</button>
-										</div>
-									</div>
-								</form>
-								<div class="table-responsive">
-									<table class="table table-sm table-bordered text-center"
-										id="dataTable" width="100%" cellspacing="0"
-										style="overflow: auto;">
-										<thead>
-											<tr class="bg-gray-200" style="line-height: 30px;">
-												<th class="col-1">번호</th>
-												<th class="col-2">보호자명</th>
-												<th class="col-2">동물명</th>
-												<th class="col-1">성별</th>
-												<th class="col-4">전화번호</th>
-												<th class="col-2"></th>
-											</tr>
-										</thead>
-
-										<tbody class="petTable">
-
-
-										</tbody>
-									</table>
+<!-- 수정Modal -->
+			<div class="modal fade" id="updateModal" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalLabel">수정하기</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form class="row g-4 form">
+								<div class="col-md-6">
+									<label for="update_owner_name" class="col-form-label">보호자
+										이름</label> <input type="text" class="form-control"
+										id="update_owner_name" value="없음" readonly>
 								</div>
-							</div>
+								<div class="col-md-6">
+									<label for="update_owner_tel" class="col-form-label">전화번호</label>
+									<input type="text" class="form-control" id="update_owner_tel"
+										placeholder="01012345678" value="없음" readonly>
+								</div>
+								<div class="col-md-6">
+									<label for="update_pet_name" class="col-form-label">반려견
+										이름</label> <input type="text" class="form-control"
+										id="update_pet_name" value="없음" readonly>
+								</div>
+								<div class="col-md-6">
+									<label for="update_pet_gender" class="col-form-label">반려견
+										성별</label> <input type="text" class="form-control"
+										id="update_pet_gender" value="없음" readonly>
+								</div>
+								<div class="col-md-6">
+									<label for="update_pet_birth" class="col-form-label">반려견
+										출생년도</label> <input type="text" class="form-control"
+										id="update_pet_birth" value="없음" readonly>
+								</div>
+								<!-- 예약시간 -->
+								<p class="col-md-6">
+									<label for="update_reservation_date_day" class="col-form-label">예약날짜</label>
+									<input class="form-control" type="date" value="2023-01-01"
+										id="update_reservation_date_day" tabindex="-1">
+								</p>
+
+								<!-- 시간설정 -->
+								<div class="updatetimeset" style="width: auto;"></div>
+								<input type="hidden" id="reservation_date"
+									name="reservation_date">
+								<div class="mb-3">
+									<label for="update_reservation_memo" class="col-form-label">예약메모</label>
+									<textarea class="form-control" id="update_reservation_memo"></textarea>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal" id="update_cancel-button">취소</button>
+									<button type="button" class="btn btn-primary"
+										id="update_ok-button" value="">수정하기</button>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
-				
+			</div>
+
 				
 				<!-- Bootstrap core JavaScript-->
 				<script src="vendor/jquery/jquery.min.js"></script>
@@ -585,11 +516,12 @@ background-color: #4e73df;
 
 </html>
 <!-- Dialog Box-->
-<script src="js/reservation/calender_sm.js"></script>
-<script src="js/reservation/calender_reserv.js"></script>
+<!-- <script src="js/reservation/reserv.js"></script> -->
+<!-- <script src="js/reservation/calender_reservlist.js"></script> -->
+<script src="js/reservation/calender_sm2.js"></script>
+<!-- <script src="js/reservation/calender_reserv.js"></script> -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"
 	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 	crossorigin="anonymous">
   </script>
-<script src="app.js"></script>
   

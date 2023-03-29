@@ -80,4 +80,12 @@ public class ReservService {
 		return reservDAO.reservlist_calender(reservDTO);
 	}
 
+	public boolean checkPetNoExists(ReservDTO reservDTO) {
+		return reservDAO.checkPetNoExists(reservDTO);
+	}
+
+	public List<ReservDTO> reservlist2(ReservDTO reservDTO) {
+		return reservDAO.reservlist2(reservDTO);
+	}
+
 }

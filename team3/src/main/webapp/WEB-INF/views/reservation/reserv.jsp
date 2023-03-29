@@ -20,6 +20,7 @@ if (session.getAttribute("id") == null) {
 <meta name="author" content="">
 
 <title>예약/접수</title>
+<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <link rel="stylesheet"
@@ -120,10 +121,21 @@ if (session.getAttribute("id") == null) {
 															<button type="button" class="btn btn-sm reserv_btn"
 																value="${s.pet_no}"
 																style="border: 1px solid #0d6efd; color: #0d6efd;">예약</button>
-															<button type="button" id="search_receipt_btn"
-																class="btn btn-primary btn-sm search_receipt_btn"
-																value="${s.pet_no}" data-value="${s.owner_no}"
-																style="margin-left: 5px; border: none;">접수</button>
+															<c:choose>
+																<c:when test="${s.receive_state eq '1' || s.receive_state eq '2' }"> 
+																<!-- 1번 펫은 여러개의 receive_state가 있음. 그중 1,2가있으면 1번 펫은 무조건 disabled -->
+																	<button type="button" id="search_receipt_btn"
+																	class="btn btn-primary btn-sm search_receipt_btn" disabled
+																	value="${s.pet_no}" data-value="${s.owner_no}"
+																	style="margin-left: 5px; border: none;">접수</button>
+																</c:when>
+																<c:otherwise>
+																	<button type="button" id="search_receipt_btn"
+																	class="btn btn-primary btn-sm search_receipt_btn"
+																	value="${s.pet_no}" data-value="${s.owner_no}"
+																	style="margin-left: 5px; border: none;">접수</button>
+																</c:otherwise>
+															</c:choose>
 														</span>
 													</td>
 												</tr>
@@ -240,6 +252,7 @@ if (session.getAttribute("id") == null) {
 														<c:if test="${not empty r.reservation_no }">
 															<span class="badge"
 																style="background-color: white; color: #0d6efd; border: 1px solid #0d6efd;">예약</span>
+															<span>${r.reserv_time }</span>
 														</c:if>
 
 													</div> <br>
@@ -254,11 +267,8 @@ if (session.getAttribute("id") == null) {
 
 												<td style="text-align: right; width: 140px;"><span><h7>${r.receive_time}</h7></span><br>
 													<input type="hidden" id="reservNo"
-													value="${r.reservation_no}"> <br> <span
-													style="width: 200px;">
-													
-														
-														
+													value="${r.reservation_no}"> <br> 
+													<span style="width: 200px;">
 														<c:if test="${r.receive_state eq '1'}">
 															<button type="button"
 																class="btn btn-secondary btn-sm receipt_cancel" id=""
@@ -267,7 +277,7 @@ if (session.getAttribute("id") == null) {
 														</c:if>
 															<!-- <button type="button" class="btn btn-success btn-sm"
 																id="check_btn" style="border: none;">수납</button> -->
-												</span></td>
+													</span></td>
 											</tr>
 										</c:forEach>
 									</table>
@@ -505,6 +515,8 @@ if (session.getAttribute("id") == null) {
 					</div>
 				</div>
 			</div>
+			
+    
 			<!-- Bootstrap core JavaScript-->
 			<script src="vendor/jquery/jquery.min.js"></script>
 			<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

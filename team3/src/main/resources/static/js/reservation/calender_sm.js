@@ -114,6 +114,7 @@ function date_click(event) { //event: 클릭된 날짜 셀의 정보
 //	var day = parseInt($(".active-date").html());
 //	date.setDate(day);
 //	var strday = new Date(year, month, day).getDay();
+
     show_events(event.data.month, event.data.day, event.data.year, event.data.strday);
 };
 
@@ -322,13 +323,13 @@ function show_events(month, day, year) { //매개변수: init_calendar 함수에
 	// 그렇지 않으면 다음 달의 시작 날짜를 출력합니다.
 	var startDate = day <= lastDate ? day : 1;
 
-	var fulldate = year + "-" + month + "-" + day.toString().padStart(2,'0'); //2023-03-25
+	
 	
 	//요일구하기..
 	var date_clicked = new Date(year, month-1, day); // -1을 해주어야 정확한 월(month) 값이 됩니다.
 	var strday = date_clicked.getDay();
 	var dayName = strdays[0][strday];//클릭한날의 요일
-	alert("dayName:"+dayName); //ok
+	//alert("dayName:"+dayName); //ok
 	
 	
 	$(".date").empty();
@@ -336,15 +337,21 @@ function show_events(month, day, year) { //매개변수: init_calendar 함수에
 	
 	//누른날짜 기준으로 5일치 띄우기
 	for(var i=0; i<5; i++){
+		var fulldate = "";
+		fulldate = year + "-" + month + "-" + day.toString().padStart(2,'0'); //2023-03-25
 		//var num = day+i;
 		var num = startDate + i; //startDate: 오늘날짜(day)이거나 1이거나
 		var date;
+//		$("form").submit();
+		
+//		date = $("<form action='reservlist_calender' method='post'>");
 		
 		//fulldate, strday 값넣은 날짜 5개 찍기
 		//날짜가 마지막날짜보다 작거나 같으면
 		if(num <= lastDate) {
         date = $("<p class='date-num' data-date='"+fulldate+"' data-strday='"+strday+"'>"+num+"</p>");
 	    } 
+		
 		//마지막 날짜를 초과하면 다음달 찍기
 		//다음 달의 날짜 계산
 		else {
@@ -361,34 +368,33 @@ function show_events(month, day, year) { //매개변수: init_calendar 함수에
 		//요일찍기
 		dayName = strdays[0][(strday+i) % 7]
 	   	var dayEl = $("<p class='date-day'>" + dayName + "</p>");
+//		date += $("</form>")
 	    $(".day"+i).append(date);
 	    $(".day"+i).append(dayEl);
 
 
-//		$(".date-num").each(function() { //15-16번 실행됨
-//		  var date1 = $(this).data("date"); //date: date-num클래스의 data-date의 밸류
-//		  var events = getEvents(date1); // 이 함수는 해당 날짜에 있는 이벤트를 반환하는 함수입니다.
-//		  // 이벤트가 있다면 이벤트를 표시합니다.
-//		  if (events.length > 0) {
-//			alert("event있음:"+events.length);
-//		    var eventDiv = $("<div class='events'></div>");
-//		    
-//		    for (var i = 0; i < events.length; i++) {
-//		      var event = events[i];
-//		      var eventTime = event.time;
-//		      var eventTitle = event.title;
-//		      
-//		      var eventEl = $("<div class='event'></div>");
-//		      eventEl.append("<p class='time'>" + eventTime + "</p>");
-//		      eventEl.append("<p class='title'>" + eventTitle + "</p>");
-//		      
-//		      eventDiv.append(eventEl);
-//		    }
-//		    
-//		    $(this).append(eventDiv);
-//		  }
-//		});
-		
+		$.ajax({
+				url: "/reservlist_calender",
+				type: "post",
+				data: {
+					"fulldate": fulldate
+				}, //key, value
+				dataType: "json",
+				cache: false
+			}).done(function(data) { //controller다녀온후 mapper조회값으로 done실행
+//				alert("통신에 성공했습니다. "); //ok
+//				alert(fulldate); //ok
+				let result = data.result; //result: result안에 pet_birth, owner_name등 정보가 다 있음. 
+//				alert("result:"+result); //
+				
+				$(".events1").empty();
+				//alert("result:" + result);
+				let table = '';
+				if (result != null) {
+				}
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				alert("POST request failed: " + errorThrown);
+			});
 		}
 	
 }
@@ -402,7 +408,7 @@ function getEvents(date1) {
 	}).done(function(data){
 		let result = data.result;
 		for (var i = 0; i < result.length; i++) {
-			alert(result1[i].reserv_time);
+			//alert(result1[i].reserv_time);
 			}
 		
 	}).fail(function() {
