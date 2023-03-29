@@ -133,6 +133,10 @@ $(function(){
 <style type="text/css">
 .table{
 	text-align: center;
+	vertical-align: baseline;
+}
+.table td, .table th {
+	vertical-align: baseline;
 }
 
 .g-border{
@@ -142,6 +146,7 @@ $(function(){
 #petImg-delete :hover {
 	background: red;
 }
+
 </style>
 
 </head>
