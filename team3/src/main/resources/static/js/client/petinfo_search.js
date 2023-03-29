@@ -3,7 +3,7 @@
 		$("#search_btn")
 				.click(
 						function() {
-							var pet_search = $("#pet_search").val();
+							var pet_search = $.trim($("#pet_search").val());
 
 							if (pet_search == "") {
 								alert("검색어를 입력하세요");
@@ -20,6 +20,8 @@
 											},
 											success : function(data) {
 												let pet = data.pet;
+												$("#pet_search").val(pet_search);
+                        						$("#pet_search2").val(pet_search);
 												$(".petTable").empty();
 												var table = "";
 												if (pet == "") {
@@ -30,7 +32,7 @@
 														var pet_no = pet[i].pet_no;
 														var pet_name = pet[i].pet_name;
 														var owner_name = pet[i].owner_name;
-														var owner_tel = pet[i].owner_tel;
+														var owner_tel = pet[i].s_Tel;
 														var pet_gender = pet[i].pet_gender;
 
 														table += "<tr class='text-center' >";
@@ -69,8 +71,8 @@
 						"#search_btn2",
 						function() {
 
-							console.log("search_btn2 클릭");
-							var pet_search = $("#pet_search2").val();
+							
+							var pet_search = $.trim($("#pet_search2").val());
 
 							if (pet_search == "") {
 								alert("검색어를 입력하세요");
@@ -86,6 +88,7 @@
 											},
 											success : function(data) {
 												let pet = data.pet;
+												$("#pet_search2").val(pet_search);
 												$(".petTable").empty();
 												var table = "";
 												if (pet == "") {
@@ -96,7 +99,7 @@
 														var pet_no = pet[i].pet_no;
 														var pet_name = pet[i].pet_name;
 														var owner_name = pet[i].owner_name;
-														var owner_tel = pet[i].owner_tel;
+														var owner_tel = pet[i].s_Tel;
 														var pet_gender = pet[i].pet_gender;
 
 														table += "<tr class='text-center' >";

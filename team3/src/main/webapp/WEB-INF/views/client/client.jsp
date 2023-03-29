@@ -48,8 +48,9 @@ $(function(){
 	$("#search_btn").click(function(){
 		//alert("!");
 		let searchName = $("#search_name").val();
-		let searchValue = $("#search_value").val();
+		let searchValue = $.trim($("#search_value").val());
 		//alert(searchName + " :: " + searchValue);
+		$("#search_value").val(searchValue);
 		if(searchName == null ){
 			alert("검색하시려는 항목을 선택하세요.");
 			return false;
@@ -182,7 +183,7 @@ $(function(){
 					</div>		
 					
 						<!-- 회원 검색 -->
-						<div class="mb-2 mt-1 float-right col-5">
+						<div class="mb-2 float-right col-5">
 							<div class="input-group">
 								<input type="hidden" value="${search.getSearch_name() }" id="hidden_search">
 								<select class="form-control form-control-sm col-md-3" name="search_name" id="search_name" style="border-radius: 5px 0 0 5px;">
@@ -203,7 +204,7 @@ $(function(){
 				</div>
 
 					<!-- 보호자 테이블 -->
-					<div class="card shadow mb-4">
+					<div class="card shadow mb-2">
 						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-primary">보호자</h6>
 						</div>
@@ -211,7 +212,7 @@ $(function(){
 							<c:when test="${fn:length(clientList) gt 0}">
 								<div class="card-body">
 									<div class="table-responsive">
-										<div id="clientScroll" style="height: 250px; overflow: auto">
+										<div id="clientScroll" style="height: 230px; overflow: auto">
 											<!--  <form name="clientInfo" action="profile" method="get"> -->
 											<table class="table table-sm table-bordered table-hover"
 												id="dataTable" width="100%" cellspacing="0">
@@ -279,7 +280,7 @@ $(function(){
 					</div>
 
 					<!-- 반려견 테이블 -->
-					<div class="card shadow mb-4">
+					<div class="card shadow mb-2">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">반려견</h6>
                         </div>
@@ -287,7 +288,7 @@ $(function(){
 						<c:when test="${fn:length(petList) gt 0}">
                         <div class="card-body">
                             <div class="table-responsive">
-										<div style="height: 250px; overflow: auto;">
+										<div style="height: 230px; overflow: auto;">
 											<table class="table table-sm table-bordered table-hover"
 												id="dataTable" width="100%" cellspacing="0">
 												<thead>
