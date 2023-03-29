@@ -66,46 +66,51 @@ if (session.getAttribute("id") == null) {
 			page(pagenum, searchName2, searchValue);
 		});
 
-		$("#search_btn").click(function() {
-			let searchName = $("#search_name").val();
-			let searchValue = $("#search_value").val();
+		$("#search_btn").click(
+				function() {
+					let searchName = $("#search_name").val();
+					let searchValue = $.trim($("#search_value").val());
+					$("#search_value").val(searchValue);
+					
+					if (searchName == "all" && searchValue == "") {
+						location.href = "/notice";
+					}
 
-			if (searchName == "all" && searchValue == "") {
-				location.href="/notice";
-			}
-			
-			if((searchName == "title" || searchName == "content") && searchValue == "" ){
-				alert("검색어를 입력하세요.");
-				return false;
-			}
-			
-			searchForm.submit();
-		});
+					if ((searchName == "title" || searchName == "content")
+							&& searchValue == "") {
+						alert("검색어를 입력하세요.");
+						return false;
+					}
 
-		$(".noticeWrite").click(function() {
-			let notice_title = $("#notice_title").val();
-			let notice_content = $("#notice_content").val().replace(/\n/g, "<br>");
+					searchForm.submit();
+				});
 
-			$.post({
-				url : "/noticeWrite",
-				data : {
-					"notice_title" : notice_title,
-					"notice_content" : notice_content
-				},
-				dataType : "json"
-			}).done(function(data) {
-				if (data.result == 1) {
-					alert("글쓰기가 완료되었습니다.");
-					$("#noticeWriteModal").modal("hide");
-					location.href = "/notice";
+		$(".noticeWrite").click(
+				function() {
+					let notice_title = $.trim($("#notice_title").val());
+					let notice_content = $("#notice_content").val().replace(
+							/\n/g, "<br>");
 
-				} else {
-					alert("문제가 발생했습니다. \n다시 시도해주세요.");
-				}
-			}).fail(function() {
-				alert("문제발생");
-			});
-		});
+					$.post({
+						url : "/noticeWrite",
+						data : {
+							"notice_title" : notice_title,
+							"notice_content" : notice_content
+						},
+						dataType : "json"
+					}).done(function(data) {
+						if (data.result == 1) {
+							alert("글쓰기가 완료되었습니다.");
+							$("#noticeWriteModal").modal("hide");
+							location.href = "/notice";
+
+						} else {
+							alert("문제가 발생했습니다. \n다시 시도해주세요.");
+						}
+					}).fail(function() {
+						alert("문제발생");
+					});
+				});
 
 		$(".noticeDetailModal").click(function() {
 			$("#noticeDetailModal").modal("show");
@@ -159,33 +164,38 @@ if (session.getAttribute("id") == null) {
 			}
 		});
 
-		$(".noticeUpdate").click(function() {
-			var notice_no = $("#D_no").val();
-			$.post({
-				url : "/noticeDetailU",
-				cache : false,
-				data : {
-					"notice_no" : notice_no
-				},
-				dataType : "json"
-			}).done(function(data) {
-				let result = data.result;
-				if (confirm("수정하시겠습니까?")) {
-					$("#noU").val(result.notice_no);
-					$("#titleU").val(result.notice_title);
-					$("#contentU").val(result.notice_content.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n'));
-					$("#noticeDetailModal").modal("hide");
-					$("#noticeUpdateModal").modal("show");
-				}
-			}).fail(function(xhr, status, errorThrown) {
-				alert("실패");
-			});
+		$(".noticeUpdate").click(
+				function() {
+					var notice_no = $("#D_no").val();
+					$.post({
+						url : "/noticeDetailU",
+						cache : false,
+						data : {
+							"notice_no" : notice_no
+						},
+						dataType : "json"
+					}).done(
+							function(data) {
+								let result = data.result;
+								if (confirm("수정하시겠습니까?")) {
+									$("#noU").val(result.notice_no);
+									$("#titleU").val(result.notice_title);
+									$("#contentU").val(
+											result.notice_content.replace(
+													/(<br>|<br\/>|<br \/>)/g,
+													'\r\n'));
+									$("#noticeDetailModal").modal("hide");
+									$("#noticeUpdateModal").modal("show");
+								}
+							}).fail(function(xhr, status, errorThrown) {
+						alert("실패");
+					});
 
-		});
+				});
 
 		$("#noticeUpdate").click(function() {
 			var notice_no = $("#noU").val();
-			var notice_title = $("#titleU").val();
+			var notice_title = $.trim($("#titleU").val());
 			var notice_content = $("#contentU").val().replace(/\n/g, "<br>");
 
 			$.post({
@@ -464,7 +474,8 @@ if (session.getAttribute("id") == null) {
 								</li>
 								<li class="list-group-item">
 									<div class="row">
-										<div id="D_content" style="height: 400px; width:100%;overflow: auto;"></div>
+										<div id="D_content"
+											style="color: black; height: 400px; width: 100%; overflow: auto;"></div>
 									</div>
 								</li>
 
@@ -490,7 +501,7 @@ if (session.getAttribute("id") == null) {
 					role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">공지사항  수정</h5>
+							<h5 class="modal-title" id="exampleModalLabel">공지사항 수정</h5>
 							<button class="close refresh" type="button" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">×</span>

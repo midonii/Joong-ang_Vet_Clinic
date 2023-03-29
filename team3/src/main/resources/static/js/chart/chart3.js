@@ -59,8 +59,8 @@ $(function() {
 	$("#search_btn")
 		.click(
 			function() {
-				var pet_search = $("#pet_search").val();
-
+				var pet_search = $.trim($("#pet_search").val());
+	
 				if (pet_search == "") {
 					alert("검색어를 입력하세요");
 					$("#pet_search").focus();
@@ -76,6 +76,8 @@ $(function() {
 							},
 							success: function(data) {
 								let pet = data.pet;
+								$("#pet_search").val(pet_search);
+								$("#pet_search2").val(pet_search);
 								$(".petTable").empty();
 								var table = "";
 								if (pet == "") {
@@ -125,7 +127,7 @@ $(function() {
 			"#search_btn2",
 			function() {
 
-				var pet_search = $("#pet_search2").val();
+				var pet_search = $.trim($("#pet_search2").val());
 
 				if (pet_search == "") {
 					alert("검색어를 입력하세요");
@@ -141,6 +143,7 @@ $(function() {
 							},
 							success: function(data) {
 								let pet = data.pet;
+								$("#pet_search2").val(pet_search);
 								$(".petTable").empty();
 								var table = "";
 								if (pet == "") {

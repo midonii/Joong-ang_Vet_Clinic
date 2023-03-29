@@ -290,11 +290,10 @@ if (session.getAttribute("id") == null) {
 						"click",
 						"#search_btn",
 						function() {
-							let searchValue = $("#search_value").val();
+							let searchValue = $.trim($("#search_value").val());
 
-							if (searchValue == "" || searchValue.length < 2) {
-								alert("검색어를 입력하세요.\n2글자 이상입력하세요.");
-								return false;
+							if (searchValue == "") {
+								location.reload();
 							} else {
 
 								$
@@ -307,6 +306,7 @@ if (session.getAttribute("id") == null) {
 											success : function(data) {
 												let pet = data.pet;
 												$(".petTable").empty();
+												$("#search_value").val(searchValue);
 												var table = "";
 												if (pet == "") {
 													table += "<tr class='text-center'> <td colspan='4' style='line-height:50px;'>존재하지 않습니다.<br>";
