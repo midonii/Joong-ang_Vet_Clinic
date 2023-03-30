@@ -112,6 +112,13 @@ $(function(){
 					return false;
 				}
 				
+				if($("#updateClientComments").val().length > 50){
+					alert("보호자 Comment는 50글자 이하로 작성해 주세요.");
+					$("#updateClientComments").focus();
+					return false;
+				}
+
+				
 				$.post({
 						url: "/ownerCheck",
 						data:{"usuallyEmail" : owner_email},
@@ -244,6 +251,9 @@ $(function(){
 			//숫자와 .만 체크하는 정규식
 			var NumberExp = /[^0123456789.]/g;
 			var RegExp = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ]/gim;
+			let petAddComment = $("#petAddComments").val().replace(
+							/\n/g, "<br>");
+			$("#petAddComments").val(petAddComment);
 			
 			$("#owner_noPAdd").val(clientNo);
 			if($("#petAddName").val() == "" || $("#petAddName").val().length < 1 || (RegExp.test($("#petAddName").val()))){
@@ -286,6 +296,9 @@ $(function(){
 				alert("생일을 선택해 주세요.");
 				$("#petBirthDay").focus();
 				return false; 
+			}
+			if($("#petAddComments").val().length > 50){
+				alert("반려견 Comment는 50글자 이하로 입력해 주세요.");
 			}
 			
 			if(confirm("반려견을 등록 하시겠습니까?")){
@@ -362,13 +375,17 @@ $(function(){
 				var pet_gender = result[i].pet_gender;
 				var pet_birth = result[i].pet_birth;
 				var rownum = result[i].rownum;
+				var owner_name = result[i].owner_name;
 				var pet_memo = "";
 				if(result[i].pet_memo != undefined){
-					pet_memo = result[i].pet_memo;
+					pet_memo = result[i].pet_memo.replace(
+													/(<br>|<br\/>|<br \/>)/g,
+													'\r\n');
 				}
 				table += "<tr class='petList' value="+pet_no+">";
 				table += "<td>"+rownum+"</td>";
 				table += "<td>"+pet_name+"</td>";
+				table += "<td>"+owner_name+"</td>";
 				table += "<td>"+type_name+"</td>";
 				table += "<td>"+pet_gender+"</td>";
 				table += "<td>"+pet_birth+"</td>";
@@ -470,7 +487,7 @@ $(function(){
 				var pet_year= result.pYear;
 				var pet_Month= result.pMonth;
 				var pet_Day= result.pDay;
-				var pet_memo= result.pet_memo;
+				var pet_memo= result.pet_memo.replace(/(<br>|<br\/>|<br \/>)/g,'\r\n');
 				var pet_death= result.pet_death;
 				var filename = result.filename;
 				var pet_birth = result.pet_birth;
@@ -627,6 +644,11 @@ $(function(){
 				$("#petDeath").focus();
 				return false; 
 			}
+			if ($("#petUpdateComments").val().length > 50) {
+				alert("반려견 Comment는 50글자 이하로 입력해 주세요.");
+				$("#petpetUpdateComments").focus();
+				return false;
+			}
 				
 			if(confirm("반려견 수정 정보를 저장하시겠습니까?")){
 				let petUpdateName = $("#petUpdateName").val();
@@ -636,7 +658,7 @@ $(function(){
 				let petUpdateBirthYear = $("select[name=petUpdateBirthYear]").val();
 				let petUpdateBirthMonth = $("select[name=petUpdateBirthMonth]").val();
 				let petUpdateBirthDay = $("select[name=petUpdateBirthDay]").val();
-				let petUpdateComments = $("#petUpdateComments").val();
+				let petUpdateComments = $("#petUpdateComments").val().replace(/\n/g, "<br>");
 				let petDeath = $("#petDeath").val();
 								
 				//let filename = $("#petUpdateImg").val();
@@ -794,7 +816,7 @@ $(function(){
 					var pet_rownum = result2[i].rownum;
 					var pet_memo = "";
 					if(result2[i].pet_memo != undefined){
-						pet_memo = result2[i].pet_memo;
+						pet_memo = result2[i].pet_memo.replace(/(<br>|<br\/>|<br \/>)/g,'\r\n');
 					}
 					table += "<tr class='petListModal' value="+pet_no+">";
 					table += "<td>"+pet_rownum+"</td>";
@@ -867,7 +889,7 @@ $(function(){
 							var pet_year = result.pYear;
 							var pet_Month = result.pMonth;
 							var pet_Day = result.pDay;
-							var pet_memo = result.pet_memo;
+							var pet_memo = result.pet_memo.replace(/(<br>|<br\/>|<br \/>)/g,'\r\n');
 							var pet_death = result.pet_death;
 							var filename = result.filename;
 							var pet_birth = result.pet_birth;
@@ -1040,6 +1062,12 @@ $(function(){
 								$("#petDeath").focus();
 								return false;
 							}
+							if ($("#petUpdateComments").val().length > 50) {
+								alert("반려견 Comment는 50글자 이하로 입력해 주세요.");
+								$("#petUpdateComments").focus();
+								return false;
+							}
+
 
 							if (confirm("반려견 수정 정보를 저장하시겠습니까?")) {
 								let petUpdateName = $("#petUpdateName").val();
@@ -1049,7 +1077,7 @@ $(function(){
 								let petUpdateBirthYear = $("select[name=petUpdateBirthYear]").val();
 								let petUpdateBirthMonth = $("select[name=petUpdateBirthMonth]").val();
 								let petUpdateBirthDay = $("select[name=petUpdateBirthDay]").val();
-								let petUpdateComments = $("#petUpdateComments").val();
+								let petUpdateComments = $("#petUpdateComments").val().replace(/\n/g, "<br>");;
 								let petDeath = $("#petDeath").val();
 
 								//alert("견종 : " + petUpdateType);
@@ -1147,7 +1175,7 @@ $(function(){
 												var pet_rownum = result[i].rownum;
 												var pet_memo = "";
 												if (result[i].pet_memo != undefined) {
-													pet_memo = result[i].pet_memo;
+													pet_memo = result[i].pet_memo.replace(/(<br>|<br\/>|<br \/>)/g,'\r\n');
 												}
 												table += "<tr class='petListModal' value=" + pet_no + ">";
 												table += "<td>" + pet_rownum + "</td>";
@@ -1280,6 +1308,7 @@ $(function(){
 					
 			//보호자 상세보기 Modal에서 수정 정보 저장하기
 			$("#clientUpdateSave").off().click(function(){
+				$("#client_memo").empty();
 				//alert(detailNo);
 				//정규식 검사(email형식이 맞는지)
 				var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
@@ -1309,6 +1338,13 @@ $(function(){
 				if($("#updateClientAddr").val() == "" || $("#updateClientAddr").val().length < 1){
 					alert("올바른 주소를 입력해 주세요.");
 					$("#updateClientAddr").focus();
+					return false;
+				}
+				
+								
+				if($("#updateClientComments").val().length > 50){
+					alert("보호자 Comment는 50글자 이하로 입력해 주세요.");
+					$("#updateClientComments").focus();
 					return false;
 				}
 				
@@ -1495,6 +1531,14 @@ $(function(){
 				$("#petBirthDay").focus();
 				return false; 
 			}
+			if($("#petAddComments").val().length > 50){
+				alert("반려견 Comment는 50글자 이하로 입력해 주세요.");
+				$("#petAddComments").focus();
+				return false; 
+			}
+			
+			let petAddComment = $("#petAddComments").val().replace(/\n/g, "<br>");
+			$("#petAddComments").val(petAddComment);
 			
 			if(confirm("반려견을 등록 하시겠습니까?")){
 				petAdd.submit();			
@@ -1581,6 +1625,13 @@ $(function(){
 				$("#floatingClientAddr").focus();
 				return false;
 			}
+			 if ($("#floatingClientComments").val().length > 50) {
+				 alert("보호자 Comment는 50글자 이하로 입력해 주세요.");
+				 $("#floatingClientComments").focus();
+				 return false;
+			 }
+			
+			
 			var usuallyEmail = "";
 			
 			// 보호자 추가 시 이메일,전화번호 중복 확인
@@ -1616,7 +1667,7 @@ $(function(){
 				let	floatingClientTel = $("#floatingClientTel").val();	
 				let	floatingClientAddr = $("#floatingClientAddr").val();	
 				var smsAgree = $("input[name='smsAgree']:checked").val();
-				let	floatingClientComments = $("#floatingClientComments").val();
+				let	floatingClientComments = $("#floatingClientComments").val().replace(/\n/g, "<br>");
 				//alert("이름 : " + floatingClientName + " 이메일 : " + floatingClientEmail + "\n전화번호 : " + floatingClientTel + " 주소 : " + floatingClientAddr + " 동의 여부 : " +  smsAgree + " 메모 : "+floatingClientComments);
 			$.post({
     				url : "/clientAdd",
@@ -1730,8 +1781,14 @@ $(function(){
 							$("#petBirthDay").focus();
 							return false;
 						}
+						if ($("#petAddComments").val().length > 50) {
+							alert("반려견 Comment는 50글자 이하로 입력해 주세요.");
+							$("#petAddComments").focus();
+							return false;
+						}
+						let petAddComment = $("#petAddComments").val().replace(/\n/g, "<br>");
+						$("#petAddComments").val(petAddComment);
 
-			
 						if(confirm("반려견을 등록 하시겠습니까?")){
 							petAdd.submit();
 						} else {
