@@ -119,7 +119,7 @@ if (session.getAttribute("id") == null) {
 								</div>
 
 								<!-- Card Body -->
-								<div class="card-body p-0" style="height: 705px;" id="chart"></div>
+								<div class="card-body p-0" style="height: 705px; " id="chart"></div>
 							</div>
 						</div>
 

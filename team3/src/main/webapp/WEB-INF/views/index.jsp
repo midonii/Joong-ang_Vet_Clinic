@@ -426,7 +426,7 @@ if (session.getAttribute("id") == null) {
 								<div class="card-body" style="margin-top: -10px;">
 
 									<div class="table-responsive" id="notice"
-										style="height: 270px;">
+										style="height: 270px; overflow: auto;">
 										</tbody>
 										</table>
 									</div>

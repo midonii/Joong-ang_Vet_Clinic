@@ -40,7 +40,7 @@
 			data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<a class="collapse-item" href="/reserv">예약/접수 현황</a> <a
-					class="collapse-item" href="/calender_sm2">Calendar</a>
+					class="collapse-item" href="/calender_sm2">예약 캘린더</a>
 			</div>
 		</div></li>
 
