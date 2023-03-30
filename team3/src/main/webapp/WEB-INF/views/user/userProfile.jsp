@@ -172,9 +172,9 @@ $(function(){
 								</c:choose>
 							</div>
 						</div>
-						<div class="photo_div">
-							<div class="photo card " style="width: 150px; height: 200px;"></div>
-						</div>
+<!-- 						<div class="photo_div"> -->
+<!-- 							<div class="photo card " style="width: 150px; height: 200px;"></div> -->
+<!-- 						</div> -->
 					</div>
 
 				</div>

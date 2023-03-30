@@ -28,7 +28,7 @@ public interface StaffDAO {
 
 	public int emailCheck(String email);
 
-	public Map<String, Object> profile(Map<String, Object> map);
+	public Map<String, Object> profile(String sessionID);
 
 	public int pwCheck(Map<String, Object> map);
 

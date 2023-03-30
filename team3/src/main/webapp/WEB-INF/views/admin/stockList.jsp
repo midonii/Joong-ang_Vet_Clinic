@@ -201,6 +201,14 @@ $(function(){
 		}
 	});
 	
+// -- 처방기간조회 삭제 (x버튼) --
+	$("#fromDateDel").click(function(){
+		$("#fromDate").val("");
+	});
+	$("#toDateDel").click(function(){
+		$("#toDate").val("");
+	});
+
 //-------- 조회버튼 클릭 --------------
 	$("#select").click(function(){
 		
@@ -227,6 +235,11 @@ $(function(){
 	 	if(fromDate != "" && toDate != ""){
 			$("#th_today").text("처방수량(개)");
 		}
+	 	
+	 	if((fromDate != "" && toDate == "") || (fromDate == "" && toDate != "")){
+	 		alert("정확한 기간을 입력해주세요.");
+	 		return false;
+	 	}
 	  	
 	// 조회 후 리스트 출력
 		$.post({
@@ -243,7 +256,7 @@ $(function(){
 		}).done(function(data){
 			//alert("성공");
 			
-// 			alert(data.searchList[0].medical_stock);
+ 			//alert(data.searchList[0].medical_stock);
 			$("tbody").empty();
 			
 			
@@ -285,8 +298,8 @@ $(function(){
 								+"<td id='td_medicineName' style='width: 15%'>"+medical_name+"</td>"
 								+"<td id='td_buyingPrice' style='width: 7%'>"+medical_buying+"</td>"
 								+"<td id='td_presPrice' style='width: 7%'>"+medical_price+"</td>"
-								+"<td style='width: 5%'>"+medical_stock+"</td>"
-								+"<td id='td_stock' style='width: 5%'>"+medicaldata_sum+"</td>"
+								+"<td id='td_stock' style='width: 5%'>"+medical_stock+"</td>"
+								+"<td style='width: 5%'>"+medicaldata_sum+"</td>"
 								+"<td style='width: 3%'><i class='xi-border-color cursor editbtn' style='color: #4E73DF;'></i></td>";
 							+"</tr>"
 							
@@ -520,16 +533,17 @@ $(function(){
 										style="flex-grow: 1; line-height: 35px;">
 										<div class="card search_criteria" style="width: 28%;">처방기간조회</div>
 										<div class="row row-margin0" style="width: 70%;">
-											<div class="card"
-												style="width: 45%; height: 35px; margin: 0 10px 5px 10px;">
+											<div class="card row" style="width: 45%; height: 35px; margin: 0 10px 5px 10px;">
 												<input class="form-control datepicker cursor" id="fromDate" readOnly 
-													style="width: 100%; height: 33px; border: 0; background-color:white; text-align:center;">
+													style="width: 85%; height: 33px; border: 0; background-color:white; text-align:center;">
+												<i class="fa-solid fa-circle-xmark" id="fromDateDel" style="margin-top:8px; cursor:pointer;"></i>
 											</div>
 											~
-											<div class="card"
+											<div class="card row"
 												style="width: 45%; height: 35px; margin: 0 0 5px 10px;">
 												<input class="form-control datepicker2 cursor" id="toDate" readOnly
-													style="width: 100%; height: 33px; border: 0; background-color:white; text-align:center;">
+													style="width: 85%; height: 33px; border: 0; background-color:white; text-align:center;">
+												<i class="fa-solid fa-circle-xmark" id="toDateDel" style="margin-top:8px; cursor:pointer;"></i>
 											</div>
 										</div>
 									</div>

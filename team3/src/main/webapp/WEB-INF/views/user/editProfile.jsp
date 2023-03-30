@@ -265,7 +265,12 @@ $(function(){
 						</div>
 						<div class="card-body row">	
 							<div class="col-3 font-weight-bold text-primary" style="text-align:center;">이메일</div>
-							<div class="col-5">${profile.staff_email }</div>
+							<div class="col-5">
+								${profile.staff_email }
+							</div>
+							<!-- <div class="col-2">
+								<button class="btn btn-sm btn-primary" style="margin-left:-10px;">중복확인</button>
+							</div> -->
 						</div>
 						<div class="card-body row">	
 							<div class="col-3 font-weight-bold text-primary" style="text-align:center;">주소</div>
@@ -296,7 +301,7 @@ $(function(){
 						<div class="card-body row mb-3 justify-content-md-center">
 							<button class="btn btn-primary editbtn">저장하기</button>
 						</div>
-						<div class="photo_div">
+						<!-- <div class="photo_div">
 							<div class="photo card " style="width: 150px; height: 200px;"></div><br>
 							<input type="file" class="" style="width: 150px; height: 50px; border:1px;">
 							<div class="filebox">
@@ -304,7 +309,7 @@ $(function(){
 								<input type="file" id="fileUpload" name="fileUpload" style="display:none;">
 								<label class="file-upload-btn" for="fileUpload">사진선택</label> 
 							</div>
-						</div>
+						</div> -->
 					</div>
 
 				</div>
