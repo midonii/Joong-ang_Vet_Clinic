@@ -115,7 +115,7 @@ $(function() {
 			function(data) {
 				let chart = data.chart;
 				$("#chart").empty();
-				var chartdiv = "<div class='accordion ' id='accordionExample' >"
+				var chartdiv = "<div class='accordion ' style='height:705px; overflow:auto;' id='accordionExample' >"
 				if (data.chart == "") {
 					chartdiv += "<div class='text-center' style='height:705px; line-height:705px;'>진료 내역이 없습니다.</div>";
 				} else {

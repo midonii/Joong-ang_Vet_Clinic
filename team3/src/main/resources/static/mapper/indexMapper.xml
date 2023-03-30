@@ -98,6 +98,5 @@
 
 		) n
 		ORDER BY nno DESC
-		LIMIT 0, 5;
 	</select>
 </mapper>
