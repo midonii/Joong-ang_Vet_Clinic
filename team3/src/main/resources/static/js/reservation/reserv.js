@@ -151,14 +151,29 @@ $(function() {
 			dataType: "json",
 			cache: false
 		}).done(function(data) {
-			let result1 = data.result1;
-			for (var i = 0; i < result1.length; i++) {
-				let disabled_time = result1[i].reserv_time;
-				let time = $("input[name='reserv_time'][value='" + disabled_time + "']").siblings('label').text();
-				if (disabled_time == time) {
-					$("input[name='reserv_time'][value='" + disabled_time + "']").attr("disabled", true);
+//			let result1 = data.result1;
+//			for (var i = 0; i < result1.length; i++) {
+//				let disabled_time = result1[i].reserv_time;
+//				let time = $("input[name='reserv_time'][value='" + disabled_time + "']").siblings('label').text();
+//				if (disabled_time == time) {
+//					$("input[name='reserv_time'][value='" + disabled_time + "']").attr("disabled", true);
+//				}
+//			}
+			
+			
+			if (todayDate_f == reservation_date_day) {
+			for (var i = 1; i <= $("input[name='reserv_time']").length; i++) {
+				var timevalue = $(".t" + i).val();
+
+				if ($(".t" + i).val() < timeString) {
+					$("input[name='reserv_time'][value='" + timevalue + "']").attr("disabled", true);
 				}
 			}
+			}
+			
+			
+			
+			
 		});
 	});
 
