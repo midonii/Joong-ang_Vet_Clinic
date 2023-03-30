@@ -6,10 +6,15 @@ $(function() {
 	var todayMonth = ('0' + (today.getMonth() + 1)).slice(-2);
 	var todayDate = ('0' + today.getDate()).slice(-2);
 	var reservationdateday = todayYear + '-' + todayMonth + '-' + todayDate;
+	
+	var hours = ('0' + today.getHours()).slice(-2); 
+	var minutes = ('0' + today.getMinutes()).slice(-2);
+	var timeString = hours + ':' + minutes;
+	var todayDate_f = todayYear + '-' + todayMonth + '-' + todayDate;
 
 	//검색
 	$('#search_btn').click(function() {
-		var searchValue = $("#search_value").val();
+		var searchValue = $.trim($("#search_value").val());
 			$.ajax({
 				url: "/reservsearch",
 				type: "GET",
@@ -23,8 +28,12 @@ $(function() {
 				$("#researchTable").empty();
 				let table = '';
 				if (result == "") {
-					table += "<tr class='text-center'> <td colspan='4'>존재하지 않습니다.<br><br>";
+					table += "<tr class='text-center'> <td colspan='4'>존재하지 않는 회원입니다.<br><br>";
 					table += "<button class='btn btn-sm btn-primary' id='reg_btn'>신규등록</button></td></tr>";
+					
+					$(document).on("click", "#reg_btn", function() {
+					location.href = "/client";
+					});
 				} else {
 					var today = new Date();
 					//검색 리스트 띄우기
@@ -44,9 +53,9 @@ $(function() {
 						table += '<button type="button" class="btn btn-sm reserv_btn" value="' + result[i].pet_no + '" style="border: 1px solid #0d6efd; color: #0d6efd;">예약</button>';
 						table += '<button type="button" id="search_receipt_btn" class="btn btn-primary btn-sm search_receipt_btn" value="' + result[i].pet_no + '" data-value="'+result[i].owner_no+'" style="margin-left:5px; border: none;">접수</button></span></td></tr>';
 					}
+				}
 					$("#researchTable").append(table);
 					$("#researchTable").show();
-				}
 			}).fail(function(jqXHR, textStatus, errorThrown) {
 				alert("POST request failed: " + errorThrown);
 			});
@@ -106,6 +115,14 @@ $(function() {
 					$("input[name='reserv_time'][value='" + disabled_time + "']").attr("disabled", true);
 				}
 			}
+			//현재시간 이전시간막기 
+			for (var i = 1; i <= $("input[name='reserv_time']").length; i++) {//16
+			var timevalue =$(".t"+i).val();
+				if($(".t"+i).val() <timeString){
+					$("input[name='reserv_time'][value='"+timevalue+"']").attr("disabled", true);
+				} 
+			}
+			
 			$('#owner_name').val(result[0].owner_name);
 			$('#owner_tel').val(result[0].owner_tel);
 			$('#pet_name').val(result[0].pet_name);
@@ -220,6 +237,8 @@ $(function() {
 			$(this).find('form')[0].reset();
 			var inputValue = $(this).find('select:eq(0) option:eq(0)');
 		}
+		//시간막은거 풀기
+		$("input[name='reserv_time']").attr("disabled", false);
 		//accordion창 접기
 		$('.accordion-collapse').collapse('hide');
 	});
@@ -250,7 +269,13 @@ $(function() {
 					$("input[name='reserv_time'][value='" + disabled_time + "']").attr("disabled", true);
 				}
 			}
-
+			//현재시간 이전시간막기 
+			for (var i = 1; i <= $("input[name='reserv_time']").length; i++) {//16
+			var timevalue =$(".t"+i).val();
+			if($(".t"+i).val() <timeString){
+					$("input[name='reserv_time'][value='"+timevalue+"']").attr("disabled", true);
+				} 
+			}
 			var update_reservation_date_time = result[0].reserv_time; //디폴트 시간
 			$("#updateModal").modal('show')
 			$("input[type=radio][value='" + result[0].reserv_time + "']").prop("checked", true);
@@ -317,6 +342,7 @@ $(function() {
 		let delete_reservation_no = $(this).attr("value"); //reservation_no
 		if (confirm("예약을 취소 하시겠습니까?")) {
 			location.href = "reservDelete?delete_reservation_no=" + delete_reservation_no;
+			alert("예약이 취소되었습니다.");
 		}
 	});
 
@@ -339,7 +365,7 @@ $(function() {
 			}).fail(function() {
 				alert("통신실패 : " + data.result);
 			});
-			alert("접수 등록이 되었습니다.");
+			alert("접수가 등록 되었습니다.");
 			location.reload(); //모달창 hide + 부모창새로고침
 		}
 	});
@@ -349,6 +375,7 @@ $(function() {
 		let delete_receive_no = $(this).attr("value"); //receive_no
 		if (confirm("접수를 취소 하시겠습니까?")) { //ok
 			location.href = "receiveDelete?delete_receive_no=" + delete_receive_no;
+			alert("접수가 취소되었습니다.");
 		}
 	});
 });

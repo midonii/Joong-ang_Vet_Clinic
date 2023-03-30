@@ -88,21 +88,23 @@ function init_calendar(date) { //date:오늘 날짜
     calendar_days.append(row);
     $(".year").text(year);
 }
-
+	//전역변수
+	var today = new Date();
+	var todayYear = today.getFullYear();
+	var todayMonth = ('0' + (today.getMonth() + 1)).slice(-2);
+	var todayDate = ('0' + today.getDate()).slice(-2);
+	var todayDate_f = todayYear + '-' + todayMonth + '-' + todayDate;
+	var hours = ('0' + today.getHours()).slice(-2); 
+	var minutes = ('0' + today.getMinutes()).slice(-2);
+	var timeString = hours + ':' + minutes;
+	var todayDate_f = todayYear + '-' + todayMonth + '-' + todayDate;
 //날짜 클릭했을때의 이벤트핸들러
 function date_click(event) { //event: 클릭된 날짜 셀의 정보
     $("#dialog").hide(250);
     $(".active-date").removeClass("active-date");
     $(this).addClass("active-date");
     show_events(event.data.month, event.data.day, event.data.year);
-	
-	//오늘날짜
-	var today = new Date();
-	var todayYear = today.getFullYear();
-	var todayMonth = ('0' + (today.getMonth() + 1)).slice(-2);
-	var todayDate = ('0' + today.getDate()).slice(-2);
-	var todayDate_f = todayYear + '-' + todayMonth + '-' + todayDate;
-	
+
 	//에약리스트
 	var year = event.data.year;
 	var month = event.data.month;
@@ -170,11 +172,10 @@ function show_events(month, day, year) { //매개변수: init_calendar 함수에
 	$(".date").empty();
 	$("#dialog2").show(250); 
 	var reservationdateday = fulldate;
-//	location.href = "calender_sm2?clickDate=" + reservationdateday;
 
 	//검색
 	$('#search_btn').click(function() {
-		var searchValue = $("#search_value").val();
+		var searchValue = $.trim($("#search_value").val());
 			$.ajax({
 				url: "/reservsearch",
 				type: "GET",
@@ -189,8 +190,12 @@ function show_events(month, day, year) { //매개변수: init_calendar 함수에
 				let table = '';
 				if (result == "") {
 
-					table += "<tr class='text-center'> <td colspan='4'>존재하지 않습니다.<br><br>";
+					table += "<tr class='text-center'> <td colspan='4'>존재하지 않는 회원입니다.<br><br>";
 					table += "<button class='btn btn-sm btn-primary' id='reg_btn'>신규등록</button></td></tr>";
+					
+					$(document).on("click", "#reg_btn", function() {
+					location.href = "/client";
+					});
 
 				} else {
 					var today = new Date();
@@ -211,9 +216,9 @@ function show_events(month, day, year) { //매개변수: init_calendar 함수에
 						table += '<button type="button" class="btn btn-sm reserv_btn" value="' + result[i].pet_no + '" style="border: 1px solid #0d6efd; color: #0d6efd;">예약</button>';
 						table += '<button type="button" id="search_receipt_btn" class="btn btn-primary btn-sm search_receipt_btn" value="' + result[i].pet_no + '" data-value="'+result[i].owner_no+'" style="margin-left:5px; border: none;">접수</button></span></td></tr>';
 					}
+				}
 					$("#researchTable").append(table);
 					$("#researchTable").show();
-				}
 			}).fail(function(jqXHR, textStatus, errorThrown) {
 				alert("POST request failed: " + errorThrown);
 			});
@@ -225,11 +230,11 @@ function show_events(month, day, year) { //매개변수: init_calendar 함수에
 	//검색에서 예약버튼
 	//예약모달창 + 시간막기 구현
 	$(document).off().on("click", ".reserv_btn", function() { //off()를 써야 중복함수 실행안됨!!
-	var today = new Date();
-	var todayYear = today.getFullYear();
-	var todayMonth = ('0' + (today.getMonth() + 1)).slice(-2);
-	var todayDate = ('0' + today.getDate()).slice(-2);
-	var todayDate_f = todayYear + '-' + todayMonth + '-' + todayDate;
+//	var today = new Date();
+//	var todayYear = today.getFullYear();
+//	var todayMonth = ('0' + (today.getMonth() + 1)).slice(-2);
+//	var todayDate = ('0' + today.getDate()).slice(-2);
+//	var todayDate_f = todayYear + '-' + todayMonth + '-' + todayDate;
 		
 		//선택날짜가 오늘날짜보다 이전이면 오늘날짜로 설정
 		if(reservationdateday < todayDate_f){
@@ -264,6 +269,14 @@ function show_events(month, day, year) { //매개변수: init_calendar 함수에
 					$("input[name='reserv_time'][value='" + disabled_time + "']").attr("disabled", true);
 				}
 			}
+			//현재시간 이전시간막기 
+			for (var i = 1; i <= $("input[name='reserv_time']").length; i++) {//16
+				var timevalue =$(".t"+i).val();
+				
+				if($(".t"+i).val() <timeString){
+				$("input[name='reserv_time'][value='"+timevalue+"']").attr("disabled", true);
+				} 
+			}
 			$('#owner_name').val(result[0].owner_name);
 			$('#owner_tel').val(result[0].owner_tel);
 			$('#pet_name').val(result[0].pet_name);
@@ -276,14 +289,14 @@ function show_events(month, day, year) { //매개변수: init_calendar 함수에
 			.fail(function(jqXHR, textStatus, errorThrown) {
 				alert("get request failed: " + errorThrown);
 			});
-	}); //예약버튼 끝
+	}); //예약버튼 
 
 
 	// 예약모달_날짜변경시 
 	$('#reservation_date_day').change(function() {
 		$("input[name='reserv_time']").attr("disabled", false); //다른 날짜 선택했을때 disabled초기화
 		var reservation_date_day_input = $(this).val();
-
+		
 		//변경된 날짜를 '-'기준으로 자르기' (yyyy,mm,dd)
 		var reservation_date_day_parts = reservation_date_day_input.split('-');
 		//(yy-mm-dd) 형식으로 바꾸기
@@ -297,6 +310,7 @@ function show_events(month, day, year) { //매개변수: init_calendar 함수에
 			dataType: "json",
 			cache: false
 		}).done(function(data) {
+			//시간막기
 			let result1 = data.result1;
 			for (var i = 0; i < result1.length; i++) {
 				let disabled_time = result1[i].reserv_time;
@@ -387,6 +401,8 @@ function show_events(month, day, year) { //매개변수: init_calendar 함수에
 			$(this).find('form')[0].reset();
 			var inputValue = $(this).find('select:eq(0) option:eq(0)');
 		}
+		//시간막은거 풀기
+		$("input[name='reserv_time']").attr("disabled", false);
 		//accordion창 접기
 		$('.accordion-collapse').collapse('hide');
 	});
@@ -395,12 +411,13 @@ function show_events(month, day, year) { //매개변수: init_calendar 함수에
 	//예약수정
 	$(document).on("click", ".reservUpdate", function(e) {
 		$('#reservation_date_day').val(reservationdateday);
-
 		let reservation_no = $(this).attr("value"); //reservation_no정보 (button의 value값)
 		var reservation_date_day_input = $('#reservation_date_day').val();
 		var reservation_date_day_parts = reservation_date_day_input.split('-');
 		var reservation_date_day = reservation_date_day_parts[0] + '-' + reservation_date_day_parts[1] + '-' + reservation_date_day_parts[2];
+	
 
+		
 		//이제 이걸 post로 /reservAjax 컨트롤러로 전송
 		$.ajax({
 			url: "/reservUpdate",
@@ -418,7 +435,13 @@ function show_events(month, day, year) { //매개변수: init_calendar 함수에
 					$("input[name='reserv_time'][value='" + disabled_time + "']").attr("disabled", true);
 				}
 			}
-
+			//현재시간 이전시간막기 
+			for (var i = 1; i <= $("input[name='reserv_time']").length; i++) {//16
+			var timevalue =$(".t"+i).val();
+			if($(".t"+i).val() <timeString){
+					$("input[name='reserv_time'][value='"+timevalue+"']").attr("disabled", true);
+				} 
+			}
 			var update_reservation_date_time = result[0].reserv_time; //디폴트 시간
 			$("#updateModal").modal('show')
 			$("input[type=radio][value='" + result[0].reserv_time + "']").prop("checked", true);
@@ -489,6 +512,7 @@ function show_events(month, day, year) { //매개변수: init_calendar 함수에
 		let delete_reservation_no = $(this).attr("value"); //reservation_no
 		if (confirm("예약을 취소 하시겠습니까?")) {
 			location.href = "calender_reservDelete?delete_reservation_no=" + delete_reservation_no;
+			alert("예약이 취소되었습니다.");
 		}
 	});
 

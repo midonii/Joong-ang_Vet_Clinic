@@ -50,17 +50,17 @@ public class ReservController {
 
 	// 검색결과(검색리스트)
 	@ResponseBody
-	@GetMapping("/reservsearch") // url을 "/reservsearch"로 띄워주겠다
+	@GetMapping("/reservsearch") 
 	public String resersearch(HttpServletRequest request) {
 		ReservDTO reservDTO = new ReservDTO();
-		reservDTO.setSearch_value(request.getParameter("searchValue")); // searchValue: script의 data의 key 명!,data: { "searchValue"}
+		reservDTO.setSearch_value(request.getParameter("searchValue")); 
 
 		HttpSession session = request.getSession();
 		reservDTO.setStaff_id((String) session.getAttribute("id"));
 
 		JSONObject json = new JSONObject();
 		List<ReservDTO> searchlist = reservService.searchlist(reservDTO);
-		JSONArray jsonA = new JSONArray(searchlist); // json어레이로 감싸기
+		JSONArray jsonA = new JSONArray(searchlist); 
 
 		json.put("result", searchlist);
 		return json.toString();
@@ -71,7 +71,6 @@ public class ReservController {
 	@PostMapping(value = "/reservAjax", produces = "application/json;charset=UTF-8")
 	public String reservAjax(HttpServletRequest request) {
 		ReservDTO reservDTO = new ReservDTO();
-		// System.err.println(request.getParameter("detail_no")); //ok
 		JSONObject json = new JSONObject();
 		JSONArray jsonA = new JSONArray();
 		reservDTO.setDetail_no(request.getParameter("detail_no"));
@@ -83,18 +82,12 @@ public class ReservController {
 
 		//시간막기
 		reservDTO.setReservation_date_day(request.getParameter("reservation_date_day"));
-		//System.err.println("reservation_date_day:" + request.getParameter("reservation_date_day"));//ok
 		List<ReservDTO> timeDetail = reservService.reservTimeCheck(reservDTO);
 		jsonA = new JSONArray(timeDetail);
 		json.put("result1", timeDetail);
-		//System.err.println(timeDetail);//
 		
 		return json.toString();
 	}
-	
-	
-	
-	
 	
 
 	// 예약한 시간 막기
@@ -104,13 +97,11 @@ public class ReservController {
 		ReservDTO reservDTO = new ReservDTO();
 
 		reservDTO.setReservation_date_day(request.getParameter("reservation_date_day"));
-		System.err.println("reservation_date_day:" + request.getParameter("reservation_date_day"));
 		JSONObject json = new JSONObject();
 
-		List<ReservDTO> timeDetail = reservService.reservTimeCheck(reservDTO); // reservationview에서 가져옴
+		List<ReservDTO> timeDetail = reservService.reservTimeCheck(reservDTO);
 		JSONArray jsonA = new JSONArray(timeDetail);
 		json.put("result", timeDetail);
-//			System.out.println(jsonA.getJSONObject(0).getString("timeDetail")); //ok
 		return json.toString();
 	}
 
@@ -119,24 +110,19 @@ public class ReservController {
 	@PostMapping("reservAdd")
 	public String reservAdd(HttpServletRequest request) {
 		ReservDTO reservDTO = new ReservDTO();
-		String reservation_date = request.getParameter("reservation_date"); // reservation_date 변수에 매개변수 값 할당
+		String reservation_date = request.getParameter("reservation_date");
 
 		HttpSession session = request.getSession();
 		if (request.getParameter("reservation_memo") != null) {
 			reservDTO.setReservation_memo(request.getParameter("reservation_memo"));
 		}
-		System.out.println(request.getParameter("reservation_memo"));
-		reservDTO.setReservation_date(reservation_date); // dto의 속성 값 설정
-		// db에 저장할 깂
+		reservDTO.setReservation_date(reservation_date); 
 		reservDTO.setStaff_id((String) session.getAttribute("id"));
 		reservDTO.setPetNo(request.getParameter("petNo"));
-//		reservDTO.setReservation_no(request.getParameter("reservation_no"));
 
 		JSONObject json = new JSONObject();
 		int result = reservService.reservAdd(reservDTO);
 		json.put("result", result);
-		 System.out.println(json);
-		 System.out.println("result:"+result); //1
 
 		return json.toString();
 	}
@@ -147,20 +133,15 @@ public class ReservController {
 	public String reservUpdate(HttpServletRequest request) {
 		ReservDTO reservDTO = new ReservDTO();
 		reservDTO.setReservation_no(request.getParameter("reservation_no"));
-		// System.err.println(request.getParameter("detail_no")); //ok
 		JSONObject json = new JSONObject();
 
-//			if ((String)request.getParameter("searchValue") != null) {
 		List<ReservDTO> reservDetail = reservService.reservUpdate(reservDTO); // reservationview에서 가져옴
 		JSONArray jsonA = new JSONArray(reservDetail);
 		json.put("result", reservDetail);
-		// System.err.println("jsonA:"+jsonA); //ok //reservation_no없음(pet 테이블엔 ~컬럼이
-		// 없으니까)
 		// System.out.println(jsonA.getJSONObject(0).getString("reserv_time")); //ok
 
 		// 시간막기
 		reservDTO.setReservation_date_day(request.getParameter("reservation_date_day"));
-		System.err.println("reservation_date_day:" + request.getParameter("reservation_date_day"));
 		List<ReservDTO> timeDetail = reservService.reservTimeCheck(reservDTO);
 		jsonA = new JSONArray(timeDetail);
 		json.put("result1", timeDetail);
@@ -178,7 +159,6 @@ public class ReservController {
 		reservDTO.setUpdate_reservation_memo(request.getParameter("update_reservation_memo"));
 		reservDTO.setUpdate_reservation_no(request.getParameter("update_reservation_no"));
 		int result = reservService.reservUpdateSaved(reservDTO);
-		// System.out.println(request.getParameter("update_reservation_no"));
 
 		JSONObject json = new JSONObject();
 		json.put("result", result);
@@ -215,7 +195,6 @@ public class ReservController {
 		reservDTO.setSearch_petNo(search_petNo);
 		boolean petNoExists = reservService.checkPetNoExists(reservDTO);
 		 if (petNoExists){
-			  System.err.println(petNoExists);
 				json.put("result", "exist");
 				return json.toString();
 		  } else {
@@ -241,7 +220,6 @@ public class ReservController {
 		 // search_petNo가 이미 존재하는지 검사
 		boolean petNoExists = reservService.checkPetNoExists(reservDTO);
 		  if (petNoExists){
-			  System.err.println(petNoExists);
 				json.put("result", "exist");
 				return json.toString();
 		  }
@@ -255,13 +233,9 @@ public class ReservController {
 	// 접수삭제
 	@GetMapping("receiveDelete")
 	public String receiveDelete(HttpServletRequest request) {
-		System.out.println("컨트롤러 입성");
-		System.out.println(request.getParameter("delete_receive_no"));
-
 		ReservDTO reservDTO = new ReservDTO();
 		reservDTO.setDelete_receive_no(request.getParameter("delete_receive_no"));
 		int result = reservService.receiveDelete(reservDTO);
-		System.out.println("삭제 처리결과는 : " + result);
 		return "redirect:reserv";
 	}
 	//캘린더
@@ -301,11 +275,9 @@ public class ReservController {
 		
 		if(result.size() > 0) {
 			json.put("result", reservlist2);
-			System.out.println(jsonA.getJSONObject(0).getString("pet_name"));
 			return json.toString();
 		} else {
 			json.put("result", "noReserv");
-			System.err.println("결과없음");
 			return json.toString();
 		}
 	}
