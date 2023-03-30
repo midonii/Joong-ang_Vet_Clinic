@@ -130,6 +130,20 @@ $(function(){
 			});
 	 
 });
+
+	$(document).ready(function(){
+		var trlength = $("#ajaxTable > tr").length;
+		//alert(trlength);
+		 for (i = 1; i <= trlength; i++) {
+			let petMemo = $(".petMemo"+i).html();
+	 	$(".petMemo"+i).html(petMemo.replace(/(<br>|<br\/>|<br \/>)/g,' '));
+		}
+		 
+	});
+	
+	
+
+
 </script>
 <style type="text/css">
 .table{
@@ -146,6 +160,10 @@ $(function(){
 
 #petImg-delete :hover {
 	background: red;
+}
+.not-info{
+	text-align: center;
+	font-size: 16px;	
 }
 
 </style>
@@ -274,7 +292,7 @@ $(function(){
 								</div>
 							</c:when>
 							<c:otherwise>
-								<h5 class="m-0 font-weight-bold text-gray-600 mt-1 mb-1 ml-1">데이터가 없습니다.</h5>
+								<h5 class="m-0 text-gray-600 mt-2 mb-2 not-info">데이터가 없습니다.</h5>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -295,7 +313,8 @@ $(function(){
 													<tr>
 														<th class="col-md-1">번호</th>
 														<th class="col-md-1">이름</th>
-														<th class="col-md-2">견종</th>
+														<th class="col-md-1">보호자</th>
+														<th class="col-md-1">견종</th>
 														<th class="col-md-1">성별</th>
 														<th class="col-md-2">생년월일</th>
 														<th class="col-md-4">특이사항</th>
@@ -309,10 +328,11 @@ $(function(){
 														<tr class="petList" value="${pl.pet_no }">
 															<td class="petNo">${status.count}</td>
 															<td class="petName">${pl.pet_name }</td>
+															<td>${pl.owner_name }</td>
 															<td class="typeName">${pl.type_name }</td>
 															<td class="petGender">${pl.pet_gender }</td>
 															<td class="petBirth">${pl.pet_birth }</td>
-															<td class="petMemo" style="text-align: left;">${pl.pet_memo }</td>
+															<td class="petMemo${status.count}" style="text-align: left;">${pl.pet_memo }</td>
 															<td>
 																<button type="submit" id="petdetail-btn" class="btn btn-outline-primary btn-sm petdetail-btn"
 																name="${pl.pet_no }" value="${pl.pet_no }">상세보기</button>
@@ -339,7 +359,7 @@ $(function(){
                         </div>
                         </c:when>
                         <c:otherwise>
-								<h5 class="m-0 font-weight-bold text-gray-600 mt-1 mb-1 ml-1">데이터가 없습니다.</h5>
+								<h5 class="m-0 text-gray-600 mt-2 mb-2 not-info">데이터가 없습니다.</h5>
 						</c:otherwise>
                         </c:choose>
                     </div>

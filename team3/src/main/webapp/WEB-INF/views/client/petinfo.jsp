@@ -96,9 +96,9 @@ $(function(){
 				table += "<td>" + medical_category + "</td>";
 				table += "<td>" + medical_subcate + "</td>";
 				table += "<td class='text-left'>" + medical_name + "</td>";
+				table += "<td>" + medicaldata_ea + "</td>";
 				table += "<td>" + staff_name + "</td>";
 				table += "<td>" + staff_grade + "</td>";
-				table += "<td>" + medicaldata_ea + "</td>";
 				table += "</tr>";
 				
 			}
@@ -411,9 +411,9 @@ $(function(){
 																			<th class="col-md-1">구분</th>
 																			<th class="col-md-1">분류</th>
 																			<th class="col-md-4">처방명</th>
+																			<th class="col-md-2">수량</th>
 																			<th class="col-sm-2">담당자</th>
 																			<th class="col-sm-2">직급</th>
-																			<th class="col-md-2">수량</th>
 																		</tr>
 																	</thead>
 

@@ -128,7 +128,7 @@ public class ClientContoller {
 		
 		int result = clientService.cilentPetDel(client);
 		result = clientService.clientDel(client);
-		System.out.println("보호자 삭제 결과는 : " + result);
+		//System.out.println("보호자 삭제 결과는 : " + result);
 		
 		return "redirect:client";
 	}
@@ -144,7 +144,7 @@ public class ClientContoller {
 		
 		int result = clientService.petDel(client);
 
-		System.out.println("반려견 삭제 결과는 : " + result);
+		//System.out.println("반려견 삭제 결과는 : " + result);
 		
 		return "redirect:client";
 	}
@@ -163,7 +163,7 @@ public class ClientContoller {
 		
 		int result = clientService.clientAdd(client);
 		
-		System.out.println("보호자 추가 결과는 : " + result);
+		//System.out.println("보호자 추가 결과는 : " + result);
 		
 		JSONObject json = new JSONObject();
 		json.put("result", result);
@@ -188,7 +188,7 @@ public class ClientContoller {
 		
 		int result = clientService.clientUpdate(client);
 		
-		System.out.println("보호자 수정 결과는 : " + result);
+		//System.out.println("보호자 수정 결과는 : " + result);
 		
 		JSONObject json = new JSONObject();
 		json.put("result", result);
@@ -324,13 +324,13 @@ public class ClientContoller {
 
 				int fileNewInsert = clientService.fileNewInsert(client);
 				json.put("result", fileNewInsert);
-				System.out.println("파일이 신규 등록 되었습니다.");
+				//System.out.println("파일이 신규 등록 되었습니다.");
 				
 			} else {
 				
 				int fileUpdate = clientService.fileUpdate(client);
 				json.put("result", fileUpdate);
-				System.out.println("파일이 업데이트 되었습니다.");
+				//System.out.println("파일이 업데이트 되었습니다.");
 				
 			}
 			
@@ -341,9 +341,9 @@ public class ClientContoller {
 			//기존의 이미지 삭제 -- (서버)
 			if(file1.exists()) {
 				file1.delete();
-				System.out.println("파일을 삭제하였습니다.");
+				//System.out.println("파일을 삭제하였습니다.");
 			} else {
-				System.out.println("삭제할 파일이 존재하지 않습니다.");
+				//System.out.println("삭제할 파일이 존재하지 않습니다.");
 			}
 			
 			
@@ -375,14 +375,14 @@ public class ClientContoller {
 			//기존의 이미지 삭제 -- (서버)
 			if(file1.exists()) {
 				file1.delete();
-				System.out.println("파일을 삭제하였습니다.");
+				//System.out.println("파일을 삭제하였습니다.");
 			} else {
-				System.out.println("파일이 존재하지 않습니다.");
+				//System.out.println("파일이 존재하지 않습니다.");
 			}
 			
 			//기존의 이미지 삭제 -- DB
 			int fileImgDel = clientService.fileImgDel(client);
-			System.err.println("삭제 결과 : "+fileImgDel);
+			//System.err.println("삭제 결과 : "+fileImgDel);
 			JSONObject json = new JSONObject();
 			
 			json.put("fileImgDel", fileImgDel);
