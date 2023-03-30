@@ -52,10 +52,10 @@
 		resultType="ReservDTO">
 		SELECT *
 		FROM reservationview
-		WHERE reserv_date = CURDATE() AND (reservation_yn = 'N' OR reservation_yn =
-		'')
+		WHERE reserv_date = CURDATE() AND reservation_yn = 'N'
 		ORDER BY reservation_date ASC
 	</select>
+
 
 	<select id="reservTimeCheck" parameterType="ReservDTO"
 		resultType="ReservDTO">
@@ -156,12 +156,14 @@
 	  	AND (receive_state = '1' OR receive_state = '2')
 	</select>
 
+	<!-- 날짜별 예약리스트 -->
 	<select id="reservlist2" parameterType="ReservDTO"
 		resultType="ReservDTO">
 		SELECT *
-		FROM reservationview
+		FROM reservationview2
 		WHERE reserv_date = #{fulldate}
 		ORDER BY reservation_date ASC
 	</select>
+	
 
 </mapper>

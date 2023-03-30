@@ -88,4 +88,8 @@ public class ReservService {
 		return reservDAO.reservlist2(reservDTO);
 	}
 
+//	public List<ReservDTO> reservationview2(ReservDTO reservDTO) {
+//		return reservDAO.reservationview2(reservDTO);
+//	}
+
 }
