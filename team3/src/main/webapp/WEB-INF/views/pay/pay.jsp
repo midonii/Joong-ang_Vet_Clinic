@@ -239,12 +239,12 @@ if (session.getAttribute("id") == null) {
 								<table class="table table-bordered " width="100%" cellspacing="0" >
 									<thead>
 										<tr class="bg-gray-100" style="height: 55px;">
-											<th>번호</th>
-											<th>차트번호</th>
-											<th>동물명</th>
-											<th>보호자명</th>
-											<th>수납금액</th>
-											<th> <!--수납현황 sort -->
+											<th class="col-1">번호</th>
+											<th class="col-2">차트번호</th>
+											<th class="col-1">동물명</th>
+											<th class="col-1">보호자명</th>
+											<th class="col-2">수납금액</th>
+											<th class="col-1"> <!--수납현황 sort -->
 											<form action="/pay" method="get">
 												<div class="dropdown">
 													<button class="btn btn-sm dropdown-toggle" 	type="button" data-bs-toggle="dropdown"
@@ -264,8 +264,8 @@ if (session.getAttribute("id") == null) {
 												</div>
 											</form>
 											</th>
-											<th>수납시간</th>
-											<th>상세보기</th>
+											<th class="col-2">수납시간</th>
+											<th class="col-1">상세보기</th>
 										</tr>
 									</thead>
 									<tbody>
