@@ -234,6 +234,8 @@ $(function(){
 	
 	 	if(fromDate != "" && toDate != ""){
 			$("#th_today").text("처방수량(개)");
+		} else if (fromDate == "" && toDate == ""){
+			$("#th_today").text("당일처방수량(개)");
 		}
 	 	
 	 	if((fromDate != "" && toDate == "") || (fromDate == "" && toDate != "")){

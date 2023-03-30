@@ -279,7 +279,7 @@ $(function() {
  		} else {
 	 		
 	 		var tr = "<tr class='newnum' id='receive_tr'>"
-	 					+"<td class='col-3' id='pet_name'>"+pet_name+"</td>"
+	 					+"<td class='col-3' id='pet_name'>"+pet_name+" </td>" /* 공백지우면안됨!! */
 	 					+"<td class='col-3' id='owner_name'>"+owner_name+"</td>"
 	 					+"<td class='col-4' id='owner_tel'>"+owner_tel+" </td>" /* 공백지우면안됨!! */
 	 					+"<td class='col-2'><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td>"
@@ -299,15 +299,15 @@ $(function() {
 	$(".plusbtn").click(function(){
 		let pet_name = $(this).parent().siblings("#pet_name").text();
 		let owner_name = $(this).parent().siblings("#owner_name").text();
-		let owner_tel = $(this).parent().siblings("#owner_tel").text();
+		let owner_tel = $(this).parent().siblings("#owner_tel").text(); 
 		//alert(pet_name + " / " + owner_name + " / " + owner_tel);
 		
 		$(this).parents("#client_tr").remove();
 		
 		var tr = "<tr id='receive_tr'>"
-					+"<td class='col-3' id='pet_name'>"+pet_name+"</td>"
+					+"<td class='col-3' id='pet_name'>"+pet_name+"</td>" /* 공백있으면안됨!! */
 					+"<td class='col-3' id='owner_name'>"+owner_name+"</td>"
-					+"<td class='col-4' id='owner_tel'>"+owner_tel+" </td>" /* 공백지우면안됨!! */
+					+"<td class='col-4' id='owner_tel'>"+owner_tel+"</td>" /* 공백있으면안됨!! */
 					+"<td class='col-2'><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td>"
 					+"</tr>" ;
 		
@@ -319,7 +319,7 @@ $(function() {
 	$(document).on("click", ".minusbtn", function(){
 		let pet_name = $(this).parent().siblings("#pet_name").text();
 		let owner_name = $(this).parent().siblings("#owner_name").text();
-		let owner_tel = $(this).parent().siblings("#owner_tel").text();
+		let owner_tel = $(this).parent().siblings("#owner_tel").text(); 
 		//alert(pet_name + " / " + owner_name + " / " + owner_tel);
 		
 		if($(this).parents("#receive_tr").hasClass("newnum") == true){
@@ -348,9 +348,9 @@ $(function() {
 		$(this).parents("#client_tr").remove();
 		
 		var tr = "<tr id='receive_tr'>"
-					+"<td class='col-3' id='pet_name'>"+pet_name+"</td>"
+					+"<td class='col-3' id='pet_name'>"+pet_name+"</td>" /* 공백있으면안됨!! */
 					+"<td class='col-3' id='owner_name'>"+owner_name+"</td>"
-					+"<td class='col-4' id='owner_tel'>"+owner_tel+" </td>" /* 공백지우면안됨!! */
+					+"<td class='col-4' id='owner_tel'>"+owner_tel+"</td>" /* 공백있으면안됨!! */
 					+"<td class='col-2'><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td>"
 					+"</tr>" ;
 		
@@ -429,9 +429,9 @@ $(function() {
 		} else if(sms_content == ""){
 			alert("전송할 문자 내용을 입력하세요.");
 		} else {
-			alert(receiver);
+			//alert(receiver);
 			
-			if(confirm("다음과 같이 문자를 발송합니다. \n 받는사람 : " + receiver +"\n 내용 : \n "+sms_content )){
+			if(confirm("다음과 같이 문자를 발송합니다. \n받는사람 : " + receiver +"\n내용 : \n"+sms_content )){
 				//alert("!");
 				
 				var form = $("<form></form>");
@@ -473,9 +473,9 @@ $(function() {
 				let owner_tel = searchClient[i].owner_tel;
 				
 				var search_client = "<tr id='client_tr'>"
-									+"<td class='col-3' id='pet_name'>"+pet_name+" </td>" /* 공백지우면안됨!! */
+									+"<td class='col-3' id='pet_name'>"+pet_name+"</td>" /* 공백있으면안됨!! */
 									+"<td class='col-3' id='owner_name'>"+owner_name+"</td>"
-									+"<td class='col-4 owner_tel' id='owner_tel'>"+owner_tel+" </td>" /* 공백지우면안됨!! */
+									+"<td class='col-4 owner_tel' id='owner_tel'>"+owner_tel+"</td>" /* 공백있으면안됨!! */
 									+"<td class='col-2'><i class='replusbtn xi-plus-circle-o xi-x' style='color: #4e73df; cursor: pointer;'></i></td>"
 									+"</tr>"
 				$(".tbody2").append(search_client);
@@ -672,9 +672,9 @@ $(function() {
 											<tbody class="tbody2">
 												<c:forEach items="${clientList }" var="cl">
 													<tr class="client" id="client_tr">
-														<td class="col-3" id="pet_name">${cl.pet_name } </td>
+														<td class="col-3" id="pet_name">${cl.pet_name } </td><!-- 공백지우면안됨!! -->
 														<td class="col-3" id="owner_name">${cl.owner_name }</td>
-														<td class="col-4 owner_tel" id="owner_tel" value="1">${cl.owner_tel } </td>
+														<td class="col-4 owner_tel" id="owner_tel" value="1">${cl.owner_tel } </td> <!-- 공백지우면안됨!! -->
 														<td class="col-2"><i
 															class="plusbtn xi-plus-circle-o xi-x"
 															style="color: #4e73df; cursor: pointer;"></i></td>
