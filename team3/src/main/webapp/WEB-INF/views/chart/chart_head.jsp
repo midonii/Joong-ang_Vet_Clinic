@@ -11,6 +11,7 @@
 			<tr>
 				<input type="hidden" id="pet_no" name="pet_no">
 				<input type="hidden" id="receive_no" name="receive_no">
+				<input type="hidden" id="receive_state" name="receive_state">
 				<td>보호자명 :&nbsp; <b class="text-gray-800"><span class="ownername"></span></b>&nbsp;&nbsp;
 				</td>
 				<td>동물명</b> :&nbsp; <b class="text-gray-800"><span class="petname"></span></b>&nbsp;&nbsp;
@@ -28,6 +29,6 @@
 
 	</div>
 	<div class="col-3 d-flex justify-content-end">
-		<button type="button" class=" btn btn-primary btn-sm" id="chartAdd">저장</button>
+		<button type="button" class=" btn btn-primary btn-sm disabled" id="chartAdd">저장</button>
 	</div>
 </div>

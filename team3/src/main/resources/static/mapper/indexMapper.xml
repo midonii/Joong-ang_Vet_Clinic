@@ -39,10 +39,11 @@
 	</select>
 	<select id="indexreceive" resultType="HashMap">
 		SELECT ROW_NUMBER()
-		over(ORDER BY case 
+		over(ORDER BY case
 		when receive_state = 2 then 1
 		when receive_state = 1 then 2
-		when receive_state = 3 then 3
+		when
+		receive_state = 3 then 3
 		END ) AS
 		ino,i.pet_name,i.owner_name,i.receive_state
 		FROM
@@ -57,14 +58,14 @@
 		over(ORDER BY case 
 		when pay_yn = 'N' then 1
 		when pay_yn = 'Y' then 2
-		END ) AS
+		END ASC, pay_date DESC, chart_date ASC) AS
 		ino,i.pet_name,i.owner_name,i.pay_yn
 		FROM
 		(SELECT *
 		FROM
 		indexreceivepay WHERE DATE_FORMAT(receive_time, "%Y-%m-%d") =
 		CURDATE() AND receive_state = 3) i
-		ORDER BY ino
+
 	</select>
 	<select id="indexPet" resultType="HashMap"
 		parameterType="HashMap">
@@ -79,9 +80,10 @@
 		WHERE pet_del = 1
 		<if test="search_value != null">
 			AND
-			pet_name LIKE CONCAT('%',#{search_value}, '%') OR
+			(pet_name LIKE CONCAT('%',#{search_value}, '%') OR
 			owner_name LIKE CONCAT('%',#{search_value}, '%') OR
-			owner_tel LIKE CONCAT('%',#{search_value}, '%')
+			owner_tel LIKE
+			CONCAT('%',#{search_value}, '%'))
 		</if>
 		) p
 	</select>
@@ -96,6 +98,6 @@
 
 		) n
 		ORDER BY nno DESC
-		LIMIT 0, 6;
+		LIMIT 0, 5;
 	</select>
 </mapper>

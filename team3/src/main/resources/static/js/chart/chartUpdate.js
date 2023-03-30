@@ -1,6 +1,6 @@
 $(function() {
-	// sidebar 접어서 창 열기
-	$(".sidebar").addClass("toggled");
+
+
 
 	var pet_no = $("#pet_no").val();
 
@@ -145,7 +145,7 @@ $(function() {
 						chartdiv += "	<div class='ml-2'>"
 							+ chart_date + "</div>";
 						chartdiv += "	</button></h2>";
-						chartdiv += "<div id='A" + chart_no + "' class='accordion-collapse collapse' aria-labelledby='" + chart_date + "' data-parent='#accordionExample'>";
+						chartdiv += "<div value='" + chart_no + "' id='A" + chart_no + "' class='accordion-collapse collapse' aria-labelledby='" + chart_date + "' data-parent='#accordionExample'>";
 						chartdiv += "<div class='accordion-body' >"
 						chartdiv += "<div class='d-flex justify-content-end'><span>담당의 : </span><span class='font-weight-bold'>&nbsp;"
 							+ staff_name + "</span></div>";
@@ -181,185 +181,202 @@ $(function() {
 				}
 
 				$("#chart").append(chartdiv);
+				$(".collapse").on("hide.bs.collapse", function() {
+
+					$("#memo").val("");
+					$("#chart_no").val("");
+					$(".CBTable").empty();
+					$(".chartUpdate").addClass("disabled");
+
+				});
 
 
-				$(document)
-					.on(
-						"click",
-						".pastChart",
-						function() {
-							var chartNo = $(this).attr("value");
+				$(".collapse").on("shown.bs.collapse", function() {
+					/*if ($("#chart_no").val() == "") {
+						$(".chartUpdate").addClass("disabled");
+					} else {
+					*/	$(".chartUpdate").removeClass("disabled");
+
+				/*	}*/
 
 
-							$("#chart_no").val(chartNo);
-							$("#memo").val("");
+					var chartNo = $(this).attr("value");
 
-							$.post({
-								url: "/CDetailAjax",
+					$("#chart_no").val(chartNo);
+					$("#memo").val("");
+
+					$.post({
+						url: "/CDetailAjax",
+						data: {
+							"chart_no": chartNo,
+							"pet_no": pet_no
+						},
+						dataType: "json"
+					}).done(
+						function(data) {
+
+							let petChart = data.chart;
+							$("#chartDate").val(petChart[0].chart_date);
+							var replace_result = petChart[0].chart_memo.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
+							$("#memo").val(replace_result);
+
+							$(".CBTable").empty();
+							let petMedicalData = data.petMedicalData;
+							var totalPrice = 0;
+							let table2 = "";
+							for (let i = 0; petMedicalData.length > i; i++) {
+								var medical_category = petMedicalData[i].medical_category;
+								var medical_name = petMedicalData[i].medical_name;
+								var medicaldata_ea = petMedicalData[i].medicaldata_ea;
+								var price = petMedicalData[i].medical_price;
+								let medino = petMedicalData[i].medical_no;
+								table2 += "<tr style='float:center;'>";
+								table2 += "<td class='col-2'>"
+									+ medical_category
+									+ "</td>";
+								table2 += "<td class='col-5'>"
+									+ medical_name
+									+ "</td>";
+								table2 += "<td class='col-2 priceTd' ><input type='number' class='mediNum form-control form-control-sm' id='" + medino + "'name='mediNum" + i + "' style=' text-align:right;' value='" + medicaldata_ea + "' min='1' max='100'></td>";
+								table2 += "<td class='col-4 calPrice' id='" + price + "'>"
+									+ price * medicaldata_ea
+									+ "원</td>";
+								table2 += "</tr>";
+
+								totalPrice += price * medicaldata_ea;
+
+							}
+							$(".totalPrice").attr("id", totalPrice);
+							$(".CBTable").append(table2);
+							$(".totalPrice").empty();
+							var totalPriceAddc = totalPrice.toLocaleString(); //가격에 , 붙이기
+							$(".totalPrice").append(totalPriceAddc + "원");
+
+							/*수량을 변경할때*/
+							$(document).on("change", ".mediNum", function() {
+								var eachmediNum = $(this).val(); // 수량 
+								var eachmediId = $(this).attr("id"); //수정된 체크박스의 id(medical_no)
+
+								var ckInput = $("tbody.CBTable").find("#" + eachmediId); //수정된 체크박스의 id와 일치하는 인풋넘버태그찾기
+								var priceTd = ckInput.closest(".priceTd"); //인풋넘버태그 바로위 부모태그 td
+								var calprice = priceTd.siblings(".calPrice"); //아래 td (각 가격부분)
+								var priceId = calprice.attr("id"); // 가격의 id(1개의 단가);
+								var b = priceId * eachmediNum; //단가*변경된수량
+								//var changeTotal =b.toLocaleString(); //가격에 ,붙이기
+								calprice.text(b + "원");
+								//수량 0 입력시 1로 대체
+								if (eachmediNum == 0) {
+									$(this).val(1);
+									calprice.empty();
+									calprice.append(priceId + "원");
+								}
+
+								var price12 = $(".calPrice").text();
+								var priceCut = price12.split("원"); //원으로 나누기
+								var prices = new Array(); //배열생성 
+								prices = priceCut; //배열에 넣어주기
+
+								var totalSum = 0;
+								for (let l = 0; l < (prices.length - 1); l++) {
+									var pr = parseInt(prices[l]);
+									totalSum += pr;
+								}
+
+								$(".totalPrice").attr("id", totalSum);
+								var changeTotalPrice = totalSum.toLocaleString(); //가격에 , 붙이기
+								$(".totalPrice").empty(); //1개 단가의 총합계를 지운다 0
+								$(".totalPrice").append(changeTotalPrice + "원"); //총 합계
+
+							});
+
+
+
+
+						})
+						.fail(
+							function() {
+								alert("문제가 발생했습니다.");
+							});
+
+					$
+						.post(
+							{
+								url: "/preAjax",
 								data: {
 									"chart_no": chartNo,
 									"pet_no": pet_no
 								},
 								dataType: "json"
-							}).done(
-								function(data) {
-
-									let petChart = data.chart;
-									$("#chartDate").val(petChart[0].chart_date);
-									var replace_result = petChart[0].chart_memo.replace(/(<br>|<br\/>|<br \/>)/g, '\r\n');
-									$("#memo").val(replace_result);
-
-									$(".CBTable").empty();
-									let petMedicalData = data.petMedicalData;
-									var totalPrice = 0;
-									let table2 = "";
-									for (let i = 0; petMedicalData.length > i; i++) {
-										var medical_category = petMedicalData[i].medical_category;
-										var medical_name = petMedicalData[i].medical_name;
-										var medicaldata_ea = petMedicalData[i].medicaldata_ea;
-										var price = petMedicalData[i].medical_price;
-										let medino = petMedicalData[i].medical_no;
-										table2 += "<tr style='float:center;'>";
-										table2 += "<td class='col-2'>"
-											+ medical_category
-											+ "</td>";
-										table2 += "<td class='col-5'>"
-											+ medical_name
-											+ "</td>";
-										table2 += "<td class='col-2 priceTd' ><input type='number' class='mediNum form-control form-control-sm' id='" + medino + "'name='mediNum" + i + "' style=' text-align:right;' value='" + medicaldata_ea + "' min='1' max='100'></td>";
-										table2 += "<td class='col-4 calPrice' id='" + price + "'>"
-											+ price * medicaldata_ea
-											+ "원</td>";
-										table2 += "</tr>";
-
-										totalPrice += price * medicaldata_ea;
-
+							})
+						.done(
+							function(data) {
+								let petMedicalData = data.petMedicalData;
+								var table = "";
+								$(
+									'.chartList'
+									+ chartNo)
+									.hide();
+								$(
+									"#client-table"
+									+ chartNo)
+									.empty();
+								// -- 검사
+								for (let i = 0; petMedicalData.length > i; i++) {
+									var medical_category = petMedicalData[i].medical_category;
+									var medical_subcate = "";
+									if (petMedicalData[i].medical_subcate != undefined) {
+										medical_subcate = petMedicalData[i].medical_subcate;
 									}
-									$(".totalPrice").attr("id", totalPrice);
-									$(".CBTable").append(table2);
-									$(".totalPrice").empty();
-									var totalPriceAddc = totalPrice.toLocaleString(); //가격에 , 붙이기
-									$(".totalPrice").append(totalPriceAddc + "원");
+									var medical_name = petMedicalData[i].medical_name;
+									var staff_name = petMedicalData[i].staff_name;
+									var staff_grade = petMedicalData[i].staff_grade;
+									var medicaldata_ea = petMedicalData[i].medicaldata_ea;
+									var price = petMedicalData[i].medicaldata_ea;
+									table += "<tr class='chartList" + chartNo + "'>";
+									table += "<td>"
+										+ medical_category
+										+ "</td>";
+									table += "<td>"
+										+ medical_subcate
+										+ "</td>";
+									table += "<td class='text-left'>"
+										+ medical_name
+										+ "</td>";
+									table += "<td>"
+										+ medicaldata_ea
+										+ "</td>";
+									table += "<td>"
+										+ staff_name
+										+ "</td>";
+									table += "</tr>";
 
-									/*수량을 변경할때*/
-									$(document).on("change", ".mediNum", function() {
-										var eachmediNum = $(this).val(); // 수량 
-										var eachmediId = $(this).attr("id"); //수정된 체크박스의 id(medical_no)
+								}
+								$(
+									"#client-table"
+									+ chartNo)
+									.append(
+										table);
+								$(
+									"#client-table"
+									+ chartNo)
+									.show();
 
-										var ckInput = $("tbody.CBTable").find("#" + eachmediId); //수정된 체크박스의 id와 일치하는 인풋넘버태그찾기
-										var priceTd = ckInput.closest(".priceTd"); //인풋넘버태그 바로위 부모태그 td
-										var calprice = priceTd.siblings(".calPrice"); //아래 td (각 가격부분)
-										var priceId = calprice.attr("id"); // 가격의 id(1개의 단가);
-										var b = priceId * eachmediNum; //단가*변경된수량
-										//var changeTotal =b.toLocaleString(); //가격에 ,붙이기
-										calprice.text(b + "원");
-										//수량 0 입력시 1로 대체
-										if (eachmediNum == 0) {
-											$(this).val(1);
-											calprice.empty();
-											calprice.append(priceId + "원");
-										}
-
-										var price12 = $(".calPrice").text();
-										var priceCut = price12.split("원"); //원으로 나누기
-										var prices = new Array(); //배열생성 
-										prices = priceCut; //배열에 넣어주기
-
-										var totalSum = 0;
-										for (let l = 0; l < (prices.length - 1); l++) {
-											var pr = parseInt(prices[l]);
-											totalSum += pr;
-										}
-
-										$(".totalPrice").attr("id", totalSum);
-										var changeTotalPrice = totalSum.toLocaleString(); //가격에 , 붙이기
-										$(".totalPrice").empty(); //1개 단가의 총합계를 지운다 0
-										$(".totalPrice").append(changeTotalPrice + "원"); //총 합계
-
-									});
+							})
+						.fail(
+							function() {
+								alert("문제가 발생했습니다.");
+							});
 
 
 
 
-								})
-								.fail(
-									function() {
-										alert("문제가 발생했습니다.");
-									});
 
-							$
-								.post(
-									{
-										url: "/preAjax",
-										data: {
-											"chart_no": chartNo,
-											"pet_no": pet_no
-										},
-										dataType: "json"
-									})
-								.done(
-									function(data) {
-										let petMedicalData = data.petMedicalData;
-										var table = "";
-										$(
-											'.chartList'
-											+ chartNo)
-											.hide();
-										$(
-											"#client-table"
-											+ chartNo)
-											.empty();
-										// -- 검사
-										for (let i = 0; petMedicalData.length > i; i++) {
-											var medical_category = petMedicalData[i].medical_category;
-											var medical_subcate = "";
-											if (petMedicalData[i].medical_subcate != undefined) {
-												medical_subcate = petMedicalData[i].medical_subcate;
-											}
-											var medical_name = petMedicalData[i].medical_name;
-											var staff_name = petMedicalData[i].staff_name;
-											var staff_grade = petMedicalData[i].staff_grade;
-											var medicaldata_ea = petMedicalData[i].medicaldata_ea;
-											var price = petMedicalData[i].medicaldata_ea;
-											table += "<tr class='chartList" + chartNo + "'>";
-											table += "<td>"
-												+ medical_category
-												+ "</td>";
-											table += "<td>"
-												+ medical_subcate
-												+ "</td>";
-											table += "<td class='text-left'>"
-												+ medical_name
-												+ "</td>";
-											table += "<td>"
-												+ medicaldata_ea
-												+ "</td>";
-											table += "<td>"
-												+ staff_name
-												+ "</td>";
-											table += "</tr>";
-
-										}
-										$(
-											"#client-table"
-											+ chartNo)
-											.append(
-												table);
-										$(
-											"#client-table"
-											+ chartNo)
-											.show();
-
-									})
-								.fail(
-									function() {
-										alert("문제가 발생했습니다.");
-									});
-
-						});
+				});
 			}).fail(function(xhr, status, errorThrown) {
 				alert("실패");
 			});
+
+
 
 	function getTodayDate() {
 		var date = new Date();
@@ -387,6 +404,21 @@ $(function() {
 			arr.push(obj.medical_ea);
 			arr2.push(obj.medical_no);
 		}
+		
+		if(chart_memo == ""){
+			alert("의사소견을 입력하십시오");
+			return false;
+		}
+
+		if(objArr == ""){
+			alert("처방내역을 입력하십시오.");
+			return false;
+		}
+
+		
+		
+		
+		
 		if (chartDate == today) {
 			if (confirm("차트를 수정하시겠습니까?")) {
 				$.post({
@@ -412,6 +444,7 @@ $(function() {
 			}
 		} else {
 			alert("금일 작성된 차트가 아닙니다.");
+			return false;
 		}
 	});
 
@@ -566,8 +599,8 @@ $(function() {
 			var right_tr = right_chk.closest(".trSelected");
 			right_tr.remove();
 		}
-		//좌 리스트 체크된게 없으면 저장버튼 비활성화
-		var leftckNum = $('input:checkbox[name=list_check]:checked').length;
+		//우 리스트 체크된게 없으면 저장버튼 비활성화
+		var leftckNum = $('input:checkbox[name=right_check]:checked').length;
 		if (leftckNum == 0) {
 			$(".save_btn").attr("disabled", true);
 		}
@@ -579,6 +612,11 @@ $(function() {
 		var left_chk = $("table.first_table").find("#" + right_id);
 		left_chk.prop("checked", false);
 		$(this).parents(".trSelected").remove();
+		//우 리스트 체크된게 없으면 저장버튼 비활성화 (예지)
+		var leftckNum = $('input:checkbox[name=right_check]:checked').length;
+		if (leftckNum == 0) {
+			$(".save_btn").attr("disabled", true);
+		}
 
 	}); //리스트에서 클릭
 

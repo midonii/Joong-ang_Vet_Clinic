@@ -97,7 +97,7 @@ if (session.getAttribute("id") == null) {
 
 									</div>
 									<div class="col-4 d-flex justify-content-end">
-										<button type="button" class=" btn btn-warning btn-sm"
+										<button type="button" class=" btn btn-warning btn-sm disabled chartUpdate"
 											id="chartUpdate">수정</button>
 									</div>
 								</div>

@@ -197,7 +197,7 @@ if (session.getAttribute("id") == null) {
 			var notice_no = $("#noU").val();
 			var notice_title = $.trim($("#titleU").val());
 			var notice_content = $("#contentU").val().replace(/\n/g, "<br>");
-
+			$("#D_content").empty();
 			$.post({
 				url : "/noticeUpdate",
 				data : {

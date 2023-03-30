@@ -42,6 +42,7 @@ if (session.getAttribute("id") == null) {
 <script type="text/javascript" src="js/indexcal.js"></script>
 </head>
 <script type="text/javascript">
+
 	$(function() {
 		$(".sidebar").addClass("toggled");
 		$(".refresh").click(function() {
@@ -313,7 +314,7 @@ if (session.getAttribute("id") == null) {
 													table += "<button class='btn btn-sm btn-primary ' id='reg_btn'>신규등록</button><br></td></tr>";
 												} else {
 													for (let i = 0; pet.length > i; i++) {
-														var pet_no = pet[i].pet_no;
+														var pet_no = pet[i].pno;
 														var pet_name = pet[i].pet_name;
 														var owner_name = pet[i].owner_name;
 														var owner_tel = pet[i].owner_tel;
@@ -616,7 +617,8 @@ if (session.getAttribute("id") == null) {
 								</li>
 								<li class="list-group-item">
 									<div class="row">
-										<div id="D_content"></div>
+										<div id="D_content"
+										style="color: black; height: 400px; width: 100%; overflow: auto;"></div>
 									</div>
 								</li>
 

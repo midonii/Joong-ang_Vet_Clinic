@@ -21,6 +21,17 @@ $(function() {
 		var chart_memo = $("#chart_memo").val().replace(/\n/g, "<br>");
 		var totalprice = $(".totalPrice").attr("id");
 
+		if(chart_memo == ""){
+			alert("의사소견을 입력하십시오");
+			return false;
+		}
+
+		if(objArr == ""){
+			alert("처방내역을 입력하십시오.");
+			return false;
+		}
+
+
 		if (pet_no == "") {
 			alert("동물을 선택해주세요.");
 		} else {
@@ -60,7 +71,7 @@ $(function() {
 		.click(
 			function() {
 				var pet_search = $.trim($("#pet_search").val());
-	
+
 				if (pet_search == "") {
 					alert("검색어를 입력하세요");
 					$("#pet_search").focus();

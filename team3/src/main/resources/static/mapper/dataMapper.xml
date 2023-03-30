@@ -134,7 +134,7 @@
 	</delete>
 	<update id="medicalUpdate" parameterType="HashMap">
 		UPDATE medicalList SET
-		medical_name=#{medical_name},medical_price=#{medical_price},
+		medical_name=#{medical_name},
 		medical_subcate=#{medical_subcate}
 		WHERE
 		medical_no =#{medical_no};
