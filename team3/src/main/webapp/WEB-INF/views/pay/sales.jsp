@@ -156,7 +156,7 @@ function page(idx, fromDate, toDate) {
 							<!-- 좌우 전체 -->
 							<div class="row justify-content-center">
 								<!-- 왼쪽 리스트+검색 시작  -->
-								<div class="border-right col-5 col-md-5" style="padding: 10px;">
+								<div class="border-right col-5 col-md-5" style="padding: 10px; ">
 									<!-- 날짜검색 시작  -->
 									<div class="input-group mb-3">
 										<input type="date"
@@ -245,11 +245,8 @@ function page(idx, fromDate, toDate) {
 								</div>
 								<!-- 매출리스트끝  -->
 								<!-- 우측 차트 시작 -->
-								<div class="col-7 col-md-7"
-									style="overflow: auto; width: auto; padding: 10px;">
-									<c:if test="${not empty param.toDate }">
-										<fmt:formatNumber value="${payTotalPrice2}" pattern="#,###" />원
-													</c:if>
+								<div class="col-7 col-md-7" style="overflow: auto; width: auto; padding: 10px;">
+									<c:if test="${not empty param.toDate }"></c:if>
 									<div id="chart_div"></div>
 								</div>
 								<!-- 구글차트끝 -->
