@@ -337,6 +337,7 @@ $(function() {
 	$(".totalPrice").empty(); // 총 합계
       let receiveno = $(this).attr("value");
       $("#receive_no").val(receiveno);
+      $("#receive_state").val("");
       $("#chart_memo").val("");
       $("#chart_memo").attr('readonly', false);
       $.get({
@@ -354,6 +355,13 @@ $(function() {
          $(".petbirth").text(result.pet_birth);
          $(".petweight").text(result.pet_weight);
          $("#pet_no").val(result.pet_no);
+		 $("#receive_state").val(result.receive_state);
+         var recevie_state = $("#receive_state").val();
+		   if (recevie_state == 2) {
+            $("#chartAdd").removeClass("disabled");
+         } else {
+            $("#chartAdd").addClass("disabled");
+         }
 
          var pet_no = $("#pet_no").val();
          /*접종내역*/
@@ -538,7 +546,7 @@ $(function() {
 
 	
 	
-	/*추가+ : 처방내역 리스트(모달로) 불러오기*/
+	/*처방내역 리스트(모달로) 불러오기*/
 	$("#presc").click(function(){
 		var searchValue = $("#search_value").val();
 		var searchName = $("#search_name").val();
@@ -564,23 +572,31 @@ $(function() {
 				
 				let prescList = data.prescList;
 				let searchList = data.searchList;
-				let table = "<tr class='left_list'>";
+				let table = "<tr class='left_list' >";
 				
 				for(let i=0; i<prescList.length; i++){
 					let mcategory = prescList[i].medical_category;
 					let mname = prescList[i].medical_name;
 					let mprice = prescList[i].medical_price;
 					let mno = prescList[i].medical_no;
+					let mstock = prescList[i].medical_stock;
 					
-					table += "<td class='col-1'><input type='checkbox' class='list_check' name='list_check' id='"+mno+"'></td>";
+					if(mstock !=0){
+					table += "<td class='col-1' ><input type='checkbox' class='list_check' name='list_check' id='"+mno+"'></td>";
+					table += "<td class='col-2' id='cate'>"+mcategory+"</td>";
+					table += "<td class='col-6' id='mediname'><label for='"+mno+"' style='margin :0;'>"+mname+"</label></td>";
+					table += "<td class='col-3' id='mediprice'>"+mprice+"원</td></tr>";
+					}
+					else{
+					table += "<td class='col-1' ><input type='checkbox' class='list_check' disabled='true' name='list_check' id='"+mno+"'></td>";
 					table += "<td class='col-2' id='cate'>"+mcategory+"</td>";
 					table += "<td class='col-6' id='mediname'><label for='"+mno+"' style='margin :0;'>"+mname+"</label></td>";
 					table += "<td class='col-3' id='mediprice'>"+mprice+"원</td></tr>";
 					
+					}
 				}
-				
+					
 				$(".precTable").append(table);
-				
 				/*우 리스트 배열 풀어서 동일한 id의 좌 리스트에 체크하기((rightno)-위의 배열변수명)*/
         		var list_size = rightno.length;
 				for(var i=0; i<list_size; i++){                          
@@ -588,9 +604,12 @@ $(function() {
 				  var left_chk = $("table.first_table").find("#"+id_no);
 				  	left_chk.prop("checked", true);
 		   	 	}
+									
+				
 			}, error : function(xhr, status, errorThrown){
 				alert("문제가 발생했습니다.");
 			}
+			
 			
 		});
 		
@@ -599,7 +618,6 @@ $(function() {
 	
 	//처방 모달내의 검색버튼 클릭시	
 	$(document).on("click","#modal_search", function(){
-		
 		var searchValue = $("#search_value").val();
 		var searchName = $("#search_name").val();
 		let receiveno = $(this).attr("value");
@@ -639,7 +657,9 @@ $(function() {
 				}
 				
 				$(".precTable").append(table);
-			
+				//오른쪽 번호를 쪼개 > 그 쪼갠값과 검색된 리스트 아이디와 비교  체크되게
+				//검색후에 전체리스트를 불러도 다시 읽어오니
+				
 				/*우 리스트 배열 풀어서 동일한 id의 좌 리스트에 체크하기((rightno)-위의 배열변수명)*/
         		var list_size = rightno.length;
 				for(var i=0; i<list_size; i++){                          
@@ -683,8 +703,8 @@ $(function() {
 			var right_tr = right_chk.closest(".trSelected");
 	    	right_tr.remove();
 		}
-		//우 리스트 체크된게 없으면 저장버튼 비활성화 (예지)
-		var leftckNum =$('input:checkbox[name=right_check]:checked').length;
+		//좌 리스트 체크된게 없으면 저장버튼 비활성화
+		var leftckNum =$('input:checkbox[name=list_check]:checked').length;
 		if(leftckNum==0){
 			$(".save_btn").attr("disabled",true);
 		}
@@ -696,12 +716,6 @@ $(function() {
 		var left_chk = $("table.first_table").find("#"+right_id);
 			left_chk.prop("checked", false);
 	    $(this).parents(".trSelected").remove(); 
-		
-		//우 리스트 체크된게 없으면 저장버튼 비활성화 (예지)
-		var leftckNum =$('input:checkbox[name=right_check]:checked').length;
-		if(leftckNum==0){
-			$(".save_btn").attr("disabled",true);
-		}
 	
 	}); //리스트에서 클릭
 
@@ -735,7 +749,7 @@ $(function() {
 				
 				$(".saveTable1").empty();
 				var saveList = data.saveList;
-				let table ="<tr style='float:center;' >";
+				let table ="<tr style='float:center;'>";
 				var totalPrice = 0;
 				for(let i=0; i<saveList.length; i++){
 					let cate = saveList[i].medical_category;
@@ -743,7 +757,7 @@ $(function() {
 					//var priceAddc = price.toLocaleString(); //가격에 , 붙이기 ---> 잠시보류
 					let mname = saveList[i].medical_name;
 					let medino = saveList[i].medical_no;
-					table += "<td class='col-2' name='saveTable1'id='"+medino+"'>"+cate+"</td>";
+					table += "<td class='col-2'>"+cate+"</td>";
 					table += "<td class='col-5'>"+mname+"</td>";
 					table += "<td class='col-2 priceTd' ><input type='number' class='mediNum form-control form-control-sm' id='"+medino+"'name='mediNum"+i+"' style=' text-align:right;' value='1' min='1' max='100'></td>";
 					table += "<td class='col-4 calPrice' id='"+price+"'>"+price+"원</td>";

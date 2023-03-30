@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vet.clinic.dao.Chart1DAO">
 	<select id="petdetailAjax" resultType="Hashmap" parameterType="String"> 
-		SELECT pet_name, pet_birth, pet_gender, pet_weight, type_name, owner_name, pet_no
+		SELECT pet_name, pet_birth, pet_gender, pet_weight, type_name, owner_name, pet_no,receive_state
 		FROM receptionview
 		WHERE receive_no = #{receiveno};
 	</select>
 	
 	<select id="prescAjax" resultType="Hashmap" parameterType="SearchDTO">
-		SELECT medical_no, medical_category, medical_name, FORMAT(medical_price , 0) AS medical_price
+		SELECT medical_no, medical_category, medical_name, FORMAT(medical_price , 0) AS medical_price,medical_stock
 		FROM medicalList
 		<if test="search_name !=null">
 			<choose>
