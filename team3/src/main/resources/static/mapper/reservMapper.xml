@@ -160,8 +160,7 @@
 		resultType="ReservDTO">
 		SELECT *
 		FROM reservationview
-		WHERE reserv_date = #{fulldate} AND (reservation_yn = 'N' OR reservation_yn =
-		'')
+		WHERE reserv_date = #{fulldate}
 		ORDER BY reservation_date ASC
 	</select>
 
