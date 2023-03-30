@@ -16,13 +16,13 @@
 		resultType="ReservDTO">
 		SELECT * FROM clientview
 		<if test="search_value != null">
-			WHERE owner_name
-
+			WHERE pet_del = 1 
+			AND (owner_name
 			LIKE CONCAT('%', #{search_value}, '%')
 			OR pet_name
 			LIKE CONCAT('%', #{search_value}, '%')
 			OR owner_tel
-			LIKE CONCAT('%', #{search_value}, '%')
+			LIKE CONCAT('%', #{search_value}, '%'))
 		</if>
 		ORDER BY pet_name
 	</select>

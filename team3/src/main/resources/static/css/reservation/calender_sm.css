@@ -9,15 +9,15 @@ body {
 /*     background: -moz-linear-gradient(left, #363795, #005C97); */
 /*     background: -o-linear-gradient(left, #363795, #005C97); */
 /*     background: linear-gradient(to right, #363795, #005C97);  */
-    font-family: Helvetica;
+/*     font-family: Helvetica; */
 } 
 .content {
-    overflow: none;
-    width: 1400px;
+    overflow: scroll;
+    width: 1600px;
     padding: 0px 0;
-    height: 680px;
+    height: 700px;
     position: relative;
-    margin: 70px auto;
+    margin: 60px auto;
      background: #fff;
 /*     background: #52A0FD; */
 /*     background: -moz-linear-gradient(right,  #52A0FD 0%, #00C9FB 80%, #00C9FB 100%); */
@@ -111,7 +111,7 @@ body {
 /*     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); */
 /*     -moz-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); */
 /*     -webkit-box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); */
-    height: 40px; 
+    height: 53px; 
     text-align: center;
     position: relative; 
     color:#fff; 
@@ -169,7 +169,7 @@ body {
 }
 #cancel-button {
 /*     box-shadow: -1px 10px 20px #FF7DAE; */
-    background: #FF1744;
+/*     background: #FF1744; */
 /*     background: -moz-linear-gradient(left,  #FF1744 0%, #FF5D95 80%, #FF5D95 100%); */
 /*     background: -webkit-linear-gradient(left,  #FF1744 0%, #FF5D95 80%, #FF5D95 100%); */
 /*     background: linear-gradient(to right,  #FF1744 0%, #FF5D95 80%, #FF5D95 100%); */
