@@ -39,8 +39,8 @@ public class UserService {
 		return staffDAO.telCheck(tel);
 	}
 
-	public Map<String, Object> profile(Map<String, Object> map) {
-		return staffDAO.profile(map);
+	public Map<String, Object> profile(String sessionID) {
+		return staffDAO.profile(sessionID);
 	}
 
 	public int pwCheck(Map<String, Object> map) {

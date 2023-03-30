@@ -236,12 +236,11 @@ public class UserController {
 	public ModelAndView profile(@PathVariable("id") String id, HttpSession session) {
 		ModelAndView mv = new ModelAndView();
 		//System.out.println(session.getAttribute("id"));
-		Map<String, Object> map = new HashMap<String, Object>();
-		if(session.getAttribute("id") != null) {
-			map.put("sessionID", session.getAttribute("id"));
-		}
 		
-		Map<String, Object> select = userService.profile(map);
+		String sessionID = (String) session.getAttribute("id");
+		//System.out.println(sessionID);
+		
+		Map<String, Object> select = userService.profile(sessionID);
 		//System.out.println(select);
 		
 		mv.addObject("profile", select);
@@ -279,12 +278,11 @@ public class UserController {
 		ModelAndView mv = new ModelAndView();
 		//System.out.println(session.getAttribute("id"));
 		//System.out.println(session.getAttribute("pw"));
-		Map<String, Object> map = new HashMap<String, Object>();
-		if(session.getAttribute("id") != null) {
-			map.put("sessionID", session.getAttribute("id"));
-		}
 		
-		Map<String, Object> select = userService.profile(map);
+		String sessionID = (String) session.getAttribute("id");
+		//System.out.println(sessionID);
+		
+		Map<String, Object> select = userService.profile(sessionID);
 		//System.out.println(select);
 		
 		mv.addObject("profile", select);

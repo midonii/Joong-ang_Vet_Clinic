@@ -71,7 +71,7 @@
 		WHERE staff_tel = #{tel }
 	</select>
 	
-	<select id="profile" parameterType="HashMap" resultType="HashMap">
+	<select id="profile" parameterType="String" resultType="HashMap">
 		SELECT *
 		FROM staff
 		WHERE staff_id = #{sessionID }	

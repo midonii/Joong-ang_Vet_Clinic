@@ -67,12 +67,6 @@ function noBack(){
 	window.history.forward();
 } 
 
-const autoHyphen1 = (target) => {
-	 target.value = target.value
-	   .replace(/[^0-9]/g, '')
-	  .replace(/^(\d{0,4})(\d{0,2})(\d{0,2})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
-	}
-
 // 주소찾기API
     function sample6_execDaumPostcode() {
         new daum.Postcode({
@@ -126,10 +120,21 @@ const autoHyphen1 = (target) => {
 
 $(function(){
 	
+	$("#id").on("keyup",function(){
+		$(this).val($(this).val().replace(/[^_A-Za-z0-9]/g,""));
+	});
+	$("#birth, #tel").on("keyup",function(){
+		$(this).val($(this).val().replace(/[^0-9]/g,""));
+	});
+	$("#email").on("keyup", function(){
+		$(this).val($(this).val().replace(/[^._@A-Za-z0-9]/g,""));
+	});
+	
+	// 아이디중복확인
 	$("#idCheck").click(function(){
 		let id = $("#id").val();
 		if(id == ""){
-			alert("올바른 아이디를 입력하세요.");
+			alert("올바른 아이디를 입력하세요. \n아이디는 영문 소문자, 대문자, 숫자, _ 만 입력 가능합니다.");
 			return false;
 		}
 		$.post({
@@ -139,6 +144,7 @@ $(function(){
 		}).done(function(data){
 			if(data.result == "0"){
 				alert("사용가능한 아이디입니다.");
+				$("#id").val(id);
 				$("#id").attr("readonly", true);
 			} else {
 				alert("이미 존재하는 아이디입니다. 다시 입력해주세요.");
@@ -150,6 +156,7 @@ $(function(){
 		});
 	});
 	
+	// 비밀번호입력
 	$("input[name='pw'], input[name='repw']").change(function(){
 		if(!$("input[name='id']").attr("readonly")){
 			alert("아이디 중복확인을 해주세요.");
@@ -170,6 +177,7 @@ $(function(){
 		}
 	});
 	
+	// 이메일중복확인
 	$("#emailCheck").click(function(){
 		let email = $("#email").val();
 		if(email == ""){
@@ -194,6 +202,7 @@ $(function(){
 		});
 	});
 	
+	// 전화번호 중복확인
 	$("#telCheck").click(function(){
 		let tel = $("#tel").val();
 		if(tel == ""){
@@ -218,7 +227,7 @@ $(function(){
 		});
 	});
 	
-		
+// ---- 회원가입등록버튼 -----		
 	$(".joinbtn").click(function(){
 		
 		let id = $("#id").val();
@@ -232,13 +241,16 @@ $(function(){
 		let extraAddr = $("#sample6_extraAddress").val();
 		let grade = $("#grade option:selected").val();
 		let addr = address + detailAddr + extraAddr ;
-		alert(id+" / "+pw+" / "+name+" / "+birth+" / "+tel+" / "+email+" / "+grade);
+ 		//alert(id+" / "+pw+" / "+name+" / "+birth+" / "+tel+" / "+email+" / "+grade);
 		
 		if(pw == "" || name == "" || birth == "" || tel == "" || email == "" || address == ""){
 			alert("필수 입력사항을 모두 입력하세요.");
 			return false;
 		}
-		
+		if(!$("input[name='id']").attr("readonly") || !$("input[name='tel']").attr("readonly") || !$("input[name='email']").attr("readonly")){
+			alert("중복확인을 해주세요.");
+			return false;
+		}
 		
 	});
 		
@@ -271,7 +283,7 @@ $(function(){
 										<h1 class="h4 text-gray-900 mb-4">회원가입</h1>
 									</div>
 									
-									<form class="user" action="/join" method="post">
+									<form class="user" method="post" action="/join">
 										<div class="form-group row" ">
 											<input type="text" id="id" name="id" class="form-control-sm col-7 form-control form-control-user"  placeholder="아이디" style="margin-right:10px;">
 											<input type="button" id="idCheck" name="idCheck" class="col-sm-4 btn btn-sm btn-primary btn-user btn-block" value="중복확인">
@@ -285,10 +297,10 @@ $(function(){
 										</div>
 										<div class="form-group row" style="marging-top:-30px;">
 											<input type="text" id="name" name="name"  class="col-sm-5 form-control form-control-user" placeholder="이름" style="margin-right:10px;">
-											<input type="text" id="birth" name="birth" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" class="col-sm-6 form-control form-control-user"  required minlength="8" maxlength="8" placeholder="생년월일(ex.19001230)">
+											<input type="text" id="birth" name="birth" class="col-sm-6 form-control form-control-user"  required minlength="8" maxlength="8" placeholder="생년월일(ex.19001230)">
 										</div>
 										<div class="form-group row">
-											<input type="text" id="tel" name="tel" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" class="col-sm-7 form-control form-control-user"  required minlength="11" maxlength="11" placeholder="전화번호(ex.01012345678)" style="margin-right:10px;">
+											<input type="text" id="tel" name="tel"  class="col-sm-7 form-control form-control-user"  required minlength="11" maxlength="11" placeholder="전화번호(ex.01012345678)" style="margin-right:10px;">
 											<input type="button" id="telCheck" class="col-4 btn btn-primary btn-user btn-block" value="중복확인">
 										</div>
 										<div class="form-group row">
@@ -319,7 +331,7 @@ $(function(){
 											</div>
 										</div>
 										<hr>
-										<button class="btn btn-primary btn-user btn-block joinbtn" href="location.href='/login'"> 등록 </a>
+										<button class="btn btn-primary btn-user btn-block joinbtn" type="submit"> 등록 </a>
 <!-- 										<button a href="login.html" class="btn btn-primary btn-user btn-block"> 등록 </a> -->
 										</button>
 									</form>
