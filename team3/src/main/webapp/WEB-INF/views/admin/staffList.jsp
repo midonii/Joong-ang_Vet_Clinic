@@ -174,8 +174,9 @@ if (session.getAttribute("id") != null) {
 		$("#search_btn").click(function() {
 			let searchName = $("#search_name").val();
 			let searchValue = $.trim($("#search_value").val());
+			let staff_grade=$("#staff_grade2").val();
 			$("#search_value").val(searchValue);
-			if (searchName == "all" && searchValue == "") {
+			if (searchName == "all" && searchValue == "" || staff_grade == "") {
 				location.href = "/staffList";
 			}
 
@@ -250,7 +251,7 @@ if (session.getAttribute("id") != null) {
 											value="${page.getContentnum()}">
 										<div class="input-group">
 											<input type="hidden" value="${search.getStaff_grade() }"
-														name="staff_grade">
+														name="staff_grade" id="staff_grade2">
 											<input type="hidden" value="${search.getSearch_name() }"
 												id="searchName"> <select
 												class="form-control col-md-4" name="search_name"

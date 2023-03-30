@@ -6,7 +6,7 @@
 	<select id="noticeList" resultType="NoticeDTO"
 		parameterType="HashMap">
 		SELECT ROW_NUMBER()
-		over(ORDER BY n.notice_no) AS nno, n.*
+		over(ORDER BY n.notice_date) AS nno, n.*
 		FROM
 		(
 		SELECT *
