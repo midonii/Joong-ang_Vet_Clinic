@@ -330,7 +330,7 @@ if (session.getAttribute("id") == null) {
 						<input type="hidden" id="reservation_date" name="reservation_date">
 						<div class="mb-3">
 							<label for="update_reservation_memo" class="col-form-label">예약메모</label>
-							<textarea class="form-control" id="update_reservation_memo"></textarea>
+							<textarea class="form-control" id="update_reservation_memo" style="resize:none;"></textarea>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"

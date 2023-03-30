@@ -238,6 +238,7 @@ public class ReservController {
 		int result = reservService.receiveDelete(reservDTO);
 		return "redirect:reserv";
 	}
+	
 	//캘린더
 	// 전체리스트, 예약리스트
 	@GetMapping("/calender_sm2")
@@ -250,9 +251,10 @@ public class ReservController {
 		List<ReservDTO> boardlist = reservService.boardlist(reservDTO);
 		mv.addObject("boardlist", boardlist);
 
-		// 예약 리스트
+		// 클릭한날짜 예약 리스트
 		List<ReservDTO> reservlist = reservService.reservlist(reservDTO);
 		mv.addObject("reservlist", reservlist);
+		
 
 		return mv;
 	}
@@ -281,9 +283,6 @@ public class ReservController {
 			return json.toString();
 		}
 	}
-	
-	
-	
 	
 	
 	// 캘린더에서 예약삭제

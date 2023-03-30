@@ -194,10 +194,6 @@ if (session.getAttribute("id") == null) {
 																	<button type="button" class="btn btn-sm reserv_btn"
 																		value="${s.pet_no}"
 																		style="border: 1px solid #0d6efd; color: #0d6efd;">예약</button>
-<!-- 																	<button type="button" id="search_receipt_btn" -->
-<!-- 																		class="btn btn-primary btn-sm search_receipt_btn" -->
-<%-- 																		value="${s.pet_no}" data-value="${s.owner_no}" --%>
-<!-- 																		style="margin-left: 5px; border: none;">접수</button> -->
 															</span></td>
 														</tr>
 													</c:forEach>
@@ -220,47 +216,50 @@ if (session.getAttribute("id") == null) {
 											<table class="table table-borderless"
 												style="color: gray; background-color: white;">
 												<tbody id="reservTable">
-													<c:choose>
-														<c:when test="${fn:length(reservlist) eq 0}">
-															<tr class='text-center'>
-																<td colspan='4'>예약내역이 존재하지 않습니다.</td>
-															</tr>
-														</c:when>
-														<c:otherwise>
+<%-- 													<c:choose> --%>
+<%-- 														<c:when test="${fn:length(reservationview2) eq 0}"> --%>
+<!-- 															<tr class='text-center'> -->
+<!-- 																<td colspan='4'>예약내역이 존재하지 않습니다.</td> -->
+<!-- 															</tr> -->
+<%-- 														</c:when> --%>
+<%-- 														<c:otherwise> --%>
 
-															<c:forEach items="${reservlist}" var="l">
-																<input type="hidden" id="age">
-																<tr
-																	style="border-bottom: 1px solid gray; padding-bottom: 5px;">
-																	<td style="font-size: 14px;">
-																		<div style="">
-																			<a style="text-decoration: none;"><b
-																				style="font-size: 25px; color: black">
-																					${l.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${l.owner_name}&nbsp;
-																			<a class="reservUpdate" value="${l.reservation_no}"
-																				style="text-decoration: none;"> <i
-																				class="xi-file-text-o"></i>
-																			</a>
-																		</div> <br>
-																		<div>
-																			<span>${l.type_name} | ${l.pet_birth} |
-																				${l.pet_gender}</span>
-																		</div> <span> ${l.reservation_memo} </span>
-																	<td style="text-align: right;"><span><b><h5>${l.reserv_time}</h5></b></span><br>
-																		<input type="hidden" id="petNo" value="${l.pet_no}">
-																		<input type="hidden" id="ownerNo"
-																		value="${l.owner_no}"> <input type="hidden"
-																		id="reservation_Yn" value="${l.reservation_yn}">
-																		<span>
-																			<button type="button"
-																				class="btn btn-secondary btn-sm reserv_cancel" id=""
-																				value="${l.reservation_no}"
-																				style="background-color: #7f8c8d; border: none;">취소</button>
-																	</span></td>
-																</tr>
-															</c:forEach>
-														</c:otherwise>
-													</c:choose>
+<%-- 															<c:forEach items="${reservationview2}" var="l"> --%>
+<!-- 																<input type="hidden" id="age"> -->
+<!-- 																<tr -->
+<!-- 																	style="border-bottom: 1px solid gray; padding-bottom: 5px;"> -->
+<!-- 																	<td style="font-size: 14px;"> -->
+<!-- 																		<div style=""> -->
+<!-- 																			<a style="text-decoration: none;"><b -->
+<!-- 																				style="font-size: 25px; color: black"> -->
+<%-- 																					${l.pet_name}</b></a>&nbsp;&nbsp;&nbsp;${l.owner_name}&nbsp; --%>
+<%-- 																			<a class="reservUpdate" value="${l.reservation_no}" --%>
+<!-- 																				style="text-decoration: none;"> <i -->
+<!-- 																				class="xi-file-text-o"></i> -->
+<!-- 																			</a> -->
+<!-- 																		</div> <br> -->
+<!-- 																		<div> -->
+<%-- 																			<span>${l.type_name} | ${l.pet_birth} | --%>
+<%-- 																				${l.pet_gender}</span> --%>
+<%-- 																		</div> <span> ${l.reservation_memo} </span> --%>
+<%-- 																	<td style="text-align: right;"><span><b><h5>${l.reserv_time}</h5></b></span><br> --%>
+<%-- 																		<input type="hidden" id="petNo" value="${l.pet_no}"> --%>
+<!-- 																		<input type="hidden" id="ownerNo" -->
+<%-- 																		value="${l.owner_no}"> <input type="hidden" --%>
+<%-- 																		id="reservation_Yn" value="${l.reservation_yn}"> --%>
+<!-- 																		<span> -->
+																		
+<%-- 																		<c:if test="${l.receive_state eq '1' || l.receive_state eq '2'}"> --%>
+<!-- 																			<button type="button" -->
+<!-- 																				class="btn btn-secondary btn-sm reserv_cancel" -->
+<%-- 																				value="${l.reservation_no}" --%>
+<!-- 																				style="background-color: #7f8c8d; border: none;">취소</button> -->
+<%-- 																		</c:if> --%>
+<!-- 																	</span></td> -->
+<!-- 																</tr> -->
+<%-- 															</c:forEach> --%>
+<%-- 														</c:otherwise> --%>
+<%-- 													</c:choose> --%>
 												</tbody>
 											</table>
 
@@ -473,7 +472,7 @@ if (session.getAttribute("id") == null) {
 						<input type="hidden" id="reservation_date" name="reservation_date">
 						<div class="mb-3">
 							<label for="update_reservation_memo" class="col-form-label">예약메모</label>
-							<textarea class="form-control" id="update_reservation_memo"></textarea>
+							<textarea class="form-control" id="update_reservation_memo" style="resize:none;"></textarea>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"

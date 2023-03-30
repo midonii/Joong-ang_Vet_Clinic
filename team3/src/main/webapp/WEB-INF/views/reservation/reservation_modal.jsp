@@ -56,7 +56,7 @@
 									<!-- timeoption 부분-->								
 								<div class="mb-3">
 									<label for="reservation_memo" class="col-form-label">예약메모</label>
-									<textarea class="form-control" id="reservation_memo"></textarea>
+									<textarea class="form-control" id="reservation_memo" style="resize:none;"></textarea>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary"

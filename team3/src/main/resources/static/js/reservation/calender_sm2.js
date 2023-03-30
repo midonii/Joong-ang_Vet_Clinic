@@ -157,7 +157,7 @@ function show_events(month, day, year) {
 				table += '<input type="hidden" id="ownerNo" value="' + result[i].owner_no + '">';
 				table += '<input type="hidden" id="reservation_Yn" value="' + result[i].reservation_yn + '">';
 				table += '<span>';
-				if (todayDate_f <= fulldate) { //오늘날짜 이후라면
+				if (todayDate_f <= fulldate && (result[i].receive_state == '1' || result[i].receive_state == '2')) { //오늘날짜 이후라면
 					table += '<button type="button" class="btn btn-secondary btn-sm reserv_cancel" style="margin-right:5px;" id="" value="' + result[i].reservation_no + '" style="background-color: #7f8c8d; border: none;">취소</button>';
 				}
 				table += '</span></td>';
@@ -251,13 +251,16 @@ function show_events(month, day, year) {
 					$("input[name='reserv_time'][value='" + disabled_time + "']").attr("disabled", true);
 				}
 			}
-			//현재시간 이전시간막기 
+				
+			//오늘인 경우에만 현재시간 이전시간 막기
+			if (todayDate_f == reservation_date_day) {
 			for (var i = 1; i <= $("input[name='reserv_time']").length; i++) {
 				var timevalue = $(".t" + i).val();
 
 				if ($(".t" + i).val() < timeString) {
 					$("input[name='reserv_time'][value='" + timevalue + "']").attr("disabled", true);
 				}
+			}
 			}
 			$('#owner_name').val(result[0].owner_name);
 			$('#owner_tel').val(result[0].owner_tel);
@@ -289,14 +292,25 @@ function show_events(month, day, year) {
 			dataType: "json",
 			cache: false
 		}).done(function(data) {
-			//시간막기
-			let result1 = data.result1;
-			for (var i = 0; i < result1.length; i++) {
-				let disabled_time = result1[i].reserv_time;
-				let time = $("input[name='reserv_time'][value='" + disabled_time + "']").siblings('label').text();
-				if (disabled_time == time) {
-					$("input[name='reserv_time'][value='" + disabled_time + "']").attr("disabled", true);
+//			//시간막기
+//			let result1 = data.result1;
+//			for (var i = 0; i < result1.length; i++) {
+//				let disabled_time = result1[i].reserv_time;
+//				let time = $("input[name='reserv_time'][value='" + disabled_time + "']").siblings('label').text();
+//				if (disabled_time == time) {
+//					$("input[name='reserv_time'][value='" + disabled_time + "']").attr("disabled", true);
+//				}
+//			}
+			
+			//오늘인 경우에만 현재시간 이전시간 막기
+			if (todayDate_f == reservation_date_day) {
+			for (var i = 1; i <= $("input[name='reserv_time']").length; i++) {
+				var timevalue = $(".t" + i).val();
+
+				if ($(".t" + i).val() < timeString) {
+					$("input[name='reserv_time'][value='" + timevalue + "']").attr("disabled", true);
 				}
+			}
 			}
 		});
 	});
@@ -383,7 +397,7 @@ function show_events(month, day, year) {
 		var reservation_date_day_input = $('#reservation_date_day').val();
 		var reservation_date_day_parts = reservation_date_day_input.split('-');
 		var reservation_date_day = reservation_date_day_parts[0] + '-' + reservation_date_day_parts[1] + '-' + reservation_date_day_parts[2];
-		alert(reservation_date_day);
+//		alert(reservation_date_day);
 
 		$.ajax({
 			url: "/reservUpdate",

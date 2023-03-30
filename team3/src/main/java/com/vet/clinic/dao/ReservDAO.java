@@ -48,4 +48,6 @@ public interface ReservDAO {
 
 	public List<ReservDTO> reservlist2(ReservDTO reservDTO);
 
+//	public List<ReservDTO> reservationview2(ReservDTO reservDTO);
+
 }
