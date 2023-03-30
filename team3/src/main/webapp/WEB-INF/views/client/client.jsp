@@ -292,7 +292,32 @@ $(function(){
 								</div>
 							</c:when>
 							<c:otherwise>
+							<div class="card-body">
 								<h5 class="m-0 text-gray-600 mt-2 mb-2 not-info">데이터가 없습니다.</h5>
+									<div class="mt-4">
+										<a
+											class="btn btn-danger btn-icon-split float-right ml-2 clientDelete">
+											<span class="icon text-white-50"> <i
+												class="fas fa-trash"></i>
+										</span> <span class="text">삭제</span>
+										</a> <a
+											class="btn btn-info btn-icon-split float-right ml-2 clientUpdate">
+											<span class="icon text-white-50"> <i
+												class="fas fa-info-circle"></i>
+										</span> <span class="text">수정</span>
+										</a> <a
+											class="btn btn-primary btn-icon-split float-right ml-2 client-add">
+											<span class="icon text-white-50"> <i
+												class="fas fa-flag"></i>
+										</span> <span class="text">보호자 추가</span>
+										</a> <a class="btn btn-success btn-icon-split  float-right"
+											id="plus-btn"> <span class="icon text-white-50"> <i
+												class="fas fa-check"></i>
+										</span> <span class="text">반려견 추가</span>
+										</a>
+									</div>
+								</div>
+							
 							</c:otherwise>
 						</c:choose>
 					</div>
