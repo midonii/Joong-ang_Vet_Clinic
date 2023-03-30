@@ -188,17 +188,20 @@ $(function(){
 		let detailAddr = $("#detailAddr").val();
 		let addr = address + detailAddr;
 		
+		if(pw == "" || pw2 == ""){
+			alert("비밀번호를 입력하세요.");
+			return false;
+		} 
 		$.post({
 			url : "/editProfile",
 			data : {"pw" : pw, "name" : name, "tel" : tel, "addr" : addr},
 			dataType : "json"
 		}).done(function(data){
-			alert("수정완료");
+			alert("프로필 수정이 완료되었습니다.");
 			location.href="/userProfile="+'${sessionScope.id }';
 		}).fail(function(xhr){
 			alert("저장실패");
 		});
-		
 		
 	});
 });

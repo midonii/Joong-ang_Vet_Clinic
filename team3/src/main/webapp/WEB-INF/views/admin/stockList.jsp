@@ -533,7 +533,7 @@ $(function(){
 									<!-- 기간조회 -->
 									<div class="row row-margin0"
 										style="flex-grow: 1; line-height: 35px;">
-										<div class="card search_criteria" style="width: 28%;">처방기간조회</div>
+										<div class="card search_criteria" style="width: 28%;">처방수량 기간조회</div>
 										<div class="row row-margin0" style="width: 70%;">
 											<div class="card row" style="width: 45%; height: 35px; margin: 0 10px 5px 10px;">
 												<input class="form-control datepicker cursor" id="fromDate" readOnly 
