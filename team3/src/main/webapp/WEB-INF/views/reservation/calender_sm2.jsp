@@ -97,9 +97,9 @@ if (session.getAttribute("id") == null) {
 					<div class="content" style="padding-right: -20px;">
 						<div class="calendar-container">
 							<div class="calendar">
-								<div class="year-header">
-									<span class="left-button" id="prev"> &lang; </span> <span
-										class="year" id="label"></span> <span class="right-button"
+								<div class="year-header" >
+									<span class="left-button" id="prev" style="height:100%;"> &lang; </span> <span
+										class="year" id="label"></span> <span class="right-button"  style="height:100%;"
 										id="next"> &rang; </span>
 								</div>
 								<table class="months-table"
@@ -194,10 +194,10 @@ if (session.getAttribute("id") == null) {
 																	<button type="button" class="btn btn-sm reserv_btn"
 																		value="${s.pet_no}"
 																		style="border: 1px solid #0d6efd; color: #0d6efd;">예약</button>
-																	<button type="button" id="search_receipt_btn"
-																		class="btn btn-primary btn-sm search_receipt_btn"
-																		value="${s.pet_no}" data-value="${s.owner_no}"
-																		style="margin-left: 5px; border: none;">접수</button>
+<!-- 																	<button type="button" id="search_receipt_btn" -->
+<!-- 																		class="btn btn-primary btn-sm search_receipt_btn" -->
+<%-- 																		value="${s.pet_no}" data-value="${s.owner_no}" --%>
+<!-- 																		style="margin-left: 5px; border: none;">접수</button> -->
 															</span></td>
 														</tr>
 													</c:forEach>
@@ -256,9 +256,6 @@ if (session.getAttribute("id") == null) {
 																				class="btn btn-secondary btn-sm reserv_cancel" id=""
 																				value="${l.reservation_no}"
 																				style="background-color: #7f8c8d; border: none;">취소</button>
-																			<button type="button"
-																				class="btn btn-primary btn-sm receipt_btn"
-																				value="${l.reservation_no}" style="border: none;">접수</button>
 																	</span></td>
 																</tr>
 															</c:forEach>

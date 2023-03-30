@@ -10,9 +10,6 @@
   --eventColor3: #e2f8ff;
   --eventColor4: #d1ffe6;
 }
-/* .events1 > * { */
-/*   height: var(--timeHeight); */
-/* } */
 .weekcalendar {
   display: grid;
   gap: 20px;
@@ -39,65 +36,8 @@
   background: var(--calBgColor1);
 }
 
-/*Place on Timeline*/
-.start-9 {
-  grid-row-start: 1;
-}
-.start-930 {
-  grid-row-start: 2;
-}
-.start-10 {
-  grid-row-start: 3;
-}
-.start-1030 {
-  grid-row-start: 4;
-}
-.start-11 {
-  grid-row-start: 5;
-}
-.start-1130 {
-  grid-row-start: 6;
-}
-.start-12 {
-  grid-row-start: 7;
-}
-.start-1230 {
-  grid-row-start: 8;
-}
-.start-13 {
-  grid-row-start: 9;
-}
-.start-1330 {
-  grid-row-start: 10;
-}
-.start-14 {
-  grid-row-start: 11;
-}
-.start-1430 {
-  grid-row-start: 12;
-}
-.start-15 {
-  grid-row-start: 13;
-}
-.start-1530 {
-  grid-row-start: 14;
-}
-.start-16 {
-  grid-row-start: 15;
-}
-.start-1630 {
-  grid-row-start: 16;
-}
-.start-17 {
-  grid-row-start: 17;
-}
-.start-1730 {
-  grid-row-start: 18;
-}
-
 
 /*  Event */
-
 .title {  /* 예약일정(다 주석임) */
   font-weight: 600;
   margin-bottom: 0.25rem;
@@ -115,12 +55,6 @@
 .date {
   height: 60px
 }
-
-/* Global / Etc */
-
-/* body { */
-/*   font-family: system-ui, sans-serif; */
-/* } */
 
 .corp-fi {
   background: var(--eventColor1);
@@ -146,9 +80,7 @@
 
 .date-num {
   font-size: 2rem;
-/*   font-weight: 600; */
   display: inline;
-  
 }
 
 .date-day { /* 요일 */
@@ -162,5 +94,4 @@
 
 .time-marker{
 	margin-bottom:40px;
-	
 }
