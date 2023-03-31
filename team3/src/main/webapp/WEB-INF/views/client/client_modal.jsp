@@ -70,7 +70,7 @@
 					<div class="col">
 						<span
 							style="display: inline-block; float: right; margin-right: 10px;">
-							<button type="button" class="btn btn-primary btn-sm detailUpdate">수정</button>
+							<button type="button" class="btn btn-warning btn-sm detailUpdate">수정</button>
 							<button type="button" class="btn btn-danger btn-sm detailDelete">삭제</button>
 						</span>
 					</div>
@@ -123,7 +123,7 @@
 												style="display: inline-block; float: right; margin-right: 10px;">
 												<button class="btn btn-success btn-sm petAdd">반려견 추가</button>
 												<button type="button"
-													class="btn btn-primary btn-sm cm_petUpdate">수정</button>
+													class="btn btn-warning btn-sm cm_petUpdate">수정</button>
 												<button type="button"
 													class="btn btn-danger btn-sm cm_petDelete">삭제</button>
 											</span>
