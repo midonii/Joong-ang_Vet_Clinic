@@ -593,13 +593,13 @@ $(function() {
 					if (mstock > 0) {
 						table += "<td class='col-1' ><input type='checkbox' class='list_check' name='list_check' id='" + mno + "'></td>";
 						table += "<td class='col-2' id='cate'>" + mcategory + "</td>";
-						table += "<td class='col-6' id='mediname'><label for='" + mno + "' style='margin :0;'>" + mname + "</label></td>";
+						table += "<td class='col-6' id='mediname'><label for='" + mno + "' style='margin :0; cursor:pointer;'>" + mname + "</label></td>";
 						table += "<td class='col-3' id='mediprice'>" + mprice + "원</td></tr>";
 					}
 					else {
 						table += "<td class='col-1' ><input type='checkbox' class='list_check' disabled='true' name='list_check' id='" + mno + "'></td>";
 						table += "<td class='col-2' id='cate'>" + mcategory + "</td>";
-						table += "<td class='col-6' id='mediname'><label for='" + mno + "' style='margin :0;'>" + mname + "</label></td>";
+						table += "<td class='col-6' id='mediname'><label for='" + mno + "' style='margin :0; cursor:pointer;'>" + mname + "</label></td>";
 						table += "<td class='col-3' id='mediprice'>" + mprice + "원</td></tr>";
 
 					}
@@ -663,13 +663,13 @@ $(function() {
 					if (mstock > 0) {
 						table += "<td class='col-1' ><input type='checkbox' class='list_check' name='list_check' id='" + mno + "'></td>";
 						table += "<td class='col-2' id='cate'>" + mcategory + "</td>";
-						table += "<td class='col-6' id='mediname'><label for='" + mno + "' style='margin :0;'>" + mname + "</label></td>";
+						table += "<td class='col-6' id='mediname'><label for='" + mno + "' style='margin :0; cursor:pointer;'>" + mname + "</label></td>";
 						table += "<td class='col-3' id='mediprice'>" + mprice + "원</td></tr>";
 					}
 					else {
 						table += "<td class='col-1' ><input type='checkbox' class='list_check' disabled='true' name='list_check' id='" + mno + "'></td>";
 						table += "<td class='col-2' id='cate'>" + mcategory + "</td>";
-						table += "<td class='col-6' id='mediname'><label for='" + mno + "' style='margin :0;'>" + mname + "</label></td>";
+						table += "<td class='col-6' id='mediname'><label for='" + mno + "' style='margin :0; cursor:pointer;'>" + mname + "</label></td>";
 						table += "<td class='col-3' id='mediprice'>" + mprice + "원</td></tr>";
 
 					}
@@ -710,7 +710,7 @@ $(function() {
 			var chtable = "<tr style='float:center;' class='trSelected'id='" + mno + "'>";
 			chtable += "<td class='col-1'><input type='checkbox' class='right_check' name='right_check' checked='checked' id='" + mno + "'></td>";
 			chtable += "<td class='col-2' id='test1'>" + cate + "</td>";
-			chtable += "<td class='col-6 mediname1' ><label for='" + mno + "'style='margin :0;'>" + mediname + "</label></td>";
+			chtable += "<td class='col-6 mediname1' ><label for='" + mno + "'style='margin :0; cursor:pointer;'>" + mediname + "</label></td>";
 			chtable += "<td class='col-3' id=''>" + mediprice + "</td></tr>";
 
 			$(".checkedTable").append(chtable);

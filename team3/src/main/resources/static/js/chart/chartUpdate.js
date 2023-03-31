@@ -184,27 +184,24 @@ $(function() {
 				$(".collapse").on("hide.bs.collapse", function() {
 
 					$("#memo").val("");
+					$("#memo").attr('readonly', true);
 					$("#chart_no").val("");
 					$(".CBTable").empty();
+					$(".totalPrice").empty();
 					$(".chartUpdate").addClass("disabled");
 
 				});
 
 
 				$(".collapse").on("shown.bs.collapse", function() {
-					/*if ($("#chart_no").val() == "") {
-						$(".chartUpdate").addClass("disabled");
-					} else {
-					*/	$(".chartUpdate").removeClass("disabled");
-
-				/*	}*/
+					$(".chartUpdate").removeClass("disabled");
 
 
 					var chartNo = $(this).attr("value");
 
 					$("#chart_no").val(chartNo);
 					$("#memo").val("");
-
+					$("#memo").attr('readonly', false);
 					$.post({
 						url: "/CDetailAjax",
 						data: {
@@ -404,21 +401,21 @@ $(function() {
 			arr.push(obj.medical_ea);
 			arr2.push(obj.medical_no);
 		}
-		
-		if(chart_memo == ""){
+
+		if (chart_memo == "") {
 			alert("의사소견을 입력하십시오");
 			return false;
 		}
 
-		if(objArr == ""){
+		if (objArr == "") {
 			alert("처방내역을 입력하십시오.");
 			return false;
 		}
 
-		
-		
-		
-		
+
+
+
+
 		if (chartDate == today) {
 			if (confirm("차트를 수정하시겠습니까?")) {
 				$.post({
@@ -485,11 +482,21 @@ $(function() {
 					let mname = prescList[i].medical_name;
 					let mprice = prescList[i].medical_price;
 					let mno = prescList[i].medical_no;
+					let mstock = prescList[i].medical_stock;
 
-					table += "<td class='col-1'><input type='checkbox' class='list_check' name='list_check' id='" + mno + "'></td>";
-					table += "<td class='col-2' id='cate'>" + mcategory + "</td>";
-					table += "<td class='col-6' id='mediname'><label for='" + mno + "' style='margin :0;'>" + mname + "</label></td>";
-					table += "<td class='col-3' id='mediprice'>" + mprice + "원</td></tr>";
+					if (mstock > 0) {
+						table += "<td class='col-1' ><input type='checkbox' class='list_check' name='list_check' id='" + mno + "'></td>";
+						table += "<td class='col-2' id='cate'>" + mcategory + "</td>";
+						table += "<td class='col-6' id='mediname'><label for='" + mno + "' style='margin :0; cursor:pointer;'>" + mname + "</label></td>";
+						table += "<td class='col-3' id='mediprice'>" + mprice + "원</td></tr>";
+					}
+					else {
+						table += "<td class='col-1' ><input type='checkbox' class='list_check' disabled='true' name='list_check' id='" + mno + "'></td>";
+						table += "<td class='col-2' id='cate'>" + mcategory + "</td>";
+						table += "<td class='col-6' id='mediname'><label for='" + mno + "' style='margin :0; cursor:pointer;'>" + mname + "</label></td>";
+						table += "<td class='col-3' id='mediprice'>" + mprice + "원</td></tr>";
+
+					}
 
 				}
 
@@ -545,11 +552,21 @@ $(function() {
 					let mname = prescList[i].medical_name;
 					let mprice = prescList[i].medical_price;
 					let mno = prescList[i].medical_no;
+					let mstock = prescList[i].medical_stock;
 
-					table += "<td class='col-1'><input type='checkbox' class='list_check' name='list_check' id='" + mno + "'></td>";
-					table += "<td class='col-2' id='cate'>" + mcategory + "</td>";
-					table += "<td class='col-6' id='mediname'><label for='" + mno + "'style='margin :0;'>" + mname + "</label></td>";
-					table += "<td class='col-3' id='mediprice'>" + mprice + "원</td></tr>";
+					if (mstock > 0) {
+						table += "<td class='col-1' ><input type='checkbox' class='list_check' name='list_check' id='" + mno + "'></td>";
+						table += "<td class='col-2' id='cate'>" + mcategory + "</td>";
+						table += "<td class='col-6' id='mediname'><label for='" + mno + "' style='margin :0; cursor:pointer;'>" + mname + "</label></td>";
+						table += "<td class='col-3' id='mediprice'>" + mprice + "원</td></tr>";
+					}
+					else {
+						table += "<td class='col-1' ><input type='checkbox' class='list_check' disabled='true' name='list_check' id='" + mno + "'></td>";
+						table += "<td class='col-2' id='cate'>" + mcategory + "</td>";
+						table += "<td class='col-6' id='mediname'><label for='" + mno + "' style='margin :0; cursor:pointer;'>" + mname + "</label></td>";
+						table += "<td class='col-3' id='mediprice'>" + mprice + "원</td></tr>";
+
+					}
 				}
 
 				$(".precTable").append(table);
@@ -587,7 +604,7 @@ $(function() {
 			var chtable = "<tr style='float:center;' class='trSelected'id='" + mno + "'>";
 			chtable += "<td class='col-1'><input type='checkbox' class='right_check' name='right_check' checked='checked' id='" + mno + "'></td>";
 			chtable += "<td class='col-2' id=''>" + cate + "</td>";
-			chtable += "<td class='col-6 mediname1' ><label for='" + mno + "'style='margin :0;'>" + mediname + "</label></td>";
+			chtable += "<td class='col-6 mediname1' ><label for='" + mno + "'style='margin :0; cursor:pointer;'>" + mediname + "</label></td>";
 			chtable += "<td class='col-3' id=''>" + mediprice + "</td></tr>";
 
 			$(".checkedTable").append(chtable);

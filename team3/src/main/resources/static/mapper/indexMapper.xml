@@ -42,14 +42,13 @@
 		over(ORDER BY case
 		when receive_state = 2 then 1
 		when receive_state = 1 then 2
-		when
-		receive_state = 3 then 3
+		when receive_state = 3 then 3
 		END ) AS
 		ino,i.pet_name,i.owner_name,i.receive_state
 		FROM
 		(SELECT *
 		FROM
-		indexreceivepay WHERE DATE_FORMAT(receive_time, "%Y-%m-%d") =
+		indexreceive WHERE DATE_FORMAT(receive_time, "%Y-%m-%d") =
 		CURDATE() AND receive_state != 3) i
 		ORDER BY ino
 	</select>
@@ -90,7 +89,7 @@
 	<select id="indexNotice" resultType="HashMap">
 
 		SELECT ROW_NUMBER()
-		over(ORDER BY n.notice_no) AS nno, n.*
+		over(ORDER BY n.notice_date) AS nno, n.*
 		FROM
 		(
 		SELECT * from
