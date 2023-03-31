@@ -45,16 +45,36 @@
 	</select>
 	
 	<select id="searchClient" parameterType="HashMap" resultType="SmsSearchDTO">
+		
+				SELECT pet_name, owner_name, owner_tel
+				FROM smsview 
+				WHERE 1=1
+					<if test='client != null and !"".equals(client) and client != "보호자"'>
+						AND (((pet_name LIKE CONCAT('%',#{client },'%'))
+						OR (owner_name LIKE CONCAT('%',#{client },'%')) 
+						OR (owner_tel LIKE CONCAT('%',#{client },'%'))))
+					</if>
+				AND pet_name NOT IN 
+				<foreach collection="pet_name" item="petnames" index="index" separator="," open="(" close=")">
+					 #{petnames }
+				</foreach>
+				<if test="client == '보호자'">
+					GROUP BY owner_name
+					ORDER BY owner_name
+				</if>
+			
+	</select> 
+	<!-- <select id="searchClient" parameterType="HashMap" resultType="SmsSearchDTO">
 		SELECT pet_name, owner_name, owner_tel
 		FROM smsview 
 		WHERE 
-			((pet_name LIKE CONCAT('%',#{client },'%'))
-			OR (owner_name LIKE CONCAT('%',#{client },'%')) 
-			OR (owner_tel LIKE CONCAT('%',#{client },'%')))
+				((pet_name LIKE CONCAT('%',#{client },'%'))
+				OR (owner_name LIKE CONCAT('%',#{client },'%')) 
+				OR (owner_tel LIKE CONCAT('%',#{client },'%')))
 		AND pet_name NOT IN 
 		<foreach collection="pet_name" item="petnames" index="index" separator="," open="(" close=")">
 		 #{petnames }
 		</foreach>
-	</select>
+	</select> -->
 
 </mapper>
