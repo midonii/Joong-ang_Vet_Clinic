@@ -305,7 +305,7 @@ $(function() {
 		$(this).parents("#client_tr").remove();
 		
 		var tr = "<tr id='receive_tr'>"
-					+"<td class='col-3' id='pet_name'>"+pet_name+"</td>" /* 공백있으면안됨!! */
+					+"<td class='col-3' id='pet_name'>"+pet_name+" </td>" /* 공백있으면안됨!! */
 					+"<td class='col-3' id='owner_name'>"+owner_name+"</td>"
 					+"<td class='col-4' id='owner_tel'>"+owner_tel+"</td>" /* 공백있으면안됨!! */
 					+"<td class='col-2'><i class='minusbtn xi-minus-circle xi-x' style='color:#4e73df; cursor:pointer;'></i></td>"
@@ -374,7 +374,7 @@ $(function() {
 
 	$(document).on("click","#minusAll", function(){
 		
-		
+		$.trim($("#pet_name").val());
  		$(".newnum").remove();
 		
 		$(".minusbtn").attr("class","replusbtn xi-plus-circle-o xi-x");
@@ -453,7 +453,7 @@ $(function() {
 		
 		let search_client = $.trim($("#search_client").val());
 		let pet_names = $(".smsTo2 #pet_name").text();
-		//alert(pet_names);
+		alert(pet_names);
 		$("#search_client").val(search_client);
 		
 		
@@ -473,7 +473,7 @@ $(function() {
 				let owner_tel = searchClient[i].owner_tel;
 				
 				var search_client = "<tr id='client_tr'>"
-									+"<td class='col-3' id='pet_name'>"+pet_name+"</td>" /* 공백있으면안됨!! */
+									+"<td class='col-3' id='pet_name'>"+pet_name+" </td>" /* 공백있으면안됨!! */
 									+"<td class='col-3' id='owner_name'>"+owner_name+"</td>"
 									+"<td class='col-4 owner_tel' id='owner_tel'>"+owner_tel+"</td>" /* 공백있으면안됨!! */
 									+"<td class='col-2'><i class='replusbtn xi-plus-circle-o xi-x' style='color: #4e73df; cursor: pointer;'></i></td>"
