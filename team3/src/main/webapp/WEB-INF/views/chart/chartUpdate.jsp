@@ -133,7 +133,7 @@ if (session.getAttribute("id") == null) {
 
 								<!-- Card Body -->
 								<div class="card-body p-0" style="height: 328px;">
-									<textarea class="form-control"
+									<textarea class="form-control" readonly="readonly"
 										style="height: 328px; resize: none; border-radius: 0 0 5px 5px"
 										id="memo"></textarea>
 

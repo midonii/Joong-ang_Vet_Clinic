@@ -176,7 +176,8 @@ if (session.getAttribute("id") != null) {
 			let searchValue = $.trim($("#search_value").val());
 			let staff_grade=$("#staff_grade2").val();
 			$("#search_value").val(searchValue);
-			if (searchName == "all" && searchValue == "" || staff_grade == "") {
+			if (searchName == "all" && searchValue == "" && staff_grade != null) {
+				$("#staff_grade2").val("");
 				location.href = "/staffList";
 			}
 
