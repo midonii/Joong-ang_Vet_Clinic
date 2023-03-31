@@ -142,7 +142,7 @@ function show_events(month, day, year) {
 				table += '<b style="font-size: 25px; color: black">' + result[i].pet_name + '</b></a>&nbsp;&nbsp;&nbsp;' + result[i].owner_name + '&nbsp;';
 				table += '<a class="reservUpdate" value="' + result[i].reservation_no + '" style="text-decoration: none;">';
 
-				if (todayDate_f <= fulldate) {  //오늘날짜 이후라면
+				if (todayDate_f <= fulldate && result[i].receive_state == '1') {  //오늘날짜/대기중인 경우만
 					table += '<i class="xi-file-text-o"></i>';
 				}
 				table += '</a>';
@@ -157,7 +157,7 @@ function show_events(month, day, year) {
 				table += '<input type="hidden" id="ownerNo" value="' + result[i].owner_no + '">';
 				table += '<input type="hidden" id="reservation_Yn" value="' + result[i].reservation_yn + '">';
 				table += '<span>';
-				if (todayDate_f <= fulldate && (result[i].receive_state == '1' || result[i].receive_state == '2')) { //오늘날짜 이후라면
+				if (todayDate_f <= fulldate && result[i].receive_state == '1') { //오늘날짜/대기중인 경우만
 					table += '<button type="button" class="btn btn-secondary btn-sm reserv_cancel" style="margin-right:5px;" id="" value="' + result[i].reservation_no + '" style="background-color: #7f8c8d; border: none;">취소</button>';
 				}
 				table += '</span></td>';

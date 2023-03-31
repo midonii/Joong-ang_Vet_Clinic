@@ -156,7 +156,7 @@
 	  	AND (receive_state = '1' OR receive_state = '2')
 	</select>
 
-	<!-- 날짜별 예약리스트 -->
+	<!-- 날짜별 예약리스트 (+receive_state)-->
 	<select id="reservlist2" parameterType="ReservDTO"
 		resultType="ReservDTO">
 		SELECT *
